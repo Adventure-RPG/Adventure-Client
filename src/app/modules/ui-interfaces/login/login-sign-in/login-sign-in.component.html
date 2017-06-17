@@ -1,0 +1,27 @@
+<div class="card-login card-container" >
+  <img id="profile-img" class="profile-img-card" src="/assets/images/logo.svg" />
+  <p id="profile-name" class="profile-name-card"></p>
+
+  <form [formGroup]="loginForm" class="form-signin mb-2">
+    <span id="reauth-email" class="reauth-email"></span>
+    <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" autofocus>
+    <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center mb-2" placeholder="Password" >
+    <div id="remember" class="checkbox text-center">
+
+      <label class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">Remember me</span>
+      </label>
+
+    </div>
+    <button (click)="loginFormSubmit()"  [disabled]="this.loginForm.invalid"  class="btn btn-outline-secondary btn-block btn-signin" type="submit">Sign in</button>
+  </form><!-- /form -->
+
+  <a [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">
+    Registrate
+  </a>
+  <a [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">
+    Forgot the password?
+  </a>
+</div><!-- /card-container -->

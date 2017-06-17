@@ -1,0 +1,20 @@
+<div class="card-login card-container" >
+  <img id="profile-img" class="profile-img-card" src="/assets/images/login-reg.svg" />
+  <p id="profile-name" class="profile-name-card"></p>
+
+  <form [formGroup]="loginForm" class="form-signin mb-2">
+    <span id="reauth-email" class="reauth-email"></span>
+    <input type="text" id="inputName" [formControlName]="'username'" class="form-control text-center mb-2" placeholder="Name" autofocus>
+    <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" >
+    <!--TODO: add password repeat-->
+    <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center mb-2" placeholder="Password" >
+    <button (click)="loginFormSubmit()" [disabled]="this.loginForm.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Registrate</button>
+  </form><!-- /form -->
+
+  <a [routerLink]="'/login'" class="forgot-password text-right d-block">
+    Sign in
+  </a>
+  <a [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">
+    Forgot the password?
+  </a>
+</div><!-- /card-container -->

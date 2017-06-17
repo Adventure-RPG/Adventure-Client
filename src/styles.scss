@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "assets/scss/bootstrap/bootstrap";
+
+@import "~bourbon/app/assets/stylesheets/_bourbon";
+
+/**
+  FOOD
+ */
+*:focus {outline: none;}
+[ng-reflect-router-link]{cursor: pointer;}
+/**
+  FONTS
+ */
+
+$url-face: './assets/fonts';
+
+@include font-face("igra-sans", $url-face + "/IgraSans", $file-formats: eot woff2 woff ttf svg);
+@include font-face("inglobal",  $url-face + "/inglobal", $file-formats: eot woff2 woff ttf svg);
+@include font-face("komi",      $url-face + "/Komi", $file-formats: eot woff2 woff ttf svg);
+
+@import "assets/scss/main";
+

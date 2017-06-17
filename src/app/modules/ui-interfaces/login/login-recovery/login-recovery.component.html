@@ -1,0 +1,18 @@
+<div class="card-login card-container" >
+  <img id="profile-img" class="profile-img-card" src="/assets/images/login-recovery.svg" />
+  <p id="profile-name" class="profile-name-card"></p>
+
+  <form [formGroup]="loginForm" class="form-signin mb-2">
+    <span id="reauth-email" class="reauth-email"></span>
+    <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" >
+    <!--TODO: add password repeat-->
+    <button (click)="loginFormSubmit()" [disabled]="this.loginForm.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Recovery</button>
+  </form><!-- /form -->
+
+  <a [routerLink]="'/login'" class="forgot-password text-right d-block">
+    Sign in
+  </a>
+  <a [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">
+    Registrate
+  </a>
+</div><!-- /card-container -->

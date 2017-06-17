@@ -1,0 +1,31 @@
+<!-- app/app.component.html -->
+<div class="container h100vh">
+
+  <div class="row align-items-center wide h100vh ff--inglobal">
+    <div class="col">
+      <!--Перепилить это гавно-->
+      <div class="container-carousel"  (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" >
+        <div class="carousel" [ngClass]="{
+          'transform-0': nextIndex === 0,
+          'transform-1': nextIndex === 1,
+          'transform-2': nextIndex === 2,
+          'transform-3': nextIndex === 3,
+          'transform-4': nextIndex === 4,
+          'transform-5': nextIndex === 5,
+          'transform-6': nextIndex === 6,
+          'transform-7': nextIndex === 7
+        }">
+          <div class="item active">A</div>
+          <div class="item b">B</div>
+          <div class="item c">C</div>
+          <div class="item d">D</div>
+          <div class="item e">E</div>
+          <div class="item f">F</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
