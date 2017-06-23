@@ -14,22 +14,59 @@ export class MainComponent implements OnInit {
 
   public applications = [
     {
-      baseClass: 'a'
+      baseClass: 'a',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Приключение',
+        subtitle: 'Начать!'
+      }
     },
     {
-      baseClass: 'b'
+      baseClass: 'b',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Инвентарь',
+        subtitle: 'Экипировка и личные вещи'
+      }
     },
     {
-      baseClass: 'c'
+      baseClass: 'c',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Персонаж',
+        subtitle: 'Характеристики, навыки, умения'
+      }
     },
     {
-      baseClass: 'd'
+      baseClass: 'd',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Редактор',
+        subtitle: 'Здесь вы можете создать своё приключение!'
+      }
     },
     {
-      baseClass: 'e'
-    },
-    {
-      baseClass: 'f'
+      baseClass: 'e',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Личный профайл',
+        subtitle: ''
+      }
     }
   ]
 
@@ -41,6 +78,8 @@ export class MainComponent implements OnInit {
   swipe(action = this.SWIPE_ACTION.RIGHT) {
     console.log(this.currentIndex);
     console.log(action);
+
+
     // // out of range
     // if (this.currentIndex > this.avatars.length || this.currentIndex < 0) return;
 
