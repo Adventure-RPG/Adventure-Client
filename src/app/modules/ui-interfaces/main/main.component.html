@@ -7,7 +7,7 @@
           <div *ngFor="let application of applications; let i = index"
                [ngClass]="{'active': nextIndex === i}"
                [ngStyle]="{
-                  'left.px': (-i + nextIndex) * 500,
+                  'right.px': (-i + nextIndex) * 500,
                   'background-image': 'url(' + application?.style?.image + ')',
                   'color': application?.style?.color
                 }"

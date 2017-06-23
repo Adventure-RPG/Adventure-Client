@@ -67,6 +67,17 @@ export class MainComponent implements OnInit {
         title: 'Личный профайл',
         subtitle: ''
       }
+    },
+    {
+      baseClass: 'd',
+      style: {
+        image: 'assets/images/main/adventure.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Таверна',
+        subtitle: 'Здесь можно найти группу, для приключений'
+      }
     }
   ]
 
