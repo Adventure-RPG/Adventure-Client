@@ -6,36 +6,54 @@ $translateZ:500px;
 
 .container-carousel {
   margin: 0 auto;
-  width: 500px;
-  height: 500px;
   position: relative;
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .carousel {
-  height: 100%;
-  width: 100%;
   position: absolute;
+  height: 100%;
+  width: 500px;
+  margin: 0 auto;
   transform-style: preserve-3d;
   transition: transform 1s;
   transform: rotateY(0deg) translateZ(0);
 }
 
+.column {
+  flex-basis: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
 .item {
   display: block;
   position: absolute;
+
+  -webkit-transition: linear 0.1s;
+  -moz-transition: linear 0.1s;
+  -ms-transition: linear 0.1s;
+  -o-transition: linear 0.1s;
+  transition: linear 0.1s;
+
   background: #000;
   width: 500px;
   height: 500px;
+
   line-height: 200px;
   font-size: 5em;
   text-align: center;
   color: #FFF;
   opacity: 1;
   border-radius: 10px;
-  transform: perspective( 600px ) rotateY( -45deg ) ;
+  transform: scale(0.8) ;
 
   &.active {
-    transform: perspective( 600px ) rotateY(0deg);
+    transform: scale(1);
   }
 
 }

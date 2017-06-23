@@ -12,13 +12,25 @@ export class MainComponent implements OnInit {
   // constant for swipe action: left or right
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
 
-  public application = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {}
+  public applications = [
+    {
+      baseClass: 'a'
+    },
+    {
+      baseClass: 'b'
+    },
+    {
+      baseClass: 'c'
+    },
+    {
+      baseClass: 'd'
+    },
+    {
+      baseClass: 'e'
+    },
+    {
+      baseClass: 'f'
+    }
   ]
 
   public currentIndex: number = 0;
@@ -34,14 +46,14 @@ export class MainComponent implements OnInit {
 
     // swipe right, next avatar
     if (action === this.SWIPE_ACTION.RIGHT) {
-      const isLast = this.currentIndex === this.application.length - 1;
+      const isLast = this.currentIndex === this.applications.length - 1;
       this.nextIndex = isLast ? 0 : this.currentIndex + 1;
     }
 
     // swipe left, previous avatar
     if (action === this.SWIPE_ACTION.LEFT) {
       const isFirst = this.currentIndex === 0;
-      this.nextIndex = isFirst ? this.application.length - 1 : this.currentIndex - 1;
+      this.nextIndex = isFirst ? this.applications.length - 1 : this.currentIndex - 1;
     }
 
     console.log(`${this.currentIndex} -> ${this.nextIndex}`)
