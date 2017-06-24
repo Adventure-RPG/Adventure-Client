@@ -6,8 +6,8 @@ import { UiInterfacesRoutingModule } from './ui-interfaces-routing.module';
 @NgModule({
   imports: [
     CommonModule,
-    UiInterfacesRoutingModule
+    UiInterfacesRoutingModule,
   ],
-  declarations: []
+  declarations: [ ]
 })
 export class UiInterfacesModule { }

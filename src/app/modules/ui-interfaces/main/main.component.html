@@ -1,32 +1,32 @@
-<!-- app/app.component.html -->
 
-  <div class="d-flex align-items-center h100vh ff--inglobal">
-    <div class="column">
-      <div class="container-carousel d-flex justify-content-center"  (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" >
-        <div class="carousel ">
-          <div *ngFor="let application of applications; let i = index"
-               [ngClass]="{'active': nextIndex === i}"
-               [ngStyle]="{
-                  'right.px': (-i + nextIndex) * 500,
-                  'background-image': 'url(' + application?.style?.image + ')',
-                  'color': application?.style?.color
-                }"
-               (click)="nextIndex = i"
-               class="item d-flex align-items-start flex-column {{application.baseClass}}">
-            <div class="wide">
-              <h1>{{application?.content?.title}}</h1>
-              <h3>{{application?.content?.subtitle}}</h3>
-            </div>
-            <div class="wide mt-auto">
-              <button class="btn btn-outline-success">
-                Открыть
-              </button>
-            </div>
+<div class="d-flex align-items-center h100vh ff--inglobal">
+  <div class="column">
+    <div class="container-carousel d-flex justify-content-center"  (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" >
+      <div class="carousel ">
+        <div *ngFor="let application of applications; let i = index"
+             [ngClass]="{'active': nextIndex === i}"
+             [ngStyle]="{
+                'right.px': (-i + nextIndex) * 500,
+                'background-image': 'url(' + application?.style?.image + ')',
+                'background-color': application?.style?.backgroundColor,
+                'color': application?.style?.color
+              }"
+             (click)="nextIndex = i"
+             class="item d-flex align-items-start flex-column {{application.baseClass}}">
 
+          <div class="wide">
+            <h1>{{application?.content?.title}}</h1>
+            <h3>{{application?.content?.subtitle}}</h3>
           </div>
+
+          <div class="wide mt-auto">
+            <button class="btn btn-success" [routerLink]="application.routerLink">
+              Открыть
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
-
-
+</div>

@@ -1,0 +1,9 @@
+<div class="modal-backdrop fade show" (click)="closeModal()"></div>
+<div class="modal fade show" style="display: block;">
+  <div class="modal__background-layer" (click)="closeModal()"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

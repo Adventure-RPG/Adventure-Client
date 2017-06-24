@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {ModalModule} from "../../shared/modal/modal.module";
+import {ModalComponent} from "../../shared/modal/modal.component";
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: '',
-        loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
-      },
-      {
         path: 'main',
-        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule'
+        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule',
       },
       {
         path: 'login',
@@ -22,16 +20,23 @@ const routes: Routes = [
         loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
       },
       {
-        path: 'game',
-        loadChildren: 'app/modules/ui-interfaces/login/login.module#LoginModule'
+        path: '',
+        loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
       }
     ],
-
   },
+  {
+    path: 'inventory',
+    component: ModalComponent,
+    loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
+    outlet: 'popup'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { enableTracing: true })
+  ],
   exports: [RouterModule],
   providers: []
 })

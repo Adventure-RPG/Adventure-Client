@@ -2,6 +2,7 @@ import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angu
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import 'hammerjs';
 
+import {provideComponentOutletModule, ComponentOutlet} from "angular2-component-outlet";
 
 import { AppComponent } from './app.component';
 
@@ -11,7 +12,8 @@ import { UiInterfacesRoutingModule } from "./modules/ui-interfaces/ui-interfaces
 
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {UiInterfacesModule} from "./modules/ui-interfaces/ui-interfaces.module";
-
+import {CommonModule} from "@angular/common";
+import {ModalComponent} from "./shared/modal/modal.component";
 
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = <any>{
@@ -41,12 +43,16 @@ const ModulesForRootImport = [
   ],
   declarations: [
     AppComponent,
+    ModalComponent
   ],
   providers: [
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
-    }
+    },
+    provideComponentOutletModule({
+      imports: [CommonModule]
+    })
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

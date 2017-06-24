@@ -27,19 +27,21 @@ export class MainComponent implements OnInit {
     {
       baseClass: 'b',
       style: {
-        image: 'assets/images/main/adventure.jpg',
+        image: 'assets/images/main/inventory.jpg',
         color: '#2d132e'
       },
       content: {
         title: 'Инвентарь',
         subtitle: 'Экипировка и личные вещи'
-      }
+      },
+      routerLink: ['/', { outlets: {popup: ['inventory']}}]
     },
     {
       baseClass: 'c',
       style: {
-        image: 'assets/images/main/adventure.jpg',
-        color: '#2d132e'
+        image: 'assets/images/main/skills.svg',
+        color: '#2d132e',
+        backgroundColor: '#66B4C6'
       },
       content: {
         title: 'Персонаж',
@@ -49,8 +51,8 @@ export class MainComponent implements OnInit {
     {
       baseClass: 'd',
       style: {
-        image: 'assets/images/main/adventure.jpg',
-        color: '#2d132e'
+        image: 'assets/images/main/editor.svg',
+        color: '#fff'
       },
       content: {
         title: 'Редактор',
@@ -71,7 +73,7 @@ export class MainComponent implements OnInit {
     {
       baseClass: 'd',
       style: {
-        image: 'assets/images/main/adventure.jpg',
+        image: 'assets/images/main/tavern.jpg',
         color: '#2d132e'
       },
       content: {
