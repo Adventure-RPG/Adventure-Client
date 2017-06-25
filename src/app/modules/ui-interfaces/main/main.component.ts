@@ -34,7 +34,7 @@ export class MainComponent implements OnInit {
         title: 'Инвентарь',
         subtitle: 'Экипировка и личные вещи'
       },
-      routerLink: ['/', { outlets: {popup: ['inventory']}}]
+      routerLink: ['/', { outlets: {sidebar: ['inventory']}}]
     },
     {
       baseClass: 'c',

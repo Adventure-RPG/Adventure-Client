@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ModalModule} from "../../shared/modal/modal.module";
 import {ModalComponent} from "../../shared/modal/modal.component";
 
 const routes: Routes = [
@@ -29,7 +28,7 @@ const routes: Routes = [
     path: 'inventory',
     component: ModalComponent,
     loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
-    outlet: 'popup'
+    outlet: 'sidebar'
   }
 ];
 
