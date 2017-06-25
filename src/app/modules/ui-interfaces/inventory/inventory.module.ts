@@ -1,18 +1,30 @@
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InventoryComponent } from './inventory.component';
 import { InventoryRoutingModule } from "./inventory-routing.module";
-import { BackpackComponent } from './backpack/backpack.component';
+import {BackpackComponent} from './backpack/backpack.component';
+import { HeroItemsComponent } from './hero-items/hero-items.component';
+import {VirtualScrollModule} from "angular2-virtual-scroll";
+import {ListItemComponent} from "./backpack/lists/list-item.component";
+import {MultiColListComponent} from "./backpack/lists/multi-col-list.component";
 
 const Components = [
   InventoryComponent,
-  BackpackComponent
+  BackpackComponent,
+  HeroItemsComponent,
+
+  MultiColListComponent,
+  ListItemComponent
 ];
 
 @NgModule({
   imports: [
     InventoryRoutingModule,
     CommonModule,
+    VirtualScrollModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   declarations: [Components],
   exports: [Components]

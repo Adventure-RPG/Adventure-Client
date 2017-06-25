@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Http} from "@angular/http";
+import {ListItem} from "./lists/list-item.component";
+
 
 @Component({
   selector: 'adventure-backpack',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackpackComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: Http) { }
+
+  protected items: ListItem[];
 
   ngOnInit() {
+    this.http.get('assets/data/items.json')
+      .map(response => response.json())
+      .subscribe(data => this.items = data);
   }
-
 }

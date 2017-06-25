@@ -1,0 +1,19 @@
+@import 'variables';
+:host {
+  display: block;
+  border-bottom: 1px solid $border-color;
+  line-height: 1.2em;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid $primary-color;
+  text-align: center;
+  vertical-align: top;
+  display: inline-block;
+  background: transparent;
+  color: $primary-text;
+}
