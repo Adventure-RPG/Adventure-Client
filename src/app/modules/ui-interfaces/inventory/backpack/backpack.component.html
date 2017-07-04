@@ -1,3 +1,12 @@
-<div style="width: 100%; height: 100%; padding: 20px;">
-  <multi-col-list [items]="items"></multi-col-list>
+<div class="wide d-flex flex-column h100vh">
+
+  <div class="d-flex px-3 pt-3">
+    <button class="btn btn-outline-secondary">
+      Отсортировать
+    </button>
+  </div>
+  <div class="d-flex p-3" style="width: 100%; height: 100%;">
+    <multi-col-list class="wide" [items]="items"></multi-col-list>
+  </div>
+
 </div>

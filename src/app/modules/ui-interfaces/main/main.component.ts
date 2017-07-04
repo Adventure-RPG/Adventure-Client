@@ -25,6 +25,17 @@ export class MainComponent implements OnInit {
       }
     },
     {
+      baseClass: 'd',
+      style: {
+        image: 'assets/images/main/tavern.jpg',
+        color: '#2d132e'
+      },
+      content: {
+        title: 'Таверна',
+        subtitle: 'Здесь можно найти группу, для приключений'
+      }
+    },
+    {
       baseClass: 'b',
       style: {
         image: 'assets/images/main/inventory.jpg',
@@ -35,6 +46,18 @@ export class MainComponent implements OnInit {
         subtitle: 'Экипировка и личные вещи'
       },
       routerLink: ['/', { outlets: {sidebar: ['inventory']}}]
+    },
+    {
+      baseClass: 'b',
+      style: {
+        image: 'assets/images/main/shop.png',
+        color: '#2d132e',
+        backgroundColor: '#7d72b5'
+      },
+      content: {
+        title: 'Магазин',
+        subtitle: 'Здесь можно купить и продать вещи найденные в приключение'
+      }
     },
     {
       baseClass: 'c',
@@ -68,17 +91,6 @@ export class MainComponent implements OnInit {
       content: {
         title: 'Личный профайл',
         subtitle: ''
-      }
-    },
-    {
-      baseClass: 'd',
-      style: {
-        image: 'assets/images/main/tavern.jpg',
-        color: '#2d132e'
-      },
-      content: {
-        title: 'Таверна',
-        subtitle: 'Здесь можно найти группу, для приключений'
       }
     }
   ]

@@ -1,0 +1,58 @@
+.hero-item{
+  margin: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@mixin item($width, $height){
+  text-align: center;
+  width:  $width;
+  height: $height;
+}
+
+
+/**
+  Left side
+ */
+.hero-weapon-leftHand{
+  @include item(120px, 200px);
+}
+
+.hero-gloves{
+  @include item(120px, 120px);
+}
+
+
+/**
+  Center side
+ */
+.hero-head{
+  @include item(120px, 120px);
+}
+.hero-body{
+  @include item(120px, 200px);
+}
+.hero-belt{
+  @include item(120px, 40px);
+}
+.hero-leg{
+  @include item(120px, 120px);
+}
+.hero-foot{
+  @include item(120px, 120px);
+}
+
+/**
+  Right side
+ */
+
+.hero-necklace{
+  @include item(40px, 40px);
+}
+
+.hero-weapon-rightHand{
+  @include item(120px, 200px);
+}
+
+.hero-ring{
+  @include item(40px, 40px);
+}
