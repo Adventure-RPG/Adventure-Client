@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Http} from "@angular/http";
-import {ListItem} from "./lists/list-item.component";
+import {InventoryItem} from "./lists/inventory-item.component";
 
 
 @Component({
@@ -12,7 +12,7 @@ export class BackpackComponent implements OnInit {
 
   constructor(private http: Http) { }
 
-  protected items: ListItem[];
+  protected items: InventoryItem[];
 
   ngOnInit() {
     this.http.get('assets/data/items.json')

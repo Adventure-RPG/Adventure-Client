@@ -14,11 +14,11 @@ export interface InventoryItem {
 }
 
 @Component({
-    selector: 'list-item',
+    selector: 'inventory-item',
     template: `<div class="avatar">{{item.index}}</div>`,
-    styleUrls: ['./list-item.scss']
+    styleUrls: ['./inventory-item.scss']
 })
-export class ListItemComponent {
+export class InventoryItemComponent {
     @Input()
     item: InventoryItem;
 }

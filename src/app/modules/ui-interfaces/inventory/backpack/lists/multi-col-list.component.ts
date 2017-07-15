@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
-import { ListItem } from './list-item.component';
+import { InventoryItem } from './inventory-item.component';
 
 import { ISlimScrollOptions } from 'ng2-slimscroll';
 
@@ -23,7 +23,7 @@ import { ISlimScrollOptions } from 'ng2-slimscroll';
 export class MultiColListComponent implements OnChanges {
 
   @Input()
-  items: ListItem[];
+  items: InventoryItem[];
 
   config:ISlimScrollOptions = {
     position: 'right',
@@ -32,7 +32,7 @@ export class MultiColListComponent implements OnChanges {
 
   indices: any;
 
-  filteredList: ListItem[];
+  filteredList: InventoryItem[];
 
   reduceListToEmpty() {
     this.filteredList = [];
