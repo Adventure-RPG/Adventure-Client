@@ -12,10 +12,6 @@ export class ModalComponent implements OnInit {
   constructor(private router: Router) {
   }
 
-  public closeModal(){
-    this.router.navigate([{ outlets: { popup: null }}]);
-  }
-
   ngOnInit() {
 
   }

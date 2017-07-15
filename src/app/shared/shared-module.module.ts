@@ -6,7 +6,9 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { SelectModule } from 'angular2-select';
 
-import { ApiService } from "../services/api.service"
+import { ApiService } from "../services/api.service";
+import { SidebarModalComponent } from './sidebar-modal/sidebar-modal.component'
+import {ModalComponent} from "./modal/modal.component";
 
 
 const Modules = [
@@ -22,6 +24,11 @@ const Services = [
   ApiService
 ];
 
+const Components = [
+  SidebarModalComponent,
+  ModalComponent
+]
+
 @NgModule({
   imports: [
     ...Modules
@@ -30,12 +37,14 @@ const Services = [
     CUSTOM_ELEMENTS_SCHEMA
   ],
   declarations: [
+    ...Components
   ],
   providers: [
     ...Services
   ],
   exports: [
-    ...Modules
+    ...Modules,
+    ...Components
   ]
 })
 export class SharedModule { }

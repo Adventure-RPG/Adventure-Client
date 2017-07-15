@@ -1,0 +1,14 @@
+.sidebar{
+  position: fixed;
+  height:100vh;
+  right:0;
+  width:65%;
+
+  -webkit-box-shadow:  0 0 10px rgba(0,0,0,0.8);
+  -moz-box-shadow:  0 0 10px rgba(0,0,0,0.8);
+  box-shadow:  0 0 10px rgba(0,0,0,0.8);
+
+  background: rgba(29, 31, 32, 0.8);
+  z-index: 100;
+}
+

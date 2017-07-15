@@ -5,16 +5,23 @@ import { EditorRoutingModule } from './editor-routing.module';
 import { EditorComponent } from './editor.component';
 import { EngineModule } from "../../engine/engine.module";
 import { EngineService } from "../../engine/engine.service";
+import { DragulaModule } from "ng2-dragula";
+import { ImageUploadModule } from 'angular2-image-upload';
+import { HeightMapComponent } from './height-map/height-map.component';
+import { SharedModule } from "../../../shared/shared-module.module";
 
 @NgModule({
   imports: [
     CommonModule,
     EngineModule,
-    EditorRoutingModule
+    EditorRoutingModule,
+    SharedModule,
+    ImageUploadModule.forRoot(),
+    DragulaModule
   ],
   providers:[
     EngineService
   ],
-  declarations: [EditorComponent]
+  declarations: [EditorComponent, HeightMapComponent]
 })
 export class EditorModule { }
