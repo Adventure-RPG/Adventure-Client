@@ -42,7 +42,7 @@
     "@angular/cli": "^1.2.1",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "2.5.38",
-    "@types/node": "~6.0.60",
+    "@types/node": "^6.0.83",
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",

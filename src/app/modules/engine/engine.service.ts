@@ -5,11 +5,14 @@ import {HeightMapOptions} from "./engine.types";
 
 import {CubicGrid} from "./elements/cubic-grid";
 import {Grid} from "./elements/grid";
+import {HeightMapService} from "./height-map.service";
 
 @Injectable()
 export class EngineService {
 
-  constructor() {}
+  constructor(
+    private heightMapService: HeightMapService
+  ) {}
 
   private _settings:any;
   public get settings():any {
@@ -96,7 +99,7 @@ export class EngineService {
       grid: false
     };
 
-    // this.heightMap(options);
+    this.heightMapService.changeMapFromImage(options, this.scene);
   }
 
   public modelObseverable(){

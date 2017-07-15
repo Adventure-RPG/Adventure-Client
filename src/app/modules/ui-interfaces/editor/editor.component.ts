@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {EngineService} from "../../../engine/engine.service";
+import {EngineService} from "../../engine/engine.service";
 
 @Component({
   selector: 'adventure-editor',

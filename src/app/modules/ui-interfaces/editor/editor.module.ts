@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { EditorRoutingModule } from './editor-routing.module';
 import { EditorComponent } from './editor.component';
-import { EngineModule } from "../../../engine/engine.module";
-import { EngineService } from "../../../engine/engine.service";
+import { EngineModule } from "../../engine/engine.module";
+import { EngineService } from "../../engine/engine.service";
 
 @NgModule({
   imports: [
