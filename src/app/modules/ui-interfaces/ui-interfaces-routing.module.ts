@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ModalComponent} from "../../shared/modal/modal.component";
+import {SidebarModalComponent} from "../../shared/sidebar-modal/sidebar-modal.component";
+import {SharedModule} from "../../shared/shared-module.module";
 
 const routes: Routes = [
   {
@@ -26,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'inventory',
-    component: ModalComponent,
+    component: SidebarModalComponent,
     loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
     outlet: 'sidebar'
   }
@@ -34,6 +35,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+    SharedModule,
     RouterModule.forRoot(routes)
     // RouterModule.forRoot(routes, { enableTracing: true })
   ],

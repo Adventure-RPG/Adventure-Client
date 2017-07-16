@@ -8,7 +8,9 @@ import {Router} from "@angular/router";
 })
 export class SidebarModalComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    console.log('sidebar modal init');
+  }
 
   public closeModal(){
     this.router.navigate([{ outlets: { popup: null }}]);

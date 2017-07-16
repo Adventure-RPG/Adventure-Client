@@ -27,7 +27,7 @@ const Components = [
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
-  declarations: [Components],
-  exports: [Components]
+  declarations: [...Components],
+  exports: [...Components]
 })
 export class InventoryModule { }

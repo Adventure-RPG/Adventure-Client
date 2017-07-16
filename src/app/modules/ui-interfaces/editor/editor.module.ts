@@ -22,6 +22,9 @@ import { SharedModule } from "../../../shared/shared-module.module";
   providers:[
     EngineService
   ],
-  declarations: [EditorComponent, HeightMapComponent]
+  declarations: [
+    EditorComponent,
+    HeightMapComponent
+  ]
 })
 export class EditorModule { }

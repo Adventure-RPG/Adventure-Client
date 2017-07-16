@@ -3,14 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import {EditorComponent} from "./editor.component";
 import {ModalComponent} from "../../../shared/modal/modal.component";
 import {HeightMapComponent} from "./height-map/height-map.component";
+import {SharedModule} from "../../../shared/shared-module.module";
 
 const routes: Routes = [
   {
     path: '',
     component: EditorComponent,
+    children: [
+    ]
   },
   {
-    path: 'inventory',
+    path: 'heightMap',
     component: ModalComponent,
     outlet: 'popup',
     children:[
@@ -23,7 +26,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    SharedModule
+  ],
   exports: [RouterModule],
   providers: []
 })

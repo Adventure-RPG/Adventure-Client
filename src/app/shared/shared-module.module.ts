@@ -9,7 +9,7 @@ import { SelectModule } from 'angular2-select';
 import { ApiService } from "../services/api.service";
 import { SidebarModalComponent } from './sidebar-modal/sidebar-modal.component'
 import {ModalComponent} from "./modal/modal.component";
-
+import {provideComponentOutletModule} from "angular2-component-outlet";
 
 const Modules = [
   CommonModule,
@@ -27,20 +27,23 @@ const Services = [
 const Components = [
   SidebarModalComponent,
   ModalComponent
-]
+];
 
 @NgModule({
   imports: [
     ...Modules
   ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
   declarations: [
     ...Components
   ],
   providers: [
-    ...Services
+    ...Services,
+    provideComponentOutletModule({
+      imports: [CommonModule]
+    })
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   exports: [
     ...Modules,

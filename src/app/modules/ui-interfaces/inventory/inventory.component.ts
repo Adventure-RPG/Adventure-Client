@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InventoryComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    console.log('Inventory Component Init')
+  }
 
   ngOnInit() {
   }
