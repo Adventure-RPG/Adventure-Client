@@ -9,6 +9,7 @@ import { DragulaModule } from "ng2-dragula";
 import { ImageUploadModule } from 'angular2-image-upload';
 import { HeightMapComponent } from './height-map/height-map.component';
 import { SharedModule } from "../../../shared/shared-module.module";
+import {ModalComponent} from "../../../shared/modal/modal.component";
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { SharedModule } from "../../../shared/shared-module.module";
   ],
   declarations: [
     EditorComponent,
-    HeightMapComponent
+    HeightMapComponent,
+    ModalComponent
   ]
 })
 export class EditorModule { }

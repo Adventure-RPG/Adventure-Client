@@ -42,7 +42,8 @@ const ModulesForRootImport = [
     ...ModulesForRootImport
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    SidebarModalComponent,
   ],
   providers: [
     {
@@ -54,7 +55,7 @@ const ModulesForRootImport = [
     CUSTOM_ELEMENTS_SCHEMA
   ],
   exports: [
-    ...ModulesForRoot
+    ...ModulesForRoot,
   ],
   bootstrap: [AppComponent]
 })
