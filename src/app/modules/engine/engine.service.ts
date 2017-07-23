@@ -7,6 +7,9 @@ import {CubicGrid} from "./elements/cubic-grid";
 import {Grid} from "./elements/grid";
 import {HeightMapService} from "./height-map.service";
 
+//TODO: clear
+declare let require: any;
+
 @Injectable()
 export class EngineService {
 
@@ -88,22 +91,21 @@ export class EngineService {
     this.renderer.shadowMap.renderReverseSided = false;
 
     this.domElement = this.renderer.domElement;
-    this.modelObseverable();
+    this.modelObservable();
   }
 
 
 
-  public map(){
+  public map(img){
     let options:HeightMapOptions = {
       color: "rgb(255,0,0)",
       grid: false
     };
 
-    this.heightMapService.changeMapFromImage(options, this.scene);
+    this.heightMapService.changeMapFromImage(options, this.scene, img);
   }
 
-  public modelObseverable(){
-    this.map();
+  public modelObservable(){
     // this.cubicGrid();
     // this.testObj();
     this.animation();

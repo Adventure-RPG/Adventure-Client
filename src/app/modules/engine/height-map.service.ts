@@ -5,23 +5,16 @@ import {IGEOJson} from "./engine.types";
 
 
 
-//TODO: clear
-declare let require: any;
-
 @Injectable()
 export class HeightMapService {
 
   constructor() { }
 
-  public changeMapFromImage(options, scene){
-
-    console.log(options)
+  public changeMapFromImage(options, scene, img){
 
     // terrain
-    let img: any = new Image();
     //TODO: сделать добавление без рекваер
     //TODO: вынести, смерджить с настройками
-    img.src = require("assets/images/heightmap/heightmap_128.jpg");
 
     this
       .parseImageToGeo(img)
@@ -39,7 +32,6 @@ export class HeightMapService {
           }
         };
 
-        console.log(options)
 
         let holes = [];
         let triangles, mesh;
@@ -81,7 +73,7 @@ export class HeightMapService {
         // return new Api().points(options);
       })
       .then((response)=>{
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.log(err);

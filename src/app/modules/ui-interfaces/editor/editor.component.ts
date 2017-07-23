@@ -18,8 +18,6 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.scene.nativeElement)
-
     this.engineService.settings = {
       camera: {
         d: 40

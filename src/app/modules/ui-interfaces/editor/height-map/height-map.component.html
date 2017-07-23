@@ -1,2 +1,9 @@
-test
-<image-upload></image-upload>
+
+<div dnd-droppable
+     class="card card-info"
+     (onDropSuccess)="transferDataSuccess($event)">
+  <div class="card-heading">Place to drop</div>
+</div>
+<button class="btn btn-primary" (click)="imageToHeightMap()">
+  Load height map
+</button>
