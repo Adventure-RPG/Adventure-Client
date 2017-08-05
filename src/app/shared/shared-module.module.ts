@@ -25,8 +25,6 @@ const Services = [
 ];
 
 const Components = [
-  // SidebarModalComponent,
-  // ModalComponent
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {EngineService} from "../../../engine/engine.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'adventure-height-map',
@@ -10,6 +11,7 @@ export class HeightMapComponent implements OnInit {
 
   constructor(
     private engineService: EngineService,
+    private router: Router
   ) {
   }
 
@@ -46,6 +48,11 @@ export class HeightMapComponent implements OnInit {
 
       }
     }
+  }
+
+  close(){
+    console.log('her');
+    this.router.navigate(['/', { outlets: { popup: null }}]);
   }
 
   imageToHeightMap(img){

@@ -11,7 +11,6 @@ import { UiInterfacesRoutingModule } from "./modules/ui-interfaces/ui-interfaces
 
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {UiInterfacesModule} from "./modules/ui-interfaces/ui-interfaces.module";
-import {CommonModule} from "@angular/common";
 import {ModalComponent} from "./shared/modal/modal.component";
 import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.component";
 
@@ -36,14 +35,19 @@ const ModulesForRootImport = [
   NgbModule.forRoot(),
 ];
 
+const Components = [
+  SidebarModalComponent,
+  ModalComponent
+];
+
 @NgModule({
   imports: [
     ...Modules,
-    ...ModulesForRootImport
+    ...ModulesForRootImport,
   ],
   declarations: [
     AppComponent,
-    SidebarModalComponent,
+    ...Components
   ],
   providers: [
     {
