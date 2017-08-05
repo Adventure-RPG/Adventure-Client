@@ -5,6 +5,7 @@ import { SubRoutingModule } from './sub-routing.module';
 import {DndModule} from "ng2-dnd";
 import {EngineModule} from "../../engine/engine.module";
 import {HeightMapComponent} from "./height-map/height-map.component";
+import { LayersComponent } from './layers/layers.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {HeightMapComponent} from "./height-map/height-map.component";
     DndModule.forRoot()
   ],
   declarations: [
-    HeightMapComponent
+    HeightMapComponent,
+    LayersComponent
   ]
 })
 export class SubModule { }

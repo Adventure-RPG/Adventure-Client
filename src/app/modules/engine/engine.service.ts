@@ -7,9 +7,6 @@ import {CubicGrid} from "./elements/cubic-grid";
 import {Grid} from "./elements/grid";
 import {HeightMapService} from "./height-map.service";
 
-//TODO: clear
-declare let require: any;
-
 @Injectable()
 export class EngineService {
 
@@ -67,7 +64,6 @@ export class EngineService {
   }
 
   public init(){
-
     //Scene
     this.scene = new THREE.Scene();
 
@@ -101,6 +97,8 @@ export class EngineService {
       color: "rgb(255,0,0)",
       grid: false
     };
+
+    console.log(this.scene);
 
     this.heightMapService.changeMapFromImage(options, this.scene, img);
   }

@@ -27,8 +27,6 @@ export class EditorComponent implements OnInit {
     this.engineService.init();
     this.scene.nativeElement.appendChild( this.engineService.domElement ) ;
 
-    console.log(this.scene.nativeElement)
-
   }
 
 }

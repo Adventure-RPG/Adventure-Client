@@ -13,6 +13,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {UiInterfacesModule} from "./modules/ui-interfaces/ui-interfaces.module";
 import {ModalComponent} from "./shared/modal/modal.component";
 import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.component";
+import {EngineService} from "./modules/engine/engine.service";
 
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = <any>{
@@ -50,6 +51,7 @@ const Components = [
     ...Components
   ],
   providers: [
+    EngineService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

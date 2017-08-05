@@ -55,6 +55,8 @@ export class HeightMapService {
         let parent = new THREE.Object3D();
         objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
         parent.add(objectPG);
+        
+        console.log(scene)
 
         scene.add(parent);
 

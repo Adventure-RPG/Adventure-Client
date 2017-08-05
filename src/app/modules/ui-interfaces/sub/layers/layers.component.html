@@ -1,0 +1,7 @@
+<div class="p-3">
+  <ul class="list-group" *ngIf="engineService.scene">
+    <li class="list-group-item" *ngFor="let child of engineService.scene.children">
+      {{child | json}}
+    </li>
+  </ul>
+</div>

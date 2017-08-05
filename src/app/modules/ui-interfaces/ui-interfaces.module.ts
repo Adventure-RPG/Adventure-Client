@@ -12,6 +12,7 @@ import {SubModule} from "./sub/sub.module";
     SubModule,
     SharedModule,
   ],
+  providers: [],
   declarations: [ ]
 })
 export class UiInterfacesModule { }

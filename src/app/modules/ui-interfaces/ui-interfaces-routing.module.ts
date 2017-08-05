@@ -34,7 +34,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'heightMap',
+    path: 'editor',
     component: ModalComponent,
     outlet: 'popup',
     loadChildren: 'app/modules/ui-interfaces/sub/sub.module#SubModule',
@@ -45,7 +45,7 @@ const routes: Routes = [
   imports: [
     SharedModule,
     // RouterModule.forRoot(routes)
-    RouterModule.forRoot(routes, { enableTracing: true })
+    RouterModule.forRoot(routes )
   ],
   exports: [RouterModule],
   providers: []
