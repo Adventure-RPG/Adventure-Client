@@ -6,6 +6,7 @@ import {HeightMapOptions} from "./engine.types";
 import {CubicGrid} from "./elements/cubic-grid";
 import {Grid} from "./elements/grid";
 import {HeightMapService} from "./height-map.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class EngineService {
@@ -22,11 +23,22 @@ export class EngineService {
     this._settings = settings;
   }
 
-
   public camera:THREE.Camera;
   public scene;
   public renderer;
   public domElement;
+
+  private _initStatus: any = new BehaviorSubject<any>(null);
+  public _initStatus$ = this._initStatus.asObservable();
+
+  public get initStatus() {
+      return this._initStatus;
+  }
+
+  public set initStatus(value: any){
+      this._initStatus.next(value);
+  }
+
 
 
   // TODO: вынести в отдельный модуль
@@ -106,6 +118,7 @@ export class EngineService {
   public modelObservable(){
     // this.cubicGrid();
     // this.testObj();
+    this.initStatus = true;
     this.animation();
   }
 

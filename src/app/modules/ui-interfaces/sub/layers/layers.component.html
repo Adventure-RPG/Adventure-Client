@@ -1,7 +1,14 @@
 <div class="p-3">
-  <ul class="list-group" *ngIf="engineService.scene">
-    <li class="list-group-item" *ngFor="let child of engineService.scene.children">
-      {{child | json}}
-    </li>
-  </ul>
+  <ng-template [ngIf]="engineService.initStatus | async">
+    <ul class="list-group" >
+      <li class="list-group-item jc-sb" *ngFor="let child of engineService.scene.children; let i = index">
+        <div>
+          {{i}}: {{child?.type}}
+        </div>
+        <i (click)="deleteElement(child)"
+           class="fa fa-times flr curp"
+           aria-hidden="true"></i>
+      </li>
+    </ul>
+  </ng-template>
 </div>

@@ -1,31 +1,44 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {EngineService} from "../../../engine/engine.service";
 
 @Component({
   selector: 'adventure-layers',
   templateUrl: './layers.component.html',
-  styleUrls: ['./layers.component.scss']
+  styleUrls: ['./layers.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayersComponent implements OnInit, AfterViewInit {
 
   constructor(
-    private engineService: EngineService,
+    public engineService: EngineService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.engineService.initStatus.subscribe(
+      () => {
+        console.log(this.engineService.scene);
+        this.layersList();
+        this.changeDetectorRef.detectChanges();
+      }
+    )
+  }
 
   ngAfterViewInit(){
-    this.layersList();
   }
 
   public layersList(){
     if (this.engineService.scene){
-      for (let obj of this.engineService.scene.children) {
-        console.log(obj.type);
-      };
+      // for (let obj of this.engineService.scene.children) {
+      //   console.log(obj.type);
+      // };
       // this.engineService.scene.children = [];
       // console.log(this.engineService.scene.children)
     }
   }
 
+  public deleteElement(element) {
+    let index = this.engineService.scene.children.indexOf(element);
+    this.engineService.scene.children.splice(index, 1);
+  }
 }

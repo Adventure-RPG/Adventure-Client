@@ -13,6 +13,185 @@
 
 .wide{  width: 100%;}
 
+.pull-right{float: right;}
+.pull-left{float: left;}
+.ma0{margin:0 auto;}
+
+.ov-hd{overflow: hidden;}
+
+.h24 {height: 24px;}
+.h26 {height: 26px;}
+.h70 {height: 70px;}
+.h75 {height: 75px;}
+.h90 {height: 90px;}
+.h100{height: 100px;}
+.h110{height: 110px;}
+.h250{height: 250px;}
+.h280{height: 280px;}
+.h300{height: 300px;}
+.h360{height: 360px;}
+.h400{height: 400px;}
+
+.h100perc{height: 100%;}
+
+.h100vh{  height: 100vh;}
+
+.mt0{margin-top: 0 !important;}
+.mt2{margin-top: 2px;}
+.mt5{margin-top: 5px;}
+.mt10{margin-top: 10px;}
+.mt30{margin-top: 30px;}
+.mt50{margin-top: 50px;}
+
+.mb0{margin-bottom: 0;}
+.mb4{margin-bottom: 4px;}
+.mb10{margin-bottom: 10px;}
+.mb20{margin-bottom: 20px;}
+.mb30{margin-bottom: 30px;}
+
+.ml5{margin-left: 5px;}
+.ml10{margin-left: 10px !important;}
+.ml15{margin-left: 15px !important;}
+.ml20{margin-left: 20px !important;}
+
+
+.pb20{padding-bottom: 20px;}
+.pb30{padding-bottom: 30px !important;}
+.pt20{padding-top: 20px;}
+
+
+.pr4 {padding-right: 4px;}
+.pr20{padding-right: 20px;}
+
+.pl20{padding-left: 20px;}
+.pl30{padding-left: 30px;}
+
+.tr90{transform: rotate(90deg)}
+.tr-90{transform: rotate(-90deg)}
+
+.w110{width: 110px;}
+.w115{width: 115px;}
+.w120{width: 120px;}
+.w130{width: 130px;}
+.w150{width: 150px;}
+.w220{width: 220px;}
+.w250{width: 250px;}
+.w330{width: 330px;}
+
+.fg1{flex-grow: 1}
+.fg2{flex-grow: 2}
+.fg3{flex-grow: 3}
+.fg4{flex-grow: 4}
+.fg5{flex-grow: 5}
+.fg6{flex-grow: 6}
+.fg7{flex-grow: 7}
+.fg8{flex-grow: 8}
+.fb1{flex-basis: 1}
+.fb2{flex-basis: 2}
+.fb3{flex-basis: 3}
+.fb4{flex-basis: 4}
+.fb5{flex-basis: 5}
+.fb6{flex-basis: 6}
+.fb7{flex-basis: 7}
+.fb8{flex-basis: 8}
+
+.wide{width: 100%;}
+
+.fz14{font-size: 14px;}
+.fz15{font-size: 15px;}
+.fz16{font-size: 16px;}
+.fz17{font-size: 17px;}
+.fz18{font-size: 18px;}
+.fz21{font-size: 21px;}
+.fz28{font-size: 28px;}
+.fz30{font-size: 30px;}
+.fz32{font-size: 32px;}
+.fz36{font-size: 36px;}
+
+.tac{text-align: center;}
+
+.tt-uc{text-transform: uppercase;}
+.td-u {text-decoration: underline;}
+
+.fwl{font-weight: lighter;}
+.fwn{font-weight: normal;}
+.fwb{font-weight: bold;}
+
+.ffr{font-family: proxima-reg, Arial,Helvetica Neue,Helvetica,"sans-serif";  }
+.ffb{font-family: proxima-bold,Arial,Helvetica Neue,Helvetica,"sans-serif";  }
+
+.posr{position: relative;}
+
+.lh20{  line-height: 20px;}
+.lh22{  line-height: 22px;}
+.lh24{  line-height: 24px;}
+.lh30{  line-height: 30px;}
+.lh36{  line-height: 36px;}
+.lh37{  line-height: 37px;}
+
+.bd1gray{border: 1px solid #ccc}
+.bbd1gray{border-bottom: 1px solid #ccc}
+
+//Cursor
+.curp{cursor: pointer;}
+
+//display
+.db {display: block;}
+.dib{display: inline-block;}
+.df {display: flex;}
+.dn {display: none;}
+
+//df support for children
+.fd-r {flex-direction: row};
+.fd-rr{flex-direction: row-reverse};
+.fd-c {flex-direction: column};
+.fd-cr{flex-direction: column-reverse};
+
+.fw-n {flex-wrap: nowrap};
+.fw-w {flex-wrap: wrap};
+.fw-wr{flex-wrap: wrap-reverse!important};
+
+.ff-df{flex-flow: flex-direction};
+.ff-fw{flex-flow: flex-wrap};
+
+.jc-fs{justify-content: flex-start}
+.jc-fe{justify-content: flex-end}
+.jc-c {justify-content: center}
+.jc-sb{justify-content: space-between}
+.jc-sa{justify-content: space-around}
+
+.ai-fs{align-items: flex-start}
+.ai-fe{align-items: flex-end}
+.ai-c {align-items: center}
+.ai-b {align-items: baseline}
+.ai-s {align-items: stretch}
+
+.ac-fs{align-content: flex-start}
+.ac-fe{align-content: flex-end}
+.ac-c {align-content: center}
+.ac-sb{align-content: space-between}
+.ac-sa{align-content: space-around}
+.ac-s {align-content: stretch}
+
+//mainColor
+.c-red{color: #e6001d;}
+.c-gray{color: #888;}
+
+.bt0{border-top: 0 !important;}
+.bb0{border-bottom: 0 !important;}
+.br0{border-right: 0 !important;}
+.bl0{border-left: 0 !important;}
+
+
+.bg-red{background: #E6001E;}
+.bg-gray{background: #f3f3f3;}
+.bg-dark-gray{background: #888888;}
+.bg-white{background: #ffffff;}
+
+.wb-ba{  word-break: break-all;}
+
+.vat{vertical-align: top;}
+.vam{vertical-align: middle;}
 
 /*
  * Card component
