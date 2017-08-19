@@ -32,7 +32,6 @@ const routes: Routes = [
     loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
     outlet: 'sidebar'
   },
-
   {
     path: 'editor',
     component: ModalComponent,
