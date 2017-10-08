@@ -15,6 +15,7 @@ import {ModalComponent} from "./shared/modal/modal.component";
 import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.component";
 import {EngineService} from "./modules/engine/engine.service";
 
+
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = <any>{
     'swipe': {velocity: 0.4, threshold: 20} // override default settings
@@ -48,7 +49,7 @@ const Components = [
   ],
   declarations: [
     AppComponent,
-    ...Components
+    ...Components,
   ],
   providers: [
     EngineService,

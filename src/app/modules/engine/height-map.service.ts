@@ -33,41 +33,46 @@ export class HeightMapService {
         };
 
 
-        let holes = [];
-        let triangles, mesh;
         let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width-1, img.height-1);
-        let material = new THREE.MeshPhongMaterial( {
-          color: 'rgba(255, 255, 255)',
-          shading: THREE.FlatShading
-        } );
 
-        let grid = new THREE.MeshPhongMaterial( {
-          color: 0xfff,
-          wireframe: true
-        } );
 
         for( let i = 0; i < res.length; i++ ){
           geometry.vertices[i].setZ(res[i][2]/10);
         }
 
-        let objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, [material] );
+        let material = new THREE.MeshLambertMaterial( {
+          color: 0xFFFFFF,
+          shading: THREE.FlatShading
+        } );
 
-        let parent = new THREE.Object3D();
-        objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
-        parent.add(objectPG);
-        
-        console.log(scene)
+        let materialShadow = new THREE.ShadowMaterial( {
+          opacity: 0.2
+        } );
 
-        scene.add(parent);
+        let multiMaterial = [material, materialShadow];
 
         if (options.grid){
-          objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, [grid] );
-          parent = new THREE.Object3D();
-          objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
-          parent.add(objectPG);
-          scene.add(parent);
+          let grid = new THREE.MeshPhongMaterial( {
+            color: 0xfff,
+            wireframe: true
+          } );
+
+          multiMaterial = [...multiMaterial, grid];
         }
 
+        let objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
+
+        let parent = new THREE.Object3D();
+        parent.add(objectPG);
+
+        objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
+
+        objectPG.children.forEach((item, index, array) => {
+          item.castShadow = true;
+          item.receiveShadow = true;
+        });
+
+        scene.add(parent);
         return geoJsonObject;
       })
       .then((geoObj)=>{

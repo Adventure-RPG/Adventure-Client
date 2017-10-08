@@ -1,13 +1,7 @@
 <div class="p-3">
   <div dnd-droppable
-       class="card card-info"
+       class="card card-info dndarea"
        (onDropSuccess)="transferDataSuccess($event)">
     <div class="card-heading">Place to drop</div>
   </div>
-  <button class="btn btn-primary" (click)="imageToHeightMap()">
-    Load height map
-  </button>
-  <button class="btn btn-primary" (click)="close()">
-    Назад
-  </button>
 </div>

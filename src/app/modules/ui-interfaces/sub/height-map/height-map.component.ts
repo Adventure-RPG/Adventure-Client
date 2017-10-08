@@ -19,7 +19,6 @@ export class HeightMapComponent implements OnInit {
   }
 
   transferDataSuccess($event) {
-    console.log($event);
     // let attachmentUploadUrl = 'assets/data/offerspec/offerspec.json';
     // loading the FileList from the dataTransfer
     let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
@@ -51,7 +50,6 @@ export class HeightMapComponent implements OnInit {
   }
 
   close(){
-    console.log('her');
     this.router.navigate(['/', { outlets: { popup: null }}]);
   }
 

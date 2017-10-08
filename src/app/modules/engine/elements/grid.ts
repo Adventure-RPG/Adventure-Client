@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {Material} from "three";
 
 export class Grid {
 
@@ -22,7 +23,7 @@ export class Grid {
         this.figure.rotation.y = - Math.PI / 2;
         this.figure.rotation.x = - Math.PI / 2;
         this.figure.renderOrder = 1;
-        this.figure.material.depthTest = false;
+        (<Material>this.figure.material).depthTest = false;
     }
 
 }

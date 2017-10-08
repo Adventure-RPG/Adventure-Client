@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4201",
+    "start:alt": "ng serve --port 4202",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -37,14 +38,14 @@
     "rxjs": "^5.1.0",
     "three": "^0.84.0",
     "three-fbx-loader": "^1.0.2",
-    "typescript": "^2.3.2",
     "zone.js": "^0.7.6"
   },
   "devDependencies": {
-    "@angular/cli": "^1.2.7",
+    "@angular/cli": "^1.4.3",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.87",
+    "@types/requirejs": "^2.1.30",
     "@types/three": "^0.84.17",
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",
@@ -58,6 +59,6 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.4.2",
-    "typescript": "~2.0.0"
+    "typescript": "^2.4.0"
   }
 }

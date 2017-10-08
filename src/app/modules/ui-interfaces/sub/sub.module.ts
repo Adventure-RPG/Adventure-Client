@@ -7,19 +7,22 @@ import {EngineModule} from "../../engine/engine.module";
 import {HeightMapComponent} from "./height-map/height-map.component";
 import { LayersComponent } from './layers/layers.component';
 import { ModelsComponent } from './models/models.component';
+import { LayerComponent } from './layers/layer/layer.component';
+import {SharedModule} from "../../../shared/shared-module.module";
 
 @NgModule({
   imports: [
     CommonModule,
     EngineModule,
-
+    SharedModule,
     SubRoutingModule,
     DndModule.forRoot()
   ],
   declarations: [
     HeightMapComponent,
     LayersComponent,
-    ModelsComponent
+    ModelsComponent,
+    LayerComponent
   ]
 })
 export class SubModule { }

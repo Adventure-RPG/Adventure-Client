@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {EngineService} from "../../../engine/engine.service";
 
 @Component({
   selector: 'adventure-models',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModelsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private engineService: EngineService,
+  ) { }
+
+  loadFBX(url: string){
+    this.engineService.loadFBX(url);
+  }
 
   ngOnInit() {
   }

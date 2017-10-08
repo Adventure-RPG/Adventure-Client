@@ -6,6 +6,9 @@
   </div>
 </div>
 
-<div id="scene" #scene></div>
+<div id="scene"
+     (drag)="dragMouse($event)"
+     (wheel)="mouseWheel($event)"
+     #scene></div>
 
 <router-outlet></router-outlet>

@@ -17,10 +17,26 @@ export class EditorComponent implements OnInit {
     // this.engineService.renderEngine();
   }
 
+  dragMouse(event){
+    console.log(event)
+  }
+
+  mouseWheel(event){
+
+    let d = this.engineService.settings.camera.d += event.deltaY/100;
+    this.engineService.settings = {
+      camera: {
+        d: d
+      }
+    };
+
+    console.log(this.engineService.settings)
+  }
+
   ngOnInit() {
     this.engineService.settings = {
       camera: {
-        d: 40
+        d: 20
       }
     };
 

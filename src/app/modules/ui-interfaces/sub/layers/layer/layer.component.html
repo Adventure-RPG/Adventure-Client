@@ -1,0 +1,14 @@
+<li class="list-group-item jc-sb">
+  <div (click)="openedToggle()">
+    {{index}}: {{layer?.type}}
+  </div>
+  <i (click)="deleteElement(layer)"
+     class="fa fa-times flr curp"
+     aria-hidden="true"></i>
+</li>
+
+<div *ngIf="opened">
+  <pre style="color: white">
+  {{ layer | json}}
+  </pre>
+</div>
