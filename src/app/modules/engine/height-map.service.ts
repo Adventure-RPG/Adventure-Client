@@ -40,13 +40,14 @@ export class HeightMapService {
           geometry.vertices[i].setZ(res[i][2]/10);
         }
 
-        let material = new THREE.MeshLambertMaterial( {
+        let material = new THREE.MeshPhongMaterial( {
           color: 0xFFFFFF,
           shading: THREE.FlatShading
         } );
 
         let materialShadow = new THREE.ShadowMaterial( {
-          opacity: 0.2
+          opacity: 1,
+          lineWidth: 0.1
         } );
 
         let multiMaterial = [material, materialShadow];

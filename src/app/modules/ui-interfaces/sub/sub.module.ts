@@ -9,6 +9,7 @@ import { LayersComponent } from './layers/layers.component';
 import { ModelsComponent } from './models/models.component';
 import { LayerComponent } from './layers/layer/layer.component';
 import {SharedModule} from "../../../shared/shared-module.module";
+import { LightsComponent } from './lights/lights.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import {SharedModule} from "../../../shared/shared-module.module";
     HeightMapComponent,
     LayersComponent,
     ModelsComponent,
-    LayerComponent
+    LayerComponent,
+    LightsComponent
   ]
 })
 export class SubModule { }

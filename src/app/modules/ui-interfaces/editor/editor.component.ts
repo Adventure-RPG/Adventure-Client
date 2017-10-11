@@ -17,7 +17,31 @@ export class EditorComponent implements OnInit {
     // this.engineService.renderEngine();
   }
 
-  dragMouse(event){
+  public mouseData = {
+    dragStart: null,
+    dragMove:  null,
+    dragEnd:   null,
+  };
+
+  dragStartMouse(event){
+    this.mouseData.dragStart = event;
+    console.log(event)
+  }
+
+  dragMoveMouse(event){
+    if (this.mouseData.dragStart){
+      this.mouseData.dragMove = event;
+
+      let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
+      let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
+      console.log(event)
+      this.engineService.updateCamera(x, y)
+    }
+  }
+
+  dragEndMouse(event){
+    this.mouseData.dragStart = null;
+    this.mouseData.dragEnd = event;
     console.log(event)
   }
 
@@ -36,7 +60,7 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
     this.engineService.settings = {
       camera: {
-        d: 20
+        d: 40
       }
     };
 

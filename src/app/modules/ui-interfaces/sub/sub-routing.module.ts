@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {HeightMapComponent} from "./height-map/height-map.component";
 import {LayersComponent} from "./layers/layers.component";
 import {ModelsComponent} from "./models/models.component";
+import {LightsComponent} from "./lights/lights.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'models',
         component: ModelsComponent
+      },
+      {
+        path: 'lights',
+        component: LightsComponent
       },
     ]
   },

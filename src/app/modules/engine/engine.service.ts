@@ -110,95 +110,78 @@ export class EngineService {
     }
   }
 
-  public updateCamera(){
+  public updateCamera(x?, y?, z?){
+    if (!x){ x = 0 }
+    if (!y){ y = 0 }
+    if (!z){ z = 0 }
     let aspect = window.innerWidth / window.innerHeight;
     let d = this.settings.camera.d;
-    this.camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
-    this.camera.position.set( d * 8, d * 8, d * 8 ); // all components equal
+    this.camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, d * 40 );
+    this.camera.position.set( d * 8, d * 8, d * 8); // all components equal
     this.camera.lookAt( this.scene.position ); // or the origin
+    console.log(this.camera);
   }
 
-  public init(){
-    //Scene
-    this.scene = new THREE.Scene();
-    this.updateCamera();
-
+  public lightInit(d){
 
     //TODO: вынести свет в отдельную категорию.
     // light
-    // let light:THREE.HemisphereLight = new THREE.HemisphereLight( 0xff7e00, 0x00ccff, 0.6 );
+    // let light:THREE.HemisphereLight = new THREE.HemisphereLight( 0xffffff, 0x000000, 1 );
     // light.position.set(- d * 10, d * 2, d * 2 );
     // this.scene.add( light );
 
     // console.log(light);
-    let dirLight, dirLightHelper;
+    let dirLight, dirLightHelper,
+        lightLength = 50;
 
 
-    dirLight = new THREE.DirectionalLight( 0xffffff, 0.3 );
+
+    dirLight = new THREE.DirectionalLight( 0xffffff,  0.6  );
     dirLight.color.setHSL( 0.1, 1, 0.95 );
-    dirLight.position.set( 100, 100, 0 );
-
+    dirLight.position.set( -lightLength, lightLength, lightLength );
+    dirLight.shadow.bias = 0.0001;
     //HELPLER
-    let d = this.settings.camera.d;
-
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width  = 50;
     dirLight.shadow.mapSize.height = 50;
 
-    dirLight.shadow.camera.left   = -d;
-    dirLight.shadow.camera.right  =  d;
-    dirLight.shadow.camera.top    =  d;
-    dirLight.shadow.camera.bottom = -d;
-
-    dirLight.shadow.camera.far = 3200;
+    // dirLight.shadow.camera.left   = -d;
+    // dirLight.shadow.camera.right  =  d;
+    // dirLight.shadow.camera.top    =  d;
+    // dirLight.shadow.camera.bottom = -d;
+    //
+    // dirLight.shadow.camera.far = 5;
     this.scene.add( dirLight );
 
-    dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
+    dirLightHelper = new THREE.DirectionalLightHelper( dirLight, lightLength );
     this.scene.add( dirLightHelper );
 
-    new THREE.AxisHelper( 100 );
 
 
 
-    // spotlight #1 -- yellow, dark shadow
-    let spotLight = new THREE.SpotLight(0xffff00);
-    spotLight.position.set(30,35,-60);
-    spotLight.shadow.camera.visible = true;
-    // spotlight.shadowDarkness = 0.95;
-    spotLight.intensity = 1;
-    // must enable shadow casting ability for the light
-    spotLight.castShadow = true;
-    this.scene.add(spotLight);
+    // // spotlight #1 -- yellow, dark shadow
+    // let spotLight = new THREE.SpotLight(0xffff00);
+    // spotLight.position.set(30,35,-60);
+    // spotLight.shadow.camera.visible = true;
+    // // spotlight.shadowDarkness = 0.95;
+    // spotLight.intensity = 1;
+    // // must enable shadow casting ability for the light
+    // spotLight.castShadow = true;
+    // this.scene.add(spotLight);
+    //
+    // new THREE.AxisHelper( 100 );
+    // let spotLightHelper = new THREE.SpotLightHelper( spotLight );
+    // this.scene.add( spotLightHelper );
+  }
+
+  public init(){
+    //Scene
+    let d = this.settings.camera.d;
+    this.scene = new THREE.Scene();
+    this.updateCamera();
+    this.lightInit(d);
 
 
-    let geometryCube = new THREE.BoxGeometry( 5, 5, 10 );
-    let materialCube = new THREE.MeshPhongMaterial( {
-      color: 0x888888
-    } );
-    let cube = new THREE.Mesh( geometryCube, materialCube );
-    cube.position.set(15,15,-15);
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    this.scene.add( cube );
-
-
-    geometryCube = new THREE.BoxGeometry( 50, 1, 50 );
-    materialCube = new THREE.MeshPhongMaterial( {
-      color: 0x888888
-    });
-    cube = new THREE.Mesh( geometryCube, materialCube );
-    cube.position.set(0,5, -15);
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    this.scene.add( cube );
-
-
-    let spotLightHelper = new THREE.SpotLightHelper( spotLight );
-    this.scene.add( spotLightHelper );
-
-    let groundMaterial = new THREE.MeshBasicMaterial(
-      {color: 0x777777}
-    );
 
     let axisHelper = new THREE.AxisHelper( 5 );
     this.scene.add( axisHelper );
@@ -219,7 +202,7 @@ export class EngineService {
 
   public map(img){
     let options:HeightMapOptions = {
-      color: "rgb(0,0,0)",
+      color: "rgba(255,255,255, 0.3)",
       grid: false
     };
 

@@ -3,11 +3,14 @@
     <button type="button" class="btn btn-secondary" [routerLink]="['/', { outlets: {popup: ['editor','heightMap']}}]">Height map</button>
     <button type="button" class="btn btn-secondary" [routerLink]="['/', { outlets: {popup: ['editor','layers']}}]">Layers</button>
     <button type="button" class="btn btn-secondary" [routerLink]="['/', { outlets: {popup: ['editor','models']}}]">Models</button>
+    <button type="button" class="btn btn-secondary" [routerLink]="['/', { outlets: {popup: ['editor','lights']}}]">Models</button>
   </div>
 </div>
 
 <div id="scene"
-     (drag)="dragMouse($event)"
+     (mousedown)="dragStartMouse($event)"
+     (mousemove)="dragMoveMouse($event)"
+     (mouseup)="dragEndMouse($event)"
      (wheel)="mouseWheel($event)"
      #scene></div>
 
