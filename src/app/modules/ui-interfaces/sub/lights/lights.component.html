@@ -1,3 +1,193 @@
-<p>
-  lights works!
-</p>
+<ng-template #Light>
+  <div class="form-group col-md-6">
+    <label for="colorPicker" class="col-form-label">Light color</label>
+    <input id="colorPicker"
+           class="form-control"
+           [colorPicker]="color"
+           (colorPickerChange)="color=$event"
+           [style.background]="color"
+           [value]="color"
+           [cpAlphaChannel]="'disabled'"
+    />
+  </div>
+</ng-template>
+
+<ng-template #GroundColor>
+  <div class="form-group col-md-6">
+    <label for="groundColor" class="col-form-label">Ground color</label>
+    <input id="groundColor"
+           class="form-control"
+           [colorPicker]="groundColor"
+           (colorPickerChange)="groundColor=$event"
+           [style.background]="groundColor"
+           [value]="groundColor"
+           [cpAlphaChannel]="'disabled'"
+    />
+  </div>
+</ng-template>
+
+<ng-template #Intensity>
+  <div class="form-group col-md-6">
+    <label for="intensity" class="col-form-label">Intensity</label>
+    <input type="number"
+           id="intensity"
+           [ngModel]="intensity"
+           class="form-control"
+           min="0"
+           max="3"
+           step="0.01">
+  </div>
+</ng-template>
+
+
+<ng-template #Angle>
+  <div class="form-group col-md-6">
+    <label for="angle" class="col-form-label">Angle</label>
+    <input type="number"
+           id="angle"
+           [ngModel]="angle"
+           class="form-control"
+           min="0"
+           max="1.05"
+           step="0.01">
+  </div>
+</ng-template>
+
+<ng-template #Exponent>
+  <div class="form-group col-md-6">
+    <label for="exponent" class="col-form-label">Exponent(Penumbra)</label>
+    <input type="number"
+           id="exponent"
+           [ngModel]="exponent"
+           class="form-control"
+           min="0"
+           max="1"
+           step="0.001">
+  </div>
+</ng-template>
+
+<ng-template #Distance>
+  <div class="form-group col-md-6">
+    <label for="distance" class="col-form-label">Distance</label>
+    <input type="number"
+           id="distance"
+           [ngModel]="distance"
+           class="form-control"
+           min="0"
+           max="1000"
+           step="0.01">
+  </div>
+</ng-template>
+
+<ng-template #Decay>
+  <div class="form-group col-md-6">
+    <label for="decay" class="col-form-label">Decay</label>
+    <input type="number"
+           id="decay"
+           [ngModel]="decay"
+           class="form-control"
+           min="1"
+           max="2"
+           step="0.01">
+  </div>
+</ng-template>
+
+
+<div class="p-3">
+  <h2>Light</h2>
+
+  <ngb-tabset>
+    <ngb-tab title="AmbientLight" >
+      <ng-template ngbTabContent>
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Light"></ng-container>
+            <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addLight($event, 'AmbientLight')">
+          Add light
+        </button>
+
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="DirectionLight" >
+      <ng-template ngbTabContent>
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Light"></ng-container>
+            <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addLight($event, 'DirectionalLight')">
+          Add light
+        </button>
+
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="HemisphereLight">
+      <ng-template ngbTabContent>
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Light"></ng-container>
+            <ng-container *ngTemplateOutlet="GroundColor"></ng-container>
+            <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addLight($event, 'HemisphereLight')">
+          Add light
+        </button>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="PointLight">
+      <ng-template ngbTabContent>
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Light"></ng-container>
+            <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+            <ng-container *ngTemplateOutlet="Distance"></ng-container>
+            <ng-container *ngTemplateOutlet="Decay"></ng-container>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addLight($event, 'PointLight')">
+          Add light
+        </button>
+      </ng-template>
+    </ngb-tab>
+    <!--<ngb-tab title="RectAreaLight">-->
+      <!--<ng-template ngbTabContent>-->
+        <!--<div class="form-group">-->
+          <!--<div class="form-row">-->
+            <!--<ng-container *ngTemplateOutlet="Light"></ng-container>-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <!--<button class="btn btn-primary" (click)="addLight($event, 'RectAreaLight')">-->
+          <!--Add light-->
+        <!--</button>-->
+      <!--</ng-template>-->
+    <!--</ngb-tab>-->
+    <ngb-tab title="SpotLight">
+      <ng-template ngbTabContent>
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Light"></ng-container>
+            <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+            <ng-container *ngTemplateOutlet="Distance"></ng-container>
+            <ng-container *ngTemplateOutlet="Angle"></ng-container>
+            <ng-container *ngTemplateOutlet="Exponent"></ng-container>
+            <ng-container *ngTemplateOutlet="Decay"></ng-container>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="addLight($event, 'SpotLight')">
+          Add light
+        </button>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

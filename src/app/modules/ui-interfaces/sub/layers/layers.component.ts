@@ -36,9 +36,4 @@ export class LayersComponent implements OnInit, AfterViewInit {
       // console.log(this.engineService.scene.children)
     }
   }
-
-  public deleteElement(element) {
-    let index = this.engineService.scene.children.indexOf(element);
-    this.engineService.scene.children.splice(index, 1);
-  }
 }

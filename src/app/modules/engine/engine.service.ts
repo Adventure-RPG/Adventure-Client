@@ -123,18 +123,15 @@ export class EngineService {
   }
 
   public lightInit(d){
-
     //TODO: вынести свет в отдельную категорию.
     // light
     // let light:THREE.HemisphereLight = new THREE.HemisphereLight( 0xffffff, 0x000000, 1 );
     // light.position.set(- d * 10, d * 2, d * 2 );
     // this.scene.add( light );
-
     // console.log(light);
-    let dirLight, dirLightHelper,
+    let dirLight,
+        dirLightHelper,
         lightLength = 50;
-
-
 
     dirLight = new THREE.DirectionalLight( 0xffffff,  0.6  );
     dirLight.color.setHSL( 0.1, 1, 0.95 );
@@ -155,9 +152,6 @@ export class EngineService {
 
     dirLightHelper = new THREE.DirectionalLightHelper( dirLight, lightLength );
     this.scene.add( dirLightHelper );
-
-
-
 
     // // spotlight #1 -- yellow, dark shadow
     // let spotLight = new THREE.SpotLight(0xffff00);

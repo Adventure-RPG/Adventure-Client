@@ -10,6 +10,7 @@ import { ApiService } from "../services/api.service";
 import { SidebarModalComponent } from './sidebar-modal/sidebar-modal.component'
 import {ModalComponent} from "./modal/modal.component";
 import {provideComponentOutletModule} from "angular2-component-outlet";
+import {ColorPickerModule} from "angular4-color-picker/lib/color-picker.module";
 
 const Modules = [
   CommonModule,
@@ -17,7 +18,8 @@ const Modules = [
   ReactiveFormsModule,
   HttpModule,
   SelectModule,
-  NgbModule
+  NgbModule,
+  ColorPickerModule
 ];
 
 const Services = [

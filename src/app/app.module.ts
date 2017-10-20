@@ -26,7 +26,7 @@ const Modules = [
   BrowserModule,
   SharedModule,
   UiInterfacesModule,
-  UiInterfacesRoutingModule
+  UiInterfacesRoutingModule,
 ];
 
 const ModulesForRoot = [

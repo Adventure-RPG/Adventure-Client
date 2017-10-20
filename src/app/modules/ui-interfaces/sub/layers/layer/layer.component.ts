@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OnNew} from "../../../../../decorators/on-new.decorator";
+import {EngineService} from "../../../../engine/engine.service";
 
 @Component({
   selector: 'adventure-layer',
@@ -22,7 +23,14 @@ export class LayerComponent implements OnInit {
     this.opened = !this.opened;
   }
 
-  constructor() { }
+  public deleteElement(element) {
+    let index = this.engineService.scene.children.indexOf(element);
+    this.engineService.scene.children.splice(index, 1);
+  }
+
+  constructor(
+    public engineService: EngineService,
+    ) { }
 
   ngOnInit() {
   }
