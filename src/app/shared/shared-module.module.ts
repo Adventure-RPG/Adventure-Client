@@ -8,13 +8,16 @@ import { SelectModule } from 'angular2-select';
 
 import { ApiService } from "../services/api.service";
 import { SidebarModalComponent } from './sidebar-modal/sidebar-modal.component'
-import {ModalComponent} from "./modal/modal.component";
-import {provideComponentOutletModule} from "angular2-component-outlet";
-import {ColorPickerModule} from "angular4-color-picker/lib/color-picker.module";
+import { ModalComponent} from "./modal/modal.component";
+import { provideComponentOutletModule} from "angular2-component-outlet";
+import { ColorPickerModule} from "angular4-color-picker/lib/color-picker.module";
+import { MainButtonsControlComponent } from './main-buttons-control/main-buttons-control.component';
+import { RouterModule} from "@angular/router";
 
 const Modules = [
   CommonModule,
   FormsModule,
+  RouterModule,
   ReactiveFormsModule,
   HttpModule,
   SelectModule,
@@ -27,6 +30,7 @@ const Services = [
 ];
 
 const Components = [
+  MainButtonsControlComponent
 ];
 
 @NgModule({
@@ -34,7 +38,7 @@ const Components = [
     ...Modules
   ],
   declarations: [
-    ...Components
+    ...Components,
   ],
   providers: [
     ...Services,

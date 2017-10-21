@@ -35,14 +35,17 @@ export class LightsComponent implements OnInit {
     switch (type){
       case 'AmbientLight':
         light = new THREE.AmbientLight( color, this.intensity );
-        light.position.set(- d * 10, d * 2, d * 2 );
+
+        light.position.set( -lightLength, lightLength, lightLength );
+
+        //HELPLER
+        light.castShadow = true;
+
         this.engineService.scene.add( light );
         break;
       case 'DirectionalLight':
         light = new THREE.DirectionalLight( color,  this.intensity  );
-        light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set( -lightLength, lightLength, lightLength );
-        light.shadow.bias = 0.0001;
         //HELPLER
         light.castShadow = true;
         light.shadow.mapSize.width  = 50;
@@ -69,13 +72,11 @@ export class LightsComponent implements OnInit {
         break;
       case 'PointLight':
         light = new THREE.PointLight( color,  this.intensity, this.distance, this.decay  );
-        light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set( -lightLength, lightLength, lightLength );
-        light.shadow.bias = 0.0001;
         //HELPLER
         light.castShadow = true;
-        light.shadow.mapSize.width  = 50;
-        light.shadow.mapSize.height = 50;
+        // light.shadow.mapSize.width  = 50;
+        // light.shadow.mapSize.height = 50;
 
         // dirLight.shadow.camera.left   = -d;
         // dirLight.shadow.camera.right  =  d;
@@ -129,7 +130,7 @@ export class LightsComponent implements OnInit {
         // dirLight.shadow.camera.far = 5;
 
         this.engineService.scene.add( light );
-        dirLightHelper = new THREE.PointLightHelper( light, lightLength );
+        dirLightHelper = new THREE.SpotLightHelper( light );
         this.engineService.scene.add( dirLightHelper );
 
         break;

@@ -39,7 +39,8 @@ const ModulesForRootImport = [
 
 const Components = [
   SidebarModalComponent,
-  ModalComponent
+  ModalComponent,
+
 ];
 
 @NgModule({
@@ -63,6 +64,7 @@ const Components = [
   ],
   exports: [
     ...ModulesForRoot,
+    ...Components,
   ],
   bootstrap: [AppComponent]
 })

@@ -129,18 +129,18 @@ export class EngineService {
     // light.position.set(- d * 10, d * 2, d * 2 );
     // this.scene.add( light );
     // console.log(light);
-    let dirLight,
-        dirLightHelper,
-        lightLength = 50;
-
-    dirLight = new THREE.DirectionalLight( 0xffffff,  0.6  );
-    dirLight.color.setHSL( 0.1, 1, 0.95 );
-    dirLight.position.set( -lightLength, lightLength, lightLength );
-    dirLight.shadow.bias = 0.0001;
-    //HELPLER
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width  = 50;
-    dirLight.shadow.mapSize.height = 50;
+    // let dirLight,
+    //     dirLightHelper,
+    //     lightLength = 50;
+    //
+    // dirLight = new THREE.DirectionalLight( 0xffffff,  0.6  );
+    // dirLight.color.setHSL( 0.1, 1, 0.95 );
+    // dirLight.position.set( -lightLength, lightLength, lightLength );
+    // dirLight.shadow.bias = 0.0001;
+    // //HELPLER
+    // dirLight.castShadow = true;
+    // dirLight.shadow.mapSize.width  = 50;
+    // dirLight.shadow.mapSize.height = 50;
 
     // dirLight.shadow.camera.left   = -d;
     // dirLight.shadow.camera.right  =  d;
@@ -148,10 +148,10 @@ export class EngineService {
     // dirLight.shadow.camera.bottom = -d;
     //
     // dirLight.shadow.camera.far = 5;
-    this.scene.add( dirLight );
-
-    dirLightHelper = new THREE.DirectionalLightHelper( dirLight, lightLength );
-    this.scene.add( dirLightHelper );
+    // this.scene.add( dirLight );
+    //
+    // dirLightHelper = new THREE.DirectionalLightHelper( dirLight, lightLength );
+    // this.scene.add( dirLightHelper );
 
     // // spotlight #1 -- yellow, dark shadow
     // let spotLight = new THREE.SpotLight(0xffff00);
