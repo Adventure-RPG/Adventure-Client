@@ -10,6 +10,6 @@ export interface IGEOJson {
 }
 
 export interface HeightMapOptions{
-  color: string;
+  color?: string;
   grid: boolean
 }

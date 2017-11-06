@@ -44,7 +44,7 @@
   "devDependencies": {
     "@angular/cli": "^1.4.9",
     "@types/hammerjs": "^2.0.34",
-    "@types/jasmine": "2.5.38",
+    "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.90",
     "@types/requirejs": "^2.1.30",
     "@types/three": "^0.84.27",

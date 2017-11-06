@@ -3,6 +3,7 @@
     <label for="colorPicker" class="col-form-label">Light color</label>
     <input id="colorPicker"
            class="form-control"
+           [cpPosition]="'bottom'"
            [colorPicker]="color"
            (colorPickerChange)="color=$event"
            [style.background]="color"
@@ -10,6 +11,7 @@
            [cpAlphaChannel]="'disabled'"
     />
   </div>
+
 </ng-template>
 
 <ng-template #GroundColor>
@@ -17,6 +19,7 @@
     <label for="groundColor" class="col-form-label">Ground color</label>
     <input id="groundColor"
            class="form-control"
+           [cpPosition]="'bottom'"
            [colorPicker]="groundColor"
            (colorPickerChange)="groundColor=$event"
            [style.background]="groundColor"
@@ -31,7 +34,7 @@
     <label for="intensity" class="col-form-label">Intensity</label>
     <input type="number"
            id="intensity"
-           [ngModel]="intensity"
+           [(ngModel)]="intensity"
            class="form-control"
            min="0"
            max="3"
@@ -45,10 +48,10 @@
     <label for="angle" class="col-form-label">Angle</label>
     <input type="number"
            id="angle"
-           [ngModel]="angle"
+           [(ngModel)]="angle"
            class="form-control"
            min="0"
-           max="1.05"
+           max="1.57"
            step="0.01">
   </div>
 </ng-template>
@@ -58,7 +61,7 @@
     <label for="exponent" class="col-form-label">Exponent(Penumbra)</label>
     <input type="number"
            id="exponent"
-           [ngModel]="exponent"
+           [(ngModel)]="exponent"
            class="form-control"
            min="0"
            max="1"
@@ -71,10 +74,39 @@
     <label for="distance" class="col-form-label">Distance</label>
     <input type="number"
            id="distance"
-           [ngModel]="distance"
+           [(ngModel)]="distance"
            class="form-control"
            min="0"
            max="1000"
+           step="0.01">
+  </div>
+</ng-template>
+
+<ng-template #Position>
+  <div class="form-group col-md-4">
+    <label for="positionX" class="col-form-label">X</label>
+    <input type="number"
+           id="positionX"
+           [(ngModel)]="position.x"
+           class="form-control"
+           step="0.01">
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="positionY" class="col-form-label">Y</label>
+    <input type="number"
+           id="positionY"
+           [(ngModel)]="position.y"
+           class="form-control"
+           step="0.01">
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="positionZ" class="col-form-label">Z</label>
+    <input type="number"
+           id="positionZ"
+           [(ngModel)]="position.z"
+           class="form-control"
            step="0.01">
   </div>
 </ng-template>
@@ -84,7 +116,7 @@
     <label for="decay" class="col-form-label">Decay</label>
     <input type="number"
            id="decay"
-           [ngModel]="decay"
+           [(ngModel)]="decay"
            class="form-control"
            min="1"
            max="2"
@@ -99,10 +131,17 @@
   <ngb-tabset>
     <ngb-tab title="AmbientLight" >
       <ng-template ngbTabContent>
+
         <div class="form-group">
           <div class="form-row">
             <ng-container *ngTemplateOutlet="Light"></ng-container>
             <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Position"></ng-container>
           </div>
         </div>
 
@@ -120,6 +159,12 @@
           <div class="form-row">
             <ng-container *ngTemplateOutlet="Light"></ng-container>
             <ng-container *ngTemplateOutlet="Intensity"></ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Position"></ng-container>
           </div>
         </div>
 
@@ -141,6 +186,12 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Position"></ng-container>
+          </div>
+        </div>
+
         <adventure-main-buttons-control>
           <button class="btn btn-primary" (click)="addLight($event, 'HemisphereLight')">
             Add light
@@ -157,6 +208,12 @@
             <ng-container *ngTemplateOutlet="Intensity"></ng-container>
             <ng-container *ngTemplateOutlet="Distance"></ng-container>
             <ng-container *ngTemplateOutlet="Decay"></ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Position"></ng-container>
           </div>
         </div>
 
@@ -191,6 +248,12 @@
             <ng-container *ngTemplateOutlet="Angle"></ng-container>
             <ng-container *ngTemplateOutlet="Exponent"></ng-container>
             <ng-container *ngTemplateOutlet="Decay"></ng-container>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-row">
+            <ng-container *ngTemplateOutlet="Position"></ng-container>
           </div>
         </div>
 

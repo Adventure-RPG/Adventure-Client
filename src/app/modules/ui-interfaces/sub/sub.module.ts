@@ -10,7 +10,8 @@ import { ModelsComponent } from './models/models.component';
 import { LayerComponent } from './layers/layer/layer.component';
 import { SharedModule} from "../../../shared/shared-module.module";
 import { LightsComponent } from './lights/lights.component';
-import { MainButtonsControlComponent} from "../../../shared/main-buttons-control/main-buttons-control.component";
+import { LightMapComponent } from './light-map/light-map.component';
+import { ColorMapComponent } from './color-map/color-map.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,8 @@ import { MainButtonsControlComponent} from "../../../shared/main-buttons-control
     ModelsComponent,
     LayerComponent,
     LightsComponent,
+    LightMapComponent,
+    ColorMapComponent,
   ]
 })
 export class SubModule { }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 
 import {IGEOJson} from "./engine.types";
+import {Object3D} from "three";
 
 
 
@@ -68,7 +69,7 @@ export class HeightMapService {
 
         objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
 
-        objectPG.children.forEach((item, index, array) => {
+        objectPG.children.map((item: Object3D, index, array) => {
           item.castShadow = true;
           item.receiveShadow = true;
         });

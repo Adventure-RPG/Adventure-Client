@@ -120,60 +120,16 @@ export class EngineService {
     this.camera.position.set( d * 8, d * 8, d * 8); // all components equal
     this.camera.lookAt( this.scene.position ); // or the origin
     console.log(this.camera);
+
   }
 
-  public lightInit(d){
-    //TODO: вынести свет в отдельную категорию.
-    // light
-    // let light:THREE.HemisphereLight = new THREE.HemisphereLight( 0xffffff, 0x000000, 1 );
-    // light.position.set(- d * 10, d * 2, d * 2 );
-    // this.scene.add( light );
-    // console.log(light);
-    // let dirLight,
-    //     dirLightHelper,
-    //     lightLength = 50;
-    //
-    // dirLight = new THREE.DirectionalLight( 0xffffff,  0.6  );
-    // dirLight.color.setHSL( 0.1, 1, 0.95 );
-    // dirLight.position.set( -lightLength, lightLength, lightLength );
-    // dirLight.shadow.bias = 0.0001;
-    // //HELPLER
-    // dirLight.castShadow = true;
-    // dirLight.shadow.mapSize.width  = 50;
-    // dirLight.shadow.mapSize.height = 50;
-
-    // dirLight.shadow.camera.left   = -d;
-    // dirLight.shadow.camera.right  =  d;
-    // dirLight.shadow.camera.top    =  d;
-    // dirLight.shadow.camera.bottom = -d;
-    //
-    // dirLight.shadow.camera.far = 5;
-    // this.scene.add( dirLight );
-    //
-    // dirLightHelper = new THREE.DirectionalLightHelper( dirLight, lightLength );
-    // this.scene.add( dirLightHelper );
-
-    // // spotlight #1 -- yellow, dark shadow
-    // let spotLight = new THREE.SpotLight(0xffff00);
-    // spotLight.position.set(30,35,-60);
-    // spotLight.shadow.camera.visible = true;
-    // // spotlight.shadowDarkness = 0.95;
-    // spotLight.intensity = 1;
-    // // must enable shadow casting ability for the light
-    // spotLight.castShadow = true;
-    // this.scene.add(spotLight);
-    //
-    // new THREE.AxisHelper( 100 );
-    // let spotLightHelper = new THREE.SpotLightHelper( spotLight );
-    // this.scene.add( spotLightHelper );
-  }
 
   public init(){
     //Scene
-    let d = this.settings.camera.d;
+    // let d = this.settings.camera.d;
     this.scene = new THREE.Scene();
     this.updateCamera();
-    this.lightInit(d);
+    // this.lightInit(d);
 
 
 
@@ -185,7 +141,8 @@ export class EngineService {
     this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
 
     this.renderer.shadowMap.enabled = true;
-    // this.renderer.shadowMap.renderSingleSided  = false;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+    // this.renderer.shadowMap.renderSingleSided  = true;
     // this.renderer.shadowMap.renderReverseSided = false;
 
     this.domElement = this.renderer.domElement;
@@ -196,7 +153,6 @@ export class EngineService {
 
   public map(img){
     let options:HeightMapOptions = {
-      color: "rgba(255,255,255, 0.3)",
       grid: false
     };
 
