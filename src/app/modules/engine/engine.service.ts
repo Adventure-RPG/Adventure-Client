@@ -121,6 +121,9 @@ export class EngineService {
     this.camera.lookAt( this.scene.position ); // or the origin
     console.log(this.camera);
 
+   // test only
+    // this.renderer.render(this.scene, this.camera);
+
   }
 
 

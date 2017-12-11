@@ -13,7 +13,7 @@ export class HeightMapService {
 
   private colorScheme;
 
-  public changeMapFromImage(options, scene, img){
+  public changeMapFromImage(options, scene: THREE.Scene, img){
 
     // terrain
     //TODO: сделать добавление без рекваер
@@ -45,7 +45,9 @@ export class HeightMapService {
         for (let i = 0; i < geometry.faces.length; i += 2) {
           // geometry.faces[i].vertexColors = [new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])];
           // geometry.faces[i+1].vertexColors = [new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])];
-          geometry.faces[i].color = new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+          geometry.faces[i].color = new THREE.Color( 0xfff )
+            .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+
         }
 
         let material = new THREE.MeshPhongMaterial( {
@@ -87,6 +89,7 @@ export class HeightMapService {
         });
 
         scene.add(parent);
+
         return geoJsonObject;
       })
       .then((geoObj)=>{
