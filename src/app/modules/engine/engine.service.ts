@@ -161,6 +161,16 @@ export class EngineService {
     this.heightMapService.changeMapFromImage(options, this.scene, img);
   }
 
+  public colorMap(img){
+    let options:HeightMapOptions = {
+      grid: false
+    };
+
+    console.log(this.scene);
+
+    this.heightMapService.changeColorMapFromImage(options, this.scene, img);
+  }
+
   public modelObservable(){
     // this.cubicGrid();
     // this.testObj();

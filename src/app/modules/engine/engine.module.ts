@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HeightMapService} from "./height-map.service";
+import {LightService} from "./light.service";
 
 
 @NgModule({
@@ -8,7 +9,7 @@ import {HeightMapService} from "./height-map.service";
     CommonModule
   ],
   providers: [
-    HeightMapService
+    HeightMapService,
   ],
   declarations: []
 })

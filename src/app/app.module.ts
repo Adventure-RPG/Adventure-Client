@@ -14,6 +14,7 @@ import {UiInterfacesModule} from "./modules/ui-interfaces/ui-interfaces.module";
 import {ModalComponent} from "./shared/modal/modal.component";
 import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.component";
 import {EngineService} from "./modules/engine/engine.service";
+import {LightService} from "./modules/engine/light.service";
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -40,7 +41,6 @@ const ModulesForRootImport = [
 const Components = [
   SidebarModalComponent,
   ModalComponent,
-
 ];
 
 @NgModule({
@@ -54,6 +54,7 @@ const Components = [
   ],
   providers: [
     EngineService,
+    LightService, 
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

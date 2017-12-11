@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EngineService} from "../../engine/engine.service";
+import {LightService} from "../../engine/light.service";
 
 @Component({
   selector: 'adventure-editor',
@@ -12,6 +13,7 @@ export class EditorComponent implements OnInit {
 
   constructor(
     private engineService: EngineService,
+    private lightService: LightService,
     private elementRef: ElementRef
   ) {
     // this.engineService.renderEngine();
@@ -66,6 +68,25 @@ export class EditorComponent implements OnInit {
 
     this.engineService.init();
     this.scene.nativeElement.appendChild( this.engineService.domElement ) ;
+
+
+    let light = {
+      color: "#127bdc",
+      groundColor: "#127bdc",
+      intensity: 1,
+      distance: 200,
+      exponent: 0,
+      angle: 0.52,
+      decay: 2,
+      position : {
+        x: 20,
+        y: 20,
+        z: 0
+      }
+    };
+
+
+    this.lightService.addLight(light, "PointLight");
 
   }
 

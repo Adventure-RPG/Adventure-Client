@@ -1,3 +1,9 @@
 <div class="p-3">
-  <adventure-main-buttons-control></adventure-main-buttons-control>
+  <h5>Color arena</h5>
+
+  <div dnd-droppable
+       class="card card-info dndarea"
+       (onDropSuccess)="transferDataSuccess($event)">
+    <div class="card-heading">Place to drop</div>
+  </div>
 </div>

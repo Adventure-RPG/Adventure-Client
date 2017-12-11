@@ -11,7 +11,6 @@ export class HeightMapComponent implements OnInit {
 
   constructor(
     private engineService: EngineService,
-    private router: Router
   ) {
   }
 
@@ -47,10 +46,6 @@ export class HeightMapComponent implements OnInit {
 
       }
     }
-  }
-
-  close(){
-    this.router.navigate(['/', { outlets: { popup: null }}]);
   }
 
   imageToHeightMap(img){
