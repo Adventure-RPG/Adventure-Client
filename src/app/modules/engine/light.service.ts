@@ -8,6 +8,7 @@ export class LightService {
   constructor(
     private engineService: EngineService
   ) { }
+  
 
   addLight(lightEntity: {
     color: string;

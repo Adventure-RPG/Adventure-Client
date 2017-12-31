@@ -43,16 +43,23 @@ export class HeightMapService {
         }
 
         for (let i = 0; i < geometry.faces.length; i += 2) {
-          // geometry.faces[i].vertexColors = [new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])];
-          // geometry.faces[i+1].vertexColors = [new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])];
-          geometry.faces[i].color = new THREE.Color( 0xfff )
-            .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+          let color = [
+            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2]),
+            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2]),
+            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+          ];
+
+          geometry.faces[i].vertexColors = color;
+          geometry.faces[i+1].vertexColors = color;
+          // geometry.faces[i].color = new THREE.Color( 0xfff )
+          //   .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
 
         }
 
         let material = new THREE.MeshPhongMaterial( {
           color: 0xFFFFFF,
-          shading: THREE.FlatShading
+          shading: THREE.FlatShading,
+          vertexColors: THREE.FaceColors
         } );
 
         let materialShadow = new THREE.ShadowMaterial( {
