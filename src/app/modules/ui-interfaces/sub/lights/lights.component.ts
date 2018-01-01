@@ -13,7 +13,7 @@ export class LightsComponent implements OnInit {
 
   public color: string = "#127bdc";
   public groundColor: string = "#127bdc";
-  public intensity: number = 1;
+  public intensity: number = 0.01;
   public distance:  number = 200;
   public exponent:  number = 0;
   public angle:     number = 0.52;

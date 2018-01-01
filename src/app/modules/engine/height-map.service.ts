@@ -38,9 +38,13 @@ export class HeightMapService {
 
         let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width-1, img.height-1);
 
+                // objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
         for( let i = 0; i < res.length; i++ ){
           geometry.vertices[i].setZ(res[i][2]/10);
         }
+
+        geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2));
+        geometry.verticesNeedUpdate = true;
 
         for (let i = 0; i < geometry.faces.length; i += 2) {
           let color = [
@@ -51,15 +55,21 @@ export class HeightMapService {
 
           geometry.faces[i].vertexColors = color;
           geometry.faces[i+1].vertexColors = color;
+
           // geometry.faces[i].color = new THREE.Color( 0xfff )
           //   .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
 
         }
+        geometry.elementsNeedUpdate = true;
+
+        // let material = new THREE.MeshBasicMaterial( {
+        //     shading: THREE.FlatShading,
+        //     vertexColors: THREE.VertexColors
+        // });
 
         let material = new THREE.MeshPhongMaterial( {
-          color: 0xFFFFFF,
           shading: THREE.FlatShading,
-          vertexColors: THREE.FaceColors
+          vertexColors: THREE.VertexColors
         } );
 
         let materialShadow = new THREE.ShadowMaterial( {
@@ -69,10 +79,12 @@ export class HeightMapService {
 
         geometry.colorsNeedUpdate = true;
 
+
         console.log(this.colorScheme);
         console.log(geometry);
 
-        let multiMaterial = [material, materialShadow];
+// materialShadow
+        let multiMaterial = [material];
 
         if (options.grid){
           let grid = new THREE.MeshPhongMaterial( {
@@ -88,7 +100,6 @@ export class HeightMapService {
         let parent = new THREE.Object3D();
         parent.add(objectPG);
 
-        objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
 
         objectPG.children.map((item: Object3D, index, array) => {
           item.castShadow = true;
@@ -165,6 +176,12 @@ export class HeightMapService {
   }
 
   //  TODO: change void
+
+  /**
+   * [getColorMap description]
+   * @param  {HTMLImageElement} img [description]
+   * @return {any}                  [description]
+   */
   public getColorMap(img:HTMLImageElement): any {
     let canvas = document.createElement('canvas');
     canvas.width  = img.width;
@@ -173,7 +190,7 @@ export class HeightMapService {
     let context = canvas.getContext('2d');
     context.drawImage(img, 0, 0);
 
-    let pix = context.getImageData(0, 0, img.width, img.height).data,
+    let pix = context.getImageData(0, 0, img.width - 1, img.height - 1).data,
       colorScheme = [];
 
 

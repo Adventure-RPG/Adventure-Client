@@ -71,16 +71,16 @@ export class EditorComponent implements OnInit {
 
 
     let light = {
-      color: "#127bdc",
+      color: "#fff",
       groundColor: "#127bdc",
-      intensity: 1,
+      intensity: 0.01,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position : {
-        x: 20,
-        y: 20,
+        x: 0,
+        y: 50,
         z: 0
       }
     };
