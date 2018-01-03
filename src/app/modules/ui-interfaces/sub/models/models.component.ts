@@ -8,6 +8,12 @@ import {EngineService} from "../../../engine/engine.service";
 })
 export class ModelsComponent implements OnInit {
 
+  models = [
+    {
+      name: "xsi_man_skinning.txt"
+    },
+  ]; 
+
   constructor(
     private engineService: EngineService,
   ) { }

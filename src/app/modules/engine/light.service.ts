@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 import {EngineService} from "./engine.service";
+import * as inflate from 'inflate';
 
 @Injectable()
 export class LightService {
@@ -8,7 +9,7 @@ export class LightService {
   constructor(
     private engineService: EngineService
   ) { }
-  
+
 
   addLight(lightEntity: {
     color: string;

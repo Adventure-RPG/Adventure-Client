@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EngineService} from "../../engine/engine.service";
 import {LightService} from "../../engine/light.service";
+import { HeightMapService } from "../../engine/height-map.service";
 
 @Component({
   selector: 'adventure-editor',
@@ -14,6 +15,7 @@ export class EditorComponent implements OnInit {
   constructor(
     private engineService: EngineService,
     private lightService: LightService,
+    private heightMapService: HeightMapService,
     private elementRef: ElementRef
   ) {
     // this.engineService.renderEngine();
@@ -80,13 +82,23 @@ export class EditorComponent implements OnInit {
       decay: 2,
       position : {
         x: 0,
-        y: 50,
+        y: 20,
         z: 0
       }
     };
 
 
-    this.lightService.addLight(light, "PointLight");
+    this.lightService.addLight(light, "HemisphereLight");
+
+    // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
+    // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
+    //
+    // let ochenEbaniiTest2: HTMLImageElement = document.createElement("img");
+    // ochenEbaniiTest.src = require("tests/assets/colormap/heightArena.png");
+    //
+    //
+    // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
+    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2);
 
   }
 

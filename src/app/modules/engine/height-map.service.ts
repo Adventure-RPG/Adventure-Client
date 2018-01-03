@@ -142,6 +142,7 @@ export class HeightMapService {
   }
 
   public parseImageToColorGeo(img:HTMLImageElement){
+    console.log(img);
     return new Promise((resolve, reject) => {
       img.onload = () => {
         let data = this.getColorMap(img);

@@ -61,24 +61,52 @@ export class EngineService {
       this.scene.add( cubicGrid.figure );
   }
 
+  //TODO: вынести аплойд файлов
   /**
    * Метод загрузки FBX модели
    * @param url
    */
   public loadFBX(url){
 
+    // Вынести в отдельный флоу
+
+
+
+    // let test = require('./../../libs/inflate.min');
+    // console.log(test.Zlib)
     //Инцилизация модуля.
     require('three-fbx-loader')(THREE);
 
     let loader = new THREE.FBXLoader();
 
+    let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
+
     loader.load(
       url,
-      (geometry: any) => {
-        let material = new THREE.MeshNormalMaterial();
-        let mesh = new THREE.Mesh(geometry, material);
-        console.log(mesh)
-        this.scene.add(mesh);
+      (group: THREE.Group) => {
+        // let material = new THREE.MeshNormalMaterial();
+        // let mesh = new THREE.Mesh(geometry, material);
+        // console.log(mesh)
+        // this.scene.add(mesh);
+
+        // if you want to add your custom material
+        //
+
+        // let materialObj = new THREE.MeshPhongMaterial({
+          // map: texture
+        // });
+
+        group.scale.set(0.1, 0.1, 0.1);
+        group.traverse((child: THREE.Mesh) => {
+            if (child instanceof THREE.Mesh) {
+              console.log(child.material);
+                (<THREE.MeshLambertMaterial>child.material).map = texture;
+                (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
+            }
+        });
+
+        this.scene.add(group);
+
       },
       (event) => {
         console.log(event)
