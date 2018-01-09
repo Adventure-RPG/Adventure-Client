@@ -46,21 +46,23 @@ export class HeightMapService {
         geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2));
         geometry.verticesNeedUpdate = true;
 
-        for (let i = 0; i < geometry.faces.length; i += 2) {
-          let color = [
-            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2]),
-            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2]),
-            new THREE.Color(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
-          ];
+        if (this.colorScheme){
+          for (let i = 0; i < geometry.faces.length; i += 2) {
+            let color = [
+              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`),
+              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`),
+              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`)
+            ];
 
-          geometry.faces[i].vertexColors = color;
-          geometry.faces[i+1].vertexColors = color;
+            geometry.faces[i].vertexColors = color;
+            geometry.faces[i+1].vertexColors = color;
 
-          // geometry.faces[i].color = new THREE.Color( 0xfff )
-          //   .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+            // geometry.faces[i].color = new THREE.Color( 0xfff )
+            //   .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
 
+          }
+          geometry.elementsNeedUpdate = true;
         }
-        geometry.elementsNeedUpdate = true;
 
         // let material = new THREE.MeshBasicMaterial( {
         //     shading: THREE.FlatShading,
@@ -69,7 +71,7 @@ export class HeightMapService {
 
         let material = new THREE.MeshPhongMaterial( {
           shading: THREE.FlatShading,
-          vertexColors: THREE.VertexColors
+          vertexColors: THREE.VertexColors, 
         } );
 
         let materialShadow = new THREE.ShadowMaterial( {
@@ -123,7 +125,8 @@ export class HeightMapService {
 
   }
 
-  public changeColorMapFromImage(options, scene, img){
+  public
+  changeColorMapFromImage(options, scene, img){
     this
     .parseImageToColorGeo(img)
     .then((res) => {

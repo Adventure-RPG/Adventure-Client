@@ -66,7 +66,7 @@ export class EngineService {
    * Метод загрузки FBX модели
    * @param url
    */
-  public loadFBX(url){
+  public loadFBX(model){
 
     // Вынести в отдельный флоу
 
@@ -79,42 +79,96 @@ export class EngineService {
 
     let loader = new THREE.FBXLoader();
 
-    let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
+    // let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
 
-    loader.load(
-      url,
-      (group: THREE.Group) => {
-        // let material = new THREE.MeshNormalMaterial();
-        // let mesh = new THREE.Mesh(geometry, material);
-        // console.log(mesh)
-        // this.scene.add(mesh);
+    let texture;
+    if (model.texturePath){
+      texture = new THREE.TextureLoader().load(
+        model.texturePath,
+        (data) => {
+          console.log(data);
+          let modelLoader = loader.load(
+            model.path,
+            (group: THREE.Group) => {
+              // let material = new THREE.MeshNormalMaterial();
+              // let mesh = new THREE.Mesh(geometry, material);
+              // console.log(mesh)
+              // this.scene.add(mesh);
 
-        // if you want to add your custom material
-        //
+              // if you want to add your custom material
+              //
 
-        // let materialObj = new THREE.MeshPhongMaterial({
-          // map: texture
-        // });
+              // let materialObj = new THREE.MeshPhongMaterial({
+                // map: texture
+              // });
 
-        group.scale.set(0.1, 0.1, 0.1);
-        group.traverse((child: THREE.Mesh) => {
-            if (child instanceof THREE.Mesh) {
-              console.log(child.material);
-                (<THREE.MeshLambertMaterial>child.material).map = texture;
-                (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
+              group.scale.set(0.1, 0.1, 0.1);
+              // group.scale.set(1, 1, 1);
+              group.traverse((child: THREE.Mesh) => {
+                  if (child instanceof THREE.Mesh) {
+
+                      console.log(child);
+                      (<THREE.MeshLambertMaterial>child.material).map = texture;
+                      (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
+
+                  }
+              });
+
+              this.scene.add(group);
+
+            },
+            (event) => {
+              console.log(event)
+            },
+            (event) => {
+              console.error(event)
             }
-        });
+          );
+        }
+      );
+    } else {
+      let modelLoader = loader.load(
+        model.path,
+        (group: THREE.Group) => {
+          // let material = new THREE.MeshNormalMaterial();
+          // let mesh = new THREE.Mesh(geometry, material);
+          // console.log(mesh)
+          // this.scene.add(mesh);
 
-        this.scene.add(group);
+          // if you want to add your custom material
+          //
 
-      },
-      (event) => {
-        console.log(event)
-      },
-      (event) => {
-        console.error(event)
-      }
-    );
+          // let materialObj = new THREE.MeshPhongMaterial({
+            // map: texture
+          // });
+
+          group.scale.set(0.1, 0.1, 0.1);
+          // group.traverse((child: THREE.Mesh) => {
+          //     if (child instanceof THREE.Mesh) {
+          //
+          //       console.log(child);
+          //         (<THREE.MeshLambertMaterial>child.material).map = texture;
+          //         (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
+          //
+          //     }
+          // });
+
+          this.scene.add(group);
+
+        },
+        (event) => {
+          console.log(event)
+        },
+        (event) => {
+          console.error(event)
+        }
+      );
+    }
+
+// console.log(texture);
+
+// console.log(model)
+
   }
 
   //TODO: add retina pixelRatio

@@ -44,7 +44,7 @@ export class LightService {
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
 
         //HELPLER
-        light.castShadow = true;
+        // light.castShadow = true;
 
         this.engineService.scene.add( light );
         break;
