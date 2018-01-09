@@ -39,16 +39,13 @@ export class HeightMapService {
 
         let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width-1, img.height-1);
 
-        console.log(img.width);
-
-                // objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
-        console.log(geometry);
         for( let i = 0; i < res.length; i++ ){
           geometry.vertices[i].setZ(res[i][2]/10);
         }
 
         geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2));
         geometry.verticesNeedUpdate = true;
+
 
         if (this.colorScheme){
           for (let i = 0; i < geometry.faces.length; i += 2) {
@@ -67,6 +64,7 @@ export class HeightMapService {
           }
           geometry.elementsNeedUpdate = true;
         }
+
 
         // let material = new THREE.MeshBasicMaterial( {
         //     shading: THREE.FlatShading,
@@ -132,18 +130,14 @@ export class HeightMapService {
         });
 
         if (options.grid) {
+          let loader = new THREE.TextureLoader();
 
-          let grid = new THREE.MeshPhongMaterial( {
-            color: 0xfff,
-            wireframe: true,
+
+          let patternMaterial = new THREE.Texture({
+            color: 0x0000ff
           });
 
-          console.log(grid);
-
-          objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, [grid] );
-
-          scene.add(objectPG);
-
+          console.log()
         }
 
 
