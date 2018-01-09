@@ -29,7 +29,7 @@ export class EditorComponent implements OnInit {
 
   dragStartMouse(event){
     this.mouseData.dragStart = event;
-    console.log(event)
+    console.log(event);
   }
 
   dragMoveMouse(event){
@@ -39,7 +39,7 @@ export class EditorComponent implements OnInit {
       let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
       let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
       console.log(event)
-      this.engineService.updateCamera(x, y)
+      this.engineService.updateCamera(x, y);
     }
   }
 
@@ -58,7 +58,7 @@ export class EditorComponent implements OnInit {
       }
     };
 
-    console.log(this.engineService.settings)
+    console.log(this.engineService.settings);
   }
 
   ngOnInit() {

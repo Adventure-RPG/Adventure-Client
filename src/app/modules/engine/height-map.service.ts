@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import {IGEOJson} from "./engine.types";
 import {Color, Object3D} from "three";
+import {createScope} from '@angular/core/src/profile/wtf_impl';
 
 
 
@@ -38,7 +39,10 @@ export class HeightMapService {
 
         let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width-1, img.height-1);
 
+        console.log(img.width);
+
                 // objectPG.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2) );
+        console.log(geometry);
         for( let i = 0; i < res.length; i++ ){
           geometry.vertices[i].setZ(res[i][2]/10);
         }
@@ -71,7 +75,7 @@ export class HeightMapService {
 
         let material = new THREE.MeshPhongMaterial( {
           shading: THREE.FlatShading,
-          vertexColors: THREE.VertexColors, 
+          vertexColors: THREE.VertexColors,
         } );
 
         let materialShadow = new THREE.ShadowMaterial( {
@@ -85,28 +89,63 @@ export class HeightMapService {
         console.log(this.colorScheme);
         console.log(geometry);
 
+
 // materialShadow
         let multiMaterial = [material];
-
-        if (options.grid){
-          let grid = new THREE.MeshPhongMaterial( {
-            color: 0xfff,
-            wireframe: true
-          } );
-
-          multiMaterial = [...multiMaterial, grid];
-        }
 
         let objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
 
         let parent = new THREE.Object3D();
+        // if (options.gridAxis) {
+        //   ////////////
+        //   // CUSTOM //
+        //   ////////////
+        //
+        //   let axes = new THREE.AxisHelper(1);
+        //   let axesSize = img.width - 1;
+        //   console.log(parent.position);
+        //   // axes.position = parent.position;
+        //   scene.add(axes);
+        //
+        //   let gridXZ = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x006600), new THREE.Color(0x006600));
+        //   gridXZ.position.set( axesSize / 2, axesSize / 2,axesSize / 2 );
+        //   scene.add(gridXZ);
+        //
+        //   let gridXY = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x000066), new THREE.Color(0x000066));
+        //   gridXY.position.set( axesSize / 2, axesSize,0);
+        //   gridXY.rotation.x = Math.PI / 2;
+        //   scene.add(gridXY);
+        //
+        //   let gridYZ = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x660000), new THREE.Color(0x660000));
+        //   gridYZ.position.set( 0, axesSize, axesSize / 2 );
+        //   gridYZ.rotation.z = Math.PI / 2;
+        //
+        //   console.log(gridXZ)
+        //   scene.add(gridYZ);
+        //
+        // }
+
         parent.add(objectPG);
-
-
         objectPG.children.map((item: Object3D, index, array) => {
           item.castShadow = true;
           item.receiveShadow = true;
         });
+
+        if (options.grid) {
+
+          let grid = new THREE.MeshPhongMaterial( {
+            color: 0xfff,
+            wireframe: true,
+          });
+
+          console.log(grid);
+
+          objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, [grid] );
+
+          scene.add(objectPG);
+
+        }
+
 
         scene.add(parent);
 

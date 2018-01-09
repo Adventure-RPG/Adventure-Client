@@ -102,7 +102,12 @@ export class EngineService {
                 // map: texture
               // });
 
-              group.scale.set(0.1, 0.1, 0.1);
+              let box = new THREE.Box3().setFromObject(group);
+              console.log(box.min, box.max, box.getSize() );
+
+
+
+              group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
               // group.scale.set(1, 1, 1);
               group.traverse((child: THREE.Mesh) => {
                   if (child instanceof THREE.Mesh) {
@@ -238,7 +243,7 @@ export class EngineService {
 
   public map(img){
     let options:HeightMapOptions = {
-      grid: false
+      grid: true
     };
 
     console.log(this.scene);
