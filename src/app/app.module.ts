@@ -14,7 +14,7 @@ import {UiInterfacesModule} from "./modules/ui-interfaces/ui-interfaces.module";
 import {ModalComponent} from "./shared/modal/modal.component";
 import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.component";
 import {EngineService} from "./modules/engine/engine.service";
-import {LightService} from "./modules/engine/light.service";
+import {LightService} from "./modules/engine/core/light.service";
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -54,7 +54,7 @@ const Components = [
   ],
   providers: [
     EngineService,
-    LightService, 
+    LightService,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

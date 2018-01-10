@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 
 import {IGEOJson} from "./engine.types";
-import {Color, Object3D} from "three";
+import {Color, Material, MeshBasicMaterial, MeshPhongMaterial, Object3D} from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
 
 
@@ -88,8 +88,26 @@ export class HeightMapService {
         console.log(geometry);
 
 
-// materialShadow
-        let multiMaterial = [material];
+        let multiMaterial: any[] = [material];
+
+        if (options.grid) {
+          let loader = new THREE.TextureLoader();
+
+          let textureRes = loader.load("assets/images/scene-ui-kit/graph-paper.svg");
+
+          textureRes.wrapS = THREE.RepeatWrapping;
+          textureRes.wrapT = THREE.RepeatWrapping;
+          textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1)/10);
+
+          let squadLinesMaterial = new THREE.MeshBasicMaterial( {
+            map: textureRes,
+            transparent: true,
+            opacity: 0.1,
+            color: 0x000000
+          } );
+
+          multiMaterial = [...multiMaterial, squadLinesMaterial];
+        }
 
         let objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
 
@@ -129,21 +147,11 @@ export class HeightMapService {
           item.receiveShadow = true;
         });
 
-        if (options.grid) {
-          let loader = new THREE.TextureLoader();
-
-
-          let patternMaterial = new THREE.Texture({
-            color: 0x0000ff
-          });
-
-          console.log()
-        }
-
-
         scene.add(parent);
 
         return geoJsonObject;
+
+
       })
       .then((geoObj)=>{
         let options = {body: geoObj};

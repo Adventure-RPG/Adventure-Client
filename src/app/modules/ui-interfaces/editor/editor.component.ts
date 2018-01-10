@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EngineService} from "../../engine/engine.service";
-import {LightService} from "../../engine/light.service";
+import {LightService} from "../../engine/core/light.service";
 import { HeightMapService } from "../../engine/height-map.service";
 
 @Component({

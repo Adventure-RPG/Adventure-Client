@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DirectionalLight, HemisphereLight, Light, PointLight, SpotLight, Vector3} from "three";
 import {ColorPickerService} from "angular4-color-picker/lib/color-picker.service";
 import {EngineService} from "../../../engine/engine.service";
-import {LightService} from "../../../engine/light.service";
+import {LightService} from "../../../engine/core/light.service";
 
 @Component({
   selector: 'adventure-lights',
