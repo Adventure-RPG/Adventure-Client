@@ -5,10 +5,21 @@ export class SettingsService {
 
   constructor() { }
 
-  private _camera = {
-    d: 20
+  private _browser = {
+    aspectRatio: window.innerWidth / window.innerHeight
   };
 
+  get browser(): { aspectRatio: number } {
+    return this._browser;
+  }
+
+  set browser(value: { aspectRatio: number }) {
+    this._browser = value;
+  }
+
+  private _camera = {
+    d: 20,
+  };
 
   get camera(): { d: number } {
     return this._camera;
@@ -17,4 +28,6 @@ export class SettingsService {
   set camera(value: { d: number }) {
     this._camera = value;
   }
+
+
 }

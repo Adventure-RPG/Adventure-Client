@@ -13,7 +13,7 @@ export class SceneService {
     this.scene = new Scene();
 
     // Render
-    this.renderer = new WebGLRenderer();
+    this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
 
     this.renderer.shadowMap.enabled = true;

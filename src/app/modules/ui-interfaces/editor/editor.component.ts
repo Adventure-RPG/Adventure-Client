@@ -41,7 +41,10 @@ export class EditorComponent implements OnInit {
       let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
       let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
       console.log(event)
-      this.engineService.cameraService.updateCamera(this.engineService.sceneService.scene.position, x, y);
+
+      if (this.engineService.sceneService.scene && this.settingsService && this.settingsService.camera && this.settingsService.camera.d) {
+        this.engineService.updateCamera(x, y);
+      }
     }
   }
 

@@ -210,10 +210,10 @@ export class EngineService {
 
   }
 
-  public updateCamera(){
+  public updateCamera(x?, y?, z?) {
     console.log(this.sceneService.scene);
-    this.cameraService.updateCamera(this.sceneService.scene.position);
-    this.sceneService.animation(this.cameraService.camera);
+    let camera = this.cameraService.updateCamera(this.sceneService.scene.position, x, y, z);
+    this.sceneService.animation(camera);
   }
 
 
