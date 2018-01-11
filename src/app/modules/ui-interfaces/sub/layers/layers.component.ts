@@ -17,18 +17,18 @@ export class LayersComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.engineService.initStatus.subscribe(
       () => {
-        console.log(this.engineService.scene);
+        console.log(this.engineService.sceneService.scene);
         this.layersList();
         this.changeDetectorRef.detectChanges();
       }
-    )
+    );
   }
 
   ngAfterViewInit(){
   }
 
   public layersList(){
-    if (this.engineService.scene){
+    if (this.engineService.sceneService.scene){
       // for (let obj of this.engineService.scene.children) {
       //   console.log(obj.type);
       // };

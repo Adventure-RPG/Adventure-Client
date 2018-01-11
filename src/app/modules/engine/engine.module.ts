@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HeightMapService} from "./height-map.service";
-import {LightService} from "./core/light.service";
+import {HeightMapService} from "./core/3d-helpers/height-map.service";
+import {SceneService} from './core/base/scene.service';
+import {CameraService} from './core/base/camera.service';
 
 
 @NgModule({
@@ -10,6 +11,8 @@ import {LightService} from "./core/light.service";
   ],
   providers: [
     HeightMapService,
+    SceneService,
+    CameraService
   ],
   declarations: []
 })

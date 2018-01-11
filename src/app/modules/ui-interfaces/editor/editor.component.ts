@@ -1,7 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {EngineService} from "../../engine/engine.service";
 import {LightService} from "../../engine/core/light.service";
-import { HeightMapService } from "../../engine/height-map.service";
+import { HeightMapService } from "../../engine/core/3d-helpers/height-map.service";
+import {SettingsService} from '../../../services/settings.service';
 
 @Component({
   selector: 'adventure-editor',
@@ -15,6 +16,7 @@ export class EditorComponent implements OnInit {
   constructor(
     private engineService: EngineService,
     private lightService: LightService,
+    private settingsService: SettingsService,
     private heightMapService: HeightMapService,
     private elementRef: ElementRef
   ) {
@@ -39,37 +41,36 @@ export class EditorComponent implements OnInit {
       let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
       let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
       console.log(event)
-      this.engineService.updateCamera(x, y);
+      this.engineService.cameraService.updateCamera(this.engineService.sceneService.scene.position, x, y);
     }
   }
 
   dragEndMouse(event){
     this.mouseData.dragStart = null;
     this.mouseData.dragEnd = event;
-    console.log(event)
+    console.log(this.engineService.sceneService.scene)
+    console.log(event);
   }
 
   mouseWheel(event){
 
-    let d = this.engineService.settings.camera.d += event.deltaY/100;
-    this.engineService.settings = {
-      camera: {
-        d: d
-      }
+    let d = this.settingsService.camera.d += event.deltaY / 100;
+    this.settingsService.camera = {
+      d: d
     };
 
-    console.log(this.engineService.settings);
+    if (this.engineService.sceneService.scene && this.settingsService && this.settingsService.camera && this.settingsService.camera.d) {
+      this.engineService.updateCamera();
+    }
   }
 
   ngOnInit() {
-    this.engineService.settings = {
-      camera: {
-        d: 40
-      }
+    this.settingsService.camera = {
+      d: 40
     };
 
     this.engineService.init();
-    this.scene.nativeElement.appendChild( this.engineService.domElement ) ;
+    this.scene.nativeElement.appendChild( this.engineService.sceneService.renderer.domElement ) ;
 
 
     let hemisphereLightOptions = {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 
-import {IGEOJson} from "./engine.types";
+import {IGEOJson} from "../../engine.types";
 import {Color, Material, MeshBasicMaterial, MeshPhongMaterial, Object3D} from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
 

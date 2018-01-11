@@ -24,8 +24,8 @@ export class LayerComponent implements OnInit {
   }
 
   public deleteElement(element) {
-    let index = this.engineService.scene.children.indexOf(element);
-    this.engineService.scene.children.splice(index, 1);
+    let index = this.engineService.sceneService.scene.children.indexOf(element);
+    this.engineService.sceneService.scene.children.splice(index, 1);
   }
 
   constructor(

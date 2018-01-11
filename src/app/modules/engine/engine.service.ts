@@ -3,10 +3,11 @@ import * as THREE from 'three';
 import {HeightMapOptions} from "./engine.types";
 
 
-import {CubicGrid} from "./elements/cubic-grid";
-import {Grid} from "./elements/grid";
-import {HeightMapService} from "./height-map.service";
+import {HeightMapService} from "./core/3d-helpers/height-map.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {SceneService} from './core/base/scene.service';
+import {CameraService} from './core/base/camera.service';
+import {SettingsService} from '../../services/settings.service';
 
 declare let require: any;
 
@@ -14,26 +15,36 @@ declare let require: any;
 export class EngineService {
 
   constructor(
-    private heightMapService: HeightMapService
+    private _heightMapService: HeightMapService,
+    private _sceneService: SceneService,
+    private _cameraService: CameraService
   ) {}
 
-  private _settings:any;
-  public get settings():any {
-    return this._settings;
-  }
-  public set settings(settings:any) {
-    this._settings = settings;
-
-    //Add lifycycle for camera;
-    if (this.scene && settings && settings.camera && settings.camera.d) {
-      this.updateCamera();
-    }
+  get heightMapService(): HeightMapService {
+    return this._heightMapService;
   }
 
-  public camera:THREE.Camera;
-  public scene: THREE.Scene;
-  public renderer: THREE.WebGLRenderer;
-  public domElement;
+  set heightMapService(value: HeightMapService) {
+    this._heightMapService = value;
+  }
+
+  get cameraService(): CameraService {
+    return this._cameraService;
+  }
+
+  set cameraService(value: CameraService) {
+    this._cameraService = value;
+  }
+
+  get sceneService(): SceneService {
+    return this._sceneService;
+  }
+
+  set sceneService(value: SceneService) {
+    this._sceneService = value;
+  }
+
+
 
   private _initStatus: any = new BehaviorSubject<any>(null);
   public _initStatus$ = this._initStatus.asObservable();
@@ -49,18 +60,6 @@ export class EngineService {
 
 
   // TODO: вынести в отдельный модуль
-  public grid(){
-      let grid = new Grid();
-      grid.addGeometry(this.settings);
-      this.scene.add( grid.figure );
-  }
-
-  public cubicGrid(){
-      let cubicGrid = new CubicGrid();
-      cubicGrid.addGeometry(this.settings);
-      this.scene.add( cubicGrid.figure );
-  }
-
   //TODO: вынести аплойд файлов
   /**
    * Метод загрузки FBX модели
@@ -119,7 +118,7 @@ export class EngineService {
                   }
               });
 
-              this.scene.add(group);
+              this._sceneService.scene.add(group);
 
             },
             (event) => {
@@ -138,7 +137,7 @@ export class EngineService {
           // let material = new THREE.MeshNormalMaterial();
           // let mesh = new THREE.Mesh(geometry, material);
           // console.log(mesh)
-          // this.scene.add(mesh);
+          // this.sceneService.scene.add(mesh);
 
           // if you want to add your custom material
           //
@@ -158,7 +157,7 @@ export class EngineService {
           //     }
           // });
 
-          this.scene.add(group);
+          this._sceneService.scene.add(group);
 
         },
         (event) => {
@@ -197,84 +196,45 @@ export class EngineService {
     }
   }
 
-  public updateCamera(x?, y?, z?){
-    if (!x){ x = 0 }
-    if (!y){ y = 0 }
-    if (!z){ z = 0 }
-    let aspect = window.innerWidth / window.innerHeight;
-    let d = this.settings.camera.d;
-    this.camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, d * 40 );
-    this.camera.position.set( d * 8, d * 8, d * 8); // all components equal
-    this.camera.lookAt( this.scene.position ); // or the origin
-    console.log(this.camera);
+  public init() {
+    // Scene
+    // let d = this.settings.camera.d;
+    this.sceneService.scene = new THREE.Scene();
 
-   // test only
-    // this.renderer.render(this.scene, this.camera);
+    let axisHelper = new THREE.AxisHelper( 5 );
+    this.sceneService.scene.add( axisHelper );
+
+    console.log(this.sceneService.scene)
+
+    this.updateCamera();
 
   }
 
-
-  public init(){
-    //Scene
-    // let d = this.settings.camera.d;
-    this.scene = new THREE.Scene();
-    this.updateCamera();
-    // this.lightInit(d);
-
-
-
-    let axisHelper = new THREE.AxisHelper( 5 );
-    this.scene.add( axisHelper );
-
-    //Render
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
-
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
-    // this.renderer.shadowMap.renderSingleSided  = true;
-    // this.renderer.shadowMap.renderReverseSided = false;
-
-    this.domElement = this.renderer.domElement;
-    this.modelObservable();
+  public updateCamera(){
+    console.log(this.sceneService.scene);
+    this.cameraService.updateCamera(this.sceneService.scene.position);
+    this.sceneService.animation(this.cameraService.camera);
   }
 
 
 
   public map(img){
-    let options:HeightMapOptions = {
+    let options: HeightMapOptions = {
       grid: true
     };
 
-    console.log(this.scene);
+    console.log(this.sceneService.scene);
 
-    this.heightMapService.changeMapFromImage(options, this.scene, img);
+    this.heightMapService.changeMapFromImage(options, this.sceneService.scene, img);
   }
 
   public colorMap(img){
-    let options:HeightMapOptions = {
+    let options: HeightMapOptions = {
       grid: false
     };
 
-    console.log(this.scene);
+    console.log(this.sceneService.scene);
 
-    this.heightMapService.changeColorMapFromImage(options, this.scene, img);
-  }
-
-  public modelObservable(){
-    // this.cubicGrid();
-    // this.testObj();
-    this.initStatus = true;
-    this.animation();
-  }
-
-  //Render logic
-  public animation(){
-    function callbackAnimation(context){
-      context.animation();
-    }
-
-    window.requestAnimationFrame(callbackAnimation.bind(null, this));
-    this.renderer.render( this.scene, this.camera);
+    this.heightMapService.changeColorMapFromImage(options, this.sceneService.scene, img);
   }
 }

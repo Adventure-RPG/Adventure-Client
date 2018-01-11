@@ -46,7 +46,7 @@ export class LightService {
         //HELPLER
         // light.castShadow = true;
 
-        this.engineService.scene.add( light );
+        this.engineService.sceneService.scene.add( light );
         break;
       case 'DirectionalLight':
         light = new THREE.DirectionalLight( color,  lightEntity.intensity  );
@@ -62,17 +62,17 @@ export class LightService {
         // dirLight.shadow.camera.bottom = -d;
         //
         // dirLight.shadow.camera.far = 5;
-        this.engineService.scene.add( light );
+        this.engineService.sceneService.scene.add( light );
 
         //TODO: in configurate layers
         dirLightHelper = new THREE.DirectionalLightHelper( light, lightLength );
-        this.engineService.scene.add( dirLightHelper );
+        this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
       case 'HemisphereLight':
         light = new THREE.HemisphereLight( color, <any>new THREE.Color(lightEntity.groundColor), lightEntity.intensity );
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
-        this.engineService.scene.add( light );
+        this.engineService.sceneService.scene.add( light );
 
         break;
       case 'PointLight':
@@ -90,9 +90,9 @@ export class LightService {
         // light.shadow.mapSize.height = 50;
 
 
-        this.engineService.scene.add( light );
+        this.engineService.sceneService.scene.add( light );
         // dirLightHelper = new THREE.PointLightHelper( light, lightLength );
-        // this.engineService.scene.add( dirLightHelper );
+        // this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
       // TODO: update and add
@@ -113,9 +113,9 @@ export class LightService {
       //   //
       //   // dirLight.shadow.camera.far = 5;
       //
-      //   this.engineService.scene.add( light );
+      //   this.engineService.sceneService.scene.add( light );
       //   dirLightHelper = new THREE.PointLightHelper( light, lightLength );
-      //   this.engineService.scene.add( dirLightHelper );
+      //   this.engineService.sceneService.scene.add( dirLightHelper );
       //
       //   break;
       case 'SpotLight':
@@ -135,9 +135,9 @@ export class LightService {
         //
         // dirLight.shadow.camera.far = 5;
 
-        this.engineService.scene.add( light );
+        this.engineService.sceneService.scene.add( light );
         dirLightHelper = new THREE.SpotLightHelper( light );
-        this.engineService.scene.add( dirLightHelper );
+        this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
       default:
