@@ -44,7 +44,7 @@ export class EditorComponent implements OnInit {
       let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
       console.log(event)
 
-      if (this.engineService.sceneService.scene && this.settingsService && this.settingsService.camera && this.settingsService.camera.d) {
+      if (this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d) {
         this.engineService.updateCamera(x, y);
       }
     }
@@ -59,20 +59,25 @@ export class EditorComponent implements OnInit {
 
   mouseWheel(event){
 
-    let d = this.settingsService.camera.d += event.deltaY / 100;
-    this.settingsService.camera = {
-      d: d
-    };
+    this.settingsService.changeSetting("camera", {
+      d: this.settingsService.settings.camera.d + event.deltaY / 100
+    });
 
-    if (this.engineService.sceneService.scene && this.settingsService && this.settingsService.camera && this.settingsService.camera.d) {
+    if (
+      this.engineService.sceneService.scene &&
+      this.settingsService &&
+      this.settingsService.settings.camera &&
+      this.settingsService.settings.camera.d
+    ) {
       this.engineService.updateCamera();
     }
   }
 
   ngOnInit() {
-    this.settingsService.camera = {
-      d: 40
-    };
+
+    this.settingsService.settings$.subscribe( () => {
+      this.engineService.updateCamera();
+    })
 
     this.engineService.init();
     this.scene.nativeElement.appendChild( this.engineService.sceneService.renderer.domElement ) ;

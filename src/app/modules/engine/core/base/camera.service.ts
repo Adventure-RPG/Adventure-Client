@@ -35,11 +35,9 @@ export class CameraService implements OnInit{
     if (!y){y = 0}
     if (!z){z = 0}
 
-    let d = this.settingsService.camera.d;
-    console.log(this.camera);
-    console.log(d);
+    let d = this.settingsService.settings.camera.d;
 
-    if (!this.camera){
+    if (!this.camera) {
       this.initIsometricCamera();
     } else {
       //TODO: разобраться что за хуйня с камерой
@@ -53,10 +51,10 @@ export class CameraService implements OnInit{
   }
 
   public initIsometricCamera(){
-    let d = this.settingsService.camera.d;
+    let d = this.settingsService.settings.camera.d;
     this.camera = new OrthographicCamera(
-      - d * this.settingsService.browser.aspectRatio,
-      d * this.settingsService.browser.aspectRatio,
+      - d * this.settingsService.settings.browser.aspectRatio,
+      d * this.settingsService.settings.browser.aspectRatio,
       d,
       - d,
       1,
@@ -67,10 +65,10 @@ export class CameraService implements OnInit{
 
   public updateIsometricCamera(){
 
-    let d = this.settingsService.camera.d;
+    let d = this.settingsService.settings.camera.d;
 
-    (<OrthographicCamera>this.camera).left = - d * this.settingsService.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).right = - d * this.settingsService.browser.aspectRatio;
+    (<OrthographicCamera>this.camera).left = - d * this.settingsService.settings.browser.aspectRatio;
+    (<OrthographicCamera>this.camera).right = - d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).top = d;
     (<OrthographicCamera>this.camera).bottom = - d;
     (<OrthographicCamera>this.camera).near = 1;

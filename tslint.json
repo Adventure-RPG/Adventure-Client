@@ -64,10 +64,6 @@
       "check-whitespace"
     ],
     "prefer-const": false,
-    "quotemark": [
-      true,
-      "single"
-    ],
     "radix": true,
     "semicolon": [
       "always"

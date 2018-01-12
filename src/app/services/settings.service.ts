@@ -1,33 +1,60 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
+import {CAMERA} from '../enums/settings.enum';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+import * as Lodash from 'lodash';
+import {Observable} from 'rxjs/Observable';
+
+export interface Settings {
+  browser: Browser;
+  camera: Camera;
+}
+export interface Browser {
+  aspectRatio: number;
+}
+export interface Camera {
+  type: CAMERA;
+  d: number;
+}
 
 @Injectable()
-export class SettingsService {
+export class SettingsService implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
-  private _browser = {
-    aspectRatio: window.innerWidth / window.innerHeight
-  };
+  private _settings: BehaviorSubject<Settings> = new BehaviorSubject({
+    browser: {
+      aspectRatio: window.innerWidth / window.innerHeight
+    },
+    camera: {
+      type: CAMERA.IsometricCamera,
+      d: 20,
+    }
+  });
 
-  get browser(): { aspectRatio: number } {
-    return this._browser;
+  public settings$: Observable<Settings> = this._settings.asObservable();
+
+  get settings(): Settings{
+    return this._settings.getValue();
   }
 
-  set browser(value: { aspectRatio: number }) {
-    this._browser = value;
+  set settings(value){
+    this._settings.next(value);
+    localStorage.setItem("settings", JSON.stringify(value));
   }
 
-  private _camera = {
-    d: 20,
-  };
-
-  get camera(): { d: number } {
-    return this._camera;
+  changeSetting(key, value){
+    let obj = {};
+    obj[key] = value;
+    console.log(this._settings.getValue())
+    let mergeModel = Lodash.merge(this._settings.getValue(), obj);
+    console.log(obj);
+    console.log(mergeModel);
+    this.settings = mergeModel;
   }
 
-  set camera(value: { d: number }) {
-    this._camera = value;
+  ngOnInit(): void {
+    this.settings = JSON.parse(localStorage.getItem("settings"));
   }
-
 
 }

@@ -19,7 +19,6 @@ export class AppComponent {
   @HostListener('document:keypress', ['$event'])
 
   handleKeyboardEvent(event: KeyboardEvent) {
-    event.preventDefault();
     this.keyboardEventService.keyboardPressEvent(event);
   }
 }
