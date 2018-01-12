@@ -48,10 +48,7 @@ export class SettingsService implements OnInit {
   changeSetting(key, value){
     let obj = {};
     obj[key] = value;
-    console.log(this._settings.getValue())
     let mergeModel = Lodash.merge(this._settings.getValue(), obj);
-    console.log(obj);
-    console.log(mergeModel);
     this.settings = mergeModel;
   }
 
