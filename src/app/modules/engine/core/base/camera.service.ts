@@ -42,15 +42,14 @@ export class CameraService implements OnInit{
     if (!this.camera){
       this.initIsometricCamera();
     } else {
-      this.updateIsometricCamera();
+      //TODO: разобраться что за хуйня с камерой
+      this.initIsometricCamera();
+      // this.updateIsometricCamera();
     }
 
     this.camera.lookAt( position ); // or the origin
 
     return this.camera;
-
-    // test only
-    // this.sceneService.renderer.render(this.scene, this.camera);
   }
 
   public initIsometricCamera(){

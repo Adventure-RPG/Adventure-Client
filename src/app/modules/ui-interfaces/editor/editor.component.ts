@@ -3,6 +3,7 @@ import {EngineService} from "../../engine/engine.service";
 import {LightService} from "../../engine/core/light.service";
 import { HeightMapService } from "../../engine/core/3d-helpers/height-map.service";
 import {SettingsService} from '../../../services/settings.service';
+import {KeyboardEventService} from '../../../events/keyboard-event.service';
 
 @Component({
   selector: 'adventure-editor',
@@ -17,6 +18,7 @@ export class EditorComponent implements OnInit {
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
+    public keyboardEventService: KeyboardEventService,
     private heightMapService: HeightMapService,
     private elementRef: ElementRef
   ) {

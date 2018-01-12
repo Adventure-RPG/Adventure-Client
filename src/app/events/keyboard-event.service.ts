@@ -7,4 +7,10 @@ export class KeyboardEventService {
 
   }
 
+  keyboardPressEvent(event: KeyboardEvent){
+    console.log(event);
+  }
+
+
+
 }

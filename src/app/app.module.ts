@@ -16,6 +16,9 @@ import {SidebarModalComponent} from "./shared/sidebar-modal/sidebar-modal.compon
 import {EngineService} from "./modules/engine/engine.service";
 import {LightService} from "./modules/engine/core/light.service";
 import {SettingsService} from './services/settings.service';
+import {KeyboardEventService} from './events/keyboard-event.service';
+import {MouseEventService} from './events/mouse-event.service';
+import {OnWindowEventService} from './events/on-window-event.service';
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -44,6 +47,12 @@ const Components = [
   ModalComponent,
 ];
 
+const Events = [
+  KeyboardEventService,
+  MouseEventService,
+  OnWindowEventService
+];
+
 @NgModule({
   imports: [
     ...Modules,
@@ -57,6 +66,7 @@ const Components = [
     SettingsService,
     EngineService,
     LightService,
+    ...Events,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

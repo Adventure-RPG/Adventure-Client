@@ -46,4 +46,5 @@ export class SceneService {
   set renderer(value: WebGLRenderer) {
     this._renderer = value;
   }
+
 }
