@@ -22,7 +22,7 @@ export class SettingsService implements OnInit {
 
   constructor() {}
 
-  private _settings: BehaviorSubject<Settings> = new BehaviorSubject({
+  private baseSetting: Settings = {
     browser: {
       aspectRatio: window.innerWidth / window.innerHeight
     },
@@ -30,7 +30,9 @@ export class SettingsService implements OnInit {
       type: CAMERA.IsometricCamera,
       d: 20,
     }
-  });
+  };
+
+  private _settings: BehaviorSubject<Settings> = new BehaviorSubject(JSON.parse(localStorage.getItem("settings")) || this.baseSetting);
 
   public settings$: Observable<Settings> = this._settings.asObservable();
 
