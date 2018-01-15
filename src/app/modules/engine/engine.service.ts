@@ -206,7 +206,6 @@ export class EngineService{
     console.log(this.sceneService.scene);
     let camera = this.cameraService.updateCamera(this.sceneService.scene.position, x, y, z);
     this.sceneService.camera = camera;
-    this.sceneService.animation();
   }
 
 

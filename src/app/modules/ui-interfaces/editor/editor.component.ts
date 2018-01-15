@@ -63,14 +63,15 @@ export class EditorComponent implements OnInit {
       d: this.settingsService.settings.camera.d + event.deltaY / 100
     });
 
-    if (
-      this.engineService.sceneService.scene &&
-      this.settingsService &&
-      this.settingsService.settings.camera &&
-      this.settingsService.settings.camera.d
-    ) {
-      this.engineService.updateCamera();
-    }
+    // TODO: delete if not needed
+    // if (
+    //   this.engineService.sceneService.scene &&
+    //   this.settingsService &&
+    //   this.settingsService.settings.camera &&
+    //   this.settingsService.settings.camera.d
+    // ) {
+    //   this.engineService.updateCamera();
+    // }
   }
 
   ngOnInit() {

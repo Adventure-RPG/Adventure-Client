@@ -14,12 +14,16 @@ export class SceneService {
   constructor() {
     this.scene = new Scene();
 
+    console.log("scene service1");
+
     // Render
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
 
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+
+    this.animation();
   }
 
   public resizeEvent(event: Event){
@@ -30,7 +34,9 @@ export class SceneService {
   // Render logic
   public animation() {
     requestAnimationFrame(this.animation.bind(this));
-    this.renderer.render( this.scene, this.camera );
+    if (this.camera){
+      this.renderer.render( this.scene, this.camera );
+    }
   }
 
   get scene(): Scene {

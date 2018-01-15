@@ -39,7 +39,7 @@ export class CameraService implements OnInit{
       this.initIsometricCamera();
     } else {
       //TODO: разобраться что за хуйня с камерой
-      this.initIsometricCamera();
+      this.updateIsometricCamera();
       // this.updateIsometricCamera();
     }
 
