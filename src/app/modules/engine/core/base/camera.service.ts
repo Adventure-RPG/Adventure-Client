@@ -35,12 +35,12 @@ export class CameraService implements OnInit{
     if (!y){y = 0}
     if (!z){z = 0}
 
+    //TODO: дописать апдейт к камере.
+
     if (!this.camera) {
       this.initIsometricCamera();
     } else {
-      //TODO: разобраться что за хуйня с камерой
       this.updateIsometricCamera();
-      // this.updateIsometricCamera();
     }
 
     this.camera.lookAt( position ); // or the origin
