@@ -40,7 +40,8 @@ export class KeyboardEventService {
         console.log(event);
         break;
       case "2":
-        this.settingsService.changeSetting("camera", {type: CAMERA.PerspectiveCamera});
+        this.settingsService.changeSetting("camera", {type: CAMERA.MapCamera});
+        // this.settingsService.changeSetting("camera", {type: CAMERA.PerspectiveCamera});
         console.log(event);
         break;
       case "3":
