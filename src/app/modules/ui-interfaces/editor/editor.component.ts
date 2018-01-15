@@ -77,7 +77,9 @@ export class EditorComponent implements OnInit {
 
     this.settingsService.settings$.subscribe( () => {
       this.engineService.updateCamera();
-    })
+    });
+
+    console.log("init");
 
     this.engineService.init();
     this.scene.nativeElement.appendChild( this.engineService.sceneService.renderer.domElement ) ;

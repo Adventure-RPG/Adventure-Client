@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import * as THREE from 'three';
 import {HeightMapOptions} from "./engine.types";
 
@@ -12,13 +12,15 @@ import {SettingsService} from '../../services/settings.service';
 declare let require: any;
 
 @Injectable()
-export class EngineService {
+export class EngineService{
 
-  constructor(
-    private _heightMapService: HeightMapService,
-    private _sceneService: SceneService,
-    private _cameraService: CameraService
-  ) {}
+  get settingsService(): SettingsService {
+    return this._settingsService;
+  }
+
+  set settingsService(value: SettingsService) {
+    this._settingsService = value;
+  }
 
   get heightMapService(): HeightMapService {
     return this._heightMapService;
@@ -44,7 +46,19 @@ export class EngineService {
     this._sceneService = value;
   }
 
-
+  constructor(
+    private _heightMapService: HeightMapService,
+    private _sceneService: SceneService,
+    private _cameraService: CameraService,
+    private _settingsService: SettingsService
+  ) {
+    this.settingsService.settings$.subscribe(
+      (data) => {
+        console.log(data);
+        this.cameraService.initIsometricCamera();
+      }
+    );
+  }
 
   private _initStatus: any = new BehaviorSubject<any>(null);
   public _initStatus$ = this._initStatus.asObservable();
@@ -175,36 +189,14 @@ export class EngineService {
 
   }
 
-  //TODO: add retina pixelRatio
-  public resize(gl) {
-    console.log(gl)
-    let realToCSSPixels = window.devicePixelRatio;
-
-    // Lookup the size the browser is displaying the canvas in CSS pixels
-    // and compute a size needed to make our drawingbuffer match it in
-    // device pixels.
-    let displayWidth  = Math.floor(gl.canvas.clientWidth  * realToCSSPixels);
-    let displayHeight = Math.floor(gl.canvas.clientHeight * realToCSSPixels);
-
-    // Check if the canvas is not the same size.
-    if (gl.canvas.width  !== displayWidth ||
-      gl.canvas.height !== displayHeight) {
-
-      // Make the canvas the same size
-      gl.canvas.width  = displayWidth;
-      gl.canvas.height = displayHeight;
-    }
-  }
-
   public init() {
     // Scene
     // let d = this.settings.camera.d;
-    this.sceneService.scene = new THREE.Scene();
 
     let axisHelper = new THREE.AxisHelper( 5 );
     this.sceneService.scene.add( axisHelper );
 
-    console.log(this.sceneService.scene)
+    console.log(this.sceneService.scene);
 
     this.updateCamera();
 
@@ -213,7 +205,8 @@ export class EngineService {
   public updateCamera(x?, y?, z?) {
     console.log(this.sceneService.scene);
     let camera = this.cameraService.updateCamera(this.sceneService.scene.position, x, y, z);
-    this.sceneService.animation(camera);
+    this.sceneService.camera = camera;
+    this.sceneService.animation();
   }
 
 
@@ -237,4 +230,5 @@ export class EngineService {
 
     this.heightMapService.changeColorMapFromImage(options, this.sceneService.scene, img);
   }
+
 }

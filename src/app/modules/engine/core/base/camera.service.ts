@@ -35,8 +35,6 @@ export class CameraService implements OnInit{
     if (!y){y = 0}
     if (!z){z = 0}
 
-    let d = this.settingsService.settings.camera.d;
-
     if (!this.camera) {
       this.initIsometricCamera();
     } else {

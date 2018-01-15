@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Scene, WebGLRenderer} from 'three';
+import {Camera, Scene, WebGLRenderer} from 'three';
 import * as THREE from 'three';
 
 @Injectable()
@@ -7,6 +7,8 @@ export class SceneService {
 
   private _scene: Scene;
   private _renderer: WebGLRenderer;
+  private _camera: Camera;
+  private initRenderer: boolean;
 
 
   constructor() {
@@ -20,15 +22,15 @@ export class SceneService {
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
   }
 
+  public resizeEvent(event: Event){
+    this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
+  }
+
 
   // Render logic
-  public animation(camera) {
-    function callbackAnimation(context){
-      context.animation(camera);
-    }
-
-    window.requestAnimationFrame(callbackAnimation.bind(null, this, camera));
-    this.renderer.render( this.scene, camera );
+  public animation() {
+    requestAnimationFrame(this.animation.bind(this));
+    this.renderer.render( this.scene, this.camera );
   }
 
   get scene(): Scene {
@@ -47,4 +49,11 @@ export class SceneService {
     this._renderer = value;
   }
 
+  get camera(): Camera {
+    return this._camera;
+  }
+
+  set camera(value: Camera) {
+    this._camera = value;
+  }
 }
