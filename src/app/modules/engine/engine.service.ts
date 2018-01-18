@@ -233,7 +233,7 @@ export class EngineService{
     let axisHelper = new THREE.AxisHelper( 5 );
 
     // Delete
-    this.test();
+    // this.test();
     // End Delete
 
     this.sceneService.scene.add( axisHelper );
@@ -254,7 +254,7 @@ export class EngineService{
 
   public map(img){
     let options: HeightMapOptions = {
-      grid: true
+      grid: false
     };
 
     console.log(this.sceneService.scene);
