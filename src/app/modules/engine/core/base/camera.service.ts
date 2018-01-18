@@ -1,5 +1,5 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Camera, OrthographicCamera} from 'three';
+import {Camera, CubeCamera, OrthographicCamera} from 'three';
 import {EngineService} from '../../engine.service';
 import {SettingsService} from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
@@ -8,26 +8,26 @@ import {CAMERA} from '../../../../enums/settings.enum';
 @Injectable()
 export class CameraService implements OnInit{
 
-  private _camera: Camera | OrthographicCamera;
-  private _cameries: {[key: string]: Camera | OrthographicCamera};
+  private _camera: Camera | OrthographicCamera | CubeCamera;
+  private _cameries: {[key: string]: Camera | OrthographicCamera | CubeCamera};
 
   constructor(
     private settingsService: SettingsService
   ) { }
 
-  get camera(): Camera | OrthographicCamera{
+  get camera(): Camera | OrthographicCamera | CubeCamera{
     return this._camera;
   }
 
-  set camera(value: Camera | OrthographicCamera) {
+  set camera(value: Camera | OrthographicCamera | CubeCamera) {
     this._camera = value;
   }
 
-  get cameries(): { [p: string]: Camera | OrthographicCamera } {
+  get cameries(): { [p: string]: Camera | OrthographicCamera | CubeCamera } {
     return this._cameries;
   }
 
-  set cameries(value: { [p: string]: Camera | OrthographicCamera }) {
+  set cameries(value: { [p: string]: Camera | OrthographicCamera | CubeCamera }) {
     this._cameries = value;
   }
 
@@ -43,17 +43,12 @@ export class CameraService implements OnInit{
       this.initIsometricCamera();
       this.init2dCamera();
     } else {
-
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera){
         this.update2dCamera();
       }
     }
-
-    console.log(this.settingsService.settings.camera.type);
-    console.log(CAMERA.MapCamera);
-
 
     this.camera.lookAt( position ); // or the origin
 
@@ -97,9 +92,13 @@ export class CameraService implements OnInit{
   };
 
   public init2dCamera(){
+
+    let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries["initCamera"];
-    this.camera = new OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
-    this.camera.position.set( 80, 80, 80); // all components equal
+
+    this.camera = new CubeCamera( 1, d * 40, 128);
+    this.camera.position.set( 0, d * 4, 0); // all components equal
+
     let obj = {};
     obj["init2dCamera"] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
@@ -108,8 +107,8 @@ export class CameraService implements OnInit{
   };
 
   public update2dCamera(){
-    this.camera = new OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
-    this.camera.position.set( 80, 80, 80); // all components equal
+    let d = this.settingsService.settings.camera.d;
+    this.camera.position.set( 0, d * 4, 0); // all components equal
   }
 
   ngOnInit(): void {

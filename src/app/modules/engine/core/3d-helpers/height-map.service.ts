@@ -37,11 +37,14 @@ export class HeightMapService {
         };
 
 
-        let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width-1, img.height-1);
+        let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
 
+        //Считаем по синему слою.
         for( let i = 0; i < res.length; i++ ){
-          geometry.vertices[i].setZ(res[i][2]/10);
+          geometry.vertices[i].setZ(res[i][2] / 10);
         }
+
+        console.log(res);
 
         geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2));
         geometry.verticesNeedUpdate = true;
@@ -50,16 +53,16 @@ export class HeightMapService {
         if (this.colorScheme){
           for (let i = 0; i < geometry.faces.length; i += 2) {
             let color = [
-              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`),
-              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`),
-              new THREE.Color(`rgb(${this.colorScheme[i/2][0]}, ${this.colorScheme[i/2][1]}, ${this.colorScheme[i/2][2]})`)
+              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`)
             ];
 
             geometry.faces[i].vertexColors = color;
             geometry.faces[i+1].vertexColors = color;
 
             // geometry.faces[i].color = new THREE.Color( 0xfff )
-            //   .setRGB(this.colorScheme[i/2][0], this.colorScheme[i/2][1], this.colorScheme[i/2][2])
+            //   .setRGB(this.colorScheme[i / 2][0], this.colorScheme[i / 2][1], this.colorScheme[i / 2][2])
 
           }
           geometry.elementsNeedUpdate = true;
@@ -87,7 +90,6 @@ export class HeightMapService {
         console.log(this.colorScheme);
         console.log(geometry);
 
-
         let multiMaterial: any[] = [material];
 
         if (options.grid) {
@@ -97,7 +99,7 @@ export class HeightMapService {
 
           textureRes.wrapS = THREE.RepeatWrapping;
           textureRes.wrapT = THREE.RepeatWrapping;
-          textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1)/10);
+          textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1) / 10);
 
           let squadLinesMaterial = new THREE.MeshBasicMaterial( {
             map: textureRes,
@@ -166,8 +168,7 @@ export class HeightMapService {
 
   }
 
-  public
-  changeColorMapFromImage(options, scene, img){
+  public changeColorMapFromImage(options, scene, img){
     this
     .parseImageToColorGeo(img)
     .then((res) => {
@@ -200,7 +201,7 @@ export class HeightMapService {
    * @param img
    * @returns {Array of Array of numbers}
    */
-  public getGeoHeight(img:HTMLImageElement):Array<Array<number>> {
+  public getGeoHeight(img: HTMLImageElement):Array<Array<number>> {
     let canvas = document.createElement('canvas');
     canvas.width  = img.width;
     canvas.height = img.height;
@@ -227,7 +228,7 @@ export class HeightMapService {
    * @param  {HTMLImageElement} img [description]
    * @return {any}                  [description]
    */
-  public getColorMap(img:HTMLImageElement): any {
+  public getColorMap(img: HTMLImageElement): any {
     let canvas = document.createElement('canvas');
     canvas.width  = img.width;
     canvas.height = img.height;

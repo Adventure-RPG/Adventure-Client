@@ -110,7 +110,7 @@ export class EditorComponent implements OnInit {
       angle: 0.52,
       decay: 2,
       position : {
-        x: 0,
+        x: -20,
         y: 20,
         z: 0
       }

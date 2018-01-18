@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Camera, Scene, WebGLRenderer} from 'three';
+import {Camera, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
 import * as THREE from 'three';
 
 @Injectable()
@@ -7,7 +7,7 @@ export class SceneService {
 
   private _scene: Scene;
   private _renderer: WebGLRenderer;
-  private _camera: Camera;
+  private _camera: Camera | OrthographicCamera | CubeCamera;
   private initRenderer: boolean;
 
 
@@ -35,7 +35,7 @@ export class SceneService {
   public animation() {
     requestAnimationFrame(this.animation.bind(this));
     if (this.camera){
-      this.renderer.render( this.scene, this.camera );
+      this.renderer.render( this.scene, <Camera>this.camera );
     }
   }
 
@@ -55,11 +55,11 @@ export class SceneService {
     this._renderer = value;
   }
 
-  get camera(): Camera {
+  get camera(): Camera | OrthographicCamera | CubeCamera {
     return this._camera;
   }
 
-  set camera(value: Camera) {
+  set camera(value: Camera | OrthographicCamera | CubeCamera) {
     this._camera = value;
   }
 }
