@@ -53,4 +53,8 @@ export class HeightMapComponent implements OnInit {
     console.log(img);
   }
 
+  generateFromNoise(){
+    this.engineService.generateFromNoise();
+  }
+
 }

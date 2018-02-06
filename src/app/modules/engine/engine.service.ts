@@ -55,7 +55,7 @@ export class EngineService{
   ) {
     this.settingsService.settings$.subscribe(
       (data) => {
-        console.log(data);
+        // console.log(data);
         this.cameraService.initIsometricCamera();
       }
     );
@@ -238,14 +238,14 @@ export class EngineService{
 
     this.sceneService.scene.add( axisHelper );
 
-    console.log(this.sceneService.scene);
+    // console.log(this.sceneService.scene);
 
     this.updateCamera();
 
   }
 
   public updateCamera(x?, y?, z?) {
-    console.log(this.sceneService.scene);
+    // console.log(this.sceneService.scene);
     let camera = this.cameraService.updateCamera(this.sceneService.scene.position, x, y, z);
     this.sceneService.camera = camera;
   }
@@ -260,6 +260,10 @@ export class EngineService{
     console.log(this.sceneService.scene);
 
     this.heightMapService.changeMapFromImage(options, this.sceneService.scene, img);
+  }
+
+  public generateFromNoise(){
+    this.heightMapService.getHeightMap(this.sceneService.scene)
   }
 
   public colorMap(img){

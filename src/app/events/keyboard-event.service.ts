@@ -48,6 +48,10 @@ export class KeyboardEventService {
         this.settingsService.changeSetting("camera", {type: CAMERA.OrthographicCamera});
         console.log(event);
         break;
+      case "r":
+        //TODO: Добавить блок на уровне localstorage
+        location.reload();
+        break;
       default:
         console.log(event);
         break;
