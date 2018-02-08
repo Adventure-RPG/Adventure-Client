@@ -162,7 +162,7 @@ export class HeightMapService {
         // return new Api().points(options);
       })
       .then((response)=>{
-        // console.log(response);
+        console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -263,59 +263,62 @@ export class HeightMapService {
     let colors;
     this.generateHeight(worldWidth, worldDepth);
 
-    let pxGeometry = new THREE.PlaneGeometry( 100, 100 );
-    pxGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
-    pxGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
-    pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    pxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
-    pxGeometry.rotateY( Math.PI / 2 );
-    pxGeometry.translate( 50, 0, 0 );
+    console.log('here');
 
-    let nxGeometry = new THREE.PlaneGeometry( 100, 100 );
-    nxGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
-    nxGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
-    nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    nxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
-    nxGeometry.rotateY( - Math.PI / 2 );
-    nxGeometry.translate( - 50, 0, 0 );
+    // let pxGeometry = new THREE.PlaneGeometry( worldDepth, worldWidth );
+    // pxGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
+    // pxGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
+    // pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
+    // pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
+    // pxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    // pxGeometry.rotateY( Math.PI / 2 );
+    // pxGeometry.translate( worldHalfWidth, 0, 0 );
 
-    let pyGeometry = new THREE.PlaneGeometry( 100, 100 );
+    // let nxGeometry = new THREE.PlaneGeometry( worldDepth, worldWidth );
+    // nxGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
+    // nxGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
+    // nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
+    // nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
+    // nxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    // nxGeometry.rotateY( - Math.PI / 2 );
+    // nxGeometry.translate( - worldHalfWidth, 0, 0 );
+
+    let pyGeometry = new THREE.PlaneGeometry( worldDepth, worldWidth );
     pyGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
     pyGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    pyGeometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
+    // pyGeometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
+    // pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
+    // pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
     pyGeometry.rotateX( - Math.PI / 2 );
-    pyGeometry.translate( 0, 50, 0 );
+    // pyGeometry.translate( 0, worldHalfWidth, 0 );
 
-    let py2Geometry = new THREE.PlaneGeometry( 100, 100 );
-    py2Geometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    py2Geometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    py2Geometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
-    py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
-    py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
-    py2Geometry.rotateX( - Math.PI / 2 );
-    py2Geometry.rotateY( Math.PI / 2 );
-    py2Geometry.translate( 0, 50, 0 );
+    // let py2Geometry = new THREE.PlaneGeometry( worldDepth, worldWidth );
+    // py2Geometry.faces[ 0 ].vertexColors = [ light, light, light ];
+    // py2Geometry.faces[ 1 ].vertexColors = [ light, light, light ];
+    // // py2Geometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
+    // // py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
+    // // py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
+    // py2Geometry.rotateX( - Math.PI / 2 );
+    // py2Geometry.rotateY( Math.PI / 2 );
+    // // py2Geometry.translate( 0, worldHalfWidth, 0 );
 
-    let pzGeometry = new THREE.PlaneGeometry(100, 100 );
-    pzGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
-    pzGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
-    pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    pzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
-    pzGeometry.translate( 0, 0, 50 );
 
-    let nzGeometry = new THREE.PlaneGeometry( 100, 100 );
-    nzGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
-    nzGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
-    nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    nzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
-    nzGeometry.rotateY( Math.PI );
-    nzGeometry.translate( 0, 0, - 50 );
+    // let pzGeometry = new THREE.PlaneGeometry(worldDepth, worldWidth );
+    // pzGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
+    // pzGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
+    // pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
+    // pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
+    // pzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    // pzGeometry.translate( 0, 0, worldHalfWidth );
+
+    // let nzGeometry = new THREE.PlaneGeometry( worldDepth, worldWidth );
+    // nzGeometry.faces[ 0 ].vertexColors = [ light, shadow, light ];
+    // nzGeometry.faces[ 1 ].vertexColors = [ shadow, shadow, light ];
+    // nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
+    // nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
+    // nzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    // nzGeometry.rotateY( Math.PI );
+    // nzGeometry.translate( 0, 0, - worldHalfWidth );
 
     let geometry = new THREE.Geometry();
     let dummy = new THREE.Mesh();
@@ -348,19 +351,19 @@ export class HeightMapService {
 
         if ( a + c > b + d ) {
 
-          colors = py2Geometry.faces[ 0 ].vertexColors;
-
-          colors[ 0 ] = b === 0 ? shadow : light;
-          colors[ 1 ] = c === 0 ? shadow : light;
-          colors[ 2 ] = a === 0 ? shadow : light;
-
-          colors = py2Geometry.faces[ 1 ].vertexColors;
-
-          colors[ 0 ] = c === 0 ? shadow : light;
-          colors[ 1 ] = d === 0 ? shadow : light;
-          colors[ 2 ] = a === 0 ? shadow : light;
-
-          geometry.merge( py2Geometry, matrix );
+          // colors = py2Geometry.faces[ 0 ].vertexColors;
+          //
+          // colors[ 0 ] = b === 0 ? shadow : light;
+          // colors[ 1 ] = c === 0 ? shadow : light;
+          // colors[ 2 ] = a === 0 ? shadow : light;
+          //
+          // colors = py2Geometry.faces[ 1 ].vertexColors;
+          //
+          // colors[ 0 ] = c === 0 ? shadow : light;
+          // colors[ 1 ] = d === 0 ? shadow : light;
+          // colors[ 2 ] = a === 0 ? shadow : light;
+          //
+          // geometry.merge( py2Geometry, matrix );
 
         } else {
 
@@ -381,62 +384,62 @@ export class HeightMapService {
         }
 
         if ( ( px != h && px != h + 1 ) || x == 0 ) {
-
-          colors = pxGeometry.faces[ 0 ].vertexColors;
-
-          colors[ 0 ] = pxpz > px && x > 0 ? shadow : light;
-          colors[ 2 ] = pxnz > px && x > 0 ? shadow : light;
-
-          colors = pxGeometry.faces[ 1 ].vertexColors;
-
-          colors[ 2 ] = pxnz > px && x > 0 ? shadow : light;
-
-          geometry.merge( pxGeometry, matrix );
+          //
+          // colors = pxGeometry.faces[ 0 ].vertexColors;
+          //
+          // colors[ 0 ] = pxpz > px && x > 0 ? shadow : light;
+          // colors[ 2 ] = pxnz > px && x > 0 ? shadow : light;
+          //
+          // colors = pxGeometry.faces[ 1 ].vertexColors;
+          //
+          // colors[ 2 ] = pxnz > px && x > 0 ? shadow : light;
+          //
+          // geometry.merge( pxGeometry, matrix );
 
         }
 
         if ( ( nx != h && nx != h + 1 ) || x == worldWidth - 1 ) {
 
-          colors = nxGeometry.faces[ 0 ].vertexColors;
-
-          colors[ 0 ] = nxnz > nx && x < worldWidth - 1 ? shadow : light;
-          colors[ 2 ] = nxpz > nx && x < worldWidth - 1 ? shadow : light;
-
-          colors = nxGeometry.faces[ 1 ].vertexColors;
-
-          colors[ 2 ] = nxpz > nx && x < worldWidth - 1 ? shadow : light;
-
-          geometry.merge( nxGeometry, matrix );
+          // colors = nxGeometry.faces[ 0 ].vertexColors;
+          //
+          // colors[ 0 ] = nxnz > nx && x < worldWidth - 1 ? shadow : light;
+          // colors[ 2 ] = nxpz > nx && x < worldWidth - 1 ? shadow : light;
+          //
+          // colors = nxGeometry.faces[ 1 ].vertexColors;
+          //
+          // colors[ 2 ] = nxpz > nx && x < worldWidth - 1 ? shadow : light;
+          //
+          // geometry.merge( nxGeometry, matrix );
 
         }
 
         if ( ( pz != h && pz != h + 1 ) || z == worldDepth - 1 ) {
-
-          colors = pzGeometry.faces[ 0 ].vertexColors;
-
-          colors[ 0 ] = nxpz > pz && z < worldDepth - 1 ? shadow : light;
-          colors[ 2 ] = pxpz > pz && z < worldDepth - 1 ? shadow : light;
-
-          colors = pzGeometry.faces[ 1 ].vertexColors;
-
-          colors[ 2 ] = pxpz > pz && z < worldDepth - 1 ? shadow : light;
-
-          geometry.merge( pzGeometry, matrix );
+          //
+          // colors = pzGeometry.faces[ 0 ].vertexColors;
+          //
+          // colors[ 0 ] = nxpz > pz && z < worldDepth - 1 ? shadow : light;
+          // colors[ 2 ] = pxpz > pz && z < worldDepth - 1 ? shadow : light;
+          //
+          // colors = pzGeometry.faces[ 1 ].vertexColors;
+          //
+          // colors[ 2 ] = pxpz > pz && z < worldDepth - 1 ? shadow : light;
+          //
+          // geometry.merge( pzGeometry, matrix );
 
         }
 
         if ( ( nz != h && nz != h + 1 ) || z == 0 ) {
 
-          colors = nzGeometry.faces[ 0 ].vertexColors;
-
-          colors[ 0 ] = pxnz > nz && z > 0 ? shadow : light;
-          colors[ 2 ] = nxnz > nz && z > 0 ? shadow : light;
-
-          colors = nzGeometry.faces[ 1 ].vertexColors;
-
-          colors[ 2 ] = nxnz > nz && z > 0 ? shadow : light;
-
-          geometry.merge( nzGeometry, matrix );
+          // colors = nzGeometry.faces[ 0 ].vertexColors;
+          //
+          // colors[ 0 ] = pxnz > nz && z > 0 ? shadow : light;
+          // colors[ 2 ] = nxnz > nz && z > 0 ? shadow : light;
+          //
+          // colors = nzGeometry.faces[ 1 ].vertexColors;
+          //
+          // colors[ 2 ] = nxnz > nz && z > 0 ? shadow : light;
+          //
+          // geometry.merge( nzGeometry, matrix );
 
         }
       }
