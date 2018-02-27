@@ -1,9 +1,12 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Camera, CubeCamera, OrthographicCamera} from 'three';
+import {Camera, CubeCamera, FirstPersonControls, OrthographicCamera, PerspectiveCamera} from 'three';
 import {EngineService} from '../../engine.service';
 import {SettingsService} from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import {CAMERA} from '../../../../enums/settings.enum';
+
+//Подумать как убрать
+import * as THREE from 'three';
 
 @Injectable()
 export class CameraService implements OnInit{
@@ -42,17 +45,43 @@ export class CameraService implements OnInit{
     if (!this.camera) {
       this.initIsometricCamera();
       this.init2dCamera();
+      this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera){
         this.update2dCamera();
+      } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
+        this.updateFirstPersonCamera();
       }
     }
 
     this.camera.lookAt( position ); // or the origin
 
     return this.camera;
+  }
+
+  public initFirstPersonCamera(){
+    this.camera = new PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 20000 );
+    require('three-first-person-controls')(THREE);
+
+    // console.log(FPC);
+    let controls = new THREE.FirstPersonControls( this.camera );
+    //
+    controls.movementSpeed = 1000;
+    controls.lookSpeed = 0.125;
+    controls.lookVertical = true;
+    controls.constrainVertical = true;
+    controls.verticalMin = 1.1;
+    controls.verticalMax = 2.2;
+
+    let obj = {};
+    obj[CAMERA.FirstPersonCamera] = this.camera;
+    let mergeModel = Lodash.merge(this.cameries, obj);
+    this.cameries = mergeModel;
+  }
+
+  public updateFirstPersonCamera(){
   }
 
   public initIsometricCamera(){
@@ -70,7 +99,7 @@ export class CameraService implements OnInit{
     );
     this.camera.position.set( d * 8, d * 8, d * 8); // all components equal
     let obj = {};
-    obj["isometricCamera"] = this.camera;
+    obj[CAMERA.IsometricCamera] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
     this.cameries = mergeModel;
 
@@ -79,7 +108,7 @@ export class CameraService implements OnInit{
   public updateIsometricCamera(){
 
     let d = this.settingsService.settings.camera.d;
-    this.camera = this.cameries["isometricCamera"];
+    this.camera = this.cameries[CAMERA.IsometricCamera];
 
     (<OrthographicCamera>this.camera).left = - d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).right = - d * this.settingsService.settings.browser.aspectRatio;
@@ -94,13 +123,13 @@ export class CameraService implements OnInit{
   public init2dCamera(){
 
     let d = this.settingsService.settings.camera.d;
-    this.camera = this.cameries["initCamera"];
+    this.camera = this.cameries[CAMERA.MapCamera];
 
     this.camera = new CubeCamera( 1, d * 40, 128);
     this.camera.position.set( 0, d * 4, 0); // all components equal
 
     let obj = {};
-    obj["init2dCamera"] = this.camera;
+    obj[CAMERA.MapCamera] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
     this.cameries = mergeModel;
 

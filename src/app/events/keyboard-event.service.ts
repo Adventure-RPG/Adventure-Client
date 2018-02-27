@@ -30,6 +30,14 @@ export class KeyboardEventService {
 
   ctrlAndNotAltEvent(event: KeyboardEvent){
     console.log(event);
+    switch (event.key){
+      case "r":
+        //TODO: Добавить блок на уровне localstorage
+        location.reload();
+        break;
+      default:
+        break;
+    }
   }
 
   notCtrlAndAltEvent(event: KeyboardEvent){
@@ -48,9 +56,9 @@ export class KeyboardEventService {
         this.settingsService.changeSetting("camera", {type: CAMERA.OrthographicCamera});
         console.log(event);
         break;
-      case "r":
-        //TODO: Добавить блок на уровне localstorage
-        location.reload();
+      case "4":
+        this.settingsService.changeSetting("camera", {type: CAMERA.FirstPersonCamera});
+        console.log(event);
         break;
       default:
         console.log(event);

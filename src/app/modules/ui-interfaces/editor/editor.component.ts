@@ -102,17 +102,17 @@ export class EditorComponent implements OnInit {
     };
 
     let pointLightOptions = {
-      color: "#0f0",
+      color: "#89ff90",
       groundColor: "#444444",
       intensity: 1,
-      distance: 400,
+      distance: 250,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position : {
-        x: -50,
-        y: 150,
-        z: -30
+        x: 0,
+        y: 40,
+        z: 0
       }
     };
 

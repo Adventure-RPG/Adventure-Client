@@ -8,7 +8,10 @@ export class OnWindowEventService {
 
   constructor(
     private engineService: EngineService,
-  ) { }
+  ) {
+    this.engineService.settingsService.changeSetting("browser", {"aspectRatio": window.innerWidth / window.innerHeight});
+    this.engineService.sceneService.resizeEvent(event);
+  }
 
   onResize(event: Event) {
 

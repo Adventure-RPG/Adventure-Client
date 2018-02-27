@@ -30,9 +30,9 @@ export class LightService {
     let light: THREE.AmbientLight | THREE.DirectionalLight | THREE.HemisphereLight | THREE.PointLight | THREE.SpotLight;
     let dirLightHelper: THREE.DirectionalLightHelper | THREE.HemisphereLightHelper | THREE.PointLightHelper;
 
-    //TODO: clean interface
-    //https://github.com/mrdoob/three.js/issues/12452
-    //any because Color type doesn't support
+    // TODO: clean interface
+    // https://github.com/mrdoob/three.js/issues/12452
+    // any because Color type doesn't support
     let color: any = new THREE.Color(lightEntity.color);
     // console.log(lightEntity.color);
     // console.log(color);
@@ -84,13 +84,18 @@ export class LightService {
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
         //HELPLER
         light.castShadow = true;
-        light.shadow.bias = 0.1;
+        light.shadow.bias = 0.01;
         light.shadow.radius = 1;
         // light.shadow.mapSize.width  = 50;
         // light.shadow.mapSize.height = 50;
 
-
         this.engineService.sceneService.scene.add( light );
+
+
+        let sphereSize = 1;
+        let pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
+        this.engineService.sceneService.scene.add( pointLightHelper );
+
         // dirLightHelper = new THREE.PointLightHelper( light, lightLength );
         // this.engineService.sceneService.scene.add( dirLightHelper );
 

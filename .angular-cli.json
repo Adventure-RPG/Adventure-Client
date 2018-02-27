@@ -21,7 +21,7 @@
       "styles": [
         "styles.scss"
       ],
-      "scripts": [ 
+      "scripts": [
         "app/libs/inflate.min.js"
       ],
       "environmentSource": "environments/environment.ts",

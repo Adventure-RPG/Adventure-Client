@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
 
 import {IGEOJson} from "../../engine.types";
-import {Color, Material, MeshBasicMaterial, MeshPhongMaterial, Object3D} from 'three';
+import {
+  Color, DoubleSide, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
+  PlaneGeometry, RepeatWrapping, Scene, SceneUtils, ShadowMaterial, TextureLoader, VertexColors
+} from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
-
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class HeightMapService {
   private colorScheme;
   private mapData;
 
-  public changeMapFromImage(options, scene: THREE.Scene, img){
+  public changeMapFromImage(options, scene: Scene, img){
 
     // terrain
     //TODO: сделать добавление без рекваер
@@ -39,7 +40,7 @@ export class HeightMapService {
         };
 
 
-        let geometry = new THREE.PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
+        let geometry = new PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
 
         //Считаем по синему слою.
         for( let i = 0; i < res.length; i++ ){
@@ -48,22 +49,22 @@ export class HeightMapService {
 
         console.log(res);
 
-        geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2));
+        geometry.applyMatrix( new Matrix4().makeRotationX( - Math.PI / 2));
         geometry.verticesNeedUpdate = true;
 
 
         if (this.colorScheme){
           for (let i = 0; i < geometry.faces.length; i += 2) {
             let color = [
-              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
-              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
-              new THREE.Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`)
+              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`)
             ];
 
             geometry.faces[i].vertexColors = color;
             geometry.faces[i+1].vertexColors = color;
 
-            // geometry.faces[i].color = new THREE.Color( 0xfff )
+            // geometry.faces[i].color = new Color( 0xfff )
             //   .setRGB(this.colorScheme[i / 2][0], this.colorScheme[i / 2][1], this.colorScheme[i / 2][2])
 
           }
@@ -71,39 +72,35 @@ export class HeightMapService {
         }
 
 
-        // let material = new THREE.MeshBasicMaterial( {
-        //     shading: THREE.FlatShading,
-        //     vertexColors: THREE.VertexColors
+        // let material = new MeshBasicMaterial( {
+        //     shading: FlatShading,
+        //     vertexColors: VertexColors
         // });
 
-        let material = new THREE.MeshPhongMaterial( {
-          shading: THREE.FlatShading,
-          vertexColors: THREE.VertexColors,
+        let material = new MeshPhongMaterial( {
+          shading: FlatShading,
+          vertexColors: VertexColors,
         } );
 
-        let materialShadow = new THREE.ShadowMaterial( {
+        let materialShadow = new ShadowMaterial( {
           opacity: 1,
           lineWidth: 0.1
         } );
 
         geometry.colorsNeedUpdate = true;
 
-
-        console.log(this.colorScheme);
-        console.log(geometry);
-
         let multiMaterial: any[] = [material];
 
         if (options.grid) {
-          let loader = new THREE.TextureLoader();
+          let loader = new TextureLoader();
 
           let textureRes = loader.load("assets/images/scene-ui-kit/graph-paper.svg");
 
-          textureRes.wrapS = THREE.RepeatWrapping;
-          textureRes.wrapT = THREE.RepeatWrapping;
+          textureRes.wrapS = RepeatWrapping;
+          textureRes.wrapT = RepeatWrapping;
           textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1) / 10);
 
-          let squadLinesMaterial = new THREE.MeshBasicMaterial( {
+          let squadLinesMaterial = new MeshBasicMaterial( {
             map: textureRes,
             transparent: true,
             opacity: 0.1,
@@ -113,37 +110,9 @@ export class HeightMapService {
           multiMaterial = [...multiMaterial, squadLinesMaterial];
         }
 
-        let objectPG = THREE.SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
+        let objectPG = SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
 
-        let parent = new THREE.Object3D();
-        // if (options.gridAxis) {
-        //   ////////////
-        //   // CUSTOM //
-        //   ////////////
-        //
-        //   let axes = new THREE.AxisHelper(1);
-        //   let axesSize = img.width - 1;
-        //   console.log(parent.position);
-        //   // axes.position = parent.position;
-        //   scene.add(axes);
-        //
-        //   let gridXZ = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x006600), new THREE.Color(0x006600));
-        //   gridXZ.position.set( axesSize / 2, axesSize / 2,axesSize / 2 );
-        //   scene.add(gridXZ);
-        //
-        //   let gridXY = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x000066), new THREE.Color(0x000066));
-        //   gridXY.position.set( axesSize / 2, axesSize,0);
-        //   gridXY.rotation.x = Math.PI / 2;
-        //   scene.add(gridXY);
-        //
-        //   let gridYZ = new THREE.GridHelper(axesSize, 100, new THREE.Color(0x660000), new THREE.Color(0x660000));
-        //   gridYZ.position.set( 0, axesSize, axesSize / 2 );
-        //   gridYZ.rotation.z = Math.PI / 2;
-        //
-        //   console.log(gridXZ)
-        //   scene.add(gridYZ);
-        //
-        // }
+        let parent = new Object3D();
 
         parent.add(objectPG);
         objectPG.children.map((item: Object3D, index, array) => {
@@ -251,79 +220,46 @@ export class HeightMapService {
     return colorScheme;
   }
 
-  public getHeightMap(scene: THREE.Scene){
+  public getHeightMap(scene: Scene){
 
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
     let worldDepth = 200;
     let worldWidth = 200;
-
     let cubeWidth = 1;
-
     let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
-    let colors;
+
     this.generateHeight(worldWidth, worldDepth);
 
-    let light = new THREE.Color( 0xffffff );
-    let matrix = new THREE.Matrix4();
+    let light = new Color( 0xffffff );
+    let matrix = new Matrix4();
 
-    let pxGeometry = new THREE.PlaneGeometry( cubeWidth, cubeWidth );
-    pxGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    pxGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    pxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    pxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    let pxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
     pxGeometry.rotateY( Math.PI / 2 );
     pxGeometry.translate( cubeWidth / 2, 0, 0 );
 
-    let nxGeometry = new THREE.PlaneGeometry( cubeWidth, cubeWidth );
-    nxGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    nxGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    nxGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    nxGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    let nxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
     nxGeometry.rotateY( - Math.PI / 2 );
     nxGeometry.translate( - cubeWidth / 2, 0, 0 );
 
-    let pyGeometry = new THREE.PlaneGeometry( cubeWidth, cubeWidth );
-    pyGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    pyGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    pyGeometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
-    pyGeometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
+    let pyGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
     pyGeometry.rotateX( - Math.PI / 2 );
     pyGeometry.translate( 0, cubeWidth / 2, 0 );
 
-    let py2Geometry = new THREE.PlaneGeometry( cubeWidth, cubeWidth );
-    py2Geometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    py2Geometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    py2Geometry.faceVertexUvs[ 0 ][ 0 ][ 1 ].y = 0.5;
-    py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 0 ].y = 0.5;
-    py2Geometry.faceVertexUvs[ 0 ][ 1 ][ 1 ].y = 0.5;
+    let py2Geometry = new PlaneGeometry( cubeWidth, cubeWidth );
     py2Geometry.rotateX( - Math.PI / 2 );
     py2Geometry.rotateY( Math.PI / 2 );
     py2Geometry.translate( 0, cubeWidth / 2, 0 );
 
 
-    let pzGeometry = new THREE.PlaneGeometry(cubeWidth, cubeWidth );
-    pzGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    pzGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    pzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    pzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    let pzGeometry = new PlaneGeometry(cubeWidth, cubeWidth );
     pzGeometry.translate( 0, 0, cubeWidth / 2 );
 
-    let nzGeometry = new THREE.PlaneGeometry( cubeWidth, cubeWidth );
-    nzGeometry.faces[ 0 ].vertexColors = [ light, light, light ];
-    nzGeometry.faces[ 1 ].vertexColors = [ light, light, light ];
-    nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 0 ].y = 0.5;
-    nzGeometry.faceVertexUvs[ 0 ][ 0 ][ 2 ].y = 0.5;
-    nzGeometry.faceVertexUvs[ 0 ][ 1 ][ 2 ].y = 0.5;
+    let nzGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
     nzGeometry.rotateY( Math.PI );
     nzGeometry.translate( 0, 0, - cubeWidth / 2 );
 
-    let geometry = new THREE.Geometry();
-    let dummy = new THREE.Mesh();
+    let geometry = new Geometry();
 
     // Проход выставления высоты каждому квадрату
     for ( let z = 0; z < worldDepth; z ++ ) {
@@ -398,13 +334,22 @@ export class HeightMapService {
     }
 
 
-    // let texture = new THREE.TextureLoader().load( 'assets/images/heightmap/atlas.png' );
-    // texture.magFilter = THREE.NearestFilter;
-    // texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+    let material = new MeshPhongMaterial( {
+      flatShading: true,
+      vertexColors: VertexColors,
+      side: DoubleSide
+    } );
 
     console.log(geometry)
 
-    let mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { vertexColors: THREE.VertexColors } ) );
+    geometry.verticesNeedUpdate = true;
+
+    let mesh = new Mesh( geometry, material );
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
     scene.add( mesh );
   }
 
