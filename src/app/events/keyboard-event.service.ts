@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import {SettingsService} from '../services/settings.service';
 import {CAMERA} from '../enums/settings.enum';
 
+import { Key } from 'ts-keycode-enum';
+
+
+
 @Injectable()
 export class KeyboardEventService {
 
@@ -68,7 +72,29 @@ export class KeyboardEventService {
   }
 
   notCtrlAndNotAltEvent(event: KeyboardEvent){
-    console.log(event);
+
+
+    switch (event.keyCode){
+      case Key.RightArrow:
+      case Key.D:
+        console.log(Key.D);
+        break;
+      case Key.LeftArrow:
+      case Key.A:
+        console.log(Key.A);
+        break;
+      case Key.UpArrow:
+      case Key.W:
+        console.log(Key.W);
+        break;
+      case Key.DownArrow:
+      case Key.S:
+        console.log(Key.S);
+        break;
+      default:
+        console.log(event);
+        break;
+    }
   }
 
 }
