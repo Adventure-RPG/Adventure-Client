@@ -190,41 +190,6 @@ export class EngineService{
 
   }
 
-  public test(){
-    let vertices = [];
-    let holes = [];
-    let triangles, mesh;
-    let geometry = new THREE.Geometry();
-    let material = new THREE.MeshPhongMaterial({ opacity: 0.5, flatShading: true });
-    var verticesOfCube = [
-      -1,-1,-1,    1,-1,-1,    1, 1,-1,    -1, 1,-1,
-      -1,-1, 1,    1,-1, 1,    1, 1, 1,    -1, 1, 1,
-    ];
-
-    var indicesOfFaces = [
-      2,1,0,    0,3,2,
-      0,4,7,    7,3,0,
-      0,1,5,    5,4,0,
-      1,2,6,    6,5,1,
-      2,3,7,    7,6,2,
-      4,5,6,    6,7,4
-    ];
-
-    geometry = new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 );
-    mesh = new THREE.Mesh( geometry, material );
-
-    console.log(geometry);
-
-    this.sceneService.scene.add(mesh);
-
-    // let material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    // let cube = new THREE.Mesh( geometry, material );
-    // console.log(cube);
-    // this.sceneService.scene.add(cube);
-
-  }
-
-
 
   public init() {
     // Scene
