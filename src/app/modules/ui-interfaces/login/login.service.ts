@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import {ApiService} from "../../../services/api.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {LoginReq, LoginResponse, RegistrateReq} from "./login";
+import {SnotifyService} from "ng-snotify";
 
 @Injectable()
 export class LoginService {
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService
+  ) {}
+
+  public authUrl = 'http://auth.iamborsch.ru/';
 
   private _registrate:any = new BehaviorSubject<any>({});
   public _registrate$ = this._registrate.asObservable();
@@ -20,16 +25,8 @@ export class LoginService {
   }
 
   public httpRegistrate(body:RegistrateReq): any{
-    this.apiService
-      .postReq('users/register', body)
-      .subscribe(
-        (res:LoginResponse) =>{
-          console.log(res)
-        },
-        err => {
-          console.error(err)
-        }
-      )
+    return this.apiService
+      .post(this.authUrl + 'api/v1/auth/register', body);
   }
 
   private _signIn:any = new BehaviorSubject<any>({});
@@ -43,9 +40,9 @@ export class LoginService {
       this._signIn.next(value);
   }
 
-  public httpSignIn(body:LoginReq): any{
+  public httpSignIn(body:RegistrateReq): any{
     this.apiService
-    .postReq('users/login', body)
+    .post(this.authUrl + 'api/v1/auth/login', body)
     .subscribe(
       (res:LoginResponse) =>{
         console.log(res)
@@ -69,7 +66,7 @@ export class LoginService {
 
   public httpRecovery(body): any{
     this.apiService
-    .postReq('users', body)
+    .post('users', body)
     .subscribe(
       data  => {
         console.log(data);

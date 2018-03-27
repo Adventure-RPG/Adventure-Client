@@ -31,6 +31,7 @@ export class SceneService {
   }
 
 
+  // TODO: добавить сглаживание
   // Render logic
   public animation() {
     requestAnimationFrame(this.animation.bind(this));

@@ -3,17 +3,20 @@ import {SettingsService} from '../services/settings.service';
 import {CAMERA} from '../enums/settings.enum';
 
 import { Key } from 'ts-keycode-enum';
+import {EngineService} from "../modules/engine/engine.service";
 
 
 
 @Injectable()
 export class KeyboardEventService {
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private settingsService: SettingsService) {}
 
-  }
+  engineService: EngineService;
 
   keyboardPressEvent(event: KeyboardEvent){
+    console.log(event);
+
     if (event.ctrlKey && event.altKey){
       event.preventDefault();
       this.ctrlAndAltEvent(event);
@@ -77,18 +80,26 @@ export class KeyboardEventService {
     switch (event.keyCode){
       case Key.RightArrow:
       case Key.D:
+        this.engineService.updateCamera(10, 5, 0);
+        console.log(this.engineService);
         console.log(Key.D);
         break;
       case Key.LeftArrow:
       case Key.A:
+        this.engineService.updateCamera(-10, -5, 0);
+        console.log(this.engineService);
         console.log(Key.A);
         break;
       case Key.UpArrow:
       case Key.W:
+        this.engineService.updateCamera(0, 10, 0);
+        console.log(this.engineService);
         console.log(Key.W);
         break;
       case Key.DownArrow:
       case Key.S:
+        this.engineService.updateCamera(0, -10, 0);
+        console.log(this.engineService);
         console.log(Key.S);
         break;
       default:

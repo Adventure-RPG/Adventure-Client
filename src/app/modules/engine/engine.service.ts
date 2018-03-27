@@ -8,12 +8,40 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {SceneService} from './core/base/scene.service';
 import {CameraService} from './core/base/camera.service';
 import {SettingsService} from '../../services/settings.service';
-import {Geometry, SceneUtils} from 'three';
+import {Geometry, SceneUtils, Vector3} from 'three';
 
 declare let require: any;
 
 @Injectable()
 export class EngineService{
+
+  private _x: number = 0;
+  private _y: number = 0;
+  private _z: number = 0;
+
+  get x() {
+    return this._x;
+  }
+
+  set x(value) {
+    this._x = value;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  set y(value) {
+    this._y = value;
+  }
+
+  get z() {
+    return this._z;
+  }
+
+  set z(value) {
+    this._z = value;
+  }
 
   get settingsService(): SettingsService {
     return this._settingsService;
@@ -210,8 +238,16 @@ export class EngineService{
   }
 
   public updateCamera(x?, y?, z?) {
-    // console.log(this.sceneService.scene);
-    let camera = this.cameraService.updateCamera(this.sceneService.scene.position, x, y, z);
+    // console.log(this.x);
+
+    if (x){this.x = this.x + x;}
+    if (y){this.y = this.y + y;}
+    if (z){this.z = this.z + z;}
+    // this.y = this.y + y;
+    // this.z = this.z + z;
+    // console.log(this.x);
+
+    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z));
     this.sceneService.camera = camera;
   }
 

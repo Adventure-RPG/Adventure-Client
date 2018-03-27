@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {LoginService} from "../login.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LoginResponse} from "../login";
+import {SnotifyService} from "ng-snotify";
+import {AppService} from "../../../../app.service";
 
 @Component({
   selector: 'adventure-login-reg',
@@ -11,7 +14,8 @@ export class LoginRegComponent implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    public loginService: LoginService
+    public loginService: LoginService,
+    private appSerivce: AppService
   ) {  }
 
   public loginForm: FormGroup;
@@ -25,7 +29,20 @@ export class LoginRegComponent implements OnInit {
   }
 
   public loginFormSubmit(){
-    this.loginService.httpRegistrate(this.loginForm.value);
+    this.loginService
+      .httpRegistrate(this.loginForm.value)
+      .subscribe(
+        (res:LoginResponse) =>{
+          console.log(res)
+          this.appSerivce.snotifyService.success('Example body content', {
+            timeout: 2000,
+            showProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true
+          })
+        }
+      )
+    ;
   }
 
 }

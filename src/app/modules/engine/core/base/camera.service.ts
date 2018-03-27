@@ -34,7 +34,12 @@ export class CameraService implements OnInit{
     this._cameries = value;
   }
 
+  x; y; z;
+
   public updateCamera(position, x?, y?, z?){
+
+    // console.log(this.settingsService.settings.camera.type);
+    // console.log(CAMERA.IsometricCamera);
 
     if (!x){x = 0}
     if (!y){y = 0}
@@ -42,18 +47,21 @@ export class CameraService implements OnInit{
 
     // TODO: дописать апдейт к камере.
 
+    console.log(x, y);
+
     if (!this.camera) {
       this.initIsometricCamera();
       this.init2dCamera();
-      this.initFirstPersonCamera();
+      // this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera){
         this.update2dCamera();
-      } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
-        this.updateFirstPersonCamera();
       }
+      // else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
+      //   this.updateFirstPersonCamera();
+      // }
     }
 
     this.camera.lookAt( position ); // or the origin
@@ -63,17 +71,17 @@ export class CameraService implements OnInit{
 
   public initFirstPersonCamera(){
     this.camera = new PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 20000 );
-    require('three-first-person-controls')(THREE);
-
-    // console.log(FPC);
-    let controls = new THREE.FirstPersonControls( this.camera );
+    // require('three-first-person-controls')(THREE);
     //
-    controls.movementSpeed = 1000;
-    controls.lookSpeed = 0.125;
-    controls.lookVertical = true;
-    controls.constrainVertical = true;
-    controls.verticalMin = 1.1;
-    controls.verticalMax = 2.2;
+    // console.log(FPC);
+    // let controls = new THREE.FirstPersonControls( this.camera );
+    //
+    // controls.movementSpeed = 1000;
+    // controls.lookSpeed = 0.125;
+    // controls.lookVertical = true;
+    // controls.constrainVertical = true;
+    // controls.verticalMin = 1.1;
+    // controls.verticalMax = 2.2;
 
     let obj = {};
     obj[CAMERA.FirstPersonCamera] = this.camera;
@@ -82,6 +90,7 @@ export class CameraService implements OnInit{
   }
 
   public updateFirstPersonCamera(){
+
   }
 
   public initIsometricCamera(){
@@ -97,18 +106,21 @@ export class CameraService implements OnInit{
       1,
       d * 40
     );
+
     this.camera.position.set( d * 8, d * 8, d * 8); // all components equal
     let obj = {};
     obj[CAMERA.IsometricCamera] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
     this.cameries = mergeModel;
-
   };
 
-  public updateIsometricCamera(){
+  public updateIsometricCamera(x? ,y?, z?){
 
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.IsometricCamera];
+
+    // console.log(x, y, z);
+
 
     (<OrthographicCamera>this.camera).left = - d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).right = - d * this.settingsService.settings.browser.aspectRatio;
@@ -117,7 +129,7 @@ export class CameraService implements OnInit{
     (<OrthographicCamera>this.camera).near = 1;
     (<OrthographicCamera>this.camera).far = d * 40;
 
-    this.camera.position.set( d * 8, d * 8, d * 8);
+    this.camera.position.set( d * 8, d * 8, d * 8 );
   };
 
   public init2dCamera(){

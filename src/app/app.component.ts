@@ -2,23 +2,32 @@ import {Component, HostListener} from '@angular/core';
 import {RouterLinkActive, RouterLinkWithHref, RouterLink, RouterOutlet} from "@angular/router";
 import {KeyboardEventService} from './events/keyboard-event.service';
 import {OnWindowEventService} from './events/on-window-event.service';
+import {SnotifyService} from "ng-snotify";
+import {AppService} from "./app.service";
+import {ApiService} from "./services/api.service";
+
+//TODO: вынести в инциацию сцен
+// host: {
+//   '(window:resize)': 'handleResizeEvent($event)',
+//     '(document:keyup)': 'handleKeyboardEvent($event)'
+// }
 
 @Component({
   selector: 'adventure-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  host: {
-    '(window:resize)': 'handleResizeEvent($event)',
-    '(document:keydown)': 'handleKeyboardEvent($event)'
-  }
 })
 export class AppComponent {
 
   constructor(
     private keyboardEventService: KeyboardEventService,
-    private onWindowEventService: OnWindowEventService
+    private onWindowEventService: OnWindowEventService,
+    private snotifyService: SnotifyService,
+    private appService: AppService,
+    private apiService: ApiService
   ){
-
+    this.appService.snotifyService = this.snotifyService;
+    this.apiService.snotifyService = this.snotifyService;
   }
 
   handleKeyboardEvent(event: KeyboardEvent) {

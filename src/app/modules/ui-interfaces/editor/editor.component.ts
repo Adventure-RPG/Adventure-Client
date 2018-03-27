@@ -40,13 +40,15 @@ export class EditorComponent implements OnInit {
     if (this.mouseData.dragStart){
       this.mouseData.dragMove = event;
 
-      let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
-      let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
-      // console.log(event)
 
-      if (this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d) {
-        this.engineService.updateCamera(x, y);
-      }
+      // let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
+      // let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
+      // console.log(event)
+      // console.log(`${this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d}`);
+      // //
+      // if (this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d) {
+      //   this.engineService.updateCamera(x, y, 0);
+      // }
     }
   }
 
@@ -85,6 +87,8 @@ export class EditorComponent implements OnInit {
     this.engineService.init();
     this.scene.nativeElement.appendChild( this.engineService.sceneService.renderer.domElement ) ;
 
+
+    this.keyboardEventService.engineService = this.engineService;
 
     let hemisphereLightOptions = {
       color: "#aaa",

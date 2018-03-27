@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "adventure",
       "styles": [
+        "../node_modules/ng-snotify/styles/material.scss",
         "styles.scss"
       ],
       "scripts": [

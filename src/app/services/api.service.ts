@@ -1,17 +1,40 @@
 import {HTTP_Response} from "./api.types";
 
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable} from 'rxjs/Rx';
 
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {catchError} from "rxjs/operators";
+import {ErrorObservable} from "rxjs/observable/ErrorObservable";
+import {AppService} from "../app.service";
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable()
 export class ApiService {
+  get snotifyService() {
+    console.log(this._snotifyService);
+    return this._snotifyService;
+  }
 
-  constructor (private http: Http) {}
+  set snotifyService(value) {
+    console.log(value);
+    this._snotifyService = value;
+  }
+
+  constructor (
+    private httpClient: HttpClient,
+    private appService: AppService
+  ) {
+    console.log('set')
+  }
+
+  private _snotifyService;
 
   private config = {
     "apiUrl":"http://194.58.122.189/"
@@ -19,38 +42,57 @@ export class ApiService {
 
   private httpUrl = this.config.apiUrl;
 
-  getReq (url:string){
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      console.log(error);
+      console.log(error.message);
+      console.log(error.error);
+      console.log(this.snotifyService);
+      this.snotifyService.error(error.message);
+    }
+    // return an ErrorObservable with a user-facing error message
+    return new ErrorObservable(
+      'Something bad happened; please try again later.');
+  };
+
+  get (url:string, options?){
     console.log(this.config)
-    return this.http
-      .get(this.httpUrl + '/' + url)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    return this.httpClient
+      .get(url, httpOptions || options)
+      .pipe(
+        catchError(this.handleError.bind(this))
+      )
+      .do((res:Response) => res.json());
   }
 
-  postReq (url:string, body: Object) {
-    let bodyString = JSON.stringify(body);
-    let headers      = new Headers({ 'Content-Type': 'application/json' });
-    let options      = new RequestOptions({ headers: headers });
-
-    return this.http.post(`${this.httpUrl}${url}`, body, options)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  post (url:string, body: Object, options?) {
+    console.log(this.config)
+    return this.httpClient
+      .post(url, body, httpOptions || options)
+      .pipe(
+        catchError(this.handleError.bind(this))
+      );
   }
 
-  updateReq (body: Object, url:string) {
-    let bodyString = JSON.stringify(body); // Stringify payload
-    let headers      = new Headers({ 'Content-Type': 'application/json' });
-    let options      = new RequestOptions({ headers: headers });
-
-    return this.http.put(`${this.httpUrl + '/' + url}${body['id']}`, body, options)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  put (url:string, body: Object, options?) {
+    return this.httpClient
+      .put(url, body, options)
+      .pipe(
+        catchError(this.handleError.bind(this))
+      )
+      .do((res:Response) => res.json());
   }
 
-  deleteReq (id:string) {
-    return this.http.delete(`${this.httpUrl}/${id}`)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  delete (url: string, options?) {
+    return this.httpClient
+      .delete(url, options)
+      .pipe(
+        catchError(this.handleError.bind(this))
+      )
+      .do((res:Response) => res.json());
   }
 
 }
