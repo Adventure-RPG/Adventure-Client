@@ -21,6 +21,7 @@ import {MouseEventService} from './events/mouse-event.service';
 import {OnWindowEventService} from './events/on-window-event.service';
 import {AppService} from "./app.service";
 import {ApiService} from "./services/api.service";
+import {HandleErrorService} from "./services/handle-error.service";
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -56,6 +57,7 @@ const Events = [
 ];
 
 const Services = [
+  HandleErrorService,
   SettingsService,
   EngineService,
   LightService,

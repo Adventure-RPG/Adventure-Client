@@ -5,6 +5,7 @@ import {OnWindowEventService} from './events/on-window-event.service';
 import {SnotifyService} from "ng-snotify";
 import {AppService} from "./app.service";
 import {ApiService} from "./services/api.service";
+import {HandleErrorService} from "./services/handle-error.service";
 
 //TODO: вынести в инциацию сцен
 // host: {
@@ -23,11 +24,12 @@ export class AppComponent {
     private keyboardEventService: KeyboardEventService,
     private onWindowEventService: OnWindowEventService,
     private snotifyService: SnotifyService,
+    private handleErrorService: HandleErrorService,
     private appService: AppService,
     private apiService: ApiService
   ){
     this.appService.snotifyService = this.snotifyService;
-    this.apiService.snotifyService = this.snotifyService;
+    this.handleErrorService.snotifyService = this.snotifyService;
   }
 
   handleKeyboardEvent(event: KeyboardEvent) {
