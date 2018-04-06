@@ -264,7 +264,8 @@ export class EngineService{
   }
 
   public generateFromNoise(){
-    this.heightMapService.getHeightMap(this.sceneService.scene)
+    this.heightMapService.generateDungeonTerrain(this.sceneService.scene);
+    // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
   public colorMap(img){

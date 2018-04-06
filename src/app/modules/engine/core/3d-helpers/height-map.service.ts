@@ -220,6 +220,151 @@ export class HeightMapService {
     return colorScheme;
   }
 
+  public generateDungeonTerrain(scene: Scene){
+    //TODO: переделать от картинки
+    //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
+    let worldDepth = 10;
+    let worldWidth = 10;
+    let cubeWidth = 10;
+    let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+    this.generateHeight(worldWidth, worldDepth);
+    let matrix = new Matrix4();
+
+
+    let pxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+    pxGeometry.rotateY( Math.PI / 2 );
+    pxGeometry.translate( cubeWidth / 2, 0, 0 );
+
+    let nxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+    nxGeometry.rotateY( - Math.PI / 2 );
+    nxGeometry.translate( - cubeWidth / 2, 0, 0 );
+
+    let pyGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+    pyGeometry.rotateX( - Math.PI / 2 );
+    pyGeometry.translate( 0, cubeWidth / 2, 0 );
+
+    let py2Geometry = new PlaneGeometry( cubeWidth, cubeWidth );
+    py2Geometry.rotateX( - Math.PI / 2 );
+    py2Geometry.rotateY( Math.PI / 2 );
+    py2Geometry.translate( 0, cubeWidth / 2, 0 );
+
+
+    let pzGeometry = new PlaneGeometry(cubeWidth, cubeWidth );
+    pzGeometry.translate( 0, 0, cubeWidth / 2 );
+
+    let nzGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+    nzGeometry.rotateY( Math.PI );
+    nzGeometry.translate( 0, 0, - cubeWidth / 2 );
+
+    console.log(py2Geometry)
+    console.log(nzGeometry)
+
+    let geometry = new Geometry();
+
+    for ( let z = 0; z < worldDepth; z ++ ) {
+      for ( let x = 0; x < worldWidth; x ++ ) {
+
+
+        let h = this.getY( x, z, worldWidth );
+        // console.log(x, z, h);
+
+        // x - worldHalfWidth
+        // z - worldHalfDepth
+
+        matrix.makeTranslation(
+          ( x - worldHalfWidth ) * cubeWidth,
+          h * cubeWidth,
+          ( z - worldHalfDepth ) * cubeWidth
+        );
+
+        //
+        // console.log(
+        //   ( x - worldHalfWidth ) * cubeWidth,
+        //   h * cubeWidth,
+        //   ( z - worldHalfDepth ) * cubeWidth
+        // )
+
+
+        /**
+         * 0 1 0
+         * 1 X 1
+         * 0 1 0
+         *
+         * 1 - nx, px, pz, nz
+         * 0 - pxpz, nxpz, pxnz, nxnz
+         * X - current point
+         * @type {number}
+         */
+
+          //Проверка высоты соседних элементов
+        let px   = this.getY( x + 1, z, worldWidth );
+        let nx   = this.getY( x - 1, z, worldWidth );
+        let pz   = this.getY( x, z + 1, worldWidth );
+        let nz   = this.getY( x, z - 1, worldWidth );
+
+        let pxpz = this.getY( x + 1, z + 1, worldWidth );
+        let nxpz = this.getY( x - 1, z + 1, worldWidth );
+        let pxnz = this.getY( x + 1, z - 1, worldWidth );
+        let nxnz = this.getY( x - 1, z - 1, worldWidth );
+
+        let a = nx > h || nz > h || nxnz > h ? 0 : 1;
+        let b = nx > h || pz > h || nxpz > h ? 0 : 1;
+        let c = px > h || pz > h || pxpz > h ? 0 : 1;
+        let d = px > h || nz > h || pxnz > h ? 0 : 1;
+
+        // console.log(`
+        //   ${z*worldWidth+x}: x, z, y: ${x} ${z} ${h}
+        // `);
+
+
+        if ( a + c > b + d ) {
+          geometry.merge( py2Geometry, matrix);
+        } else {
+          geometry.merge( pyGeometry, matrix );
+        }
+
+        if ( ( px !== h && px !== h + 1 ) || x === 0 ) {
+          geometry.merge( pxGeometry, matrix );
+        }
+
+        if ( ( nx !== h && nx !== h + 1 ) || x === worldWidth - 1 ) {
+          geometry.merge( nxGeometry, matrix );
+        }
+
+        if ( ( pz !== h && pz !== h + 1 ) || z === worldDepth - 1 ) {
+          geometry.merge( pzGeometry, matrix );
+        }
+
+        if ( ( nz !== h && nz !== h + 1 ) || z === 0 ) {
+          geometry.merge( nzGeometry, matrix );
+        }
+
+        // x - worldHalfWidth
+        // z - worldHalfDepth
+        geometry.mergeVertices();
+      }
+    }
+
+
+    let material = new MeshPhongMaterial( {
+      flatShading: true,
+      vertexColors: VertexColors,
+    } );
+
+    console.log(geometry)
+
+    geometry.verticesNeedUpdate = true;
+    geometry.computeFlatVertexNormals();
+
+    let mesh = new Mesh( geometry, material );
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+
+    scene.add( mesh );
+  }
+
   public getHeightMap(scene: Scene){
 
     //TODO: переделать от картинки
