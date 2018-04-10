@@ -79,12 +79,6 @@ export class HeightMapService {
         //     shading: FlatShading,
         //     vertexColors: VertexColors
         // });
-
-        let material = new MeshPhongMaterial( {
-          vertexColors: VertexColors,
-          shininess: 0,
-          flatShading: true
-        } );
         //
         // let materialShadow = new ShadowMaterial( {
         //   opacity: 1,
@@ -129,10 +123,34 @@ export class HeightMapService {
         // scene.add(objectPG);
 
 
+
+        let terrainMaterial = new MeshPhongMaterial( {
+          vertexColors: VertexColors,
+          shininess: 0,
+          flatShading: true
+        } );
+
         let terrain = new Terrain(200, 0.1, res);
         // terrain.generate(0.01);
-        let terrainObject = terrain.getTerrainWithMaterial(material);
+        let terrainObject = terrain.getTerrainWithMaterial(terrainMaterial);
+        terrainObject.castShadow = true;
+        terrainObject.receiveShadow = true;
         scene.add(terrainObject);
+
+
+
+        let waterMaterial = new MeshBasicMaterial({
+          color: 0x3366aa,
+          transparent: true,
+          opacity: 0.7
+        });
+
+        let waterObject = terrain.getWaterWithMaterial(waterMaterial);
+        scene.add(waterObject);
+
+        console.log(waterObject)
+
+
 
 
 
