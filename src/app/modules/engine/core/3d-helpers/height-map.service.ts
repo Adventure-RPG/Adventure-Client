@@ -3,9 +3,12 @@ import { Injectable } from '@angular/core';
 import {IGEOJson} from "../../engine.types";
 import {
   Color, DoubleSide, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
-  PlaneGeometry, RepeatWrapping, Scene, SceneUtils, ShadowMaterial, TextureLoader, VertexColors
+  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, TextureLoader, VertexColors
 } from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
+import {SceneUtils} from '../../../../utils/sceneUtils';
+import {Terrain} from '../../../../utils/terrain';
+
 
 
 @Injectable()
@@ -40,36 +43,36 @@ export class HeightMapService {
         };
 
 
-        let geometry = new PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
+        // let geometry = new PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
+        //
+        // //Считаем по синему слою.
+        // for( let i = 0; i < res.length; i++ ) {
+        //   geometry.vertices[i].setZ(res[i][2] / 10);
+        // }
 
-        //Считаем по синему слою.
-        for( let i = 0; i < res.length; i++ ){
-          geometry.vertices[i].setZ(res[i][2] / 10);
-        }
-
-        console.log(res);
-
-        geometry.applyMatrix( new Matrix4().makeRotationX( - Math.PI / 2));
-        geometry.verticesNeedUpdate = true;
-
-
-        if (this.colorScheme){
-          for (let i = 0; i < geometry.faces.length; i += 2) {
-            let color = [
-              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
-              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
-              new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`)
-            ];
-
-            geometry.faces[i].vertexColors = color;
-            geometry.faces[i+1].vertexColors = color;
-
-            // geometry.faces[i].color = new Color( 0xfff )
-            //   .setRGB(this.colorScheme[i / 2][0], this.colorScheme[i / 2][1], this.colorScheme[i / 2][2])
-
-          }
-          geometry.elementsNeedUpdate = true;
-        }
+        // console.log(res);
+        //
+        // geometry.applyMatrix( new Matrix4().makeRotationX( - Math.PI / 2));
+        // geometry.verticesNeedUpdate = true;
+        //
+        //
+        // if (this.colorScheme){
+        //   for (let i = 0; i < geometry.faces.length; i += 2) {
+        //     let color = [
+        //       new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+        //       new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
+        //       new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`)
+        //     ];
+        //
+        //     geometry.faces[i].vertexColors = color;
+        //     geometry.faces[i + 1].vertexColors = color;
+        //
+        //     // geometry.faces[i].color = new Color( 0xfff )
+        //     //   .setRGB(this.colorScheme[i / 2][0], this.colorScheme[i / 2][1], this.colorScheme[i / 2][2])
+        //
+        //   }
+        //   geometry.elementsNeedUpdate = true;
+        // }
 
 
         // let material = new MeshBasicMaterial( {
@@ -78,59 +81,69 @@ export class HeightMapService {
         // });
 
         let material = new MeshPhongMaterial( {
-          shading: FlatShading,
           vertexColors: VertexColors,
+          shininess: 0,
+          flatShading: true
         } );
+        //
+        // let materialShadow = new ShadowMaterial( {
+        //   opacity: 1,
+        //   lineWidth: 0.1
+        // } );
+        //
+        // geometry.colorsNeedUpdate = true;
+        //
+        // let multiMaterial: any[] = [material];
+        //
+        // if (options.grid) {
+        //   let loader = new TextureLoader();
+        //
+        //   let textureRes = loader.load("assets/images/scene-ui-kit/graph-paper.svg");
+        //
+        //   textureRes.wrapS = RepeatWrapping;
+        //   textureRes.wrapT = RepeatWrapping;
+        //   textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1) / 10);
+        //
+        //   let squadLinesMaterial = new MeshBasicMaterial( {
+        //     map: textureRes,
+        //     transparent: true,
+        //     opacity: 0.1,
+        //     color: 0x000000
+        //   } );
+        //
+        //   multiMaterial = [...multiMaterial, squadLinesMaterial];
+        // }
+        //
+        // let objectPG = SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
+        // console.log(objectPG);
+        //
+        // //
+        // let parent = new Object3D();
 
-        let materialShadow = new ShadowMaterial( {
-          opacity: 1,
-          lineWidth: 0.1
-        } );
+        // parent.add(objectPG);
+        // objectPG.children.map((item: Object3D, index, array) => {
+        //   item.castShadow = true;
+        //   item.receiveShadow = true;
+        // });
 
-        geometry.colorsNeedUpdate = true;
+        // scene.add(objectPG);
 
-        let multiMaterial: any[] = [material];
 
-        if (options.grid) {
-          let loader = new TextureLoader();
+        let terrain = new Terrain(200, 0.1, res);
+        // terrain.generate(0.01);
+        let terrainObject = terrain.getTerrainWithMaterial(material);
+        scene.add(terrainObject);
 
-          let textureRes = loader.load("assets/images/scene-ui-kit/graph-paper.svg");
 
-          textureRes.wrapS = RepeatWrapping;
-          textureRes.wrapT = RepeatWrapping;
-          textureRes.repeat.set( (img.width - 1) / 10, (img.width - 1) / 10);
-
-          let squadLinesMaterial = new MeshBasicMaterial( {
-            map: textureRes,
-            transparent: true,
-            opacity: 0.1,
-            color: 0x000000
-          } );
-
-          multiMaterial = [...multiMaterial, squadLinesMaterial];
-        }
-
-        let objectPG = SceneUtils.createMultiMaterialObject( geometry, multiMaterial );
-
-        let parent = new Object3D();
-
-        parent.add(objectPG);
-        objectPG.children.map((item: Object3D, index, array) => {
-          item.castShadow = true;
-          item.receiveShadow = true;
-        });
-
-        scene.add(parent);
 
         return geoJsonObject;
 
-
       })
-      .then((geoObj)=>{
+      .then((geoObj) => {
         let options = {body: geoObj};
         // return new Api().points(options);
       })
-      .then((response)=>{
+      .then((response) => {
         console.log(response);
       })
       .catch((err) => {
@@ -223,9 +236,9 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene){
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 10;
-    let worldWidth = 10;
-    let cubeWidth = 10;
+    let worldDepth = 50;
+    let worldWidth = 50;
+    let cubeWidth = 1;
     let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
 
     this.generateHeight(worldWidth, worldDepth);
@@ -359,7 +372,7 @@ export class HeightMapService {
 
     let mesh = new Mesh( geometry, material );
 
-    mesh.castShadow = true;
+    // mesh.castShadow = true;
     mesh.receiveShadow = true;
 
     scene.add( mesh );

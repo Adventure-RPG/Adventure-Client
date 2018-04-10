@@ -83,9 +83,11 @@ export class LightService {
         // light = new THREE.PointLight( color,  1, 100 );
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
         //HELPLER
-        light.castShadow = true;
-        light.shadow.bias = 0.01;
-        light.shadow.radius = 1;
+        // light.castShadow = true;
+        // light.shadow.mapSize.width = 256;  // default
+        // light.shadow.mapSize.height = 256; // default
+        // light.shadow.bias = 0.01;
+        // light.shadow.radius = 1;
         // light.shadow.mapSize.width  = 50;
         // light.shadow.mapSize.height = 50;
 

@@ -8,7 +8,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {SceneService} from './core/base/scene.service';
 import {CameraService} from './core/base/camera.service';
 import {SettingsService} from '../../services/settings.service';
-import {Geometry, SceneUtils, Vector3} from 'three';
+import {AxesHelper, FBXLoader, Geometry, Group, SceneUtils, TextureLoader, Vector3} from 'three';
 
 declare let require: any;
 
@@ -119,19 +119,19 @@ export class EngineService{
     //Инцилизация модуля.
     require('three-fbx-loader')(THREE);
 
-    let loader = new THREE.FBXLoader();
+    let loader = new FBXLoader();
 
     // let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
 
     let texture;
     if (model.texturePath){
-      texture = new THREE.TextureLoader().load(
+      texture = new TextureLoader().load(
         model.texturePath,
         (data) => {
           console.log(data);
           let modelLoader = loader.load(
             model.path,
-            (group: THREE.Group) => {
+            (group: Group) => {
               // let material = new THREE.MeshNormalMaterial();
               // let mesh = new THREE.Mesh(geometry, material);
               // console.log(mesh)
@@ -144,24 +144,25 @@ export class EngineService{
                 // map: texture
               // });
 
-              let box = new THREE.Box3().setFromObject(group);
-              console.log(box.min, box.max, box.getSize() );
-
-
-
-              group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
-              // group.scale.set(1, 1, 1);
-              group.traverse((child: THREE.Mesh) => {
-                  if (child instanceof THREE.Mesh) {
-
-                      console.log(child);
-                      (<THREE.MeshLambertMaterial>child.material).map = texture;
-                      (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
-
-                  }
-              });
-
-              this._sceneService.scene.add(group);
+              // TODO: getSize() требует аргумент
+              // let box = new THREE.Box3().setFromObject(group);
+              // console.log(box.min, box.max, box.getSize() );
+              //
+              //
+              //
+              // group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
+              // // group.scale.set(1, 1, 1);
+              // group.traverse((child: THREE.Mesh) => {
+              //     if (child instanceof THREE.Mesh) {
+              //
+              //         console.log(child);
+              //         (<THREE.MeshLambertMaterial>child.material).map = texture;
+              //         (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
+              //
+              //     }
+              // });
+              //
+              // this._sceneService.scene.add(group);
 
             },
             (event) => {
@@ -176,7 +177,7 @@ export class EngineService{
     } else {
       let modelLoader = loader.load(
         model.path,
-        (group: THREE.Group) => {
+        (group: Group) => {
           // let material = new THREE.MeshNormalMaterial();
           // let mesh = new THREE.Mesh(geometry, material);
           // console.log(mesh)
@@ -223,13 +224,13 @@ export class EngineService{
     // Scene
     // let d = this.settings.camera.d;
 
-    let axisHelper = new THREE.AxisHelper( 5 );
+    let axesHelper = new AxesHelper( 5 );
 
     // Delete
     // this.test();
     // End Delete
 
-    this.sceneService.scene.add( axisHelper );
+    this.sceneService.scene.add( axesHelper );
 
     // console.log(this.sceneService.scene);
 
