@@ -130,7 +130,7 @@ export class HeightMapService {
           flatShading: true
         } );
 
-        let terrain = new Terrain(200, 0.1, res);
+        let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
         let terrainObject = terrain.getTerrainWithMaterial(terrainMaterial);
         terrainObject.castShadow = true;

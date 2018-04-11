@@ -140,9 +140,9 @@ export class Terrain {
 
     let water_mesh = new Mesh(this.getWater(), material);
     water_mesh.scale.z = (min_height + max_height) / (2 * this.size);
-    water_mesh.translateZ((this.size / 2) * (min_height + max_height) / (2 * this.size));
     // terrain_mesh.add(water_mesh);
     water_mesh.rotation.x = -Math.PI / 2.0;
+    water_mesh.translateZ((this.size / 2) * (min_height + max_height) / (2 * this.size));
 
     return water_mesh;
   }

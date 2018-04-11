@@ -4,7 +4,9 @@ import {LightService} from "../../engine/core/light.service";
 import { HeightMapService } from "../../engine/core/3d-helpers/height-map.service";
 import {SettingsService} from '../../../services/settings.service';
 import {KeyboardEventService} from '../../../events/keyboard-event.service';
+import {SceneEventsDirective} from '../../../shared/directives/scene-events.directive';
 
+//TODO: вынести в инциацию сцен
 @Component({
   selector: 'adventure-editor',
   templateUrl: './editor.component.html',
@@ -20,7 +22,7 @@ export class EditorComponent implements OnInit {
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private heightMapService: HeightMapService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {
     // this.engineService.renderEngine();
   }
@@ -59,7 +61,7 @@ export class EditorComponent implements OnInit {
     // console.log(event);
   }
 
-  mouseWheel(event){
+  mouseWheel(event) {
 
     this.settingsService.changeSetting("camera", {
       d: this.settingsService.settings.camera.d + event.deltaY / 100

@@ -33,7 +33,7 @@ export class ColorMapComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         let file: File = files[i];
         let img: any = new Image();
-        let reader:FileReader  = new FileReader();
+        let reader: FileReader  = new FileReader();
 
         reader.addEventListener("load", () => {
           img.src = reader.result;

@@ -22,6 +22,7 @@ import {OnWindowEventService} from './events/on-window-event.service';
 import {AppService} from "./app.service";
 import {ApiService} from "./services/api.service";
 import {HandleErrorService} from "./services/handle-error.service";
+import {SceneEventsDirective} from './shared/directives/scene-events.directive';
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -65,6 +66,10 @@ const Services = [
   ApiService
 ];
 
+const Directive = [
+  SceneEventsDirective,
+];
+
 @NgModule({
   imports: [
     ...Modules,
@@ -72,7 +77,7 @@ const Services = [
   ],
   declarations: [
     AppComponent,
-    ...Components,
+    ...Components
   ],
   providers: [
     ...Events,
@@ -87,7 +92,7 @@ const Services = [
   ],
   exports: [
     ...ModulesForRoot,
-    ...Components,
+    ...Components
   ],
   bootstrap: [AppComponent]
 })

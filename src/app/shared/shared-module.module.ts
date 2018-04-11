@@ -11,6 +11,7 @@ import { MainButtonsControlComponent } from './main-buttons-control/main-buttons
 import { RouterModule} from "@angular/router";
 import {SnotifyModule, SnotifyService, ToastDefaults} from "ng-snotify";
 import {HttpClientModule} from "@angular/common/http";
+import {SceneEventsDirective} from './directives/scene-events.directive';
 
 const Modules = [
   CommonModule,
@@ -31,12 +32,17 @@ const Components = [
   MainButtonsControlComponent
 ];
 
+const Directive = [
+  SceneEventsDirective,
+];
+
 @NgModule({
   imports: [
     ...Modules
   ],
   declarations: [
     ...Components,
+    ...Directive
   ],
   providers: [
     ...Services,
@@ -48,7 +54,8 @@ const Components = [
   ],
   exports: [
     ...Modules,
-    ...Components
+    ...Components,
+    ...Directive
   ]
 })
 export class SharedModule { }
