@@ -9,6 +9,7 @@ export class SceneService {
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private initRenderer: boolean;
+  private animationLoop = [];
 
 
   constructor() {
@@ -31,9 +32,19 @@ export class SceneService {
   }
 
 
+  // TODO: add delete animation from loop;
+  public addAnimationInLoop(animationFunc){
+    this.animationLoop.push(animationFunc);
+  }
+
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
+
+    for (let i = 0; i < this.animationLoop.length; i++) {
+      this.animationLoop[i]();
+    }
+
     requestAnimationFrame(this.animation.bind(this));
     if (this.camera){
       this.renderer.render( this.scene, <Camera>this.camera );

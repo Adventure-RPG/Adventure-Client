@@ -5,6 +5,7 @@ export class Terrain {
   size: number;
   max: number;
   map;
+  waves;
   scaleZ = 1;
 
   constructor(size, scaleZ, map: number[][]){
@@ -62,7 +63,7 @@ export class Terrain {
         }
       }
       divide(size / 2);
-    }
+    };
 
     let average = (values) => {
       let valid = values.filter(function (val) {
@@ -82,7 +83,7 @@ export class Terrain {
         this.get(x - size, y + size) // lower left
       ]);
       this.set(x, y, ave + offset);
-    }
+    };
 
     this.set(0, 0, this.max);
     this.set(this.max, 0, this.max / 2);
@@ -121,6 +122,30 @@ export class Terrain {
 
   getWater(): BoxGeometry {
     let water_geometry = new BoxGeometry(this.size, this.size, this.size);
+
+    // get the vertices
+    let l = water_geometry.vertices.length;
+
+    this.waves = [];
+
+    for (let i = 0; i < l; i++) {
+      // get each vertex
+      let v = water_geometry.vertices[i];
+
+      // store some data associated to it
+      this.waves.push({
+        y: v.y,
+        x: v.x,
+        z: v.z,
+        // a random angle
+        ang: Math.random() * Math.PI * 2,
+        // a random distance
+        amp: 5 + Math.random() * 15,
+        // a random speed between 0.016 and 0.048 radians / frame
+        speed: 0.016 + Math.random() * 0.032
+      });
+    };
+
     return water_geometry;
   }
 
@@ -147,7 +172,35 @@ export class Terrain {
     return water_mesh;
   }
 
+  moveWaves(water_mesh) {
 
+    // get the vertices
+    let verts = water_mesh.geometry.vertices;
+    let l = verts.length;
+
+    for (let i = 0; i < l; i++) {
+      let v = verts[i];
+
+      // get the data associated to it
+      let vprops = this.waves[i];
+
+      // update the position of the vertex
+      v.x = vprops.x + Math.cos(vprops.ang) * vprops.amp;
+      v.y = vprops.y + Math.sin(vprops.ang) * vprops.amp;
+
+      // increment the angle for the next frame
+      vprops.ang += vprops.speed;
+
+    }
+
+    // Tell the renderer that the geometry of the sea has changed.
+    // In fact, in order to maintain the best level of performance,
+    // three.js caches the geometries and ignores any changes
+    // unless we add this line
+    water_mesh.geometry.verticesNeedUpdate = true;
+
+    water_mesh.mesh.rotation.z += .005;
+  }
 
 }
 

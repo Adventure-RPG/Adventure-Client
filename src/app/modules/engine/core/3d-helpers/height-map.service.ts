@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 
 import {IGEOJson} from "../../engine.types";
 import {
-  Color, DoubleSide, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
-  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, TextureLoader, VertexColors
+  Color, DoubleSide, Face3, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
+  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, TextureLoader, Vector3, VertexColors
 } from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
 import {SceneUtils} from '../../../../utils/sceneUtils';
 import {Terrain} from '../../../../utils/terrain';
+import * as Lodash from 'lodash';
 
 
 
@@ -139,16 +140,20 @@ export class HeightMapService {
 
 
 
-        let waterMaterial = new MeshBasicMaterial({
+        let waterMaterial = new MeshPhongMaterial({
           color: 0x3366aa,
           transparent: true,
-          opacity: 0.7
+          flatShading: true,
+          opacity: 0.8
         });
 
-        let waterObject = terrain.getWaterWithMaterial(waterMaterial);
-        scene.add(waterObject);
+        let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
+        terrain.moveWaves(waterMesh);
+        scene.add(waterMesh);
 
-        console.log(waterObject)
+
+        // !IMPORTANT TODO: add waves to water;
+        console.log(waterMesh)
 
 
 
@@ -254,145 +259,76 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene){
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 50;
-    let worldWidth = 50;
+    let worldDepth = 5;
+    let worldWidth = 5;
     let cubeWidth = 1;
     let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
 
     this.generateHeight(worldWidth, worldDepth);
     let matrix = new Matrix4();
 
-
-    let pxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    pxGeometry.rotateY( Math.PI / 2 );
-    pxGeometry.translate( cubeWidth / 2, 0, 0 );
-
-    let nxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    nxGeometry.rotateY( - Math.PI / 2 );
-    nxGeometry.translate( - cubeWidth / 2, 0, 0 );
-
-    let pyGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    pyGeometry.rotateX( - Math.PI / 2 );
-    pyGeometry.translate( 0, cubeWidth / 2, 0 );
-
-    let py2Geometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    py2Geometry.rotateX( - Math.PI / 2 );
-    py2Geometry.rotateY( Math.PI / 2 );
-    py2Geometry.translate( 0, cubeWidth / 2, 0 );
-
-
-    let pzGeometry = new PlaneGeometry(cubeWidth, cubeWidth );
-    pzGeometry.translate( 0, 0, cubeWidth / 2 );
-
-    let nzGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    nzGeometry.rotateY( Math.PI );
-    nzGeometry.translate( 0, 0, - cubeWidth / 2 );
-
-    console.log(py2Geometry)
-    console.log(nzGeometry)
-
     let geometry = new Geometry();
+
+    let vertices = [];
+    let facesObj = {};
 
     for ( let z = 0; z < worldDepth; z ++ ) {
       for ( let x = 0; x < worldWidth; x ++ ) {
 
-
         let h = this.getY( x, z, worldWidth );
+        vertices = [...vertices, x, h, z];
         // console.log(x, z, h);
 
-        // x - worldHalfWidth
-        // z - worldHalfDepth
-
-        matrix.makeTranslation(
-          ( x - worldHalfWidth ) * cubeWidth,
-          h * cubeWidth,
-          ( z - worldHalfDepth ) * cubeWidth
-        );
-
-        //
-        // console.log(
-        //   ( x - worldHalfWidth ) * cubeWidth,
-        //   h * cubeWidth,
-        //   ( z - worldHalfDepth ) * cubeWidth
-        // )
-
-
-        /**
-         * 0 1 0
-         * 1 X 1
-         * 0 1 0
-         *
-         * 1 - nx, px, pz, nz
-         * 0 - pxpz, nxpz, pxnz, nxnz
-         * X - current point
-         * @type {number}
-         */
-
-          //Проверка высоты соседних элементов
-        let px   = this.getY( x + 1, z, worldWidth );
-        let nx   = this.getY( x - 1, z, worldWidth );
-        let pz   = this.getY( x, z + 1, worldWidth );
-        let nz   = this.getY( x, z - 1, worldWidth );
-
-        let pxpz = this.getY( x + 1, z + 1, worldWidth );
-        let nxpz = this.getY( x - 1, z + 1, worldWidth );
-        let pxnz = this.getY( x + 1, z - 1, worldWidth );
-        let nxnz = this.getY( x - 1, z - 1, worldWidth );
-
-        let a = nx > h || nz > h || nxnz > h ? 0 : 1;
-        let b = nx > h || pz > h || nxpz > h ? 0 : 1;
-        let c = px > h || pz > h || pxpz > h ? 0 : 1;
-        let d = px > h || nz > h || pxnz > h ? 0 : 1;
-
-        // console.log(`
-        //   ${z*worldWidth+x}: x, z, y: ${x} ${z} ${h}
-        // `);
-
-
-        if ( a + c > b + d ) {
-          geometry.merge( py2Geometry, matrix);
-        } else {
-          geometry.merge( pyGeometry, matrix );
+        if (!facesObj[h]) {
+          facesObj[h] = [];
         }
 
-        if ( ( px !== h && px !== h + 1 ) || x === 0 ) {
-          geometry.merge( pxGeometry, matrix );
-        }
+        facesObj[h].push(z * cubeWidth + x);
 
-        if ( ( nx !== h && nx !== h + 1 ) || x === worldWidth - 1 ) {
-          geometry.merge( nxGeometry, matrix );
-        }
-
-        if ( ( pz !== h && pz !== h + 1 ) || z === worldDepth - 1 ) {
-          geometry.merge( pzGeometry, matrix );
-        }
-
-        if ( ( nz !== h && nz !== h + 1 ) || z === 0 ) {
-          geometry.merge( nzGeometry, matrix );
-        }
-
-        // x - worldHalfWidth
-        // z - worldHalfDepth
-        geometry.mergeVertices();
       }
     }
 
+    let i, j, face;
+    let faces = Lodash.values(facesObj);
+
+    for (i = 0; i < vertices.length; i += 3) {
+      geometry.vertices.push(new Vector3 (
+        vertices[i],
+        vertices[i + 1],
+        vertices[i + 2]
+      ));
+    }
+
+    for (i = 0; i < faces.length; i++) {
+      face = faces[i];
+      for (j = 1; j < face.length - 1; j++) {
+        geometry.faces.push(new Face3 (face[0], face[j], face[j + 1]));
+      }
+    }
+
+    geometry.computeFaceNormals();
+
+    // ShapeUtils.triangulateShape(vertices, );
+    console.log(vertices);
+    console.log(facesObj);
+    console.log(faces);
 
     let material = new MeshPhongMaterial( {
       flatShading: true,
       vertexColors: VertexColors,
     } );
 
-    console.log(geometry)
+    // console.log(geometry)
 
     geometry.verticesNeedUpdate = true;
     geometry.computeFlatVertexNormals();
 
     let mesh = new Mesh( geometry, material );
 
-    // mesh.castShadow = true;
-    mesh.receiveShadow = true;
 
+    // mesh.castShadow = true;
+    // mesh.receiveShadow = true;
+    //
     scene.add( mesh );
   }
 
