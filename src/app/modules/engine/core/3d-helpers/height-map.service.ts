@@ -27,7 +27,7 @@ export class HeightMapService {
     //TODO: вынести, смерджить с настройками
     //TODO: вынести все текстуры и материалы в отдельный сервис
 
-    this
+    return this
       .parseImageToGeo(img)
       .then((res:number[][]) => {
         let geoJsonObject:IGEOJson = {
@@ -149,11 +149,14 @@ export class HeightMapService {
 
         let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
         terrain.moveWaves(waterMesh);
+
+
+
         scene.add(waterMesh);
 
 
         // !IMPORTANT TODO: add waves to water;
-        console.log(waterMesh)
+        console.log(waterMesh);
 
 
 
