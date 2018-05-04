@@ -23,8 +23,12 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
-      }
+      },
     ],
+  },
+  {
+    path: 'auth/confirm/:token',
+    redirectTo: 'login/login-email-verification/:token'
   },
   // {
   //   path: 'inventory',

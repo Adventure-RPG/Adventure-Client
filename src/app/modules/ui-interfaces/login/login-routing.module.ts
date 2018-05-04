@@ -7,6 +7,7 @@ import {LoginRecoveryComponent} from "./login-recovery/login-recovery.component"
 import {LoginRegComponent} from "./login-reg/login-reg.component";
 import {LoginSignInComponent} from "./login-sign-in/login-sign-in.component";
 import {LoginComponent} from "./login.component";
+import {LoginEmailVerificationComponent} from "./login-email-verification/login-email-verification.component";
 
 const routes: Routes = [
   {
@@ -28,6 +29,14 @@ const routes: Routes = [
       {
         path: 'login-email-recovery',
         component: LoginEmailRecoveryComponent
+      },
+      {
+        path: 'login-email-verification',
+        component: LoginEmailVerificationComponent
+      },
+      {
+        path: 'login-email-verification/:token',
+        component: LoginEmailVerificationComponent
       },
       {
         path: 'login-email-acceptence',

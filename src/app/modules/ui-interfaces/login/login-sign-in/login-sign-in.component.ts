@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoginService} from "../login.service";
+import {LoginResponse} from "../login";
 
 @Component({
   selector: 'adventure-login-sign-in',
@@ -24,7 +25,14 @@ export class LoginSignInComponent implements OnInit {
   }
 
   public loginFormSubmit(){
-    this.loginService.httpSignIn(this.loginForm.value);
+    this.loginService.httpSignIn(this.loginForm.value)      .subscribe(
+      (res: LoginResponse) =>{
+        console.log(res);
+      },
+      error =>  {
+        console.log(error);
+      }
+    );;
   }
 
 }

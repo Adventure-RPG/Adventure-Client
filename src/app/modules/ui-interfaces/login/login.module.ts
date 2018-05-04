@@ -13,6 +13,7 @@ import { LoginPasswordAcceptenceComponent } from './login-password-acceptence/lo
 import {SharedModule} from "../../../shared/shared-module.module";
 import {LoginService} from "./login.service";
 import {LoginRoutingModule} from "./login-routing.module";
+import { LoginEmailVerificationComponent } from './login-email-verification/login-email-verification.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import {LoginRoutingModule} from "./login-routing.module";
   providers: [
     LoginService
   ],
-  declarations: [LoginComponent, LoginFormComponent, LoginRegComponent, LoginSignInComponent, LoginRecoveryComponent, LoginEmailRecoveryComponent, LoginEmailAcceptenceComponent, LoginPasswordAcceptenceComponent]
+  declarations: [LoginComponent, LoginFormComponent, LoginRegComponent, LoginSignInComponent, LoginRecoveryComponent, LoginEmailRecoveryComponent, LoginEmailAcceptenceComponent, LoginPasswordAcceptenceComponent, LoginEmailVerificationComponent]
 })
 export class LoginModule { }

@@ -32,14 +32,14 @@ export class LoginRegComponent implements OnInit {
     this.loginService
       .httpRegistrate(this.loginForm.value)
       .subscribe(
-        (res:LoginResponse) =>{
+        (res: LoginResponse) =>{
           console.log(res)
           this.appSerivce.snotifyService.success('Example body content', {
             timeout: 2000,
             showProgressBar: false,
             closeOnClick: false,
             pauseOnHover: true
-          })
+          });
         }
       )
     ;

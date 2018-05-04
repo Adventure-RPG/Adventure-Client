@@ -12,6 +12,9 @@ export class LoginService {
   ) {}
 
   public authUrl = 'http://auth.iamborsch.ru/';
+  //TODO: pull out api/v1
+  public version = 'api/v1/';
+  public module = 'auth/';
 
   private _registrate:any = new BehaviorSubject<any>({});
   public _registrate$ = this._registrate.asObservable();
@@ -26,7 +29,7 @@ export class LoginService {
 
   public httpRegistrate(body:RegistrateReq): any{
     return this.apiService
-      .post(this.authUrl + 'api/v1/auth/register', body);
+      .post(this.authUrl + this.version + this.module + 'register', body);
   }
 
   private _signIn:any = new BehaviorSubject<any>({});
@@ -41,16 +44,9 @@ export class LoginService {
   }
 
   public httpSignIn(body:RegistrateReq): any{
-    this.apiService
-    .post(this.authUrl + 'api/v1/auth/login', body)
-    .subscribe(
-      (res:LoginResponse) =>{
-        console.log(res)
-      },
-      error =>  {
-        console.log(error);
-      }
-    );
+    return this.apiService
+      .post(this.authUrl + this.version + this.module + 'login', body)
+
   }
 
   private _recovery:any = new BehaviorSubject<any>({});
@@ -66,7 +62,7 @@ export class LoginService {
 
   public httpRecovery(body): any{
     this.apiService
-    .post('users', body)
+    .post(this.authUrl + this.version + this.module + 'users', body)
     .subscribe(
       data  => {
         console.log(data);
@@ -76,6 +72,25 @@ export class LoginService {
       }
     );
   }
+
+
+  private _emailVerification:any = new BehaviorSubject<any>({});
+  public _emailVerification$ = this._emailVerification.asObservable();
+
+  public get emailVerification() {
+      return this._emailVerification;
+  }
+
+  public set emailVerification(value: any){
+      this._emailVerification.next(value);
+  }
+
+  public httpEmailVerification(body): any{
+    return this.apiService
+    .post(this.authUrl + this.version + this.module + 'confirm/' + body.token)
+  }
+
+
 
 
 

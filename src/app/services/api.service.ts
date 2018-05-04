@@ -43,7 +43,7 @@ export class ApiService {
       .do((res:Response) => res.json());
   }
 
-  post (url:string, body: Object, options?) {
+  post (url:string, body?: Object, options?) {
     console.log(this.config)
     return this.httpClient
       .post(url, body, httpOptions || options)
