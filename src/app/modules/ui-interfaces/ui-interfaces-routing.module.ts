@@ -26,12 +26,12 @@ const routes: Routes = [
       }
     ],
   },
-  {
-    path: 'inventory',
-    component: SidebarModalComponent,
-    loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
-    outlet: 'sidebar'
-  },
+  // {
+  //   path: 'inventory',
+  //   component: SidebarModalComponent,
+  //   loadChildren: 'app/modules/ui-interfaces/inventory/inventory.module#InventoryModule',
+  //   outlet: 'sidebar'
+  // },
   {
     path: 'editor',
     component: ModalComponent,

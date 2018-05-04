@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import {IGEOJson} from "../../engine.types";
 import {
+  BoxGeometry,
   Color, DoubleSide, Face3, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
   PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, TextureLoader, Vector3, VertexColors
 } from 'three';
@@ -10,7 +11,7 @@ import {SceneUtils} from '../../../../utils/sceneUtils';
 import {Terrain} from '../../../../utils/terrain';
 import * as Lodash from 'lodash';
 
-
+import * as SimplexNoise from 'simplex-noise';
 
 @Injectable()
 export class HeightMapService {
@@ -29,8 +30,8 @@ export class HeightMapService {
 
     return this
       .parseImageToGeo(img)
-      .then((res:number[][]) => {
-        let geoJsonObject:IGEOJson = {
+      .then((res: number[][]) => {
+        let geoJsonObject: IGEOJson = {
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
@@ -187,7 +188,7 @@ export class HeightMapService {
     });
   }
 
-  public parseImageToGeo(img:HTMLImageElement){
+  public parseImageToGeo(img: HTMLImageElement){
     return new Promise((resolve, reject) => {
       img.onload = () => {
         let data = this.getGeoHeight(img);
@@ -196,7 +197,7 @@ export class HeightMapService {
     });
   }
 
-  public parseImageToColorGeo(img:HTMLImageElement){
+  public parseImageToColorGeo(img: HTMLImageElement){
     console.log(img);
     return new Promise((resolve, reject) => {
       img.onload = () => {
@@ -211,7 +212,7 @@ export class HeightMapService {
    * @param img
    * @returns {Array of Array of numbers}
    */
-  public getGeoHeight(img: HTMLImageElement):Array<Array<number>> {
+  public getGeoHeight(img: HTMLImageElement): Array<Array<number>> {
     let canvas = document.createElement('canvas');
     canvas.width  = img.width;
     canvas.height = img.height;
@@ -224,7 +225,7 @@ export class HeightMapService {
 
     //+- (4) потому png в формате rgba.
     for (let i = 0, n = pix.length; i < n; i += (4)) {
-      coordinates.push([pix[i], pix[i+1], pix[i+2]]);
+      coordinates.push([pix[i], pix[i + 1], pix[i + 2]]);
     }
     console.log(coordinates);
 
@@ -252,7 +253,7 @@ export class HeightMapService {
 
     //+- (4) потому png в формате rgba.
     for (let i = 0, n = pix.length; i < n; i += (4)) {
-      colorScheme.push([pix[i], pix[i+1], pix[i+2]]);
+      colorScheme.push([pix[i], pix[i + 1], pix[i + 2]]);
     }
     console.log(colorScheme);
 
@@ -262,8 +263,8 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene){
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 5;
-    let worldWidth = 5;
+    let worldDepth = 16;
+    let worldWidth = 16;
     let cubeWidth = 1;
     let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
 
@@ -272,49 +273,37 @@ export class HeightMapService {
 
     let geometry = new Geometry();
 
-    let vertices = [];
-    let facesObj = {};
+    let boxGeometry = new BoxGeometry(1, 1, 1);
+
+
+    const min = Math.min(...this.mapData) * 0.2;
 
     for ( let z = 0; z < worldDepth; z ++ ) {
       for ( let x = 0; x < worldWidth; x ++ ) {
 
-        let h = this.getY( x, z, worldWidth );
-        vertices = [...vertices, x, h, z];
-        // console.log(x, z, h);
+        let h = this.getY(x, z, worldWidth) - min + 1;
 
-        if (!facesObj[h]) {
-          facesObj[h] = [];
+        for ( let y = min; y <= h; y ++ ) {
+
+          matrix.makeTranslation(
+            x * cubeWidth - worldHalfWidth * cubeWidth,
+            y,
+            z * cubeWidth - worldHalfDepth * cubeWidth
+          );
+
+          geometry.merge(boxGeometry, matrix);
         }
 
-        facesObj[h].push(z * cubeWidth + x);
+
+
+        // x - worldHalfWidth
+        // z - worldHalfDepth
+
 
       }
     }
 
-    let i, j, face;
-    let faces = Lodash.values(facesObj);
 
-    for (i = 0; i < vertices.length; i += 3) {
-      geometry.vertices.push(new Vector3 (
-        vertices[i],
-        vertices[i + 1],
-        vertices[i + 2]
-      ));
-    }
-
-    for (i = 0; i < faces.length; i++) {
-      face = faces[i];
-      for (j = 1; j < face.length - 1; j++) {
-        geometry.faces.push(new Face3 (face[0], face[j], face[j + 1]));
-      }
-    }
-
-    geometry.computeFaceNormals();
-
-    // ShapeUtils.triangulateShape(vertices, );
-    console.log(vertices);
-    console.log(facesObj);
-    console.log(faces);
 
     let material = new MeshPhongMaterial( {
       flatShading: true,
@@ -325,12 +314,17 @@ export class HeightMapService {
 
     geometry.verticesNeedUpdate = true;
     geometry.computeFlatVertexNormals();
+    geometry.computeFaceNormals();
+    geometry.computeBoundingSphere();
+    geometry.computeBoundingBox();
+    geometry.mergeVertices();
 
     let mesh = new Mesh( geometry, material );
 
+    console.log(geometry)
 
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     //
     scene.add( mesh );
   }
@@ -456,7 +450,7 @@ export class HeightMapService {
       side: DoubleSide
     } );
 
-    console.log(geometry)
+    console.log(geometry);
 
     geometry.verticesNeedUpdate = true;
 
@@ -469,22 +463,22 @@ export class HeightMapService {
   }
 
   getY( x, z, worldWidth, k?) {
-    if (!k){ k = 0.2 }
+    if (!k){ k = 0.2; }
     return ( this.mapData[ x + z * worldWidth ] * k ) | 0;
   }
 
   improvedNoise() {
 
-    let p = [ 151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,
-      23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,
-      174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,
-      133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,
-      89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,
-      202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,
-      248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,
-      178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,
-      14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,
-      93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180 ];
+    let p = [ 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10,
+      23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149, 56, 87,
+      174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211,
+      133, 230, 220, 105, 92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73, 209, 76, 132, 187, 208,
+      89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5,
+      202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119,
+      248, 152, 2, 44, 154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232,
+      178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249,
+      14, 239, 107, 49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205,
+      93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180 ];
 
     for (let i = 0; i < 256 ; i ++) {
 
@@ -508,7 +502,7 @@ export class HeightMapService {
 
       let h = hash & 15;
       let u = h < 8 ? x : y, v = h < 4 ? y : h == 12 || h == 14 ? x : z;
-      return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
+      return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 
     }
 
@@ -540,7 +534,7 @@ export class HeightMapService {
               grad(p[BB + 1], xMinus1, yMinus1, zMinus1))));
 
       }
-    }
+    };
   }
 
   generateHeight( width, height ) {
@@ -560,10 +554,10 @@ export class HeightMapService {
 
       }
 
-      quality *= 4
+      quality *= 4;
     }
 
-    console.log(this.mapData)
+    console.log(this.mapData);
     return this.mapData;
   }
 }

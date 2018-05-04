@@ -21,7 +21,8 @@ const Components = [
   imports: [
     InventoryRoutingModule,
     CommonModule,
-    VirtualScrollModule
+    VirtualScrollModule,
+    SlimScrollModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
