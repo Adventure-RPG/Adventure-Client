@@ -40,7 +40,7 @@ export class LightsComponent implements OnInit {
       angle: this.angle,
       decay: this.decay,
       position: this.position
-    }, type)
+    }, type);
   }
 
   ngOnInit() {

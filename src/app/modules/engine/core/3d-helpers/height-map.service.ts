@@ -321,7 +321,7 @@ export class HeightMapService {
 
     let mesh = new Mesh( geometry, material );
 
-    console.log(geometry)
+    console.log(geometry);
 
     mesh.castShadow = true;
     mesh.receiveShadow = true;

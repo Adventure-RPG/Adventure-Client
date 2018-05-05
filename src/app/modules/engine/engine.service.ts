@@ -166,10 +166,10 @@ export class EngineService{
 
             },
             (event) => {
-              console.log(event)
+              console.log(event);
             },
             (event) => {
-              console.error(event)
+              console.error(event);
             }
           );
         }
@@ -205,10 +205,10 @@ export class EngineService{
 
         },
         (event) => {
-          console.log(event)
+          console.log(event);
         },
         (event) => {
-          console.error(event)
+          console.error(event);
         }
       );
     }
@@ -241,9 +241,9 @@ export class EngineService{
   public updateCamera(x?, y?, z?) {
     // console.log(this.x);
 
-    if (x){this.x = this.x + x;}
-    if (y){this.y = this.y + y;}
-    if (z){this.z = this.z + z;}
+    if (x){this.x = this.x + x; }
+    if (y){this.y = this.y + y; }
+    if (z){this.z = this.z + z; }
     // this.y = this.y + y;
     // this.z = this.z + z;
     // console.log(this.x);

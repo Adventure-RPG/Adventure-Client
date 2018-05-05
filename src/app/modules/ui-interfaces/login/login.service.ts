@@ -3,12 +3,15 @@ import {ApiService} from "../../../services/api.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {LoginReq, LoginResponse, RegistrateReq} from "./login";
 import {SnotifyService} from "ng-snotify";
+import 'rxjs/add/operator/do';
+
 
 @Injectable()
 export class LoginService {
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private snotifyService: SnotifyService
   ) {}
 
   public authUrl = 'http://auth.iamborsch.ru/';
@@ -16,7 +19,7 @@ export class LoginService {
   public version = 'api/v1/';
   public module = 'auth/';
 
-  private _registrate:any = new BehaviorSubject<any>({});
+  private _registrate: any = new BehaviorSubject<any>({});
   public _registrate$ = this._registrate.asObservable();
 
   public get registrate() {
@@ -27,12 +30,14 @@ export class LoginService {
       this._registrate.next(value);
   }
 
-  public httpRegistrate(body:RegistrateReq): any{
+  public httpRegistrate(body: RegistrateReq): any{
     return this.apiService
       .post(this.authUrl + this.version + this.module + 'register', body);
   }
 
-  private _signIn:any = new BehaviorSubject<any>({});
+  private _signIn: any = new BehaviorSubject<any>({
+    token: localStorage.getItem('token')
+  });
   public _signIn$ = this._signIn.asObservable();
 
   public get signIn() {
@@ -43,13 +48,16 @@ export class LoginService {
       this._signIn.next(value);
   }
 
-  public httpSignIn(body:RegistrateReq): any{
+  public httpSignIn(body: RegistrateReq): any{
     return this.apiService
       .post(this.authUrl + this.version + this.module + 'login', body)
-
+      .do((data) => {
+        localStorage.setItem('auth', JSON.stringify(data));
+        this.signIn = data;
+      });
   }
 
-  private _recovery:any = new BehaviorSubject<any>({});
+  private _recovery: any = new BehaviorSubject<any>({});
   public _recovery$ = this._recovery.asObservable();
 
   public get recovery() {
@@ -74,7 +82,7 @@ export class LoginService {
   }
 
 
-  private _emailVerification:any = new BehaviorSubject<any>({});
+  private _emailVerification: any = new BehaviorSubject<any>({});
   public _emailVerification$ = this._emailVerification.asObservable();
 
   public get emailVerification() {
@@ -87,11 +95,14 @@ export class LoginService {
 
   public httpEmailVerification(body): any{
     return this.apiService
-    .post(this.authUrl + this.version + this.module + 'confirm/' + body.token)
+    .post(this.authUrl + this.version + this.module + 'confirm/' + body.token);
   }
 
-
-
+  public isLoggedIn(){
+    let activeSession = this.signIn.getValue().access_token || localStorage.getItem('auth');
+    console.log(activeSession);
+    return activeSession ? true : false;
+  }
 
 
 }

@@ -10,7 +10,7 @@ export interface InventoryItem {
   size: {
     width: number;
     height: number;
-  }
+  };
 }
 
 @Component({

@@ -18,7 +18,7 @@ export class HeightMapComponent implements OnInit {
   }
 
   transferDataSuccess($event) {
-    console.log($event)
+    console.log($event);
     // let attachmentUploadUrl = 'assets/data/offerspec/offerspec.json';
     // loading the FileList from the dataTransfer
     let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
@@ -34,7 +34,7 @@ export class HeightMapComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         let file: File = files[i];
         let img: any = new Image();
-        let reader:FileReader  = new FileReader();
+        let reader: FileReader  = new FileReader();
 
         reader.addEventListener("load", () => {
           img.src = reader.result;

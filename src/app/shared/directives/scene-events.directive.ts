@@ -12,13 +12,13 @@ export class SceneEventsDirective {
     private keyboardEventService: KeyboardEventService,
     private onWindowEventService: OnWindowEventService
   ) {
-    console.log('init')
+    console.log('init');
 
   }
 
   @HostListener('mouseover') onMouseOver(){
     let punchEditor = this.element.nativeElement.querySelector('#scene');
-    console.log(punchEditor)
+    console.log(punchEditor);
   }
 
   @HostListener('document:keyup', ['$event']) onDocumentKeyUp(event: KeyboardEvent) {

@@ -22,7 +22,7 @@ import { LoginEmailVerificationComponent } from './login-email-verification/logi
     LoginRoutingModule
   ],
   providers: [
-    LoginService
+
   ],
   declarations: [LoginComponent, LoginFormComponent, LoginRegComponent, LoginSignInComponent, LoginRecoveryComponent, LoginEmailRecoveryComponent, LoginEmailAcceptenceComponent, LoginPasswordAcceptenceComponent, LoginEmailVerificationComponent]
 })

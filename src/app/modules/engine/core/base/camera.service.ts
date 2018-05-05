@@ -41,9 +41,9 @@ export class CameraService implements OnInit{
     // console.log(this.settingsService.settings.camera.type);
     // console.log(CAMERA.IsometricCamera);
 
-    if (!x){x = 0}
-    if (!y){y = 0}
-    if (!z){z = 0}
+    if (!x){x = 0; }
+    if (!y){y = 0; }
+    if (!z){z = 0; }
 
     // TODO: дописать апдейт к камере.
 
@@ -114,7 +114,7 @@ export class CameraService implements OnInit{
     this.cameries = mergeModel;
   };
 
-  public updateIsometricCamera(x? ,y?, z?){
+  public updateIsometricCamera(x? , y?, z?){
 
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.IsometricCamera];

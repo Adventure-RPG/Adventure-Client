@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {SidebarModalComponent} from "../../shared/sidebar-modal/sidebar-modal.component";
 import {SharedModule} from "../../shared/shared-module.module";
 import {ModalComponent} from "../../shared/modal/modal.component";
+import {AuthGuard} from "../../guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
       {
         path: 'main',
         loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule',
+        canActivate: [AuthGuard]
       },
       {
         path: 'login',
@@ -18,7 +20,8 @@ const routes: Routes = [
       },
       {
         path: 'editor',
-        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
+        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule',
+        canActivate: [AuthGuard]
       },
       {
         path: '',

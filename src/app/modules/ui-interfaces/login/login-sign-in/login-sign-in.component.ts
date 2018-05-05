@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoginService} from "../login.service";
 import {LoginResponse} from "../login";
+import {AppService} from "../../../../app.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'adventure-login-sign-in',
@@ -12,7 +14,9 @@ export class LoginSignInComponent implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    public loginService: LoginService
+    public loginService: LoginService,
+    private appSerivce: AppService,
+    private router: Router
   ) {  }
 
   public loginForm: FormGroup;
@@ -25,14 +29,22 @@ export class LoginSignInComponent implements OnInit {
   }
 
   public loginFormSubmit(){
-    this.loginService.httpSignIn(this.loginForm.value)      .subscribe(
-      (res: LoginResponse) =>{
+    this.loginService.httpSignIn(this.loginForm.value).subscribe(
+      (res: LoginResponse) => {
+
+        this.router.navigate(['../main']);
         console.log(res);
       },
       error =>  {
+        this.appSerivce.snotifyService.error(error, {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
         console.log(error);
       }
-    );;
+    );
   }
 
 }

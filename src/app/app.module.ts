@@ -23,12 +23,14 @@ import {AppService} from "./app.service";
 import {ApiService} from "./services/api.service";
 import {HandleErrorService} from "./services/handle-error.service";
 import {SceneEventsDirective} from './shared/directives/scene-events.directive';
+import {AuthGuard} from "./guards/auth.guard";
+import {LoginService} from "./modules/ui-interfaces/login/login.service";
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = <any>{
     'swipe': {velocity: 0.4, threshold: 20} // override default settings
-  }
+  };
 }
 
 const Modules = [
@@ -63,7 +65,12 @@ const Services = [
   EngineService,
   LightService,
   AppService,
-  ApiService
+  ApiService,
+  LoginService
+];
+
+const Guards = [
+  AuthGuard
 ];
 
 const Directive = [
@@ -82,6 +89,7 @@ const Directive = [
   providers: [
     ...Events,
     ...Services,
+    ...Guards,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig

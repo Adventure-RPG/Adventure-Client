@@ -15,7 +15,7 @@ import { SharedModule } from "../../../shared/shared-module.module";
     SharedModule,
 
   ],
-  providers:[
+  providers: [
   ],
   declarations: [
     EditorComponent,

@@ -9,49 +9,48 @@ import {LoginSignInComponent} from "./login-sign-in/login-sign-in.component";
 import {LoginComponent} from "./login.component";
 import {LoginEmailVerificationComponent} from "./login-email-verification/login-email-verification.component";
 
-const routes: Routes = [
-  {
-    path: '',
-    component: LoginComponent,
-    children: [
-      {
-        path: '',
-        component: LoginSignInComponent
-      },
-      {
-        path: 'login-reg',
-        component: LoginRegComponent
-      },
-      {
-        path: 'login-recovery',
-        component: LoginRecoveryComponent
-      },
-      {
-        path: 'login-email-recovery',
-        component: LoginEmailRecoveryComponent
-      },
-      {
-        path: 'login-email-verification',
-        component: LoginEmailVerificationComponent
-      },
-      {
-        path: 'login-email-verification/:token',
-        component: LoginEmailVerificationComponent
-      },
-      {
-        path: 'login-email-acceptence',
-        component: LoginEmailAcceptenceComponent
-      },
-      {
-        path: 'login-password-acceptence',
-        component: LoginPasswordAcceptenceComponent
-      },
-    ]
-  }];
+const routes: Routes = [{
+  path: '',
+  component: LoginComponent,
+  children: [
+    {
+      path: '',
+      component: LoginSignInComponent
+    },
+    {
+      path: 'login-reg',
+      component: LoginRegComponent
+    },
+    {
+      path: 'login-recovery',
+      component: LoginRecoveryComponent
+    },
+    {
+      path: 'login-email-recovery',
+      component: LoginEmailRecoveryComponent
+    },
+    {
+      path: 'login-email-verification',
+      component: LoginEmailVerificationComponent
+    },
+    {
+      path: 'login-email-verification/:token',
+      component: LoginEmailVerificationComponent
+    },
+    {
+      path: 'login-email-acceptence',
+      component: LoginEmailAcceptenceComponent
+    },
+    {
+      path: 'login-password-acceptence',
+      component: LoginPasswordAcceptenceComponent
+    },
+  ]
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: []
 })
-  export class LoginRoutingModule { }
+export class LoginRoutingModule { }
