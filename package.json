@@ -9,8 +9,8 @@
     "build": "node_modules/.bin/ng build prod --aot false",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "lint-fix": "ng lint --fix tests/*.ts -t verbose"
+    "lint-fix": "ng lint --fix",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
