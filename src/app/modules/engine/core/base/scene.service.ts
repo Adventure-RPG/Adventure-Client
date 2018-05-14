@@ -40,15 +40,15 @@ export class SceneService {
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
-
     for (let i = 0; i < this.animationLoop.length; i++) {
       this.animationLoop[i]();
     }
 
-    requestAnimationFrame(this.animation.bind(this));
     if (this.camera){
       this.renderer.render( this.scene, <Camera>this.camera );
     }
+
+    requestAnimationFrame(this.animation.bind(this));
   }
 
   get scene(): Scene {

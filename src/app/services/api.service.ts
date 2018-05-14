@@ -55,6 +55,7 @@ export class ApiService {
   put (url: string, body: Object, options?) {
     return this.httpClient
       .put(url, body, options)
+
       .pipe(
         catchError(this.handleErrorService.handleError.bind(this.handleErrorService))
       )

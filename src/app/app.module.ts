@@ -25,6 +25,8 @@ import {HandleErrorService} from "./services/handle-error.service";
 import {SceneEventsDirective} from './shared/directives/scene-events.directive';
 import {AuthGuard} from "./guards/auth.guard";
 import {LoginService} from "./modules/ui-interfaces/login/login.service";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {AuthInterceptor} from "./guards/auth.interceptor";
 
 
 export class MyHammerConfig extends HammerGestureConfig  {
@@ -93,6 +95,11 @@ const Directive = [
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     }
   ],
   schemas: [
