@@ -140,17 +140,17 @@ export class EditorComponent implements OnInit {
 
 
     let directionalLightOptions = {
-      color: "#fff",
-      groundColor: "#444444",
+      color: "0xffffff",
+      groundColor: "#fff",
       intensity: .9,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position : {
-        x: 200,
+        x: 0,
         y: 200,
-        z: 0
+        z: 100
       },
       shadow: {
         castShadow: true,
@@ -159,7 +159,7 @@ export class EditorComponent implements OnInit {
           right: 400,
           top: 400,
           bottom: -400,
-          near: 1,
+          near: 0.5,
           far: 1000
         }
       }
@@ -168,11 +168,11 @@ export class EditorComponent implements OnInit {
 
     this.lightService.addLight(hemisphereLightOptions, "HemisphereLight");
 
-    this.lightService.addLight(pointLightOptions, "PointLight");
+    // this.lightService.addLight(pointLightOptions, "PointLight");
 
     // this.lightService.addLight(ambientLightOptions, "AmbientLight");
 
-    // this.lightService.addLight(directionalLightOptions, "DirectionalLight");
+    this.lightService.addLight(directionalLightOptions, "DirectionalLight");
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");

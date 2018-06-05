@@ -53,19 +53,22 @@ export class LightService {
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
         //HELPLER
         light.castShadow = true;
-        light.shadow.mapSize.width  = 50;
-        light.shadow.mapSize.height = 50;
+        // light.shadow.mapSize.width  = 50;
+        // light.shadow.mapSize.height = 50;
 
-        // dirLight.shadow.camera.left   = -d;
-        // dirLight.shadow.camera.right  =  d;
-        // dirLight.shadow.camera.top    =  d;
-        // dirLight.shadow.camera.bottom = -d;
+        //TODO: косяк типов, написать ПР
+        (<any>light.shadow.camera).left   = -50;
+        (<any>light.shadow.camera).right  =  50;
+        (<any>light.shadow.camera).top    =  50;
+        (<any>light.shadow.camera).bottom = -50;
         //
-        // dirLight.shadow.camera.far = 5;
+        (<any>light.shadow.camera).far = 5000;
         this.engineService.sceneService.scene.add( light );
 
         //TODO: in configurate layers
         dirLightHelper = new THREE.DirectionalLightHelper( light, lightLength );
+        this.engineService.sceneService.scene.add(new THREE.CameraHelper( light.shadow.camera ));
+
         this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;

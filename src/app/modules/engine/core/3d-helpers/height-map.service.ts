@@ -2,16 +2,20 @@ import { Injectable } from '@angular/core';
 
 import {IGEOJson} from "../../engine.types";
 import {
-  BoxGeometry,
-  Color, DoubleSide, Face3, FlatShading, Geometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Object3D,
-  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, TextureLoader, Vector3, VertexColors
+  AmbientLight,
+  BoxGeometry, Camera,
+  Color, DoubleSide, Face3, FlatShading, Geometry, LightShadow, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial,
+  Object3D,
+  SpotLightShadow,
+  PerspectiveCamera,
+  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, SpotLight, TextureLoader, Vector3, VertexColors
 } from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
 import {SceneUtils} from '../../../../utils/sceneUtils';
 import {Terrain} from '../../../../utils/terrain';
 import * as Lodash from 'lodash';
 
-import * as SimplexNoise from 'simplex-noise';
+// import * as SimplexNoise from 'simplex-noise';
 
 @Injectable()
 export class HeightMapService {
@@ -129,6 +133,7 @@ export class HeightMapService {
         let terrainMaterial = new MeshPhongMaterial( {
           vertexColors: VertexColors,
           shininess: 0,
+          color: 0x55aa55,
           flatShading: true
         } );
 
@@ -273,202 +278,225 @@ export class HeightMapService {
 
     let geometry = new Geometry();
 
-    let boxGeometry = new BoxGeometry(1, 1, 1);
-
-
+    //Нужен для перемещения в 0
     const min = Math.min(...this.mapData) * 0.2;
 
     for ( let z = 0; z < worldDepth; z ++ ) {
       for ( let x = 0; x < worldWidth; x ++ ) {
 
-        let h = this.getY(x, z, worldWidth) - min + 1;
+        //Делаем всех от одного уровня
+        let h = this.getY(x, z, worldWidth) ;
 
-        for ( let y = min; y <= h; y ++ ) {
+        console.log(h);
 
-          matrix.makeTranslation(
+        for ( let y = min; y <= h + 2; y ++ ) {
+          let boxGeometry = new BoxGeometry(1, 1, 1);
+
+          boxGeometry.translate(
             x * cubeWidth - worldHalfWidth * cubeWidth,
-            y,
+            y - min,
             z * cubeWidth - worldHalfDepth * cubeWidth
           );
 
-          geometry.merge(boxGeometry, matrix);
+          let baseMaterial = new MeshPhongMaterial( {
+            flatShading: true,
+            vertexColors: VertexColors,
+            color: '#333333'
+          } );
+
+          let shadowMaterial = new ShadowMaterial( {
+            opacity: 0.2
+          } );
+          // console.log(geometry)
+          // geometry.verticesNeedUpdate = true;
+          // geometry.computeFlatVertexNormals();
+          // geometry.computeFaceNormals();
+          // geometry.computeBoundingSphere();
+          // geometry.computeBoundingBox();
+          // geometry.mergeVertices();
+
+
+          let mesh = new Mesh( boxGeometry, baseMaterial );
+
+          // x - worldHalfWidth
+          // z - worldHalfDepth
+
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          //
+          scene.add( mesh );
+          // geometry.merge(boxGeometry, matrix);
         }
 
-
-
-        // x - worldHalfWidth
-        // z - worldHalfDepth
 
 
       }
     }
 
 
+    //TODO: Вынести материалы и нижнию логику
 
-    let material = new MeshPhongMaterial( {
+
+
+    let baseMaterial = new MeshPhongMaterial( {
       flatShading: true,
       vertexColors: VertexColors,
+      color: '#333333'
     } );
 
+    let shadowMaterial = new ShadowMaterial( {
+      opacity: 0.2
+    } );
     // console.log(geometry)
 
-    geometry.verticesNeedUpdate = true;
-    geometry.computeFlatVertexNormals();
-    geometry.computeFaceNormals();
-    geometry.computeBoundingSphere();
-    geometry.computeBoundingBox();
-    geometry.mergeVertices();
+    // geometry.verticesNeedUpdate = true;
+    // geometry.computeFlatVertexNormals();
+    // geometry.computeFaceNormals();
+    // geometry.computeBoundingSphere();
+    // geometry.computeBoundingBox();
+    // geometry.mergeVertices();
 
-    let mesh = new Mesh( geometry, material );
-
-    console.log(geometry);
-
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    //
-    scene.add( mesh );
   }
 
-  public getHeightMap(scene: Scene){
-
-    //TODO: переделать от картинки
-    //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 200;
-    let worldWidth = 200;
-    let cubeWidth = 1;
-    let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
-
-    this.generateHeight(worldWidth, worldDepth);
-
-    let light = new Color( 0xffffff );
-    let matrix = new Matrix4();
-
-    let pxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    pxGeometry.rotateY( Math.PI / 2 );
-    pxGeometry.translate( cubeWidth / 2, 0, 0 );
-
-    let nxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    nxGeometry.rotateY( - Math.PI / 2 );
-    nxGeometry.translate( - cubeWidth / 2, 0, 0 );
-
-    let pyGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    pyGeometry.rotateX( - Math.PI / 2 );
-    pyGeometry.translate( 0, cubeWidth / 2, 0 );
-
-    let py2Geometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    py2Geometry.rotateX( - Math.PI / 2 );
-    py2Geometry.rotateY( Math.PI / 2 );
-    py2Geometry.translate( 0, cubeWidth / 2, 0 );
-
-
-    let pzGeometry = new PlaneGeometry(cubeWidth, cubeWidth );
-    pzGeometry.translate( 0, 0, cubeWidth / 2 );
-
-    let nzGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
-    nzGeometry.rotateY( Math.PI );
-    nzGeometry.translate( 0, 0, - cubeWidth / 2 );
-
-    let geometry = new Geometry();
-
-    // Проход выставления высоты каждому квадрату
-    for ( let z = 0; z < worldDepth; z ++ ) {
-      for ( let x = 0; x < worldWidth; x ++ ) {
-
-        let h = this.getY( x, z, worldWidth );
-
-        // x - worldHalfWidth
-        // z - worldHalfDepth
-
-        matrix.makeTranslation(
-          x * cubeWidth - worldHalfWidth * cubeWidth,
-          h * cubeWidth,
-          z * cubeWidth - worldHalfDepth * cubeWidth
-        );
-
-
-        /**
-         * 0 1 0
-         * 1 X 1
-         * 0 1 0
-         *
-         * 1 - nx, px, pz, nz
-         * 0 - pxpz, nxpz, pxnz, nxnz
-         * X - current point
-         * @type {number}
-         */
-
-        //Проверка высоты соседних элементов
-        let px   = this.getY( x + 1, z, worldWidth );
-        let nx   = this.getY( x - 1, z, worldWidth );
-        let pz   = this.getY( x, z + 1, worldWidth );
-        let nz   = this.getY( x, z - 1, worldWidth );
-
-        let pxpz = this.getY( x + 1, z + 1, worldWidth );
-        let nxpz = this.getY( x - 1, z + 1, worldWidth );
-        let pxnz = this.getY( x + 1, z - 1, worldWidth );
-        let nxnz = this.getY( x - 1, z - 1, worldWidth );
-
-        let a = nx > h || nz > h || nxnz > h ? 0 : 1;
-        let b = nx > h || pz > h || nxpz > h ? 0 : 1;
-        let c = px > h || pz > h || pxpz > h ? 0 : 1;
-        let d = px > h || nz > h || pxnz > h ? 0 : 1;
-
-        // console.log(`
-        //   ${z*worldWidth+x}: x, z, y: ${x} ${z} ${h}
-        // `);
-
-
-        if ( a + c > b + d ) {
-          geometry.merge(py2Geometry, matrix);
-        } else {
-          geometry.merge( pyGeometry, matrix );
-        }
-
-        if ( ( px != h && px != h + 1 ) || x == 0 ) {
-          geometry.merge( pxGeometry, matrix );
-        }
-
-        if ( ( nx != h && nx != h + 1 ) || x == worldWidth - 1 ) {
-          geometry.merge( nxGeometry, matrix );
-        }
-
-        if ( ( pz != h && pz != h + 1 ) || z == worldDepth - 1 ) {
-          geometry.merge( pzGeometry, matrix );
-        }
-
-        if ( ( nz != h && nz != h + 1 ) || z == 0 ) {
-          geometry.merge( nzGeometry, matrix );
-        }
-      }
-    }
-
-
-
-    let material = new MeshPhongMaterial( {
-      flatShading: true,
-      vertexColors: VertexColors,
-      side: DoubleSide
-    } );
-
-    console.log(geometry);
-
-    geometry.verticesNeedUpdate = true;
-
-    let mesh = new Mesh( geometry, material );
-
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-
-    scene.add( mesh );
-  }
+  // public getHeightMap(scene: Scene){
+  //
+  //   //TODO: переделать от картинки
+  //   //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
+  //   let worldDepth = 200;
+  //   let worldWidth = 200;
+  //   let cubeWidth = 1;
+  //   let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+  //
+  //   this.generateHeight(worldWidth, worldDepth);
+  //
+  //   let light = new Color( 0xffffff );
+  //   let matrix = new Matrix4();
+  //
+  //   let pxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+  //   pxGeometry.rotateY( Math.PI / 2 );
+  //   pxGeometry.translate( cubeWidth / 2, 0, 0 );
+  //
+  //   let nxGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+  //   nxGeometry.rotateY( - Math.PI / 2 );
+  //   nxGeometry.translate( - cubeWidth / 2, 0, 0 );
+  //
+  //   let pyGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+  //   pyGeometry.rotateX( - Math.PI / 2 );
+  //   pyGeometry.translate( 0, cubeWidth / 2, 0 );
+  //
+  //   let py2Geometry = new PlaneGeometry( cubeWidth, cubeWidth );
+  //   py2Geometry.rotateX( - Math.PI / 2 );
+  //   py2Geometry.rotateY( Math.PI / 2 );
+  //   py2Geometry.translate( 0, cubeWidth / 2, 0 );
+  //
+  //
+  //   let pzGeometry = new PlaneGeometry(cubeWidth, cubeWidth );
+  //   pzGeometry.translate( 0, 0, cubeWidth / 2 );
+  //
+  //   let nzGeometry = new PlaneGeometry( cubeWidth, cubeWidth );
+  //   nzGeometry.rotateY( Math.PI );
+  //   nzGeometry.translate( 0, 0, - cubeWidth / 2 );
+  //
+  //   let geometry = new Geometry();
+  //
+  //   // Проход выставления высоты каждому квадрату
+  //   for ( let z = 0; z < worldDepth; z ++ ) {
+  //     for ( let x = 0; x < worldWidth; x ++ ) {
+  //
+  //       let h = this.getY( x, z, worldWidth );
+  //
+  //       // x - worldHalfWidth
+  //       // z - worldHalfDepth
+  //
+  //       matrix.makeTranslation(
+  //         x * cubeWidth - worldHalfWidth * cubeWidth,
+  //         h * cubeWidth,
+  //         z * cubeWidth - worldHalfDepth * cubeWidth
+  //       );
+  //
+  //
+  //       /**
+  //        * 0 1 0
+  //        * 1 X 1
+  //        * 0 1 0
+  //        *
+  //        * 1 - nx, px, pz, nz
+  //        * 0 - pxpz, nxpz, pxnz, nxnz
+  //        * X - current point
+  //        * @type {number}
+  //        */
+  //
+  //       //Проверка высоты соседних элементов
+  //       let px   = this.getY( x + 1, z, worldWidth );
+  //       let nx   = this.getY( x - 1, z, worldWidth );
+  //       let pz   = this.getY( x, z + 1, worldWidth );
+  //       let nz   = this.getY( x, z - 1, worldWidth );
+  //
+  //       let pxpz = this.getY( x + 1, z + 1, worldWidth );
+  //       let nxpz = this.getY( x - 1, z + 1, worldWidth );
+  //       let pxnz = this.getY( x + 1, z - 1, worldWidth );
+  //       let nxnz = this.getY( x - 1, z - 1, worldWidth );
+  //
+  //       let a = nx > h || nz > h || nxnz > h ? 0 : 1;
+  //       let b = nx > h || pz > h || nxpz > h ? 0 : 1;
+  //       let c = px > h || pz > h || pxpz > h ? 0 : 1;
+  //       let d = px > h || nz > h || pxnz > h ? 0 : 1;
+  //
+  //       // console.log(`
+  //       //   ${z*worldWidth+x}: x, z, y: ${x} ${z} ${h}
+  //       // `);
+  //
+  //
+  //       if ( a + c > b + d ) {
+  //         geometry.merge(py2Geometry, matrix);
+  //       } else {
+  //         geometry.merge( pyGeometry, matrix );
+  //       }
+  //
+  //       if ( ( px != h && px != h + 1 ) || x == 0 ) {
+  //         geometry.merge( pxGeometry, matrix );
+  //       }
+  //
+  //       if ( ( nx != h && nx != h + 1 ) || x == worldWidth - 1 ) {
+  //         geometry.merge( nxGeometry, matrix );
+  //       }
+  //
+  //       if ( ( pz != h && pz != h + 1 ) || z == worldDepth - 1 ) {
+  //         geometry.merge( pzGeometry, matrix );
+  //       }
+  //
+  //       if ( ( nz != h && nz != h + 1 ) || z == 0 ) {
+  //         geometry.merge( nzGeometry, matrix );
+  //       }
+  //     }
+  //   }
+  //
+  //
+  //
+  //   let material = new MeshPhongMaterial( {
+  //     flatShading: true,
+  //     vertexColors: VertexColors,
+  //     side: DoubleSide
+  //   } );
+  //
+  //   console.log(geometry);
+  //
+  //   geometry.verticesNeedUpdate = true;
+  //
+  //   let mesh = new Mesh( geometry, material );
+  //
+  //   mesh.castShadow = true;
+  //   mesh.receiveShadow = true;
+  //
+  //   scene.add( mesh );
+  // }
 
   getY( x, z, worldWidth, k?) {
     if (!k){ k = 0.2; }
-    return ( this.mapData[ x + z * worldWidth ] * k ) | 0;
+    return this.mapData[ x + z * worldWidth ] * k ;
   }
 
   improvedNoise() {
-
     let p = [ 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10,
       23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149, 56, 87,
       174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211,
@@ -481,29 +509,21 @@ export class HeightMapService {
       93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180 ];
 
     for (let i = 0; i < 256 ; i ++) {
-
       p[256 + i] = p[i];
-
     }
 
     function fade(t) {
-
       return t * t * t * (t * (t * 6 - 15) + 10);
-
     }
 
     function lerp(t, a, b) {
-
       return a + t * (b - a);
-
     }
 
     function grad(hash, x, y, z) {
-
       let h = hash & 15;
       let u = h < 8 ? x : y, v = h < 4 ? y : h == 12 || h == 14 ? x : z;
       return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
-
     }
 
     return {
