@@ -58,4 +58,8 @@ export class HeightMapComponent implements OnInit {
     this.engineService.generateFromNoise();
   }
 
+  generateFromNoise2(){
+    this.engineService.generateFromNoise2();
+  }
+
 }

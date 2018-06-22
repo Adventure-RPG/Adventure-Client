@@ -8,7 +8,8 @@ import {
   Object3D,
   SpotLightShadow,
   PerspectiveCamera,
-  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, SpotLight, TextureLoader, Vector3, VertexColors
+  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, SpotLight, TextureLoader, Vector3, VertexColors,
+  MeshLambertMaterial, SphereGeometry, FaceColors
 } from 'three';
 import {createScope} from '@angular/core/src/profile/wtf_impl';
 import {SceneUtils} from '../../../../utils/sceneUtils';
@@ -278,8 +279,13 @@ export class HeightMapService {
 
     let geometry = new Geometry();
 
+    let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
+
     //Нужен для перемещения в 0
     const min = Math.min(...this.mapData) * 0.2;
+
+    // console.log(min);
+    let geometryMatrix: Array<Vector3> = [];
 
     for ( let z = 0; z < worldDepth; z ++ ) {
       for ( let x = 0; x < worldWidth; x ++ ) {
@@ -290,58 +296,51 @@ export class HeightMapService {
         console.log(h);
 
         for ( let y = min; y <= h + 2; y ++ ) {
-          let boxGeometry = new BoxGeometry(1, 1, 1);
 
-          boxGeometry.translate(
+          matrix.makeTranslation(
             x * cubeWidth - worldHalfWidth * cubeWidth,
-            y - min,
+            (y - min) * cubeWidth,
             z * cubeWidth - worldHalfDepth * cubeWidth
           );
 
-          let baseMaterial = new MeshPhongMaterial( {
-            flatShading: true,
-            vertexColors: VertexColors,
-            color: '#333333'
-          } );
+          geometry.merge(boxGeometry, matrix);
 
-          let shadowMaterial = new ShadowMaterial( {
-            opacity: 0.2
-          } );
-          // console.log(geometry)
-          // geometry.verticesNeedUpdate = true;
-          // geometry.computeFlatVertexNormals();
-          // geometry.computeFaceNormals();
-          // geometry.computeBoundingSphere();
-          // geometry.computeBoundingBox();
-          // geometry.mergeVertices();
-
-
-          let mesh = new Mesh( boxGeometry, baseMaterial );
-
-          // x - worldHalfWidth
-          // z - worldHalfDepth
-
-          mesh.castShadow = true;
-          mesh.receiveShadow = true;
-          //
-          scene.add( mesh );
-          // geometry.merge(boxGeometry, matrix);
         }
 
+
+
+        // x - worldHalfWidth
+        // z - worldHalfDepth
 
 
       }
     }
 
+    // let index = 0;
+    // for (let obj of geometryMatrix) {
+    //   geometry.faces.push(new Face3(index, index+1, index+2));
+    //   geometry.vertices.push(obj);
+    //
+    //   index++;
+    // }
+    //
+    // console.log(geometryMatrix)
+    // console.log(geometry)
+
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
 
     //TODO: Вынести материалы и нижнию логику
 
 
+    let material = new MeshLambertMaterial({
+      color: Math.random() * 0xffffff
+    });
 
-    let baseMaterial = new MeshPhongMaterial( {
+    let baseMaterial = new MeshLambertMaterial( {
       flatShading: true,
       vertexColors: VertexColors,
-      color: '#333333'
+      color: '#fff',
     } );
 
     let shadowMaterial = new ShadowMaterial( {
@@ -349,13 +348,127 @@ export class HeightMapService {
     } );
     // console.log(geometry)
 
-    // geometry.verticesNeedUpdate = true;
+    geometry.verticesNeedUpdate = true;
     // geometry.computeFlatVertexNormals();
     // geometry.computeFaceNormals();
     // geometry.computeBoundingSphere();
     // geometry.computeBoundingBox();
-    // geometry.mergeVertices();
+    geometry.mergeVertices();
 
+    let mesh = new Mesh( geometry, material );
+    //
+    // console.log(geometry);
+    //
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.updateMatrix();
+    // //
+    scene.add( mesh );
+    //
+    //
+    // let geometry2 = new PlaneGeometry(10000,10000,1,1);
+    // let material2 = new MeshLambertMaterial( {color: 0x00ee00} );
+    // let plane2 = new Mesh( geometry2, material2 );
+    // plane2.receiveShadow = true;
+    // plane2.castShadow = true;
+    // plane2.rotation.x = -Math.PI / 2;
+    // plane2.position.y = -21;
+    // scene.add( plane2 );
+    //
+    //
+    // //SPHERE
+    // let geometry3 = new SphereGeometry(20, 12, 12);
+    // let material3 = new MeshLambertMaterial({color: 0xffffff, vertexColors: FaceColors});
+    // for (let i = 0; i < geometry3.faces.length; i++) {
+    //   geometry3.faces[i].color.setRGB(Math.random(),Math.random(),Math.random());
+    // }
+    // let mesh3 = new Mesh(geometry3,material3);
+    //
+    // mesh3.position.y = 30;
+    // mesh3.position.z = 50;
+    // mesh3.receiveShadow = true;
+    // mesh3.castShadow = true;
+    //
+    // scene.add(mesh3);
+
+
+  }
+
+  public generateDungeonTerrain2(scene: Scene){
+    //TODO: переделать от картинки
+    //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
+    let worldDepth = 10;
+    let worldWidth = 10;
+    let cubeWidth = 1;
+    let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+
+    this.generateHeight(worldWidth, worldDepth);
+    // let matrix = new Matrix4();
+    // let geometry = new Geometry();
+    // let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
+
+    // //Нужен для перемещения в 0
+    const min = Math.min(...this.mapData) * 0.2;
+
+    // console.log(min);
+    // let geometryMatrix: Array<Vector3> = [];
+
+    let x = 0;
+    let z = 0;
+    let row = 0;
+    let col = 0;
+    let rectangle;
+    let rectangles = [];
+
+    let RECT_SIZE = 1,
+        RECT_HEIGHT = 10,
+        GRID_SIZE = 10;
+    let NUM_CUBES = GRID_SIZE * GRID_SIZE;
+
+
+    let geometry = new BoxGeometry(RECT_SIZE, RECT_HEIGHT, RECT_SIZE);
+
+    for (let i = 0; i < NUM_CUBES; i++) {
+
+      let material = new MeshLambertMaterial({
+        color: Math.random() * 0xffffff
+      });
+
+      if ((i % GRID_SIZE) === 0) {
+        col = 1;
+        row++;
+      } else {
+        col++;
+      }
+
+      let h = this.getY(col, row, worldWidth) ;
+
+      x = -(((GRID_SIZE * RECT_SIZE) / 2) - ((RECT_SIZE) * col) + (RECT_SIZE / 2));
+      z = (((GRID_SIZE * RECT_SIZE) / 2) - ((RECT_SIZE) * row) + (RECT_SIZE / 2));
+
+      // повто
+      // for ( let y = min; y <= h + 2; y ++ ) {
+      //
+      //   matrix.makeTranslation(
+      //     x * cubeWidth - worldHalfWidth * cubeWidth,
+      //     (y - min) * cubeWidth,
+      //     z * cubeWidth - worldHalfDepth * cubeWidth
+      //   );
+      //
+      //   geometry.merge(boxGeometry, matrix);
+      //
+      // }
+
+      console.log(`${x}:${z} - ${h}`);
+
+      rectangle = new Mesh(geometry, material);
+      rectangle.position.set(x, (h - min), z);
+      rectangle.castShadow = true;
+      rectangle.receiveShadow = true;
+      rectangles.push(rectangle);
+
+      scene.add(rectangle);
+    }
   }
 
   // public getHeightMap(scene: Scene){

@@ -12,6 +12,7 @@ import { SharedModule} from "../../../shared/shared-module.module";
 import { LightsComponent } from './lights/lights.component';
 import { LightMapComponent } from './light-map/light-map.component';
 import { ColorMapComponent } from './color-map/color-map.component';
+import { MaterialFormComponent } from './material/material.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { ColorMapComponent } from './color-map/color-map.component';
     EngineModule,
     SharedModule,
     SubRoutingModule,
-    DndModule.forRoot()
+    DndModule.forRoot(),
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
@@ -32,6 +33,7 @@ import { ColorMapComponent } from './color-map/color-map.component';
     LightsComponent,
     LightMapComponent,
     ColorMapComponent,
+    MaterialFormComponent,
   ]
 })
 export class SubModule { }

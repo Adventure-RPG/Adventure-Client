@@ -14,12 +14,16 @@ export class SceneService {
 
   constructor() {
     this.scene = new Scene();
-
     console.log("scene service1");
+
+    console.log(window)
+    console.log(window.devicePixelRatio)
 
     // Render
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setClearColor(0x000);
 
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap

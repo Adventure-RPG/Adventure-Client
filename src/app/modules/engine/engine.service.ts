@@ -269,6 +269,11 @@ export class EngineService{
     // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
+  public generateFromNoise2(){
+    this.heightMapService.generateDungeonTerrain2(this.sceneService.scene);
+    // this.heightMapService.getHeightMap(this.sceneService.scene);
+  }
+
   public colorMap(img){
     let options: HeightMapOptions = {
       grid: false

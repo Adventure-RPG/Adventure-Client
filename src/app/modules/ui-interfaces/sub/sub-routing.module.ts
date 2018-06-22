@@ -6,6 +6,7 @@ import {ModelsComponent} from "./models/models.component";
 import {LightsComponent} from "./lights/lights.component";
 import {LightMapComponent} from "./light-map/light-map.component";
 import {ColorMapComponent} from "./color-map/color-map.component";
+import {MaterialFormComponent} from "./material/material.component";
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'models',
         component: ModelsComponent
+      },
+      {
+        path: 'material',
+        component: MaterialFormComponent
       },
       {
         path: 'lights',

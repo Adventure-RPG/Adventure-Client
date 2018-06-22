@@ -2,6 +2,39 @@ import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 import {EngineService} from "../engine.service";
 import * as inflate from 'inflate';
+import {PerspectiveCamera} from "three/three-core";
+import {
+  AmbientLight, DirectionalLight, DirectionalLightHelper, HemisphereLight, HemisphereLightHelper, PointLight,
+  PointLightHelper, SpotLight,
+  SpotLightShadow
+} from "three";
+
+const
+  SHADOW_MAP_WIDTH = 2048,
+  SHADOW_MAP_HEIGHT = 1024;
+
+export interface Shadow {
+  castShadow: boolean;
+  camera: PerspectiveCamera;
+}
+
+export interface Position {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface LightEntity {
+  color: string;
+  groundColor: string;
+  intensity: number;
+  distance: number;
+  exponent: number;
+  angle: number;
+  decay: number;
+  position: Position;
+  shadow?: Shadow;
+}
 
 @Injectable()
 export class LightService {
@@ -10,25 +43,11 @@ export class LightService {
     private engineService: EngineService
   ) { }
 
-
-  addLight(lightEntity: {
-    color: string;
-    groundColor: string;
-    intensity: number;
-    distance: number;
-    exponent: number;
-    angle: number;
-    decay: number ;
-    position: {
-      x: number;
-      y: number;
-      z: number;
-    }
-  }, type){
+  addLight(lightEntity: LightEntity, type){
     let lightLength = 50;
     let d = 10;
-    let light: THREE.AmbientLight | THREE.DirectionalLight | THREE.HemisphereLight | THREE.PointLight | THREE.SpotLight;
-    let dirLightHelper: THREE.DirectionalLightHelper | THREE.HemisphereLightHelper | THREE.PointLightHelper;
+    let light: AmbientLight | DirectionalLight | HemisphereLight | PointLight | SpotLight;
+    let dirLightHelper: DirectionalLightHelper | HemisphereLightHelper | PointLightHelper;
 
     // TODO: clean interface
     // https://github.com/mrdoob/three.js/issues/12452
@@ -53,15 +72,14 @@ export class LightService {
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
         //HELPLER
         light.castShadow = true;
-        // light.shadow.mapSize.width  = 50;
-        // light.shadow.mapSize.height = 50;
+        light.shadow.mapSize.width  = 50;
+        light.shadow.mapSize.height = 50;
 
         //TODO: косяк типов, написать ПР
         (<any>light.shadow.camera).left   = -50;
         (<any>light.shadow.camera).right  =  50;
         (<any>light.shadow.camera).top    =  50;
         (<any>light.shadow.camera).bottom = -50;
-        //
         (<any>light.shadow.camera).far = 5000;
         this.engineService.sceneService.scene.add( light );
 
@@ -129,14 +147,19 @@ export class LightService {
       //
       //   break;
       case 'SpotLight':
-        light = new THREE.SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
-        light.color.setHSL( 0.1, 1, 0.95 );
+
+        light = new THREE.SpotLight(0xffffff, 0.5, 0, Math.PI / 2, 1);
+        // light = new THREE.SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
+        // light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set( lightEntity.position.x, lightEntity.position.y, lightEntity.position.z );
         light.shadow.bias = 0.0001;
         //HELPLER
         // light.castShadow = true;
-        light.shadow.mapSize.width  = 50;
-        light.shadow.mapSize.height = 50;
+        light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+        light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+        (<SpotLightShadow>light.shadow).camera.far = 5000;
+        (<SpotLightShadow>light.shadow).camera.near = 1200;
+        (<SpotLightShadow>light.shadow).camera.fov = 50;
 
         // dirLight.shadow.camera.left   = -d;
         // dirLight.shadow.camera.right  =  d;
