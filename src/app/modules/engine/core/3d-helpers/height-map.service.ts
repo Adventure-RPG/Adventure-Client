@@ -26,6 +26,8 @@ export class HeightMapService {
   private colorScheme;
   private mapData;
 
+
+
   public changeMapFromImage(options, scene: Scene, img){
 
     // terrain
@@ -194,6 +196,11 @@ export class HeightMapService {
     });
   }
 
+  /**
+   *
+   * @param {HTMLImageElement} img
+   * @returns {Promise<any>}
+   */
   public parseImageToGeo(img: HTMLImageElement){
     return new Promise((resolve, reject) => {
       img.onload = () => {
