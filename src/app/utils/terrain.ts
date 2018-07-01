@@ -1,4 +1,5 @@
 import {BoxGeometry, Material, Mesh, MeshBasicMaterial, MeshNormalMaterial, PlaneGeometry} from 'three';
+import {MeshMaterial} from "three/three-core";
 
 export class Terrain {
 
@@ -114,7 +115,7 @@ export class Terrain {
     return terrain_geometry;
   }
 
-  getTerrainWithMaterial(material: Material | Material[]){
+  getTerrainWithMaterial(material: MeshMaterial){
     let terrain_mesh = new Mesh(this.getTerrain(), material);
     terrain_mesh.rotation.x = -Math.PI / 2.0;
     return terrain_mesh;
@@ -149,7 +150,7 @@ export class Terrain {
     return water_geometry;
   }
 
-  getWaterWithMaterial(material: Material | Material[]) {
+  getWaterWithMaterial(material: MeshMaterial) {
     let min_height = Infinity;
     let max_height = -Infinity;
 
