@@ -14,10 +14,6 @@ export class SceneService {
 
   constructor() {
     this.scene = new Scene();
-    console.log("scene service1");
-
-    console.log(window)
-    console.log(window.devicePixelRatio)
 
     // Render
     this.renderer = new WebGLRenderer({ antialias: true });

@@ -1,17 +1,17 @@
 <div class="container">
   <h1>Hero Form</h1>
-  <form>
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" required>
-    </div>
+  <form [formGroup]="form">
 
     <div class="form-group">
-      <label for="alterEgo">Alter Ego</label>
-      <input type="text" class="form-control" id="alterEgo">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="alphaTest">
+      </label>
     </div>
 
-    <button type="submit" class="btn btn-success">Submit</button>
+    <button type="submit" class="btn btn-success" (click)="diagnostic">Submit</button>
 
   </form>
+  <p>Form value: {{ form.value | json }}</p>
+  <p>Form status: {{ form.status | json }}</p>
+
 </div>
