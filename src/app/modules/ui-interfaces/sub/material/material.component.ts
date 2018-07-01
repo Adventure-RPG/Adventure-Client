@@ -6,10 +6,8 @@ import {
 } from "three";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import 'reflect-metadata'
-import {IsBoolean, IsNumber, IsString, IsUUID, Max, Min, Validator} from "class-validator";
 
 // Validation methods
-const ClassValidator = new Validator();
 
 
 @Component({
@@ -48,75 +46,49 @@ export class MaterialFormComponent implements OnInit {
 
 export class MaterialFormAnnotation implements Material {
 
-  @IsNumber()
-  @Min(0)
-  @Max(1)
   alphaTest: number;
 
   blendDst: BlendingDstFactor;
 
-  @IsNumber()
-  @Min(0)
-  @Max(1)
   blendDstAlpha: number;
 
   blendEquation: BlendingEquation;
 
-  @IsNumber()
-  @Min(0)
-  @Max(1)
   blendEquationAlpha: number;
 
   blending: Blending;
 
   blendSrc: BlendingSrcFactor | BlendingDstFactor;
 
-  @IsNumber()
-  @Min(0)
-  @Max(1)
   blendSrcAlpha: number;
 
-  @IsBoolean()
   clipIntersection: boolean;
 
   clippingPlanes: any;
 
-  @IsBoolean()
   clipShadows: boolean;
 
-  @IsBoolean()
   colorWrite: boolean;
 
   depthFunc: DepthModes;
 
-  @IsBoolean()
   depthTest: boolean;
 
-  @IsBoolean()
   depthWrite: boolean;
 
-  @IsBoolean()
   fog: boolean;
 
-  @IsNumber()
   id: number;
 
-  @IsBoolean()
   isMaterial: boolean;
-  @IsBoolean()
   lights: boolean;
   name: string;
-  @IsBoolean()
   needsUpdate: boolean;
 
-  @IsNumber()
-  @Min(0)
-  @Max(1)
   opacity: number;
 
   overdraw: number;
 
-  @IsBoolean()
   polygonOffset: boolean;
 
   polygonOffsetFactor: number;
@@ -125,29 +97,22 @@ export class MaterialFormAnnotation implements Material {
 
   precision;
 
-  @IsBoolean()
   premultipliedAlpha: boolean;
 
-  @IsBoolean()
   dithering: boolean;
 
-  @IsBoolean()
   flatShading: boolean;
 
   side: Side;
 
-  @IsBoolean()
   transparent: boolean;
 
-  @IsString()
   type: string;
 
-  @IsUUID()
   uuid: string;
 
   vertexColors: Colors;
 
-  @IsBoolean()
   visible: boolean;
 
   userData: any;
