@@ -84,7 +84,7 @@ export class LightService {
         this.engineService.sceneService.scene.add( light );
 
         //TODO: in configurate layers
-        dirLightHelper = new THREE.DirectionalLightHelper( light, lightLength );
+        dirLightHelper = new THREE.DirectionalLightHelper(<DirectionalLight>light, lightLength );
         this.engineService.sceneService.scene.add(new THREE.CameraHelper( light.shadow.camera ));
 
         this.engineService.sceneService.scene.add( dirLightHelper );
@@ -116,7 +116,7 @@ export class LightService {
 
 
         let sphereSize = 1;
-        let pointLightHelper = new THREE.PointLightHelper( light, sphereSize );
+        let pointLightHelper = new THREE.PointLightHelper( <PointLight>light, sphereSize );
         this.engineService.sceneService.scene.add( pointLightHelper );
 
         // dirLightHelper = new THREE.PointLightHelper( light, lightLength );
@@ -169,7 +169,7 @@ export class LightService {
         // dirLight.shadow.camera.far = 5;
 
         this.engineService.sceneService.scene.add( light );
-        dirLightHelper = new THREE.SpotLightHelper( light );
+        dirLightHelper = new THREE.SpotLightHelper( <SpotLight>light );
         this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
