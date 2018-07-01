@@ -4,8 +4,8 @@ import {EngineService} from "../engine.service";
 import * as inflate from 'inflate';
 import {PerspectiveCamera} from "three/three-core";
 import {
-  AmbientLight, DirectionalLight, DirectionalLightHelper, HemisphereLight, HemisphereLightHelper, PointLight,
-  PointLightHelper, SpotLight,
+  AmbientLight, DirectionalLight, DirectionalLightHelper, HemisphereLight, HemisphereLightHelper, Light, PointLight,
+  PointLightHelper, SpotLight, SpotLightHelper,
   SpotLightShadow
 } from "three";
 
@@ -47,7 +47,7 @@ export class LightService {
     let lightLength = 50;
     let d = 10;
     let light: AmbientLight | DirectionalLight | HemisphereLight | PointLight | SpotLight;
-    let dirLightHelper: DirectionalLightHelper | HemisphereLightHelper | PointLightHelper;
+    let dirLightHelper: DirectionalLightHelper | HemisphereLightHelper | PointLightHelper | SpotLightHelper;
 
     // TODO: clean interface
     // https://github.com/mrdoob/three.js/issues/12452
@@ -169,7 +169,7 @@ export class LightService {
         // dirLight.shadow.camera.far = 5;
 
         this.engineService.sceneService.scene.add( light );
-        dirLightHelper = new THREE.SpotLightHelper( <SpotLight>light );
+        dirLightHelper = new THREE.SpotLightHelper( <any>light );
         this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
