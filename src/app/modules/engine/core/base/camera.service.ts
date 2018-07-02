@@ -1,12 +1,9 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Camera, CubeCamera, FirstPersonControls, OrthographicCamera, PerspectiveCamera} from 'three';
-import {EngineService} from '../../engine.service';
+import {Camera, CubeCamera, OrthographicCamera, PerspectiveCamera} from 'three';
 import {SettingsService} from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import {CAMERA} from '../../../../enums/settings.enum';
 
-//Подумать как убрать
-import * as THREE from 'three';
 
 @Injectable()
 export class CameraService implements OnInit{
@@ -47,7 +44,7 @@ export class CameraService implements OnInit{
 
     // TODO: дописать апдейт к камере.
 
-    console.log(x, y);
+    // console.log(x, y);
 
     if (!this.camera) {
       this.initIsometricCamera();
