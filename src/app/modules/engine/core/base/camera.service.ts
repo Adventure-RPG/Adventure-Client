@@ -38,9 +38,9 @@ export class CameraService implements OnInit{
     // console.log(this.settingsService.settings.camera.type);
     // console.log(CAMERA.IsometricCamera);
 
-    if (!x){x = 0; }
-    if (!y){y = 0; }
-    if (!z){z = 0; }
+    if (!x) {x = 0; }
+    if (!y) {y = 0; }
+    if (!z) {z = 0; }
 
     // TODO: дописать апдейт к камере.
 
@@ -66,7 +66,7 @@ export class CameraService implements OnInit{
     return this.camera;
   }
 
-  public initFirstPersonCamera(){
+  public initFirstPersonCamera() {
     this.camera = new PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 20000 );
     // require('three-first-person-controls')(THREE);
     //
