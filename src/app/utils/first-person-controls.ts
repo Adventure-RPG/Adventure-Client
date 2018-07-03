@@ -79,6 +79,7 @@ export class FirstPersonControls {
 
     this.mouseDragOn = false;
 
+
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
