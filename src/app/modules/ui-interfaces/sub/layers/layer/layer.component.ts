@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {OnNew} from "../../../../../decorators/on-new.decorator";
-import {EngineService} from "../../../../engine/engine.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { OnNew } from '../../../../../decorators/on-new.decorator';
+import { EngineService } from '../../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-layer',
@@ -8,17 +8,16 @@ import {EngineService} from "../../../../engine/engine.service";
   styleUrls: ['./layer.component.scss']
 })
 export class LayerComponent implements OnInit {
-
-  @Input() @OnNew <LayerComponent, any>(x => x.onNewLayer) layer: any;
+  @Input()
+  @OnNew<LayerComponent, any>(x => x.onNewLayer)
+  layer: any;
   @Input() index: number;
 
   opened: boolean;
 
-  onNewLayer() {
+  onNewLayer() {}
 
-  }
-
-  openedToggle(){
+  openedToggle() {
     console.log(this.layer);
     this.opened = !this.opened;
   }
@@ -28,11 +27,7 @@ export class LayerComponent implements OnInit {
     this.engineService.sceneService.scene.children.splice(index, 1);
   }
 
-  constructor(
-    public engineService: EngineService,
-    ) { }
+  constructor(public engineService: EngineService) {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

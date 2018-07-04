@@ -1,56 +1,68 @@
 import { Injectable } from '@angular/core';
 
-import {IGEOJson} from "../../engine.types";
+import { IGEOJson } from '../../engine.types';
 import {
   AmbientLight,
-  BoxGeometry, Camera,
-  Color, DoubleSide, Face3, FlatShading, Geometry, LightShadow, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial,
+  BoxGeometry,
+  Camera,
+  Color,
+  DoubleSide,
+  Face3,
+  FlatShading,
+  Geometry,
+  LightShadow,
+  Matrix4,
+  Mesh,
+  MeshBasicMaterial,
+  MeshPhongMaterial,
   Object3D,
   SpotLightShadow,
   PerspectiveCamera,
-  PlaneGeometry, RepeatWrapping, Scene, ShadowMaterial, ShapeUtils, SpotLight, TextureLoader, Vector3, VertexColors,
-  MeshLambertMaterial, SphereGeometry, FaceColors
+  PlaneGeometry,
+  RepeatWrapping,
+  Scene,
+  ShadowMaterial,
+  ShapeUtils,
+  SpotLight,
+  TextureLoader,
+  Vector3,
+  VertexColors,
+  MeshLambertMaterial,
+  SphereGeometry,
+  FaceColors
 } from 'three';
-import {createScope} from '@angular/core/src/profile/wtf_impl';
-import {SceneUtils} from '../../../../utils/sceneUtils';
-import {Terrain} from '../../../../utils/terrain';
+import { createScope } from '@angular/core/src/profile/wtf_impl';
+import { SceneUtils } from '../../../../utils/sceneUtils';
+import { Terrain } from '../../../../utils/terrain';
 import * as Lodash from 'lodash';
 
 // import * as SimplexNoise from 'simplex-noise';
 
 @Injectable()
 export class HeightMapService {
-
-  constructor() { }
+  constructor() {}
 
   private colorScheme;
   private mapData;
 
-
-
-  public changeMapFromImage(options, scene: Scene, img){
-
+  public changeMapFromImage(options, scene: Scene, img) {
     // terrain
     //TODO: сделать добавление без рекваер
     //TODO: вынести, смерджить с настройками
     //TODO: вынести все текстуры и материалы в отдельный сервис
 
-    return this
-      .parseImageToGeo(img)
+    return this.parseImageToGeo(img)
       .then((res: number[][]) => {
         let geoJsonObject: IGEOJson = {
-          "type": "Feature",
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-              res
-            ]
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [res]
           },
-          "properties": {
-            "name": "Ocean"
+          properties: {
+            name: 'Ocean'
           }
         };
-
 
         // let geometry = new PlaneGeometry(img.width, img.height, img.width - 1, img.height - 1);
         //
@@ -82,7 +94,6 @@ export class HeightMapService {
         //   }
         //   geometry.elementsNeedUpdate = true;
         // }
-
 
         // let material = new MeshBasicMaterial( {
         //     shading: FlatShading,
@@ -131,14 +142,12 @@ export class HeightMapService {
 
         // scene.add(objectPG);
 
-
-
-        let terrainMaterial = new MeshPhongMaterial( {
+        let terrainMaterial = new MeshPhongMaterial({
           vertexColors: VertexColors,
           shininess: 0,
           color: 0x55aa55,
           flatShading: true
-        } );
+        });
 
         let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
@@ -146,8 +155,6 @@ export class HeightMapService {
         terrainObject.castShadow = true;
         terrainObject.receiveShadow = true;
         scene.add(terrainObject);
-
-
 
         let waterMaterial = new MeshPhongMaterial({
           color: 0x3366aa,
@@ -159,38 +166,27 @@ export class HeightMapService {
         let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
         terrain.moveWaves(waterMesh);
 
-
-
         scene.add(waterMesh);
-
 
         // !IMPORTANT TODO: add waves to water;
         console.log(waterMesh);
 
-
-
-
-
         return geoJsonObject;
-
       })
-      .then((geoObj) => {
-        let options = {body: geoObj};
+      .then(geoObj => {
+        let options = { body: geoObj };
         // return new Api().points(options);
       })
-      .then((response) => {
+      .then(response => {
         console.log(response);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
-
   }
 
-  public changeColorMapFromImage(options, scene, img){
-    this
-    .parseImageToColorGeo(img)
-    .then((res) => {
+  public changeColorMapFromImage(options, scene, img) {
+    this.parseImageToColorGeo(img).then(res => {
       console.log(res);
       this.colorScheme = res;
     });
@@ -201,7 +197,7 @@ export class HeightMapService {
    * @param {HTMLImageElement} img
    * @returns {Promise<any>}
    */
-  public parseImageToGeo(img: HTMLImageElement){
+  public parseImageToGeo(img: HTMLImageElement) {
     return new Promise((resolve, reject) => {
       img.onload = () => {
         let data = this.getGeoHeight(img);
@@ -210,7 +206,7 @@ export class HeightMapService {
     });
   }
 
-  public parseImageToColorGeo(img: HTMLImageElement){
+  public parseImageToColorGeo(img: HTMLImageElement) {
     console.log(img);
     return new Promise((resolve, reject) => {
       img.onload = () => {
@@ -227,7 +223,7 @@ export class HeightMapService {
    */
   public getGeoHeight(img: HTMLImageElement): Array<Array<number>> {
     let canvas = document.createElement('canvas');
-    canvas.width  = img.width;
+    canvas.width = img.width;
     canvas.height = img.height;
 
     let context = canvas.getContext('2d');
@@ -237,7 +233,7 @@ export class HeightMapService {
       coordinates = [];
 
     //+- (4) потому png в формате rgba.
-    for (let i = 0, n = pix.length; i < n; i += (4)) {
+    for (let i = 0, n = pix.length; i < n; i += 4) {
       coordinates.push([pix[i], pix[i + 1], pix[i + 2]]);
     }
     console.log(coordinates);
@@ -254,7 +250,7 @@ export class HeightMapService {
    */
   public getColorMap(img: HTMLImageElement): any {
     let canvas = document.createElement('canvas');
-    canvas.width  = img.width;
+    canvas.width = img.width;
     canvas.height = img.height;
 
     let context = canvas.getContext('2d');
@@ -263,9 +259,8 @@ export class HeightMapService {
     let pix = context.getImageData(0, 0, img.width - 1, img.height - 1).data,
       colorScheme = [];
 
-
     //+- (4) потому png в формате rgba.
-    for (let i = 0, n = pix.length; i < n; i += (4)) {
+    for (let i = 0, n = pix.length; i < n; i += 4) {
       colorScheme.push([pix[i], pix[i + 1], pix[i + 2]]);
     }
     console.log(colorScheme);
@@ -273,13 +268,14 @@ export class HeightMapService {
     return colorScheme;
   }
 
-  public generateDungeonTerrain(scene: Scene){
+  public generateDungeonTerrain(scene: Scene) {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
     let worldDepth = 16;
     let worldWidth = 16;
     let cubeWidth = 1;
-    let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+    let worldHalfWidth = worldWidth / 2,
+      worldHalfDepth = worldDepth / 2;
 
     this.generateHeight(worldWidth, worldDepth);
     let matrix = new Matrix4();
@@ -294,16 +290,14 @@ export class HeightMapService {
     // console.log(min);
     let geometryMatrix: Array<Vector3> = [];
 
-    for ( let z = 0; z < worldDepth; z ++ ) {
-      for ( let x = 0; x < worldWidth; x ++ ) {
-
+    for (let z = 0; z < worldDepth; z++) {
+      for (let x = 0; x < worldWidth; x++) {
         //Делаем всех от одного уровня
-        let h = this.getY(x, z, worldWidth) ;
+        let h = this.getY(x, z, worldWidth);
 
         console.log(h);
 
-        for ( let y = min; y <= h + 2; y ++ ) {
-
+        for (let y = min; y <= h + 2; y++) {
           matrix.makeTranslation(
             x * cubeWidth - worldHalfWidth * cubeWidth,
             (y - min) * cubeWidth,
@@ -311,15 +305,10 @@ export class HeightMapService {
           );
 
           geometry.merge(boxGeometry, matrix);
-
         }
-
-
 
         // x - worldHalfWidth
         // z - worldHalfDepth
-
-
       }
     }
 
@@ -339,20 +328,19 @@ export class HeightMapService {
 
     //TODO: Вынести материалы и нижнию логику
 
-
     let material = new MeshLambertMaterial({
       color: Math.random() * 0xffffff
     });
 
-    let baseMaterial = new MeshLambertMaterial( {
+    let baseMaterial = new MeshLambertMaterial({
       flatShading: true,
       vertexColors: VertexColors,
-      color: '#fff',
-    } );
+      color: '#fff'
+    });
 
-    let shadowMaterial = new ShadowMaterial( {
+    let shadowMaterial = new ShadowMaterial({
       opacity: 0.2
-    } );
+    });
     // console.log(geometry)
 
     geometry.verticesNeedUpdate = true;
@@ -362,7 +350,7 @@ export class HeightMapService {
     // geometry.computeBoundingBox();
     geometry.mergeVertices();
 
-    let mesh = new Mesh( geometry, material );
+    let mesh = new Mesh(geometry, material);
     //
     // console.log(geometry);
     //
@@ -370,7 +358,7 @@ export class HeightMapService {
     mesh.receiveShadow = true;
     mesh.updateMatrix();
     // //
-    scene.add( mesh );
+    scene.add(mesh);
     //
     //
     // let geometry2 = new PlaneGeometry(10000,10000,1,1);
@@ -397,17 +385,16 @@ export class HeightMapService {
     // mesh3.castShadow = true;
     //
     // scene.add(mesh3);
-
-
   }
 
-  public generateDungeonTerrain2(scene: Scene){
+  public generateDungeonTerrain2(scene: Scene) {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
     let worldDepth = 10;
     let worldWidth = 10;
     let cubeWidth = 1;
-    let worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2;
+    let worldHalfWidth = worldWidth / 2,
+      worldHalfDepth = worldDepth / 2;
 
     this.generateHeight(worldWidth, worldDepth);
     // let matrix = new Matrix4();
@@ -428,30 +415,28 @@ export class HeightMapService {
     let rectangles = [];
 
     let RECT_SIZE = 1,
-        RECT_HEIGHT = 10,
-        GRID_SIZE = 10;
+      RECT_HEIGHT = 10,
+      GRID_SIZE = 10;
     let NUM_CUBES = GRID_SIZE * GRID_SIZE;
-
 
     let geometry = new BoxGeometry(RECT_SIZE, RECT_HEIGHT, RECT_SIZE);
 
     for (let i = 0; i < NUM_CUBES; i++) {
-
       let material = new MeshLambertMaterial({
         color: Math.random() * 0xffffff
       });
 
-      if ((i % GRID_SIZE) === 0) {
+      if (i % GRID_SIZE === 0) {
         col = 1;
         row++;
       } else {
         col++;
       }
 
-      let h = this.getY(col, row, worldWidth) ;
+      let h = this.getY(col, row, worldWidth);
 
-      x = -(((GRID_SIZE * RECT_SIZE) / 2) - ((RECT_SIZE) * col) + (RECT_SIZE / 2));
-      z = (((GRID_SIZE * RECT_SIZE) / 2) - ((RECT_SIZE) * row) + (RECT_SIZE / 2));
+      x = -((GRID_SIZE * RECT_SIZE) / 2 - RECT_SIZE * col + RECT_SIZE / 2);
+      z = (GRID_SIZE * RECT_SIZE) / 2 - RECT_SIZE * row + RECT_SIZE / 2;
 
       // повто
       // for ( let y = min; y <= h + 2; y ++ ) {
@@ -469,7 +454,7 @@ export class HeightMapService {
       console.log(`${x}:${z} - ${h}`);
 
       rectangle = new Mesh(geometry, material);
-      rectangle.position.set(x, (h - min), z);
+      rectangle.position.set(x, h - min, z);
       rectangle.castShadow = true;
       rectangle.receiveShadow = true;
       rectangles.push(rectangle);
@@ -611,24 +596,274 @@ export class HeightMapService {
   //   scene.add( mesh );
   // }
 
-  getY( x, z, worldWidth, k?) {
-    if (!k){ k = 0.2; }
-    return this.mapData[ x + z * worldWidth ] * k ;
+  getY(x, z, worldWidth, k?) {
+    if (!k) {
+      k = 0.2;
+    }
+    return this.mapData[x + z * worldWidth] * k;
   }
 
   improvedNoise() {
-    let p = [ 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10,
-      23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149, 56, 87,
-      174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77, 146, 158, 231, 83, 111, 229, 122, 60, 211,
-      133, 230, 220, 105, 92, 41, 55, 46, 245, 40, 244, 102, 143, 54, 65, 25, 63, 161, 1, 216, 80, 73, 209, 76, 132, 187, 208,
-      89, 18, 169, 200, 196, 135, 130, 116, 188, 159, 86, 164, 100, 109, 198, 173, 186, 3, 64, 52, 217, 226, 250, 124, 123, 5,
-      202, 38, 147, 118, 126, 255, 82, 85, 212, 207, 206, 59, 227, 47, 16, 58, 17, 182, 189, 28, 42, 223, 183, 170, 213, 119,
-      248, 152, 2, 44, 154, 163, 70, 221, 153, 101, 155, 167, 43, 172, 9, 129, 22, 39, 253, 19, 98, 108, 110, 79, 113, 224, 232,
-      178, 185, 112, 104, 218, 246, 97, 228, 251, 34, 242, 193, 238, 210, 144, 12, 191, 179, 162, 241, 81, 51, 145, 235, 249,
-      14, 239, 107, 49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254, 138, 236, 205,
-      93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180 ];
+    let p = [
+      151,
+      160,
+      137,
+      91,
+      90,
+      15,
+      131,
+      13,
+      201,
+      95,
+      96,
+      53,
+      194,
+      233,
+      7,
+      225,
+      140,
+      36,
+      103,
+      30,
+      69,
+      142,
+      8,
+      99,
+      37,
+      240,
+      21,
+      10,
+      23,
+      190,
+      6,
+      148,
+      247,
+      120,
+      234,
+      75,
+      0,
+      26,
+      197,
+      62,
+      94,
+      252,
+      219,
+      203,
+      117,
+      35,
+      11,
+      32,
+      57,
+      177,
+      33,
+      88,
+      237,
+      149,
+      56,
+      87,
+      174,
+      20,
+      125,
+      136,
+      171,
+      168,
+      68,
+      175,
+      74,
+      165,
+      71,
+      134,
+      139,
+      48,
+      27,
+      166,
+      77,
+      146,
+      158,
+      231,
+      83,
+      111,
+      229,
+      122,
+      60,
+      211,
+      133,
+      230,
+      220,
+      105,
+      92,
+      41,
+      55,
+      46,
+      245,
+      40,
+      244,
+      102,
+      143,
+      54,
+      65,
+      25,
+      63,
+      161,
+      1,
+      216,
+      80,
+      73,
+      209,
+      76,
+      132,
+      187,
+      208,
+      89,
+      18,
+      169,
+      200,
+      196,
+      135,
+      130,
+      116,
+      188,
+      159,
+      86,
+      164,
+      100,
+      109,
+      198,
+      173,
+      186,
+      3,
+      64,
+      52,
+      217,
+      226,
+      250,
+      124,
+      123,
+      5,
+      202,
+      38,
+      147,
+      118,
+      126,
+      255,
+      82,
+      85,
+      212,
+      207,
+      206,
+      59,
+      227,
+      47,
+      16,
+      58,
+      17,
+      182,
+      189,
+      28,
+      42,
+      223,
+      183,
+      170,
+      213,
+      119,
+      248,
+      152,
+      2,
+      44,
+      154,
+      163,
+      70,
+      221,
+      153,
+      101,
+      155,
+      167,
+      43,
+      172,
+      9,
+      129,
+      22,
+      39,
+      253,
+      19,
+      98,
+      108,
+      110,
+      79,
+      113,
+      224,
+      232,
+      178,
+      185,
+      112,
+      104,
+      218,
+      246,
+      97,
+      228,
+      251,
+      34,
+      242,
+      193,
+      238,
+      210,
+      144,
+      12,
+      191,
+      179,
+      162,
+      241,
+      81,
+      51,
+      145,
+      235,
+      249,
+      14,
+      239,
+      107,
+      49,
+      192,
+      214,
+      31,
+      181,
+      199,
+      106,
+      157,
+      184,
+      84,
+      204,
+      176,
+      115,
+      121,
+      50,
+      45,
+      127,
+      4,
+      150,
+      254,
+      138,
+      236,
+      205,
+      93,
+      222,
+      114,
+      67,
+      29,
+      24,
+      72,
+      243,
+      141,
+      128,
+      195,
+      78,
+      66,
+      215,
+      61,
+      156,
+      180
+    ];
 
-    for (let i = 0; i < 256 ; i ++) {
+    for (let i = 0; i < 256; i++) {
       p[256 + i] = p[i];
     }
 
@@ -642,56 +877,76 @@ export class HeightMapService {
 
     function grad(hash, x, y, z) {
       let h = hash & 15;
-      let u = h < 8 ? x : y, v = h < 4 ? y : h == 12 || h == 14 ? x : z;
+      let u = h < 8 ? x : y,
+        v = h < 4 ? y : h == 12 || h == 14 ? x : z;
       return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
     return {
+      noise: function(x, y, z) {
+        let floorX = Math.floor(x),
+          floorY = Math.floor(y),
+          floorZ = Math.floor(z);
 
-      noise: function (x, y, z) {
-
-        let floorX = Math.floor(x), floorY = Math.floor(y), floorZ = Math.floor(z);
-
-        let X = floorX & 255, Y = floorY & 255, Z = floorZ & 255;
+        let X = floorX & 255,
+          Y = floorY & 255,
+          Z = floorZ & 255;
 
         x -= floorX;
         y -= floorY;
         z -= floorZ;
 
-        let xMinus1 = x - 1, yMinus1 = y - 1, zMinus1 = z - 1;
+        let xMinus1 = x - 1,
+          yMinus1 = y - 1,
+          zMinus1 = z - 1;
 
-        let u = fade(x), v = fade(y), w = fade(z);
+        let u = fade(x),
+          v = fade(y),
+          w = fade(z);
 
-        let A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z, B = p[X + 1] + Y, BA = p[B] + Z, BB = p[B + 1] + Z;
+        let A = p[X] + Y,
+          AA = p[A] + Z,
+          AB = p[A + 1] + Z,
+          B = p[X + 1] + Y,
+          BA = p[B] + Z,
+          BB = p[B + 1] + Z;
 
-        return lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z),
-          grad(p[BA], xMinus1, y, z)),
-          lerp(u, grad(p[AB], x, yMinus1, z),
-            grad(p[BB], xMinus1, yMinus1, z))),
-          lerp(v, lerp(u, grad(p[AA + 1], x, y, zMinus1),
-            grad(p[BA + 1], xMinus1, y, z - 1)),
-            lerp(u, grad(p[AB + 1], x, yMinus1, zMinus1),
-              grad(p[BB + 1], xMinus1, yMinus1, zMinus1))));
-
+        return lerp(
+          w,
+          lerp(
+            v,
+            lerp(u, grad(p[AA], x, y, z), grad(p[BA], xMinus1, y, z)),
+            lerp(u, grad(p[AB], x, yMinus1, z), grad(p[BB], xMinus1, yMinus1, z))
+          ),
+          lerp(
+            v,
+            lerp(u, grad(p[AA + 1], x, y, zMinus1), grad(p[BA + 1], xMinus1, y, z - 1)),
+            lerp(u, grad(p[AB + 1], x, yMinus1, zMinus1), grad(p[BB + 1], xMinus1, yMinus1, zMinus1))
+          )
+        );
       }
     };
   }
 
-  generateHeight( width, height ) {
+  generateHeight(width, height) {
     this.mapData = [];
     //TODO: чек нужен ли new перед improved noise
     let perlin = this.improvedNoise(),
-      size = width * height, quality = 4, z = Math.random() * 10;
+      size = width * height,
+      quality = 4,
+      z = Math.random() * 10;
 
-    for ( let j = 0; j < 4; j ++ ) {
+    for (let j = 0; j < 4; j++) {
+      if (j == 0) {
+        for (let i = 0; i < size; i++) {
+          this.mapData[i] = 0;
+        }
+      }
 
-      if ( j == 0 ) for ( let i = 0; i < size; i ++ ) this.mapData[ i ] = 0;
-
-      for ( let i = 0; i < size; i ++ ) {
-
-        let x = i % width, y = ( i / width ) | 0;
-        this.mapData[ i ] += perlin.noise( x / quality, y / quality, z ) * quality;
-
+      for (let i = 0; i < size; i++) {
+        let x = i % width,
+          y = (i / width) | 0;
+        this.mapData[i] += perlin.noise(x / quality, y / quality, z) * quality;
       }
 
       quality *= 4;

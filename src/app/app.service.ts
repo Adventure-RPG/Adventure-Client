@@ -17,6 +17,5 @@ export class AppService {
 
   private _snotifyService;
 
-  constructor() { }
-
+  constructor() {}
 }

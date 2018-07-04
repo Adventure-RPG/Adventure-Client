@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InventoryComponent } from "./inventory.component";
-import {SharedModule} from "../../../shared/shared-module.module";
+import { InventoryComponent } from './inventory.component';
+import { SharedModule } from '../../../shared/shared-module.module';
 
 const routes: Routes = [
   {
@@ -11,11 +11,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes),
-    SharedModule
-  ],
+  imports: [RouterModule.forChild(routes), SharedModule],
   exports: [RouterModule],
   providers: []
 })
-export class InventoryRoutingModule { }
+export class InventoryRoutingModule {}

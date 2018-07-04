@@ -3,13 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { PlayerRoutingModule } from './player-routing.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { PlayerComponent } from "./player.component";
+import { PlayerComponent } from './player.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    PlayerRoutingModule
-  ],
+  imports: [CommonModule, PlayerRoutingModule],
   declarations: [ToolbarComponent, PlayerComponent]
 })
-export class PlayerModule { }
+export class PlayerModule {}

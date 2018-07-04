@@ -6,12 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-
-  constructor() { 
+  constructor() {
     console.log('Inventory Component Init');
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

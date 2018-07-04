@@ -9,5 +9,5 @@ describe('LoginModule', () => {
 
   it('should create an instance', () => {
     expect(loginModule).toBeTruthy();
-  })
+  });
 });

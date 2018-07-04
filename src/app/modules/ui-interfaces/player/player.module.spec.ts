@@ -9,5 +9,5 @@ describe('PlayerModule', () => {
 
   it('should create an instance', () => {
     expect(playerModule).toBeTruthy();
-  })
+  });
 });

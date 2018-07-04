@@ -1,10 +1,10 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {EngineService} from "../../engine/engine.service";
-import {LightService} from "../../engine/core/light.service";
-import { HeightMapService } from "../../engine/core/3d-helpers/height-map.service";
-import {SettingsService} from '../../../services/settings.service';
-import {KeyboardEventService} from '../../../events/keyboard-event.service';
-import {SceneEventsDirective} from '../../../shared/directives/scene-events.directive';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { EngineService } from '../../engine/engine.service';
+import { LightService } from '../../engine/core/light.service';
+import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
+import { SettingsService } from '../../../services/settings.service';
+import { KeyboardEventService } from '../../../events/keyboard-event.service';
+import { SceneEventsDirective } from '../../../shared/directives/scene-events.directive';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -13,7 +13,6 @@ import {SceneEventsDirective} from '../../../shared/directives/scene-events.dire
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-
   @ViewChild('scene') scene;
 
   constructor(
@@ -22,26 +21,25 @@ export class EditorComponent implements OnInit {
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private heightMapService: HeightMapService,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef
   ) {
     // this.engineService.renderEngine();
   }
 
   public mouseData = {
     dragStart: null,
-    dragMove:  null,
-    dragEnd:   null,
+    dragMove: null,
+    dragEnd: null
   };
 
-  dragStartMouse(event){
+  dragStartMouse(event) {
     this.mouseData.dragStart = event;
     console.log(event);
   }
 
-  dragMoveMouse(event){
-    if (this.mouseData.dragStart){
+  dragMoveMouse(event) {
+    if (this.mouseData.dragStart) {
       this.mouseData.dragMove = event;
-
 
       // let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
       // let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
@@ -54,7 +52,7 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  dragEndMouse(event){
+  dragEndMouse(event) {
     this.mouseData.dragStart = null;
     this.mouseData.dragEnd = event;
     // console.log(this.engineService.sceneService.scene)
@@ -62,8 +60,7 @@ export class EditorComponent implements OnInit {
   }
 
   mouseWheel(event) {
-
-    this.settingsService.changeSetting("camera", {
+    this.settingsService.changeSetting('camera', {
       d: this.settingsService.settings.camera.d + event.deltaY / 100
     });
 
@@ -79,28 +76,26 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.settingsService.settings$.subscribe( () => {
+    this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
 
-    console.log("init");
+    console.log('init');
 
     this.engineService.init();
-    this.scene.nativeElement.appendChild( this.engineService.sceneService.renderer.domElement ) ;
-
+    this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
     this.keyboardEventService.engineService = this.engineService;
 
     let hemisphereLightOptions = {
-      color: "#aaa",
-      groundColor: "#777",
+      color: '#aaa',
+      groundColor: '#777',
       intensity: 0.9,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
-      position : {
+      position: {
         x: 30,
         y: 30,
         z: 30
@@ -108,46 +103,44 @@ export class EditorComponent implements OnInit {
     };
 
     let pointLightOptions = {
-      color: "#89ff90",
-      groundColor: "#444444",
+      color: '#89ff90',
+      groundColor: '#444444',
       intensity: 1,
       distance: 250,
       exponent: 0,
       angle: 0.52,
       decay: 1,
-      position : {
+      position: {
         x: 0,
         y: 40,
         z: 0
       }
     };
 
-
     let ambientLightOptions = {
-      color: "#dc8874",
-      groundColor: "#444444",
-      intensity: .5,
+      color: '#dc8874',
+      groundColor: '#444444',
+      intensity: 0.5,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
-      position : {
+      position: {
         x: 200,
         y: 200,
         z: 200
       }
     };
 
-
     let directionalLightOptions = {
-      color: "0xffffff",
-      groundColor: "#fff",
+      color: '0xffffff',
+      groundColor: '#fff',
       intensity: 1,
       distance: 200,
       exponent: 0,
       angle: 1.52,
       decay: 2,
-      position : {
+      position: {
         x: 0,
         y: 50,
         z: 50
@@ -165,32 +158,30 @@ export class EditorComponent implements OnInit {
       }
     };
 
-
     let spotLightOptions = {
-      color: "0xffffff",
-      groundColor: "#fff",
+      color: '0xffffff',
+      groundColor: '#fff',
       intensity: 0.5,
       distance: 2500,
       exponent: 0,
       angle: 1.52,
       decay: 2,
-      position : {
+      position: {
         x: 0,
         y: 150,
         z: 100
       }
     };
 
-
     // this.lightService.addLight(hemisphereLightOptions, "HemisphereLight");
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 
-    this.lightService.addLight(ambientLightOptions, "AmbientLight");
+    this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
     // this.lightService.addLight(directionalLightOptions, "DirectionalLight");
 
-    this.lightService.addLight(spotLightOptions, "SpotLight");
+    this.lightService.addLight(spotLightOptions, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
@@ -201,7 +192,5 @@ export class EditorComponent implements OnInit {
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
     // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3w
-
   }
-
 }

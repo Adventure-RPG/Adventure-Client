@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  Blending, BlendingDstFactor, BlendingEquation, BlendingSrcFactor, Colors, DepthModes, Material, MaterialParameters,
+  Blending,
+  BlendingDstFactor,
+  BlendingEquation,
+  BlendingSrcFactor,
+  Colors,
+  DepthModes,
+  Material,
+  MaterialParameters,
   NoBlending,
   Side
-} from "three";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import 'reflect-metadata'
+} from 'three';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import 'reflect-metadata';
 
 // Validation methods
-
 
 @Component({
   selector: 'adventure-material',
@@ -16,11 +22,10 @@ import 'reflect-metadata'
   styleUrls: ['./material.component.scss']
 })
 export class MaterialFormComponent implements OnInit {
-
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       alphaTest: [null, [Validators.required, Validators.min(0), Validators.max(1)]]
-    })
+    });
   }
 
   model = new MaterialFormAnnotation();
@@ -29,10 +34,14 @@ export class MaterialFormComponent implements OnInit {
 
   submitted = false;
 
-  onSubmit() { this.submitted = true; }
+  onSubmit() {
+    this.submitted = true;
+  }
 
   // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.model); }
+  get diagnostic() {
+    return JSON.stringify(this.model);
+  }
 
   ngOnInit() {
     // console.log(this.model)
@@ -41,11 +50,9 @@ export class MaterialFormComponent implements OnInit {
     // }
     // console.log(new MaterialForm());
   }
-
 }
 
 export class MaterialFormAnnotation implements Material {
-
   alphaTest: number;
 
   blendDst: BlendingDstFactor;
@@ -117,17 +124,13 @@ export class MaterialFormAnnotation implements Material {
 
   userData: any;
 
-  addEventListener(type: string, listener: (event: Event) => void): void {
-  }
+  addEventListener(type: string, listener: (event: Event) => void): void {}
 
-  hasEventListener(type: string, listener: (event: Event) => void): void {
-  }
+  hasEventListener(type: string, listener: (event: Event) => void): void {}
 
-  removeEventListener(type: string, listener: (event: Event) => void): void {
-  }
+  removeEventListener(type: string, listener: (event: Event) => void): void {}
 
-  dispatchEvent(event: { type: string; [p: string]: any }): void {
-  }
+  dispatchEvent(event: { type: string; [p: string]: any }): void {}
 
   clone(): this {
     return null;
@@ -137,16 +140,13 @@ export class MaterialFormAnnotation implements Material {
     return null;
   }
 
-  dispose(): void {
-  }
+  dispose(): void {}
 
-  setValues(values: MaterialParameters): void {
-  }
+  setValues(values: MaterialParameters): void {}
 
   toJSON(meta?: any): any {
     return null;
   }
 
-  update(): void {
-  }
+  update(): void {}
 }

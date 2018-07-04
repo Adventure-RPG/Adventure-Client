@@ -1,7 +1,6 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Http} from "@angular/http";
-import {InventoryItem} from "./lists/inventory-item.component";
-
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
+import { InventoryItem } from './lists/inventory-item.component';
 
 @Component({
   selector: 'adventure-backpack',
@@ -9,14 +8,14 @@ import {InventoryItem} from "./lists/inventory-item.component";
   styleUrls: ['./backpack.component.scss']
 })
 export class BackpackComponent implements OnInit {
-
-  constructor(private http: Http) { }
+  constructor(private http: Http) {}
 
   protected items: InventoryItem[];
 
   ngOnInit() {
-    this.http.get('assets/data/items.json')
+    this.http
+      .get('assets/data/items.json')
       .map(response => response.json())
-      .subscribe(data => this.items = data);
+      .subscribe(data => (this.items = data));
   }
 }

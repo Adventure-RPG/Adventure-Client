@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from "../../../services/api.service";
-import {LoginService} from "./login.service";
+import { ApiService } from '../../../services/api.service';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'adventure-login',
@@ -8,13 +8,7 @@ import {LoginService} from "./login.service";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  constructor() {}
 
-  constructor(){
-
-  }
-
-  ngOnInit() {
-
-  }
-
+  ngOnInit() {}
 }

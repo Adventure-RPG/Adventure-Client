@@ -9,5 +9,5 @@ describe('EditorModule', () => {
 
   it('should create an instance', () => {
     expect(editorModule).toBeTruthy();
-  })
+  });
 });

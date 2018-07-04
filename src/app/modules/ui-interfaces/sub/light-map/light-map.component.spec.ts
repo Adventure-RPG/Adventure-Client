@@ -8,9 +8,8 @@ describe('LightMapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LightMapComponent ]
-    })
-    .compileComponents();
+      declarations: [LightMapComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

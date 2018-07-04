@@ -8,9 +8,8 @@ describe('LoginEmailVerificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginEmailVerificationComponent ]
-    })
-    .compileComponents();
+      declarations: [LoginEmailVerificationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

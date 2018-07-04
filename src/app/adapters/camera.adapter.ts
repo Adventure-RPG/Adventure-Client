@@ -1,9 +1,3 @@
 export class CameraAdapter {
-
-  constructor(){
-
-  }
-
-
-
+  constructor() {}
 }

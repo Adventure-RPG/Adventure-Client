@@ -21,13 +21,11 @@ import { ISlimScrollOptions } from 'ng2-slimscroll';
   styleUrls: ['./multi-col-list.scss']
 })
 export class MultiColListComponent implements OnChanges {
+  @Input() items: InventoryItem[];
 
-  @Input()
-  items: InventoryItem[];
-
-  config:ISlimScrollOptions = {
+  config: ISlimScrollOptions = {
     position: 'right',
-    barBackground: '#000000',
+    barBackground: '#000000'
   };
 
   indices: any;

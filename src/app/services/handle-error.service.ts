@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpErrorResponse} from "@angular/common/http";
-import {ErrorObservable} from "rxjs/observable/ErrorObservable";
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable()
 export class HandleErrorService {
-
   get snotifyService() {
     console.log(this._snotifyService);
     return this._snotifyService;
@@ -17,9 +16,7 @@ export class HandleErrorService {
 
   private _snotifyService;
 
-
-  constructor() { }
-
+  constructor() {}
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -33,8 +30,6 @@ export class HandleErrorService {
       this.snotifyService.error(error.error.message, error.error.error);
     }
     // return an ErrorObservable with a user-facing error message
-    return new ErrorObservable(
-      'Something bad happened; please try again later.');
-  };
-
+    return new ErrorObservable('Something bad happened; please try again later.');
+  }
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {DirectionalLight, HemisphereLight, Light, PointLight, SpotLight, Vector3} from "three";
-import {EngineService} from "../../../engine/engine.service";
-import {LightService} from "../../../engine/core/light.service";
-import {ColorPickerService} from "ngx-color-picker";
+import { DirectionalLight, HemisphereLight, Light, PointLight, SpotLight, Vector3 } from 'three';
+import { EngineService } from '../../../engine/engine.service';
+import { LightService } from '../../../engine/core/light.service';
+import { ColorPickerService } from 'ngx-color-picker';
 
 @Component({
   selector: 'adventure-lights',
@@ -10,14 +10,13 @@ import {ColorPickerService} from "ngx-color-picker";
   styleUrls: ['./lights.component.scss']
 })
 export class LightsComponent implements OnInit {
-
-  public color: string = "#127bdc";
-  public groundColor: string = "#127bdc";
-  public intensity: number = 0.01;
-  public distance:  number = 200;
-  public exponent:  number = 0;
-  public angle:     number = 0.52;
-  public decay:     number = 2;
+  public color = '#127bdc';
+  public groundColor = '#127bdc';
+  public intensity = 0.01;
+  public distance = 200;
+  public exponent = 0;
+  public angle = 0.52;
+  public decay = 2;
   public position = {
     x: 20,
     y: 20,
@@ -25,27 +24,25 @@ export class LightsComponent implements OnInit {
   };
   public light = {};
 
-  constructor(
-    private cpService: ColorPickerService,
-    public lightService: LightService,
-  ) { }
+  constructor(private cpService: ColorPickerService, public lightService: LightService) {}
 
-  addLight($event, type){
-    this.lightService.addLight({
-      color: this.color,
-      groundColor: this.groundColor,
-      intensity: this.intensity,
-      distance: this.distance,
-      exponent: this.exponent,
-      angle: this.angle,
-      decay: this.decay,
-      position: this.position
-    }, type);
+  addLight($event, type) {
+    this.lightService.addLight(
+      {
+        color: this.color,
+        groundColor: this.groundColor,
+        intensity: this.intensity,
+        distance: this.distance,
+        exponent: this.exponent,
+        angle: this.angle,
+        decay: this.decay,
+        position: this.position
+      },
+      type
+    );
   }
 
   ngOnInit() {
-
     //  for support with testing, delete in production. Or add buttons
   }
-
 }

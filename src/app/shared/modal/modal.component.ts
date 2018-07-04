@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'adventure-modal',
@@ -7,13 +7,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
+  constructor(private router: Router) {}
 
-
-  constructor(private router: Router) {
-  }
-
-  ngOnInit() {
-
-  }
-
+  ngOnInit() {}
 }

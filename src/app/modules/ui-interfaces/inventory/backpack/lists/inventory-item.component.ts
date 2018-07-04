@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 export interface InventoryItem {
-  id:      number;
-  image?:  string;
+  id: number;
+  image?: string;
   active?: boolean;
-  type:    string;
-  weight:  number;
+  type: string;
+  weight: number;
   characteristics: any;
   size: {
     width: number;
@@ -14,11 +14,10 @@ export interface InventoryItem {
 }
 
 @Component({
-    selector: 'inventory-item',
-    template: `<div class="avatar">{{item.index}}</div>`,
-    styleUrls: ['./inventory-item.scss']
+  selector: 'inventory-item',
+  template: `<div class="avatar">{{item.index}}</div>`,
+  styleUrls: ['./inventory-item.scss']
 })
 export class InventoryItemComponent {
-    @Input()
-    item: InventoryItem;
+  @Input() item: InventoryItem;
 }

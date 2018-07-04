@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
-import {Camera, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
+import { Camera, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import * as THREE from 'three';
 
 @Injectable()
 export class SceneService {
-
   private _scene: Scene;
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private initRenderer: boolean;
   private animationLoop = [];
 
-
   constructor() {
     this.scene = new Scene();
 
     // Render
     this.renderer = new WebGLRenderer({ antialias: true });
-    this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000);
 
@@ -27,13 +25,12 @@ export class SceneService {
     this.animation();
   }
 
-  public resizeEvent(event: Event){
-    this.renderer.setSize( window.innerWidth, window.innerHeight ) ;
+  public resizeEvent(event: Event) {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-
   // TODO: add delete animation from loop;
-  public addAnimationInLoop(animationFunc){
+  public addAnimationInLoop(animationFunc) {
     this.animationLoop.push(animationFunc);
   }
 
@@ -44,8 +41,8 @@ export class SceneService {
       this.animationLoop[i]();
     }
 
-    if (this.camera){
-      this.renderer.render( this.scene, <Camera>this.camera );
+    if (this.camera) {
+      this.renderer.render(this.scene, <Camera>this.camera);
     }
 
     requestAnimationFrame(this.animation.bind(this));

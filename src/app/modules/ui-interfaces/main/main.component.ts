@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'adventure-main',
@@ -6,8 +6,7 @@ import {Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   // constant for swipe action: left or right
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
@@ -45,7 +44,7 @@ export class MainComponent implements OnInit {
         title: 'Инвентарь',
         subtitle: 'Экипировка и личные вещи'
       },
-      routerLink: ['/', { outlets: {sidebar: ['inventory']}}]
+      routerLink: ['/', { outlets: { sidebar: ['inventory'] } }]
     },
     {
       baseClass: 'b',
@@ -93,17 +92,16 @@ export class MainComponent implements OnInit {
         subtitle: ''
       }
     }
-  ]
+  ];
 
-  public currentIndex: number = 0;
-  public nextIndex: number = 0;
+  public currentIndex = 0;
+  public nextIndex = 0;
   public rotatteDegString;
 
   // action triggered when user swipes
   swipe(action = this.SWIPE_ACTION.RIGHT) {
     console.log(this.currentIndex);
     console.log(action);
-
 
     // // out of range
     // if (this.currentIndex > this.avatars.length || this.currentIndex < 0) return;
@@ -120,12 +118,10 @@ export class MainComponent implements OnInit {
       this.nextIndex = isFirst ? this.applications.length - 1 : this.currentIndex - 1;
     }
 
-    console.log(`${this.currentIndex} -> ${this.nextIndex}`)
+    console.log(`${this.currentIndex} -> ${this.nextIndex}`);
     this.currentIndex = this.nextIndex;
     // this.avatars.forEach((x, i) => x.visible = (i === nextIndex));
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

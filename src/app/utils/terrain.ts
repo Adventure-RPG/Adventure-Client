@@ -1,21 +1,20 @@
-import {BoxGeometry, Material, Mesh, MeshBasicMaterial, MeshNormalMaterial, PlaneGeometry} from 'three';
-import {MeshMaterial} from "three/three-core";
+import { BoxGeometry, Material, Mesh, MeshBasicMaterial, MeshNormalMaterial, PlaneGeometry } from 'three';
+import { MeshMaterial } from 'three/three-core';
 
 export class Terrain {
-
   size: number;
   max: number;
   map;
   waves;
   scaleZ = 1;
 
-  constructor(size, scaleZ, map: number[][]){
+  constructor(size, scaleZ, map: number[][]) {
     this.size = size;
     this.max = this.size - 1;
     this.scaleZ = scaleZ;
     // this.map = map;
 
-    if (map){
+    if (map) {
       this.map = [];
       map.forEach((value: number[], index: number) => {
         this.map.push(value[2] * this.scaleZ);
@@ -23,20 +22,20 @@ export class Terrain {
     } else {
       this.map = new Float32Array(this.size * this.size);
     }
-
   }
 
   get(x, y) {
-    if (x < 0 || x > this.max || y < 0 || y > this.max) return -1;
+    if (x < 0 || x > this.max || y < 0 || y > this.max) {
+      return -1;
+    }
     return this.map[x + this.size * y];
-  };
+  }
 
   set(x, y, val) {
     this.map[x + this.size * y] = val;
-  };
+  }
 
   generate(roughness) {
-
     let diamond = (x, y, size, offset) => {
       let ave = average([
         this.get(x, y - size), // top
@@ -47,11 +46,14 @@ export class Terrain {
       this.set(x, y, ave + offset);
     };
 
-
-    let divide = (size) => {
-      let x, y, half = size / 2;
+    let divide = size => {
+      let x,
+        y,
+        half = size / 2;
       let scale = roughness * size;
-      if (half < 1) return;
+      if (half < 1) {
+        return;
+      }
 
       for (y = half; y < this.max; y += size) {
         for (x = half; x < this.max; x += size) {
@@ -66,11 +68,11 @@ export class Terrain {
       divide(size / 2);
     };
 
-    let average = (values) => {
-      let valid = values.filter(function (val) {
+    let average = values => {
+      let valid = values.filter(function(val) {
         return val !== -1;
       });
-      let total = valid.reduce(function (sum, val) {
+      let total = valid.reduce(function(sum, val) {
         return sum + val;
       }, 0);
       return total / valid.length;
@@ -92,19 +94,27 @@ export class Terrain {
     this.set(0, this.max, this.max / 2);
 
     divide(this.max);
-  };
+  }
 
-  getTerrain(): PlaneGeometry{
+  getTerrain(): PlaneGeometry {
     let terrain_geometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
     let min_height = Infinity;
     let max_height = -Infinity;
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         let height_val = this.get(x, y);
-        if ( height_val < min_height ) min_height = height_val;
-        if ( height_val > max_height ) max_height = height_val;
-        if ( height_val < 0 ) height_val = 0;
-        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
+        if (height_val < min_height) {
+          min_height = height_val;
+        }
+        if (height_val > max_height) {
+          max_height = height_val;
+        }
+        if (height_val < 0) {
+          height_val = 0;
+        }
+        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) {
+          height_val = 0.0;
+        }
         terrain_geometry.vertices[y * this.size + x].z = height_val;
       }
     }
@@ -115,7 +125,7 @@ export class Terrain {
     return terrain_geometry;
   }
 
-  getTerrainWithMaterial(material: MeshMaterial){
+  getTerrainWithMaterial(material: MeshMaterial) {
     let terrain_mesh = new Mesh(this.getTerrain(), material);
     terrain_mesh.rotation.x = -Math.PI / 2.0;
     return terrain_mesh;
@@ -145,7 +155,7 @@ export class Terrain {
         // a random speed between 0.016 and 0.048 radians / frame
         speed: 0.016 + Math.random() * 0.032
       });
-    };
+    }
 
     return water_geometry;
   }
@@ -157,10 +167,18 @@ export class Terrain {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         let height_val = this.get(x, y);
-        if ( height_val < min_height ) min_height = height_val;
-        if ( height_val > max_height ) max_height = height_val;
-        if ( height_val < 0 ) height_val = 0;
-        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) height_val = 0.0;
+        if (height_val < min_height) {
+          min_height = height_val;
+        }
+        if (height_val > max_height) {
+          max_height = height_val;
+        }
+        if (height_val < 0) {
+          height_val = 0;
+        }
+        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) {
+          height_val = 0.0;
+        }
       }
     }
 
@@ -168,13 +186,12 @@ export class Terrain {
     water_mesh.scale.z = (min_height + max_height) / (2 * this.size);
     // terrain_mesh.add(water_mesh);
     water_mesh.rotation.x = -Math.PI / 2.0;
-    water_mesh.translateZ((this.size / 2) * (min_height + max_height) / (2 * this.size));
+    water_mesh.translateZ(((this.size / 2) * (min_height + max_height)) / (2 * this.size));
 
     return water_mesh;
   }
 
   moveWaves(water_mesh) {
-
     // get the vertices
     let verts = water_mesh.geometry.vertices;
     let l = verts.length;
@@ -191,7 +208,6 @@ export class Terrain {
 
       // increment the angle for the next frame
       vprops.ang += vprops.speed;
-
     }
 
     // Tell the renderer that the geometry of the sea has changed.
@@ -200,8 +216,6 @@ export class Terrain {
     // unless we add this line
     water_mesh.geometry.verticesNeedUpdate = true;
 
-    water_mesh.mesh.rotation.z += .005;
+    water_mesh.mesh.rotation.z += 0.005;
   }
-
 }
-

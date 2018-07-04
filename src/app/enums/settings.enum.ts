@@ -1,4 +1,4 @@
-export enum CAMERA{
+export enum CAMERA {
   IsometricCamera,
   MapCamera,
   PerspectiveCamera,

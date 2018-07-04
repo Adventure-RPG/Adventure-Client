@@ -8,9 +8,8 @@ describe('ColorMapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ColorMapComponent ]
-    })
-    .compileComponents();
+      declarations: [ColorMapComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,8 +1,8 @@
-export interface RegistrateReq extends LoginReq{
+export interface RegistrateReq extends LoginReq {
   username: string;
 }
 
-export interface LoginReq{
+export interface LoginReq {
   email: string;
   password: string;
 }

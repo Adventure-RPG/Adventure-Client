@@ -9,5 +9,5 @@ describe('UiInterfacesModule', () => {
 
   it('should create an instance', () => {
     expect(uiInterfacesModule).toBeTruthy();
-  })
+  });
 });

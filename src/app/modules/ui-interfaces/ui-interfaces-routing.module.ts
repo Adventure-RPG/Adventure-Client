@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {SidebarModalComponent} from "../../shared/sidebar-modal/sidebar-modal.component";
-import {SharedModule} from "../../shared/shared-module.module";
-import {ModalComponent} from "../../shared/modal/modal.component";
-import {AuthGuard} from "../../guards/auth.guard";
+import { SidebarModalComponent } from '../../shared/sidebar-modal/sidebar-modal.component';
+import { SharedModule } from '../../shared/shared-module.module';
+import { ModalComponent } from '../../shared/modal/modal.component';
+import { AuthGuard } from '../../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -26,8 +26,8 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
-      },
-    ],
+      }
+    ]
   },
   {
     path: 'auth/confirm/:token',
@@ -43,7 +43,7 @@ const routes: Routes = [
     path: 'editor',
     component: ModalComponent,
     outlet: 'popup',
-    loadChildren: 'app/modules/ui-interfaces/sub/sub.module#SubModule',
+    loadChildren: 'app/modules/ui-interfaces/sub/sub.module#SubModule'
   }
 ];
 
@@ -51,9 +51,9 @@ const routes: Routes = [
   imports: [
     SharedModule,
     // RouterModule.forRoot(routes)
-    RouterModule.forRoot(routes )
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
   providers: []
 })
-export class UiInterfacesRoutingModule { }
+export class UiInterfacesRoutingModule {}

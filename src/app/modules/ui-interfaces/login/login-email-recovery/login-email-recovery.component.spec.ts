@@ -8,9 +8,8 @@ describe('LoginEmailRecoveryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginEmailRecoveryComponent ]
-    })
-    .compileComponents();
+      declarations: [LoginEmailRecoveryComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

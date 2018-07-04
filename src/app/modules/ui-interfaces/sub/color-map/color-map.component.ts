@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {EngineService} from "../../../engine/engine.service";
+import { EngineService } from '../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-color-map',
@@ -7,22 +7,15 @@ import {EngineService} from "../../../engine/engine.service";
   styleUrls: ['./color-map.component.scss']
 })
 export class ColorMapComponent implements OnInit {
+  constructor(private engineService: EngineService) {}
 
-  constructor(
-    private engineService: EngineService,
-  ) {
-
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   transferDataSuccess($event) {
     // let attachmentUploadUrl = 'assets/data/offerspec/offerspec.json';
     // loading the FileList from the dataTransfer
     let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
     if (dataTransfer && dataTransfer.files) {
-
       // needed to support posting binaries and usual form values
       let headers = new Headers();
       headers.append('Content-Type', 'multipart/form-data');
@@ -33,24 +26,25 @@ export class ColorMapComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         let file: File = files[i];
         let img: any = new Image();
-        let reader: FileReader  = new FileReader();
+        let reader: FileReader = new FileReader();
 
-        reader.addEventListener("load", () => {
-          img.src = reader.result;
-          this.imageToColorMap(<any>img);
-        }, false);
+        reader.addEventListener(
+          'load',
+          () => {
+            img.src = reader.result;
+            this.imageToColorMap(<any>img);
+          },
+          false
+        );
 
         if (file) {
           reader.readAsDataURL(file);
         }
-
       }
     }
   }
 
-  imageToColorMap(img){
+  imageToColorMap(img) {
     this.engineService.colorMap(img);
   }
-
-
 }
