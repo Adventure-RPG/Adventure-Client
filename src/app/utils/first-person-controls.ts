@@ -45,6 +45,18 @@ export class FirstPersonControls {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     this.movementSpeed = 1.0;
     this.lookSpeed = 0.005;
 
