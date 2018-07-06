@@ -1,20 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
+  AddEquation,
+  AdditiveBlending, AlwaysDepth,
+  BackSide,
   Blending,
   BlendingDstFactor,
   BlendingEquation,
   BlendingSrcFactor,
-  Colors,
-  DepthModes,
+  Colors, CustomBlending,
+  DepthModes, DoubleSide, DstAlphaFactor, DstColorFactor, EqualDepth, FaceColors, FlatShading, FrontSide, GreaterDepth,
+  GreaterEqualDepth, LessDepth,
+  LessEqualDepth,
   Material,
-  MaterialParameters,
-  NoBlending,
-  Side
+  MaterialParameters, MaxEquation, MinEquation, MultiplyBlending, NeverDepth,
+  NoBlending, NoColors, NormalBlending, NotEqualDepth, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor,
+  OneMinusSrcAlphaFactor,
+  OneMinusSrcColorFactor,
+  ReverseSubtractEquation,
+  Side, SmoothShading, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, SubtractEquation, SubtractiveBlending,
+  VertexColors, ZeroFactor
 } from 'three';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
+import {Shading} from "three/three-core";
 
 // Validation methods
+
+
 
 @Component({
   selector: 'adventure-material',
@@ -24,11 +36,113 @@ import 'reflect-metadata';
 export class MaterialFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      alphaTest: [null, [Validators.required, Validators.min(0), Validators.max(1)]]
+      alphaTest: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blendDst: [null],
+      blendDstAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blendEquation: [null],
+      blendEquationAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blending: [null],
+      blendSrc: [null],
+      blendSrcAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      clipIntersection: [null],
+      clippingPlanes: [null],
+      clipShadows: [null],
+      colorWrite: [null],
+      depthFunc: [null],
+      depthTest: [null],
+      depthWrite: [null],
+      fog: [null],
+      id: [null],
+      isMaterial: [null],
+      lights: [null],
+      name: [null],
+      needsUpdate: [null],
+      opacity: [null],
+      overdraw: [null],
+      polygonOffset: [null],
+      polygonOffsetFactor: [null],
+      polygonOffsetUnits: [null],
+      precision: [null],
+      premultipliedAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      dithering: [null],
+      flatShading: [null],
+      side: [null],
+      transparent: [null],
+      type: [null],
+      uuid: [null],
+      vertexColors: [null],
+      visible: [null],
+      userData: [null],
     });
   }
 
   model = new MaterialFormAnnotation();
+
+  side: {[key: string]: Side} = {
+    FrontSide,
+    BackSide,
+    DoubleSide
+  };
+
+  shading: {[key: string]: Shading} = {
+    FlatShading,
+    SmoothShading
+  };
+
+  colors: {[key: string]: Colors} = {
+    NoColors,
+    FaceColors,
+    VertexColors
+  };
+
+  blending: {[key: string]: Blending} = {
+    NoBlending,
+    NormalBlending,
+    AdditiveBlending,
+    SubtractiveBlending,
+    MultiplyBlending,
+    CustomBlending
+  };
+
+  blendingEquation: {[key: string]: BlendingEquation} = {
+    AddEquation,
+    SubtractEquation,
+    ReverseSubtractEquation,
+    MinEquation,
+    MaxEquation
+  };
+
+  blendingDstFactor: {[key: string]: BlendingDstFactor} = {
+    ZeroFactor,
+    OneFactor,
+    SrcColorFactor,
+    OneMinusSrcColorFactor,
+    SrcAlphaFactor,
+    OneMinusSrcAlphaFactor,
+    DstAlphaFactor,
+    OneMinusDstAlphaFactor,
+    DstColorFactor,
+    OneMinusDstColorFactor
+  };
+
+  blendingSrcFactor: {[key: string]: BlendingSrcFactor} = {
+    SrcAlphaSaturateFactor
+  };
+
+  DepthModes: {[key: string]: DepthModes} = {
+    NeverDepth,
+    AlwaysDepth,
+    LessDepth,
+    LessEqualDepth,
+    EqualDepth,
+    GreaterEqualDepth,
+    GreaterDepth,
+    NotEqualDepth
+  };
+
+
+
+
 
   form;
 
@@ -52,7 +166,12 @@ export class MaterialFormComponent implements OnInit {
   }
 }
 
-export class MaterialFormAnnotation implements Material {
+export class MaterialFormAnnotation implements Material, OnInit {
+
+  ngOnInit(){
+
+  }
+
   alphaTest: number;
 
   blendDst: BlendingDstFactor;

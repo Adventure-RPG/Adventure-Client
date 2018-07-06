@@ -4,15 +4,17 @@
 
 @import "~bourbon/app/assets/stylesheets/_bourbon";
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 /**
   FOOD
  */
 *:focus {outline: none;}
 [ng-reflect-router-link]{cursor: pointer;}
+
 /**
   FONTS
  */
-
 $url-face: './assets/fonts';
 
 @include font-face("igra-sans", $url-face + "/IgraSans", $file-formats: eot woff2 woff ttf svg);
