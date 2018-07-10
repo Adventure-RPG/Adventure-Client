@@ -5,7 +5,7 @@ import { HeightMapService } from '../../engine/core/3d-helpers/height-map.servic
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
 import { SceneEventsDirective } from '../../../shared/directives/scene-events.directive';
-import {FirstPersonControls} from "../../../utils/first-person-controls";
+import { FirstPersonControls } from '../../../utils/first-person-controls';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -82,8 +82,8 @@ export class EditorComponent implements OnInit {
     });
 
     console.log('init');
-
     this.engineService.init();
+
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );

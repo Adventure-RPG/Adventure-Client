@@ -84,8 +84,6 @@ export class FirstPersonControls {
       this.domElement.setAttribute('tabindex', -1);
     }
 
-
-
     //хз нужно ли?
     this.onMouseMove = bind(this, this.onMouseMove);
     this.onMouseDown = bind(this, this.onMouseDown);

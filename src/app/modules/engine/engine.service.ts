@@ -213,8 +213,9 @@ export class EngineService {
 
     this.sceneService.scene.add(axesHelper);
 
-    // console.log(this.sceneService.scene);
+    this.cameraService.domElement = this.sceneService.renderer.domElement;
 
+    // console.log(this.sceneService.scene);
     this.updateCamera();
   }
 

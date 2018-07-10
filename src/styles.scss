@@ -5,13 +5,13 @@
 @import "~bourbon/app/assets/stylesheets/_bourbon";
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~nouislider/distribute/nouislider.min.css";
 
 /**
   FOOD
  */
 *:focus {outline: none;}
 [ng-reflect-router-link]{cursor: pointer;}
-
 /**
   FONTS
  */

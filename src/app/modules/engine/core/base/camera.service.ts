@@ -31,6 +31,16 @@ export class CameraService implements OnInit {
   y;
   z;
 
+  private _domElement;
+
+  get domElement() {
+    return this._domElement;
+  }
+
+  set domElement(value) {
+    this._domElement = value;
+  }
+
   public updateCamera(position, x?, y?, z?) {
     // console.log(this.settingsService.settings.camera.type);
     // console.log(CAMERA.IsometricCamera);

@@ -1,32 +1,58 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AddEquation,
-  AdditiveBlending, AlwaysDepth,
+  AdditiveBlending,
+  AlwaysDepth,
   BackSide,
   Blending,
   BlendingDstFactor,
   BlendingEquation,
   BlendingSrcFactor,
-  Colors, CustomBlending,
-  DepthModes, DoubleSide, DstAlphaFactor, DstColorFactor, EqualDepth, FaceColors, FlatShading, FrontSide, GreaterDepth,
-  GreaterEqualDepth, LessDepth,
+  Colors,
+  CustomBlending,
+  DepthModes,
+  DoubleSide,
+  DstAlphaFactor,
+  DstColorFactor,
+  EqualDepth,
+  FaceColors,
+  FlatShading,
+  FrontSide,
+  GreaterDepth,
+  GreaterEqualDepth,
+  LessDepth,
   LessEqualDepth,
   Material,
-  MaterialParameters, MaxEquation, MinEquation, MultiplyBlending, NeverDepth,
-  NoBlending, NoColors, NormalBlending, NotEqualDepth, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor,
+  MaterialParameters,
+  MaxEquation,
+  MinEquation,
+  MultiplyBlending,
+  NeverDepth,
+  NoBlending,
+  NoColors,
+  NormalBlending,
+  NotEqualDepth,
+  OneFactor,
+  OneMinusDstAlphaFactor,
+  OneMinusDstColorFactor,
   OneMinusSrcAlphaFactor,
   OneMinusSrcColorFactor,
   ReverseSubtractEquation,
-  Side, SmoothShading, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, SubtractEquation, SubtractiveBlending,
-  VertexColors, ZeroFactor
+  Side,
+  SmoothShading,
+  SrcAlphaFactor,
+  SrcAlphaSaturateFactor,
+  SrcColorFactor,
+  SubtractEquation,
+  SubtractiveBlending,
+  VertexColors,
+  ZeroFactor
 } from 'three';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
-import {Shading} from "three/three-core";
+import { Shading } from 'three/three-core';
 
 // Validation methods
-
-
 
 @Component({
   selector: 'adventure-material',
@@ -36,14 +62,14 @@ import {Shading} from "three/three-core";
 export class MaterialFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      alphaTest: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      alphaTest: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       blendDst: [null],
-      blendDstAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blendDstAlpha: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       blendEquation: [null],
-      blendEquationAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blendEquationAlpha: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       blending: [null],
       blendSrc: [null],
-      blendSrcAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      blendSrcAlpha: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       clipIntersection: [null],
       clippingPlanes: [null],
       clipShadows: [null],
@@ -63,7 +89,7 @@ export class MaterialFormComponent implements OnInit {
       polygonOffsetFactor: [null],
       polygonOffsetUnits: [null],
       precision: [null],
-      premultipliedAlpha: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
+      premultipliedAlpha: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       dithering: [null],
       flatShading: [null],
       side: [null],
@@ -72,30 +98,30 @@ export class MaterialFormComponent implements OnInit {
       uuid: [null],
       vertexColors: [null],
       visible: [null],
-      userData: [null],
+      userData: [null]
     });
   }
 
   model = new MaterialFormAnnotation();
 
-  side: {[key: string]: Side} = {
+  side: { [key: string]: Side } = {
     FrontSide,
     BackSide,
     DoubleSide
   };
 
-  shading: {[key: string]: Shading} = {
+  shading: { [key: string]: Shading } = {
     FlatShading,
     SmoothShading
   };
 
-  colors: {[key: string]: Colors} = {
+  colors: { [key: string]: Colors } = {
     NoColors,
     FaceColors,
     VertexColors
   };
 
-  blending: {[key: string]: Blending} = {
+  blending: { [key: string]: Blending } = {
     NoBlending,
     NormalBlending,
     AdditiveBlending,
@@ -104,7 +130,7 @@ export class MaterialFormComponent implements OnInit {
     CustomBlending
   };
 
-  blendingEquation: {[key: string]: BlendingEquation} = {
+  blendingEquation: { [key: string]: BlendingEquation } = {
     AddEquation,
     SubtractEquation,
     ReverseSubtractEquation,
@@ -112,7 +138,7 @@ export class MaterialFormComponent implements OnInit {
     MaxEquation
   };
 
-  blendingDstFactor: {[key: string]: BlendingDstFactor} = {
+  blendingDstFactor: { [key: string]: BlendingDstFactor } = {
     ZeroFactor,
     OneFactor,
     SrcColorFactor,
@@ -125,11 +151,11 @@ export class MaterialFormComponent implements OnInit {
     OneMinusDstColorFactor
   };
 
-  blendingSrcFactor: {[key: string]: BlendingSrcFactor} = {
+  blendingSrcFactor: { [key: string]: BlendingSrcFactor } = {
     SrcAlphaSaturateFactor
   };
 
-  DepthModes: {[key: string]: DepthModes} = {
+  DepthModes: { [key: string]: DepthModes } = {
     NeverDepth,
     AlwaysDepth,
     LessDepth,
@@ -140,11 +166,7 @@ export class MaterialFormComponent implements OnInit {
     NotEqualDepth
   };
 
-
-
-
-
-  form;
+  form: FormGroup;
 
   submitted = false;
 
@@ -167,10 +189,7 @@ export class MaterialFormComponent implements OnInit {
 }
 
 export class MaterialFormAnnotation implements Material, OnInit {
-
-  ngOnInit(){
-
-  }
+  ngOnInit() {}
 
   alphaTest: number;
 
