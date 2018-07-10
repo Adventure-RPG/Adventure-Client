@@ -4,6 +4,9 @@
 
 @import "~bourbon/app/assets/stylesheets/_bourbon";
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~nouislider/distribute/nouislider.min.css";
+
 /**
   FOOD
  */
@@ -12,7 +15,6 @@
 /**
   FONTS
  */
-
 $url-face: './assets/fonts';
 
 @include font-face("igra-sans", $url-face + "/IgraSans", $file-formats: eot woff2 woff ttf svg);

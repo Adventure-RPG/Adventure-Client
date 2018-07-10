@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { HttpClientModule } from '@angular/common/http';
 import { SceneEventsDirective } from './directives/scene-events.directive';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NouisliderModule } from 'ng2-nouislider';
 
 const Modules = [
   CommonModule,
@@ -19,10 +21,11 @@ const Modules = [
   RouterModule,
   ReactiveFormsModule,
   HttpClientModule,
-  SelectModule,
+  NgSelectModule,
   NgbModule,
   ColorPickerModule,
-  SnotifyModule
+  SnotifyModule,
+  NouisliderModule
 ];
 
 const Services = [];

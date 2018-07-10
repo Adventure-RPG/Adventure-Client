@@ -84,6 +84,7 @@ export class FirstPersonControls {
       this.domElement.setAttribute('tabindex', -1);
     }
 
+    //хз нужно ли?
     this.onMouseMove = bind(this, this.onMouseMove);
     this.onMouseDown = bind(this, this.onMouseDown);
     this.onMouseUp = bind(this, this.onMouseUp);
@@ -103,8 +104,10 @@ export class FirstPersonControls {
         fn.apply(scope, arguments);
       };
     }
+
     this.handleResize();
   }
+
   handleResize() {
     if (this.domElement === document) {
       this.viewHalfX = window.innerWidth / 2;

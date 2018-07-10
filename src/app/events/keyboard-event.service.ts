@@ -13,6 +13,11 @@ export class KeyboardEventService {
 
   keyboardPressEvent(event: KeyboardEvent) {
     console.log(event);
+    /**
+     * TODO:
+     * В этот сервис тебе надо загнать все кейборд ивенты
+     * event.preventDefault() - прерывает все ивенты
+     */
 
     if (event.ctrlKey && event.altKey) {
       event.preventDefault();
