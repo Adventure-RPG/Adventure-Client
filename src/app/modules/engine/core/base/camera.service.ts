@@ -3,14 +3,15 @@ import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera } from 'three
 import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
+import {FirstPersonControls} from 'app/utils/first-person-controls';
 
 @Injectable()
 export class CameraService implements OnInit {
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private _cameries: { [key: string]: Camera | OrthographicCamera | CubeCamera };
-
+  private _domElement;
   constructor(private settingsService: SettingsService) {}
-
+//, private _domElement: domElement
   get camera(): Camera | OrthographicCamera | CubeCamera {
     return this._camera;
   }
@@ -25,6 +26,16 @@ export class CameraService implements OnInit {
 
   set cameries(value: { [p: string]: Camera | OrthographicCamera | CubeCamera }) {
     this._cameries = value;
+  }
+
+  get domElement()
+  {
+    return this._domElement;
+  }
+
+  set domElement(value)
+  {
+    this._domElement = value;
   }
 
   x;
@@ -52,7 +63,7 @@ export class CameraService implements OnInit {
     if (!this.camera) {
       this.initIsometricCamera();
       this.init2dCamera();
-      // this.initFirstPersonCamera();
+      this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
         this.updateIsometricCamera();
@@ -60,7 +71,7 @@ export class CameraService implements OnInit {
         this.update2dCamera();
       }
       // else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
-      //   this.updateFirstPersonCamera();
+      //this.updateFirstPersonCamera();
       // }
     }
 
@@ -74,7 +85,8 @@ export class CameraService implements OnInit {
     // require('three-first-person-controls')(THREE);
     //
     // console.log(FPC);
-    // let controls = new THREE.FirstPersonControls( this.camera );
+
+    let controls = new FirstPersonControls( this.camera, this.domElement );
     //
     // controls.movementSpeed = 1000;
     // controls.lookSpeed = 0.125;
@@ -89,7 +101,9 @@ export class CameraService implements OnInit {
     this.cameries = mergeModel;
   }
 
-  public updateFirstPersonCamera() {}
+  public updateFirstPersonCamera() {
+
+  }
 
   public initIsometricCamera() {
     let d = this.settingsService.settings.camera.d;

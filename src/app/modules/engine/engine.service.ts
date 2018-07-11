@@ -215,6 +215,8 @@ export class EngineService {
 
     // console.log(this.sceneService.scene);
 
+    this.cameraService.domElement(this.sceneService.renderer.domElement);
+
     this.updateCamera();
   }
 
