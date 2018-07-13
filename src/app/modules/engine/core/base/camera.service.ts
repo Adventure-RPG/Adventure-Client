@@ -60,6 +60,8 @@ export class CameraService implements OnInit {
 
     // console.log(x, y);
 
+    console.log(this.camera);
+
     if (!this.camera) {
       this.initIsometricCamera();
       this.init2dCamera();
@@ -75,6 +77,8 @@ export class CameraService implements OnInit {
       // }
     }
 
+    console.log("out");
+
     this.camera.lookAt(position); // or the origin
 
     return this.camera;
@@ -87,6 +91,8 @@ export class CameraService implements OnInit {
     // console.log(FPC);
 
     let controls = new FirstPersonControls( this.camera, this.domElement );
+    console.log(controls);
+    console.log("here");
     //
     // controls.movementSpeed = 1000;
     // controls.lookSpeed = 0.125;
