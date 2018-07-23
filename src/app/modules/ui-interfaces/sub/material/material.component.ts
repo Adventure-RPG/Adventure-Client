@@ -51,8 +51,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
 import { Shading } from 'three/three-core';
-import {Utils} from "../../../../utils/utils";
-import {MaterialEnum} from "../../../../enums/material.enum";
+import { Utils } from '../../../../utils/utils';
+import { MaterialEnum } from '../../../../enums/material.enum';
 
 // Validation methods
 
@@ -62,7 +62,6 @@ import {MaterialEnum} from "../../../../enums/material.enum";
   styleUrls: ['./material.component.scss']
 })
 export class MaterialFormComponent implements OnInit {
-
   public colors = Utils.enumToArray(MaterialEnum.colors);
   public blending = Utils.enumToArray(MaterialEnum.blending);
   public blendingEquation = Utils.enumToArray(MaterialEnum.blendingEquation);
@@ -118,7 +117,6 @@ export class MaterialFormComponent implements OnInit {
   model = new MaterialFormAnnotation();
 
   //TODO: удалить
-
 
   form: FormGroup;
 

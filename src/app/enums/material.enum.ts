@@ -1,24 +1,52 @@
 import {
-  AddEquation, AdditiveBlending, AlwaysDepth, BackSide, Blending, BlendingDstFactor, BlendingEquation,
-  BlendingSrcFactor, Colors,
-  CustomBlending, DepthModes,
+  AddEquation,
+  AdditiveBlending,
+  AlwaysDepth,
+  BackSide,
+  Blending,
+  BlendingDstFactor,
+  BlendingEquation,
+  BlendingSrcFactor,
+  Colors,
+  CustomBlending,
+  DepthModes,
   DoubleSide,
-  DstAlphaFactor, DstColorFactor,
+  DstAlphaFactor,
+  DstColorFactor,
   EqualDepth,
-  FaceColors, FlatShading,
-  FrontSide, GreaterDepth,
-  GreaterEqualDepth, LessDepth, LessEqualDepth,
-  MaxEquation, MinEquation, MultiplyBlending, NeverDepth,
-  NoBlending, NoColors,
-  NormalBlending, NotEqualDepth, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor,
+  FaceColors,
+  FlatShading,
+  FrontSide,
+  GreaterDepth,
+  GreaterEqualDepth,
+  LessDepth,
+  LessEqualDepth,
+  MaxEquation,
+  MinEquation,
+  MultiplyBlending,
+  NeverDepth,
+  NoBlending,
+  NoColors,
+  NormalBlending,
+  NotEqualDepth,
+  OneFactor,
+  OneMinusDstAlphaFactor,
+  OneMinusDstColorFactor,
+  OneMinusSrcAlphaFactor,
   OneMinusSrcColorFactor,
   ReverseSubtractEquation,
-  Side, SmoothShading,
-  SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, SubtractEquation, SubtractiveBlending, VertexColors,
+  Side,
+  SmoothShading,
+  SrcAlphaFactor,
+  SrcAlphaSaturateFactor,
+  SrcColorFactor,
+  SubtractEquation,
+  SubtractiveBlending,
+  VertexColors,
   ZeroFactor
-} from "three";
+} from 'three';
 
-import {Shading} from "three/three-core";
+import { Shading } from 'three/three-core';
 
 export class MaterialEnum {
   static side: { [key: string]: Side } = {
@@ -83,7 +111,7 @@ export class MaterialEnum {
     NotEqualDepth
   };
 
-  static precision: { [key: string]: number} = {
+  static precision: { [key: string]: number } = {
     highp: 1,
     mediump: 2,
     lowp: 3
