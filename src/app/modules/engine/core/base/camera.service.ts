@@ -4,6 +4,7 @@ import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
 import {FirstPersonControls} from 'app/utils/first-person-controls';
+import TrackballControls from THREE;
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -72,9 +73,9 @@ export class CameraService implements OnInit {
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
       }
-      // else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
-      //this.updateFirstPersonCamera();
-      // }
+      else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
+        this.updateFirstPersonCamera();
+      }
     }
 
     console.log("out");
@@ -85,7 +86,10 @@ export class CameraService implements OnInit {
   }
 
   public initFirstPersonCamera() {
+    let d = this.settingsService.settings.camera.d;
     this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 20000);
+    this.camera.position.set(d * 8, d * 8, d * 8);
+    this.camera.rotation.y = - 135 * Math.PI / 180;
     // require('three-first-person-controls')(THREE);
     //
     // console.log(FPC);
@@ -108,7 +112,9 @@ export class CameraService implements OnInit {
   }
 
   public updateFirstPersonCamera() {
-
+    let d = this.settingsService.settings.camera.d;
+    this.camera = this.cameries[CAMERA.FirstPersonCamera];
+    this.camera.position.set(d * 8, d * 8, d * 8);
   }
 
   public initIsometricCamera() {
@@ -151,7 +157,6 @@ export class CameraService implements OnInit {
   public init2dCamera() {
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.MapCamera];
-
     this.camera = new CubeCamera(1, d * 40, 128);
     this.camera.position.set(0, d * 4, 0); // all components equal
 
