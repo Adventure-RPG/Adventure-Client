@@ -31,7 +31,9 @@ export class SettingsService implements OnInit {
     }
   };
 
-  private _settings: BehaviorSubject<Settings> = new BehaviorSubject(JSON.parse(localStorage.getItem('settings')) || this.baseSetting);
+  private _settings: BehaviorSubject<Settings> = new BehaviorSubject(
+    JSON.parse(localStorage.getItem('settings')) || this.baseSetting
+  );
 
   public settings$: Observable<Settings> = this._settings.asObservable();
 

@@ -90,7 +90,6 @@ export class MaterialFormComponent implements OnInit {
       depthTest: [null],
       depthWrite: [null],
       fog: [null],
-      id: [null],
       isMaterial: [null],
       lights: [null],
       name: [null],
@@ -106,8 +105,6 @@ export class MaterialFormComponent implements OnInit {
       flatShading: [null],
       side: [null],
       transparent: [null],
-      type: [null],
-      uuid: [null],
       vertexColors: [null],
       visible: [null],
       userData: [null]

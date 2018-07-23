@@ -35,7 +35,11 @@ const Directive = [SceneEventsDirective];
 @NgModule({
   imports: [...Modules],
   declarations: [...Components, ...Directive],
-  providers: [...Services, { provide: 'SnotifyToastConfig', useValue: ToastDefaults }, SnotifyService],
+  providers: [
+    ...Services,
+    { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
+    SnotifyService
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [...Modules, ...Components, ...Directive]
 })

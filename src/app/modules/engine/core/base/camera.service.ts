@@ -129,7 +129,8 @@ export class CameraService implements OnInit {
     // console.log(x, y, z);
 
     (<OrthographicCamera>this.camera).left = -d * this.settingsService.settings.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).right = -d * this.settingsService.settings.browser.aspectRatio;
+    (<OrthographicCamera>this.camera).right =
+      -d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).top = d;
     (<OrthographicCamera>this.camera).bottom = -d;
     (<OrthographicCamera>this.camera).near = 1;

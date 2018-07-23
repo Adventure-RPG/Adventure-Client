@@ -1,4 +1,6 @@
-export function OnNew<TClass, T>(handlerGetter: (x: TClass) => (newVal?: T, oldVal?: T, firstValue?: boolean) => void): Function {
+export function OnNew<TClass, T>(
+  handlerGetter: (x: TClass) => (newVal?: T, oldVal?: T, firstValue?: boolean) => void
+): Function {
   return (target: Function, property: string) => {
     let innerProperty = `_${property}`;
     let isNotFirstValueProperty = `_${property}_is_FirstValue`;

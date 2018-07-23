@@ -921,7 +921,11 @@ export class HeightMapService {
           lerp(
             v,
             lerp(u, grad(p[AA + 1], x, y, zMinus1), grad(p[BA + 1], xMinus1, y, z - 1)),
-            lerp(u, grad(p[AB + 1], x, yMinus1, zMinus1), grad(p[BB + 1], xMinus1, yMinus1, zMinus1))
+            lerp(
+              u,
+              grad(p[AB + 1], x, yMinus1, zMinus1),
+              grad(p[BB + 1], xMinus1, yMinus1, zMinus1)
+            )
           )
         );
       }

@@ -1,4 +1,11 @@
-import { BoxGeometry, Material, Mesh, MeshBasicMaterial, MeshNormalMaterial, PlaneGeometry } from 'three';
+import {
+  BoxGeometry,
+  Material,
+  Mesh,
+  MeshBasicMaterial,
+  MeshNormalMaterial,
+  PlaneGeometry
+} from 'three';
 import { MeshMaterial } from 'three/three-core';
 
 export class Terrain {

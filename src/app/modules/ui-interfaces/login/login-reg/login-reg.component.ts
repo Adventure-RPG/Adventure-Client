@@ -11,7 +11,11 @@ import { AppService } from '../../../../app.service';
   styleUrls: ['./login-reg.component.scss']
 })
 export class LoginRegComponent implements OnInit {
-  constructor(public formBuilder: FormBuilder, public loginService: LoginService, private appSerivce: AppService) {}
+  constructor(
+    public formBuilder: FormBuilder,
+    public loginService: LoginService,
+    private appSerivce: AppService
+  ) {}
 
   public loginForm: FormGroup;
 
