@@ -1,58 +1,323 @@
+<!--TODO: вынести-->
+<ng-template #Checkbox let-name="name">
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox"
+           [formControl]="form.controls[name]"
+           class="custom-control-input" [id]="name">
+    <label class="custom-control-label" [for]="name">{{name}}</label>
+  </label>
+</ng-template>
+
+<ng-template #Range let-name="name" let-min="min" let-max="max" let-step="step">
+  <label class="center-block wide">{{name}}:</label>
+  <nouislider style="margin: 0 15px;" [min]="min || 0" [max]="max || 1" [step]="step || 0.01" [formControl]="form.controls[name]"></nouislider>
+</ng-template>
+<!--TODO END-->
+
 <div class="container">
-  <h1>Hero Form</h1>
-  <form [formGroup]="form">
+  <h1>Material form</h1>
+  <form class="form-group" [formGroup]="form">
 
     <div class="form-group">
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label class="center-block">Name:
-            <input class="form-control" formControlName="alphaTest">
-          </label>
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'alphaTest'}"></ng-container>
         </div>
-        <div class="form-group col-md-6">
-          <label class="center-block col-md-6">alphaTest:
-            <nouislider [min]="0" [max]="1" [step]="0.01" [formControl]="form.controls['alphaTest']"></nouislider>
-          </label>
+
+        <div class="col-md-6">
+          <ng-select [items]="blendingDstFactor"
+                     placeholder="blendingDstFactor"
+                     bindLabel="name"
+                     bindValue="id"
+                     [formControl]="form.controls['blendDst']">
+          </ng-select>
         </div>
       </div>
     </div>
 
     <div class="form-group">
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label class="center-block">blendDstAlpha:
-            <nouislider [min]="0" [max]="1" [step]="0.01" [formControl]="form.controls['blendDstAlpha']"></nouislider>
-          </label>
+
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'blendDstAlpha'}"></ng-container>
         </div>
 
-        <div class="form-group col-md-6">
-          <label class="center-block">blendEquationAlpha:
-            <nouislider [min]="0" [max]="1" [step]="0.01" [formControl]="form.controls['blendEquationAlpha']"></nouislider>
-          </label>
+        <div class="col-md-6">
+          <ng-select [items]="blendingEquation"
+                     placeholder="blendingEquation"
+                     bindLabel="name"
+                     bindValue="id"
+                     [formControl]="form.controls['blendEquation']">
+          </ng-select>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'blendEquationAlpha'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-select [items]="blending"
+                     placeholder="blending"
+                     bindLabel="name"
+                     bindValue="id"
+                     [formControl]="form.controls['blending']">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'blendSrcAlpha'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-select [items]="blendingSrcFactor"
+                     placeholder="blendSrc"
+                     bindLabel="name"
+                     bindValue="id"
+                     [formControl]="form.controls['blendSrc']">
+          </ng-select>
         </div>
       </div>
     </div>
 
     <div class="form-group">
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label class="center-block">blendSrcAlpha:
-            <nouislider [min]="0" [max]="1" [step]="0.01" [formControl]="form.controls['blendSrcAlpha']"></nouislider>
-          </label>
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'clipIntersection'}"></ng-container>
         </div>
 
-        <div class="form-group col-md-6">
-          <label class="center-block">premultipliedAlpha:
-            <nouislider [min]="0" [max]="1" [step]="0.01" [formControl]="form.controls['premultipliedAlpha']"></nouislider>
-          </label>
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'clipShadows'}"></ng-container>
         </div>
       </div>
     </div>
+
+    <!--<div class="form-group">-->
+      <!--<div class="form-row">-->
+        <!--<div class="form-check col-md-6">-->
+          <!--<label class="custom-control-label" >clippingPlanes Пока не работает</label>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <div class="form-group">
+      <div class="form-row">
+
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'colorWrite'}"></ng-container>
+        </div>
+
+        <div class="form-check col-md-6">
+          <ng-select [items]="depthModes"
+                     bindLabel="name"
+                     bindValue="id"
+                     placeholder="depthFunc"
+                     [formControl]="form.controls['depthFunc']">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'depthTest'}"></ng-container>
+        </div>
+
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'depthWrite'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'fog'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <label for="id">id</label>
+          <input type="number"
+                 [formControl]="form.controls['id']"
+                 placeholder="id"
+                 class="form-control" id="id">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'isMaterial'}"></ng-container>
+        </div>
+
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'lights'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-6">
+          <label for="id">name</label>
+          <input type="text"
+                 [formControl]="form.controls['name']"
+                 placeholder="name"
+                 class="form-control" id="name">
+        </div>
+
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'needsUpdate'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'opacity'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Range; context: {name: 'overdraw'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'polygonOffset'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'polygonOffsetFactor'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'polygonOffsetUnits'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-select [items]="precision"
+                     bindLabel="name"
+                     bindValue="id"
+                     placeholder="precision"
+                     [formControl]="form.controls['precision']">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'premultipliedAlpha'}"></ng-container>
+        </div>
+
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'dithering'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'flatShading'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <ng-select [items]="side"
+                     placeholder="side"
+                     bindLabel="name"
+                     bindValue="id"
+                     [formControl]="form.controls['side']">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'transparent'}"></ng-container>
+        </div>
+
+        <div class="col-md-6">
+          <input type="text"
+                 [formControl]="form.controls['type']"
+                 placeholder="type"
+                 class="form-control" id="type">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-6">
+          <input type="number"
+                 [formControl]="form.controls['uuid']"
+                 placeholder="uuid"
+                 class="form-control" id="uuid">
+        </div>
+
+        <div class="col-md-6">
+
+          <ng-select [items]="colors"
+                     bindLabel="name"
+                     bindValue="id"
+                     placeholder="colors"
+                     [formControl]="form.controls['vertexColors']">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-check col-md-6">
+          <ng-container *ngTemplateOutlet="Checkbox; context: {name: 'visible'}"></ng-container>
+        </div>
+      </div>
+    </div>
+
+
+    <!--
+      TODO: WTF??? userData: any;
+      An object that can be used to store custom data about the Material.
+      It should not hold references to functions as these will not be cloned.
+    -->
 
     <button type="submit" class="btn btn-success" (click)="diagnostic">Submit</button>
 
   </form>
-  <p>Form value: {{ form.value | json }}</p>
-  <p>Form status: {{ form.status | json }}</p>
+
+  <div class="card border-primary mb-3">
+    <div class="card-header" (click)="debug = !debug">Debug information</div>
+    <div class="card-body" [hidden]="!debug">
+      <h4 class="card-title">Form status: {{ form.status | json }}</h4>
+      <pre class="card-text">{{ form.value | json }}</pre>
+    </div>
+  </div>
+
 
 </div>

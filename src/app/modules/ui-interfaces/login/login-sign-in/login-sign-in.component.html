@@ -6,15 +6,16 @@
     <span id="reauth-email" class="reauth-email"></span>
     <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" autofocus>
     <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center mb-2" placeholder="Password" >
-    <div id="remember" class="checkbox text-center">
+
+    <div id="remember" class="checkbox">
 
       <label class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input">
-        <span class="custom-control-indicator"></span>
-        <span class="custom-control-description">Remember me</span>
+        <input type="checkbox" class="custom-control-input" id="rememberMe">
+        <label class="custom-control-label" for="rememberMe">Remember me</label>
       </label>
 
     </div>
+
     <button (click)="loginFormSubmit()"  [disabled]="this.loginForm.invalid"  class="btn btn-outline-secondary btn-block btn-signin" type="submit">Sign in</button>
   </form><!-- /form -->
 

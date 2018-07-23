@@ -1,17 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
-
 @import "assets/scss/bootstrap/bootstrap";
 
 @import "~bourbon/app/assets/stylesheets/_bourbon";
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import "~nouislider/distribute/nouislider.min.css";
 
 /**
   FOOD
  */
 *:focus {outline: none;}
 [ng-reflect-router-link]{cursor: pointer;}
+
 /**
   FONTS
  */
@@ -50,4 +49,20 @@ $url-face: './assets/fonts';
   transform:scale(0.9);
   opacity:0.7;
   border: 1px dashed #000;
+}
+
+/**
+  Slider
+ */
+@import "~nouislider/distribute/nouislider.min.css";
+.noUi-handle{
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
+  background: $primary;
+
+  //TODO: обновлять модуль, так как разраб косоеб, а я ленивый
+  pointer-events: none;
+  //END: TODO
 }

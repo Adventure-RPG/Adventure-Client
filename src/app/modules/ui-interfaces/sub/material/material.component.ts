@@ -51,6 +51,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
 import { Shading } from 'three/three-core';
+import {Utils} from "../../../../utils/utils";
+import {MaterialEnum} from "../../../../enums/material.enum";
 
 // Validation methods
 
@@ -60,6 +62,17 @@ import { Shading } from 'three/three-core';
   styleUrls: ['./material.component.scss']
 })
 export class MaterialFormComponent implements OnInit {
+
+  public colors = Utils.enumToArray(MaterialEnum.colors);
+  public blending = Utils.enumToArray(MaterialEnum.blending);
+  public blendingEquation = Utils.enumToArray(MaterialEnum.blendingEquation);
+  public blendingDstFactor = Utils.enumToArray(MaterialEnum.blendingDstFactor);
+  public blendingSrcFactor = Utils.enumToArray(MaterialEnum.blendingSrcFactor);
+  public depthModes = Utils.enumToArray(MaterialEnum.depthModes);
+  public side = Utils.enumToArray(MaterialEnum.side);
+  public shading = Utils.enumToArray(MaterialEnum.shading);
+  public precision = Utils.enumToArray(MaterialEnum.precision);
+
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       alphaTest: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
@@ -83,8 +96,8 @@ export class MaterialFormComponent implements OnInit {
       lights: [null],
       name: [null],
       needsUpdate: [null],
-      opacity: [null],
-      overdraw: [null],
+      opacity: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
+      overdraw: [0, [Validators.required, Validators.min(0), Validators.max(1)]],
       polygonOffset: [null],
       polygonOffsetFactor: [null],
       polygonOffsetUnits: [null],
@@ -104,67 +117,8 @@ export class MaterialFormComponent implements OnInit {
 
   model = new MaterialFormAnnotation();
 
-  side: { [key: string]: Side } = {
-    FrontSide,
-    BackSide,
-    DoubleSide
-  };
+  //TODO: удалить
 
-  shading: { [key: string]: Shading } = {
-    FlatShading,
-    SmoothShading
-  };
-
-  colors: { [key: string]: Colors } = {
-    NoColors,
-    FaceColors,
-    VertexColors
-  };
-
-  blending: { [key: string]: Blending } = {
-    NoBlending,
-    NormalBlending,
-    AdditiveBlending,
-    SubtractiveBlending,
-    MultiplyBlending,
-    CustomBlending
-  };
-
-  blendingEquation: { [key: string]: BlendingEquation } = {
-    AddEquation,
-    SubtractEquation,
-    ReverseSubtractEquation,
-    MinEquation,
-    MaxEquation
-  };
-
-  blendingDstFactor: { [key: string]: BlendingDstFactor } = {
-    ZeroFactor,
-    OneFactor,
-    SrcColorFactor,
-    OneMinusSrcColorFactor,
-    SrcAlphaFactor,
-    OneMinusSrcAlphaFactor,
-    DstAlphaFactor,
-    OneMinusDstAlphaFactor,
-    DstColorFactor,
-    OneMinusDstColorFactor
-  };
-
-  blendingSrcFactor: { [key: string]: BlendingSrcFactor } = {
-    SrcAlphaSaturateFactor
-  };
-
-  DepthModes: { [key: string]: DepthModes } = {
-    NeverDepth,
-    AlwaysDepth,
-    LessDepth,
-    LessEqualDepth,
-    EqualDepth,
-    GreaterEqualDepth,
-    GreaterDepth,
-    NotEqualDepth
-  };
 
   form: FormGroup;
 
