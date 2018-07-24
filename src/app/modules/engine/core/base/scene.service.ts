@@ -19,6 +19,7 @@ export class SceneService {
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000);
 
+    this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
