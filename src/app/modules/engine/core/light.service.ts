@@ -51,7 +51,11 @@ export class LightService {
     let lightLength = 50;
     let d = 10;
     let light: AmbientLight | DirectionalLight | HemisphereLight | PointLight | SpotLight;
-    let dirLightHelper: DirectionalLightHelper | HemisphereLightHelper | PointLightHelper | SpotLightHelper;
+    let dirLightHelper:
+      | DirectionalLightHelper
+      | HemisphereLightHelper
+      | PointLightHelper
+      | SpotLightHelper;
 
     // TODO: clean interface
     // https://github.com/mrdoob/three.js/issues/12452
@@ -95,7 +99,11 @@ export class LightService {
 
         break;
       case 'HemisphereLight':
-        light = new THREE.HemisphereLight(color, <any>new THREE.Color(lightEntity.groundColor), lightEntity.intensity);
+        light = new THREE.HemisphereLight(
+          color,
+          <any>new THREE.Color(lightEntity.groundColor),
+          lightEntity.intensity
+        );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         this.engineService.sceneService.scene.add(light);
 
@@ -104,7 +112,12 @@ export class LightService {
         // console.log(lightEntity.intensity);
         // console.log(lightEntity.distance);
         // console.log(lightEntity.decay);
-        light = new THREE.PointLight(color, lightEntity.intensity, lightEntity.distance, lightEntity.decay);
+        light = new THREE.PointLight(
+          color,
+          lightEntity.intensity,
+          lightEntity.distance,
+          lightEntity.decay
+        );
         // light = new THREE.PointLight( color,  1, 100 );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER

@@ -1,4 +1,8 @@
-import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG
+} from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import 'hammerjs';
 
@@ -43,7 +47,15 @@ const Components = [SidebarModalComponent, ModalComponent];
 
 const Events = [KeyboardEventService, MouseEventService, OnWindowEventService];
 
-const Services = [HandleErrorService, SettingsService, EngineService, LightService, AppService, ApiService, LoginService];
+const Services = [
+  HandleErrorService,
+  SettingsService,
+  EngineService,
+  LightService,
+  AppService,
+  ApiService,
+  LoginService
+];
 
 const Guards = [AuthGuard];
 

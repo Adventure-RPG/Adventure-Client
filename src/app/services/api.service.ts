@@ -17,7 +17,11 @@ const httpOptions = {
 
 @Injectable()
 export class ApiService {
-  constructor(private httpClient: HttpClient, private appService: AppService, private handleErrorService: HandleErrorService) {
+  constructor(
+    private httpClient: HttpClient,
+    private appService: AppService,
+    private handleErrorService: HandleErrorService
+  ) {
     console.log('set');
   }
 

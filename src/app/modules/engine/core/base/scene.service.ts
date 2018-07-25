@@ -7,8 +7,6 @@ export class SceneService {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
-  private initRenderer: boolean;
-  private animationLoop = [];
 
   constructor() {
     this.scene = new Scene();
@@ -19,6 +17,7 @@ export class SceneService {
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000);
 
+    this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
@@ -29,17 +28,9 @@ export class SceneService {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  // TODO: add delete animation from loop;
-  public addAnimationInLoop(animationFunc) {
-    this.animationLoop.push(animationFunc);
-  }
-
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
-    for (let i = 0; i < this.animationLoop.length; i++) {
-      this.animationLoop[i]();
-    }
 
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);

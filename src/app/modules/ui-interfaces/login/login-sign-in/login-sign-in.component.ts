@@ -11,7 +11,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-sign-in.component.scss']
 })
 export class LoginSignInComponent implements OnInit {
-  constructor(public formBuilder: FormBuilder, public loginService: LoginService, private appSerivce: AppService, private router: Router) {}
+  constructor(
+    public formBuilder: FormBuilder,
+    public loginService: LoginService,
+    private appSerivce: AppService,
+    private router: Router
+  ) {}
 
   public loginForm: FormGroup;
 

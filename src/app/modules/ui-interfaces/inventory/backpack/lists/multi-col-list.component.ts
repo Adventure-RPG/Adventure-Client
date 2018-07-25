@@ -41,11 +41,15 @@ export class MultiColListComponent implements OnChanges {
   }
 
   sortByName() {
-    this.filteredList = [].concat(this.filteredList || []).sort((a, b) => -(a.name < b.name) || +(a.name !== b.name));
+    this.filteredList = []
+      .concat(this.filteredList || [])
+      .sort((a, b) => -(a.name < b.name) || +(a.name !== b.name));
   }
 
   sortByIndex() {
-    this.filteredList = [].concat(this.filteredList || []).sort((a, b) => -(a.index < b.index) || +(a.index !== b.index));
+    this.filteredList = []
+      .concat(this.filteredList || [])
+      .sort((a, b) => -(a.index < b.index) || +(a.index !== b.index));
   }
 
   setToFullList() {

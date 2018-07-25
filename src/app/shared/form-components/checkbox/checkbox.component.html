@@ -1,0 +1,6 @@
+<label class="custom-control custom-checkbox" [formGroup]="formGroup">
+  <input type="checkbox"
+         [formControl]="formGroup.controls[name]"
+         class="custom-control-input" [id]="name">
+  <label class="custom-control-label" [for]="name">{{name || label}}</label>
+</label>

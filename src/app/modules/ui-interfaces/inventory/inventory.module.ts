@@ -9,7 +9,13 @@ import { InventoryItemComponent } from './backpack/lists/inventory-item.componen
 import { MultiColListComponent } from './backpack/lists/multi-col-list.component';
 import { SlimScrollModule } from 'ng2-slimscroll';
 
-const Components = [InventoryComponent, BackpackComponent, HeroItemsComponent, MultiColListComponent, InventoryItemComponent];
+const Components = [
+  InventoryComponent,
+  BackpackComponent,
+  HeroItemsComponent,
+  MultiColListComponent,
+  InventoryItemComponent
+];
 
 @NgModule({
   imports: [InventoryRoutingModule, CommonModule, VirtualScrollModule, SlimScrollModule],

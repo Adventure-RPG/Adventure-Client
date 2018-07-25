@@ -43,10 +43,12 @@ export class LoginService {
   }
 
   public httpSignIn(body: RegistrateReq): any {
-    return this.apiService.post(this.authUrl + this.version + this.module + 'login', body).do(data => {
-      localStorage.setItem('auth', JSON.stringify(data));
-      this.signIn = data;
-    });
+    return this.apiService
+      .post(this.authUrl + this.version + this.module + 'login', body)
+      .do(data => {
+        localStorage.setItem('auth', JSON.stringify(data));
+        this.signIn = data;
+      });
   }
 
   private _recovery: any = new BehaviorSubject<any>({});
@@ -83,7 +85,9 @@ export class LoginService {
   }
 
   public httpEmailVerification(body): any {
-    return this.apiService.post(this.authUrl + this.version + this.module + 'confirm/' + body.token);
+    return this.apiService.post(
+      this.authUrl + this.version + this.module + 'confirm/' + body.token
+    );
   }
 
   public isLoggedIn() {
