@@ -79,7 +79,8 @@ export class MainComponent implements OnInit {
       content: {
         title: 'Редактор',
         subtitle: 'Здесь вы можете создать своё приключение!'
-      }
+      },
+      routerLink: '../editor'
     },
     {
       baseClass: 'e',
