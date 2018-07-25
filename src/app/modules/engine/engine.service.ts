@@ -79,10 +79,10 @@ export class EngineService {
     private _cameraService: CameraService,
     private _settingsService: SettingsService
   ) {
-    this.settingsService.settings$.subscribe(data => {
+    //this.settingsService.settings$.subscribe(data => {
       // console.log(data);
-      this.cameraService.initIsometricCamera();
-    });
+      //this.cameraService.initIsometricCamera();
+    //});
   }
 
   private _initStatus: any = new BehaviorSubject<any>(null);
@@ -213,9 +213,10 @@ export class EngineService {
 
     this.sceneService.scene.add(axesHelper);
 
+    // console.log(this.sceneService.scene);
+
     this.cameraService.domElement = this.sceneService.renderer.domElement;
 
-    // console.log(this.sceneService.scene);
     this.updateCamera();
   }
 
