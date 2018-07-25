@@ -80,8 +80,8 @@ export class EngineService {
     private _settingsService: SettingsService
   ) {
     //this.settingsService.settings$.subscribe(data => {
-      // console.log(data);
-      //this.cameraService.initIsometricCamera();
+    // console.log(data);
+    //this.cameraService.initIsometricCamera();
     //});
   }
 

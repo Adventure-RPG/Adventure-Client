@@ -3,15 +3,20 @@ import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera } from 'three
 import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
-import {FirstPersonControls} from 'app/utils/first-person-controls';
+import { FirstPersonControls } from 'app/utils/first-person-controls';
 
 @Injectable()
 export class CameraService implements OnInit {
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private _cameries: { [key: string]: Camera | OrthographicCamera | CubeCamera };
   private _domElement;
+
+  x;
+  y;
+  z;
+
   constructor(private settingsService: SettingsService) {}
-//, private _domElement: domElement
+
   get camera(): Camera | OrthographicCamera | CubeCamera {
     return this._camera;
   }
@@ -27,22 +32,6 @@ export class CameraService implements OnInit {
   set cameries(value: { [p: string]: Camera | OrthographicCamera | CubeCamera }) {
     this._cameries = value;
   }
-
-  get domElement()
-  {
-    return this._domElement;
-  }
-
-  set domElement(value)
-  {
-    this._domElement = value;
-  }
-
-  x;
-  y;
-  z;
-
-  private _domElement;
 
   get domElement() {
     return this._domElement;
@@ -81,13 +70,12 @@ export class CameraService implements OnInit {
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
-      }
-      else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera){
+      } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
         this.updateFirstPersonCamera();
       }
     }
 
-    console.log("out");
+    console.log('out');
 
     this.camera.lookAt(position); // or the origin
 
@@ -98,14 +86,14 @@ export class CameraService implements OnInit {
     let d = this.settingsService.settings.camera.d;
     this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 20000);
     this.camera.position.set(d * 8, d * 8, d * 8);
-    this.camera.rotation.y = - 135 * Math.PI / 180;
+    this.camera.rotation.y = (-135 * Math.PI) / 180;
     // require('three-first-person-controls')(THREE);
     //
     // console.log(FPC);
 
-    let controls = new FirstPersonControls( this.camera, this.domElement );
+    let controls = new FirstPersonControls(this.camera, this.domElement);
     console.log(controls);
-    console.log("here");
+    console.log('here');
     //
     // controls.movementSpeed = 1000;
     // controls.lookSpeed = 0.125;

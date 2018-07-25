@@ -31,7 +31,6 @@ export class SceneService {
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
-
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
