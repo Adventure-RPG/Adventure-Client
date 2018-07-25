@@ -4,7 +4,6 @@ import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
 import {FirstPersonControls} from 'app/utils/first-person-controls';
-import TrackballControls from THREE;
 
 @Injectable()
 export class CameraService implements OnInit {
