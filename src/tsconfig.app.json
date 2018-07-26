@@ -13,7 +13,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "baseUrl": "",
-    "types": ["jasmine", "node"]
+    "types": ["jasmine", "node"],
+    "paths": {
+      "@node_modules/*": ["../node_modules/*"],
+      "@directives/*": ["app/directives/*"],
+      "@services/*": ["app/services/*"],
+      "@shared/*": ["app/shared/*"]
+    }
   },
   "exclude": [
     "test.ts",

@@ -8,10 +8,7 @@ import { StorageService } from '../services/storage.service';
 
 @Injectable()
 export class KeyboardEventService {
-  constructor(
-    private settingsService: SettingsService,
-    private storageService: StorageService,
-  ) {}
+  constructor(private settingsService: SettingsService, private storageService: StorageService) {}
 
   engineService: EngineService;
 
@@ -79,37 +76,25 @@ export class KeyboardEventService {
   }
 
   notCtrlAndNotAltEvent(event: KeyboardEvent) {
-    switch (event.keyCode) {
-      case Key.RightArrow:
-      case Key.D:
-        this.engineService.updateCamera(10, 5, 0);
-        console.log(this.engineService);
-        console.log(Key.D);
-        break;
-      case Key.LeftArrow:
-      case Key.A:
-        this.engineService.updateCamera(-10, -5, 0);
-        console.log(this.engineService);
-        console.log(Key.A);
-        break;
-      case Key.UpArrow:
-      case Key.W:
-        this.engineService.updateCamera(0, 10, 0);
-        let hello = this.storageService.getStorage('hello');
-        console.log(hello);
-        console.log(hello.anyFunc());
-        console.log(this.engineService);
-        console.log(Key.W);
-        break;
-      case Key.DownArrow:
-      case Key.S:
-        this.engineService.updateCamera(0, -10, 0);
-        console.log(this.engineService);
-        console.log(Key.S);
-        break;
-      default:
-        console.log(event);
-        break;
+    /**
+     * Обработчик хоткеи ивентов.
+     */
+    for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
+      //Сравниваем по типу, потом по кей коду, если есть то исполняем
+      if (
+        typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
+        (<number>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode) === event.keyCode
+      ) {
+        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
+        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+      } else if (
+        typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'object' &&
+        (<number[]>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode).indexOf(event.keyCode) !== -1
+      ) {
+        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
+        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+      }
     }
+
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Camera, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
 import * as THREE from 'three';
+import {StorageService} from "@services/storage.service";
 
 @Injectable()
 export class SceneService {
@@ -8,7 +9,9 @@ export class SceneService {
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
 
-  constructor() {
+  constructor(
+    private storageService: StorageService
+  ) {
     this.scene = new Scene();
 
     // Render
@@ -21,6 +24,7 @@ export class SceneService {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
+
     this.animation();
   }
 
@@ -31,9 +35,16 @@ export class SceneService {
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
+    let clock = new Clock();
+
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
+
+    for (let rendererCommand in this.storageService.rendererStorageCommands) {
+      this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+    }
+
 
     requestAnimationFrame(this.animation.bind(this));
   }
