@@ -1,0 +1,95 @@
+import { Injectable } from '@angular/core';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import * as Lodash from 'lodash';
+
+export interface Commands {
+  [key: string]: Command
+}
+
+export interface Command{
+  onKeyUp?(event);
+  onKeyDown?(event);
+  onMouseDown?(event);
+  onMouseUp?(event);
+  onMouseMove?(event);
+  pressed?: boolean;
+  keyCode?: number | number[];
+  name: string;
+}
+
+export interface RendererCommands {
+  [key: string]: RendererCommand;
+}
+
+export interface RendererCommand {
+  rendererUpdate(delta?);
+}
+
+@Injectable()
+export class StorageService {
+  //TODO: add types
+  private _storage = new Map();
+
+  public getStorage(key) {
+    return this._storage.get(key);
+  }
+
+  public setStorage(key, value) {
+    this._storage.set(key, value);
+  }
+
+  //TODO: добавить хоткеи глобальные (пример - рефреш браузера, открытие инспектора). Может заблокировать.
+  //TODO: добавить хоткеи игровые (пример - быстрое переключение оружия, открытия инвентаря,
+  //TODO: использование определенных интерфейсных вещей). По данному Туду надо делать интерфейс для юзера и хранить в локал сторейдже.
+  //TODO: добавить хоткеи интерфейсные (пример - старт игры, открытие редактора). Не будет редактироваться пользователем.
+  //TODO Никита: написать декоратор для гет-сета и пуша как на это будет время.
+  /**
+   * Хоткеи для сцены и все что связано с камерами. Нужен для редактора и так же определенных команд движения.
+   * Не будет редактироваться пользователем
+   * @type {BehaviorSubject<Commands>}
+   * @private
+   */
+  private _hotkeySceneCommands: BehaviorSubject<Commands> = new BehaviorSubject<Commands>({});
+  public _hotkeySceneCommands$ = this._hotkeySceneCommands.asObservable();
+
+  public get hotkeySceneCommands(): Commands {
+    return this._hotkeySceneCommands.getValue();
+  }
+
+  public set hotkeySceneCommands(value: Commands){
+    this._hotkeySceneCommands.next(value);
+  }
+
+  //K - key, V - value
+  //TODO: подумать о том что бы создать функцию сетта по K, V, obj и не писать эти 3 строки каждый раз
+  public hotkeySceneCommandPush(K, V: Command) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
+  }
+
+
+  /**
+   * Сторейдж для хранения правил по обновлению сцены
+   * @type {BehaviorSubject<RendererCommands>}
+   * @private
+   */
+  private _rendererStorageCommands: BehaviorSubject<RendererCommands> = new BehaviorSubject<RendererCommands>({});
+  public _rendererStorageCommands$ = this._rendererStorageCommands.asObservable();
+
+  public get rendererStorageCommands(): RendererCommands {
+    return this._rendererStorageCommands.getValue();
+  }
+
+  public set rendererStorageCommands(value: RendererCommands){
+    this._rendererStorageCommands.next(value);
+  }
+
+  public rendererStorageCommandPush(K, V: RendererCommand) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.rendererStorageCommands = Lodash.merge(this.rendererStorageCommands, tempObj);
+  }
+
+  constructor() {}
+}

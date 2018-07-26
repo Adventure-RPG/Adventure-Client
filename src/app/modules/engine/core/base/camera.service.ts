@@ -4,6 +4,7 @@ import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
 import { FirstPersonControls } from 'app/utils/first-person-controls';
+import { StorageService } from '../../../../services/storage.service';
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -15,7 +16,7 @@ export class CameraService implements OnInit {
   y;
   z;
 
-  constructor(private settingsService: SettingsService) {}
+  constructor(private settingsService: SettingsService, private storageService: StorageService) {}
 
   get camera(): Camera | OrthographicCamera | CubeCamera {
     return this._camera;
@@ -91,16 +92,15 @@ export class CameraService implements OnInit {
     //
     // console.log(FPC);
 
-    let controls = new FirstPersonControls(this.camera, this.domElement);
-    console.log(controls);
-    console.log('here');
-    //
-    // controls.movementSpeed = 1000;
-    // controls.lookSpeed = 0.125;
-    // controls.lookVertical = true;
-    // controls.constrainVertical = true;
-    // controls.verticalMin = 1.1;
-    // controls.verticalMax = 2.2;
+    let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
+    console.log(this.storageService.hotkeySceneCommands);
+
+    controls.movementSpeed = 1000;
+    controls.lookSpeed = 0.125;
+    controls.lookVertical = true;
+    controls.constrainVertical = true;
+    controls.verticalMin = 1.1;
+    controls.verticalMax = 2.2;
 
     let obj = {};
     obj[CAMERA.FirstPersonCamera] = this.camera;

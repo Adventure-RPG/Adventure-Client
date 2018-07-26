@@ -1,5 +1,7 @@
 import { Vector3 } from 'three';
 import * as THREE from 'three';
+import {StorageService} from "@services/storage.service";
+import { Key } from 'ts-keycode-enum';
 
 export class FirstPersonControls {
   object;
@@ -35,7 +37,7 @@ export class FirstPersonControls {
   viewHalfX;
   viewHalfY;
 
-  constructor(object, domElement) {
+  constructor(object, domElement, private storageService: StorageService) {
     this.object = object;
     this.target = new Vector3(0, 0, 0);
 
@@ -80,34 +82,137 @@ export class FirstPersonControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    if (this.domElement !== document) {
-      this.domElement.setAttribute('tabindex', -1);
-    }
 
-    //хз нужно ли?
-    this.onMouseMove = bind(this, this.onMouseMove);
-    this.onMouseDown = bind(this, this.onMouseDown);
-    this.onMouseUp = bind(this, this.onMouseUp);
-    this.onKeyDown = bind(this, this.onKeyDown);
-    this.onKeyUp = bind(this, this.onKeyUp);
+    this.storageService.hotkeySceneCommandPush('mouseMoveForward', {
+      onMouseUp: function(){
+        this.pressed = false;
+      },
+      onMouseDown: function(){
+        this.pressed = true;
+      },
+      pressed: false,
+      keyCode: 0,
+      name: 'moveForward'
+    });
 
-    this.domElement.addEventListener('contextmenu', this.contextmenu, false);
-    this.domElement.addEventListener('mousemove', this.onMouseMove, false);
-    this.domElement.addEventListener('mousedown', this.onMouseDown, false);
-    this.domElement.addEventListener('mouseup', this.onMouseUp, false);
+    this.storageService.hotkeySceneCommandPush('mouseMoveBackward', {
+      onMouseUp: function(){
+        this.pressed = false;
+      },
+      onMouseDown: function(){
+        this.pressed = true;
+      },
+      pressed: false,
+      keyCode: 2,
+      name: 'moveBackward'
+    });
 
-    window.addEventListener('keydown', this.onKeyDown, false);
-    window.addEventListener('keyup', this.onKeyUp, false);
+    this.storageService.hotkeySceneCommandPush('mouseDragOn', {
+      onMouseUp: function(){
+        this.pressed = false;
+      },
+      onMouseDown: function(){
+        this.pressed = true;
+      },
+      keyCode: 0,
+      name: 'mouseDragOn'
+    });
 
-    function bind(scope, fn) {
-      return function() {
-        fn.apply(scope, arguments);
-      };
-    }
+    this.storageService.hotkeySceneCommandPush('onMouseMove', {
+      onMouseMove: (event) => {
+        if (this.domElement === document) {
+          this.mouseX = event.pageX - this.viewHalfX;
+          this.mouseY = event.pageY - this.viewHalfY;
+        } else {
+          this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+          this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+        }
+      },
+      name: 'onMouseMove'
+    })
 
-    this.handleResize();
+    this.storageService.hotkeySceneCommandPush('moveForwardKeyboard', {
+      onKeyUp: () => {
+        this.moveForward = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь вперед')
+        console.log(this.object)
+
+        this.moveForward = true;
+      },
+      pressed: false,
+      keyCode: [Key.W, Key.UpArrow],
+      name: 'moveBackward'
+    });
+
+    this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater',{
+      rendererUpdate: (delta) => {
+        if (this.enabled === false) {
+          return;
+        }
+        if (this.heightSpeed) {
+          let y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
+          let heightDelta = y - this.heightMin;
+          this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
+        } else {
+          this.autoSpeedFactor = 0.0;
+        }
+        let actualMoveSpeed = delta * this.movementSpeed;
+
+        if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+          this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+        }
+        if (this.moveBackward) {
+          this.object.translateZ(actualMoveSpeed);
+        }
+        if (this.moveLeft) {
+          this.object.translateX(-actualMoveSpeed);
+        }
+        if (this.moveRight) {
+          this.object.translateX(actualMoveSpeed);
+        }
+        if (this.moveUp) {
+          this.object.translateY(actualMoveSpeed);
+        }
+        if (this.moveDown) {
+          this.object.translateY(-actualMoveSpeed);
+        }
+
+        let actualLookSpeed = delta * this.lookSpeed;
+
+        if (!this.activeLook) {
+          actualLookSpeed = 0;
+        }
+        let verticalLookRatio = 1;
+        if (this.constrainVertical) {
+          verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
+        }
+        this.lon += this.mouseX * actualLookSpeed;
+        if (this.lookVertical) {
+          this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
+        }
+
+        this.lat = Math.max(-85, Math.min(85, this.lat));
+        this.phi = THREE.Math.degToRad(90 - this.lat);
+        this.theta = THREE.Math.degToRad(this.lon);
+
+        if (this.constrainVertical) {
+          this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
+        }
+        let targetPosition = this.target,
+          position = this.object.position;
+        targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
+        targetPosition.y = position.y + 100 * Math.cos(this.phi);
+        targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
+        this.object.lookAt(targetPosition);
+      }
+    });
+
+
   }
 
+  //TODO: проверить ресайз, если не работает вынести логику в соотвесттвующее место
   handleResize() {
     if (this.domElement === document) {
       this.viewHalfX = window.innerWidth / 2;
@@ -117,52 +222,9 @@ export class FirstPersonControls {
       this.viewHalfY = this.domElement.offsetHeight / 2;
     }
   }
+  //TODO: END
 
-  onMouseDown(event) {
-    if (this.domElement !== document) {
-      this.domElement.focus();
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.activeLook) {
-      switch (event.button) {
-        case 0:
-          this.moveForward = true;
-          break;
-        case 2:
-          this.moveBackward = true;
-          break;
-      }
-    }
-    this.mouseDragOn = true;
-  }
-
-  onMouseUp(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.activeLook) {
-      switch (event.button) {
-        case 0:
-          this.moveForward = false;
-          break;
-        case 2:
-          this.moveBackward = false;
-          break;
-      }
-    }
-    this.mouseDragOn = false;
-  }
-
-  onMouseMove(event) {
-    if (this.domElement === document) {
-      this.mouseX = event.pageX - this.viewHalfX;
-      this.mouseY = event.pageY - this.viewHalfY;
-    } else {
-      this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-      this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
-    }
-  }
-
+  //TODO: вынести все функции аналогично moveForwardKeyboard для закрепления материала
   onKeyDown(event) {
     //event.preventDefault();
     switch (event.keyCode) {
@@ -194,7 +256,6 @@ export class FirstPersonControls {
         break;
     }
   }
-
   onKeyUp(event) {
     switch (event.keyCode) {
       case 38: /*up*/
@@ -225,78 +286,7 @@ export class FirstPersonControls {
         break;
     }
   }
+  //TODO: END
 
-  update(delta) {
-    if (this.enabled === false) {
-      return;
-    }
-    if (this.heightSpeed) {
-      let y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
-      let heightDelta = y - this.heightMin;
-      this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
-    } else {
-      this.autoSpeedFactor = 0.0;
-    }
-    let actualMoveSpeed = delta * this.movementSpeed;
 
-    if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-      this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
-    }
-    if (this.moveBackward) {
-      this.object.translateZ(actualMoveSpeed);
-    }
-    if (this.moveLeft) {
-      this.object.translateX(-actualMoveSpeed);
-    }
-    if (this.moveRight) {
-      this.object.translateX(actualMoveSpeed);
-    }
-    if (this.moveUp) {
-      this.object.translateY(actualMoveSpeed);
-    }
-    if (this.moveDown) {
-      this.object.translateY(-actualMoveSpeed);
-    }
-
-    let actualLookSpeed = delta * this.lookSpeed;
-
-    if (!this.activeLook) {
-      actualLookSpeed = 0;
-    }
-    let verticalLookRatio = 1;
-    if (this.constrainVertical) {
-      verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
-    }
-    this.lon += this.mouseX * actualLookSpeed;
-    if (this.lookVertical) {
-      this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
-    }
-
-    this.lat = Math.max(-85, Math.min(85, this.lat));
-    this.phi = THREE.Math.degToRad(90 - this.lat);
-    this.theta = THREE.Math.degToRad(this.lon);
-
-    if (this.constrainVertical) {
-      this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
-    }
-    let targetPosition = this.target,
-      position = this.object.position;
-    targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
-    targetPosition.y = position.y + 100 * Math.cos(this.phi);
-    targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
-    this.object.lookAt(targetPosition);
-  }
-
-  contextmenu(event) {
-    event.preventDefault();
-  }
-
-  dispose() {
-    this.domElement.removeEventListener('contextmenu', this.contextmenu, false);
-    this.domElement.removeEventListener('mousedown', this.onMouseDown, false);
-    this.domElement.removeEventListener('mousemove', this.onMouseMove, false);
-    this.domElement.removeEventListener('mouseup', this.onMouseUp, false);
-    window.removeEventListener('keydown', this.onKeyDown, false);
-    window.removeEventListener('keyup', this.onKeyUp, false);
-  }
 }
