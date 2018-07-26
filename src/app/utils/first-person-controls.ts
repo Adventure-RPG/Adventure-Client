@@ -108,6 +108,12 @@ export class FirstPersonControls {
     this.handleResize();
   }
 
+  anyFunc(){
+    console.log('Vanya hello blya');
+    console.log(this);
+    return 'hello'
+  }
+
   handleResize() {
     if (this.domElement === document) {
       this.viewHalfX = window.innerWidth / 2;

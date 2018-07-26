@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {SettingsService} from '../services/settings.service';
-import {CAMERA} from '../enums/settings.enum';
+import { Injectable } from '@angular/core';
+import { SettingsService } from '../services/settings.service';
+import { CAMERA } from '../enums/settings.enum';
 
-import {Key} from 'ts-keycode-enum';
-import {EngineService} from '../modules/engine/engine.service';
-import {FunctionStorageService} from "../services/function-storage.service";
+import { Key } from 'ts-keycode-enum';
+import { EngineService } from '../modules/engine/engine.service';
+import { StorageService } from '../services/storage.service';
 
 @Injectable()
 export class KeyboardEventService {
   constructor(
     private settingsService: SettingsService,
-    private functionStorageService: FunctionStorageService
+    private storageService: StorageService,
   ) {}
 
   engineService: EngineService;
@@ -95,6 +95,9 @@ export class KeyboardEventService {
       case Key.UpArrow:
       case Key.W:
         this.engineService.updateCamera(0, 10, 0);
+        let hello = this.storageService.getStorage('hello');
+        console.log(hello);
+        console.log(hello.anyFunc());
         console.log(this.engineService);
         console.log(Key.W);
         break;

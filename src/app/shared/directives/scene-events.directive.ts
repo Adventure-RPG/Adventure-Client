@@ -10,7 +10,7 @@ export class SceneEventsDirective {
     private element: ElementRef,
     private keyboardEventService: KeyboardEventService,
     private onWindowEventService: OnWindowEventService
-  ) { }
+  ) {}
 
   @HostListener('mouseover')
   onMouseOver() {
