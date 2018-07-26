@@ -30,6 +30,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginService } from './modules/ui-interfaces/login/login.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
+import {FunctionStorageService} from "./services/function-storage.service";
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -54,7 +55,8 @@ const Services = [
   LightService,
   AppService,
   ApiService,
-  LoginService
+  LoginService,
+  FunctionStorageService
 ];
 
 const Guards = [AuthGuard];

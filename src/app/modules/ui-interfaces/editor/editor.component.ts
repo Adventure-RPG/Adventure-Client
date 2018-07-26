@@ -4,8 +4,6 @@ import { LightService } from '../../engine/core/light.service';
 import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import { SceneEventsDirective } from '../../../shared/directives/scene-events.directive';
-import { FirstPersonControls } from '../../../utils/first-person-controls';
 
 //TODO: вынести в инциацию сцен
 @Component({

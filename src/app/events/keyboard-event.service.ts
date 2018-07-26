@@ -1,13 +1,17 @@
-import { Injectable } from '@angular/core';
-import { SettingsService } from '../services/settings.service';
-import { CAMERA } from '../enums/settings.enum';
+import {Injectable} from '@angular/core';
+import {SettingsService} from '../services/settings.service';
+import {CAMERA} from '../enums/settings.enum';
 
-import { Key } from 'ts-keycode-enum';
-import { EngineService } from '../modules/engine/engine.service';
+import {Key} from 'ts-keycode-enum';
+import {EngineService} from '../modules/engine/engine.service';
+import {FunctionStorageService} from "../services/function-storage.service";
 
 @Injectable()
 export class KeyboardEventService {
-  constructor(private settingsService: SettingsService) {}
+  constructor(
+    private settingsService: SettingsService,
+    private functionStorageService: FunctionStorageService
+  ) {}
 
   engineService: EngineService;
 
@@ -20,13 +24,13 @@ export class KeyboardEventService {
      */
 
     if (event.ctrlKey && event.altKey) {
-      event.preventDefault();
+      // event.preventDefault();
       this.ctrlAndAltEvent(event);
     } else if (event.ctrlKey && !event.altKey) {
-      event.preventDefault();
+      // event.preventDefault();
       this.ctrlAndNotAltEvent(event);
     } else if (!event.ctrlKey && event.altKey) {
-      event.preventDefault();
+      // event.preventDefault();
       this.notCtrlAndAltEvent(event);
     } else if (!event.ctrlKey && !event.altKey) {
       this.notCtrlAndNotAltEvent(event);
