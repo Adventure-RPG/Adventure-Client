@@ -18,10 +18,31 @@
       "dom"
     ],
     "paths": {
-      "@node_modules/*": ["../node_modules/*"],
-      "@directives/*": ["app/directives/*"],
-      "@services/*": ["app/services/*"],
-      "@shared/*": ["app/shared/*"]
-    }
+      "@node_modules/*": [
+        "../node_modules/*"
+      ],
+      "@directives/*": [
+        "app/directives/*"
+      ],
+      "@enums/*": [
+        "app/enums/*"
+      ],
+      "@events/*": [
+        "app/events/*"
+      ],
+      "@guards/*": [
+        "app/guards/*"
+      ],
+      "@modules/*": [
+        "app/modules/*"
+      ],
+      "@services/*": [
+        "app/services/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ]
+    },
+    "module": "es2015"
   }
 }

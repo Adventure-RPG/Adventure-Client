@@ -1,13 +1,12 @@
 import {
   BrowserModule,
-  HammerGestureConfig,
-  HAMMER_GESTURE_CONFIG
+  HAMMER_GESTURE_CONFIG,
+  HammerGestureConfig
 } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import 'hammerjs';
 
 import { AppComponent } from './app.component';
-
 /* Modules */
 import { SharedModule } from './shared/shared-module.module';
 import { UiInterfacesRoutingModule } from './modules/ui-interfaces/ui-interfaces-routing.module';

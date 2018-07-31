@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { SidebarModalComponent } from '../../shared/sidebar-modal/sidebar-modal.component';
+import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared-module.module';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { AuthGuard } from '../../guards/auth.guard';

@@ -2,39 +2,18 @@ import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
 import {
-  AmbientLight,
   BoxGeometry,
-  Camera,
-  Color,
-  DoubleSide,
-  Face3,
-  FlatShading,
   Geometry,
-  LightShadow,
   Matrix4,
   Mesh,
-  MeshBasicMaterial,
+  MeshLambertMaterial,
   MeshPhongMaterial,
-  Object3D,
-  SpotLightShadow,
-  PerspectiveCamera,
-  PlaneGeometry,
-  RepeatWrapping,
   Scene,
   ShadowMaterial,
-  ShapeUtils,
-  SpotLight,
-  TextureLoader,
   Vector3,
-  VertexColors,
-  MeshLambertMaterial,
-  SphereGeometry,
-  FaceColors
+  VertexColors
 } from 'three';
-import { createScope } from '@angular/core/src/profile/wtf_impl';
-import { SceneUtils } from '../../../../utils/sceneUtils';
 import { Terrain } from '../../../../utils/terrain';
-import * as Lodash from 'lodash';
 
 // import * as SimplexNoise from 'simplex-noise';
 

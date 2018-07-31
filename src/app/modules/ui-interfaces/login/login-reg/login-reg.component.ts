@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginResponse } from '../login';
-import { SnotifyService } from 'ng-snotify';
 import { AppService } from '../../../../app.service';
 
 @Component({

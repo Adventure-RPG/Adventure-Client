@@ -1,11 +1,4 @@
-import {
-  BoxGeometry,
-  Material,
-  Mesh,
-  MeshBasicMaterial,
-  MeshNormalMaterial,
-  PlaneGeometry
-} from 'three';
+import { BoxGeometry, Geometry, Mesh, PlaneGeometry } from 'three';
 import { MeshMaterial } from 'three/three-core';
 
 export class Terrain {
@@ -167,7 +160,7 @@ export class Terrain {
     return water_geometry;
   }
 
-  getWaterWithMaterial(material: MeshMaterial) {
+  getWaterWithMaterial(material: MeshMaterial): Mesh {
     let min_height = Infinity;
     let max_height = -Infinity;
 
@@ -198,9 +191,9 @@ export class Terrain {
     return water_mesh;
   }
 
-  moveWaves(water_mesh) {
+  moveWaves(water_mesh: Mesh) {
     // get the vertices
-    let verts = water_mesh.geometry.vertices;
+    let verts = (<Geometry>water_mesh.geometry).vertices;
     let l = verts.length;
 
     for (let i = 0; i < l; i++) {
@@ -221,8 +214,9 @@ export class Terrain {
     // In fact, in order to maintain the best level of performance,
     // three.js caches the geometries and ignores any changes
     // unless we add this line
-    water_mesh.geometry.verticesNeedUpdate = true;
+    (<Geometry>water_mesh.geometry).verticesNeedUpdate = true;
 
-    water_mesh.mesh.rotation.z += 0.005;
+    //TODO: check it
+    (<any>water_mesh).mesh.rotation.z += 0.005;
   }
 }

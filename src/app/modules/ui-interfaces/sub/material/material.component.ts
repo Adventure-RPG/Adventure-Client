@@ -1,56 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  AddEquation,
-  AdditiveBlending,
-  AlwaysDepth,
-  BackSide,
   Blending,
   BlendingDstFactor,
   BlendingEquation,
   BlendingSrcFactor,
   Colors,
-  CustomBlending,
   DepthModes,
-  DoubleSide,
-  DstAlphaFactor,
-  DstColorFactor,
-  EqualDepth,
-  FaceColors,
-  FlatShading,
-  FrontSide,
-  GreaterDepth,
-  GreaterEqualDepth,
-  LessDepth,
-  LessEqualDepth,
   Material,
   MaterialParameters,
-  MaxEquation,
-  MinEquation,
-  MultiplyBlending,
-  NeverDepth,
-  NoBlending,
-  NoColors,
-  NormalBlending,
-  NotEqualDepth,
-  OneFactor,
-  OneMinusDstAlphaFactor,
-  OneMinusDstColorFactor,
-  OneMinusSrcAlphaFactor,
-  OneMinusSrcColorFactor,
-  ReverseSubtractEquation,
-  Side,
-  SmoothShading,
-  SrcAlphaFactor,
-  SrcAlphaSaturateFactor,
-  SrcColorFactor,
-  SubtractEquation,
-  SubtractiveBlending,
-  VertexColors,
-  ZeroFactor
+  Side
 } from 'three';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
-import { Shading } from 'three/three-core';
 import { Utils } from '../../../../utils/utils';
 import { MaterialEnum } from '../../../../enums/material.enum';
 

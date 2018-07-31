@@ -1,13 +1,7 @@
-import { HTTP_Response } from './api.types';
-
+import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppService } from '../app.service';
 import { HandleErrorService } from './handle-error.service';
 
@@ -36,7 +30,7 @@ export class ApiService {
     return this.httpClient
       .get(url, httpOptions || options)
       .pipe(catchError(this.handleErrorService.handleError.bind(this)))
-      .do((res: Response) => res.json());
+      .pipe(tap((res: Response) => res.json()));
   }
 
   post(url: string, body?: Object, options?) {
@@ -51,13 +45,13 @@ export class ApiService {
       .put(url, body, options)
 
       .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)))
-      .do((res: Response) => res.json());
+      .pipe(tap((res: Response) => res.json()));
   }
 
   delete(url: string, options?) {
     return this.httpClient
       .delete(url, options)
       .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)))
-      .do((res: Response) => res.json());
+      .pipe(tap((res: Response) => res.json()));
   }
 }

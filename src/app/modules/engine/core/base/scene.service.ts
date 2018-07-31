@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
 import * as THREE from 'three';
-import {StorageService} from "@services/storage.service";
+import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import { StorageService } from '@services/storage.service';
 
 @Injectable()
 export class SceneService {
@@ -9,9 +9,7 @@ export class SceneService {
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
 
-  constructor(
-    private storageService: StorageService
-  ) {
+  constructor(private storageService: StorageService) {
     this.scene = new Scene();
 
     // Render
@@ -23,7 +21,6 @@ export class SceneService {
     this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
-
 
     this.animation();
   }
@@ -44,7 +41,6 @@ export class SceneService {
     for (let rendererCommand in this.storageService.rendererStorageCommands) {
       this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
     }
-
 
     requestAnimationFrame(this.animation.bind(this));
   }

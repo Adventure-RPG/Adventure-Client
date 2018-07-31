@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HeightMapComponent } from './height-map/height-map.component';
 import { LayersComponent } from './layers/layers.component';
 import { ModelsComponent } from './models/models.component';

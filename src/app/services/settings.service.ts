@@ -1,9 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { CAMERA } from '../enums/settings.enum';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import * as Lodash from 'lodash';
-import { Observable } from 'rxjs/Observable';
 
 export interface Settings {
   browser: Browser;
