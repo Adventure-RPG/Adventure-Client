@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
-import { LoginService } from './login.service';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'adventure-login',

@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { LoginReq, LoginResponse, RegistrateReq } from './login';
-import { SnotifyService } from 'ng-snotify';
-import 'rxjs/add/operator/do';
+import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {ApiService} from '../../../services/api.service';
+import {BehaviorSubject} from 'rxjs';
+import {RegistrateReq} from './login';
+import {SnotifyService} from 'ng-snotify';
+
 
 @Injectable()
 export class LoginService {
@@ -44,11 +45,11 @@ export class LoginService {
 
   public httpSignIn(body: RegistrateReq): any {
     return this.apiService
-      .post(this.authUrl + this.version + this.module + 'login', body)
-      .do(data => {
+      .post(this.authUrl + this.version + this.module + 'login', body).pipe(
+      tap(data => {
         localStorage.setItem('auth', JSON.stringify(data));
         this.signIn = data;
-      });
+      }));
   }
 
   private _recovery: any = new BehaviorSubject<any>({});

@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { Object3dService } from './object3d.service';
+import {Object3dService} from './object3d.service';
 
 describe('Object3dService', () => {
   beforeEach(() => {

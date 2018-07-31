@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { EngineService } from '../../../engine/engine.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {EngineService} from '../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-height-map',

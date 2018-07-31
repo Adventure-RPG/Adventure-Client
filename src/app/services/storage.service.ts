@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
 
 export interface Commands {
-  [key: string]: Command
+  [key: string]: Command;
 }
 
-export interface Command{
+export interface Command {
   onKeyUp?(event);
   onKeyDown?(event);
   onMouseDown?(event);
@@ -56,7 +56,7 @@ export class StorageService {
     return this._hotkeySceneCommands.getValue();
   }
 
-  public set hotkeySceneCommands(value: Commands){
+  public set hotkeySceneCommands(value: Commands) {
     this._hotkeySceneCommands.next(value);
   }
 
@@ -68,20 +68,21 @@ export class StorageService {
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
   }
 
-
   /**
    * Сторейдж для хранения правил по обновлению сцены
    * @type {BehaviorSubject<RendererCommands>}
    * @private
    */
-  private _rendererStorageCommands: BehaviorSubject<RendererCommands> = new BehaviorSubject<RendererCommands>({});
+  private _rendererStorageCommands: BehaviorSubject<RendererCommands> = new BehaviorSubject<
+    RendererCommands
+  >({});
   public _rendererStorageCommands$ = this._rendererStorageCommands.asObservable();
 
   public get rendererStorageCommands(): RendererCommands {
     return this._rendererStorageCommands.getValue();
   }
 
-  public set rendererStorageCommands(value: RendererCommands){
+  public set rendererStorageCommands(value: RendererCommands) {
     this._rendererStorageCommands.next(value);
   }
 

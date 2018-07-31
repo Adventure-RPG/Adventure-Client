@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
-import { EngineService } from '../engine.service';
-import * as inflate from 'inflate';
-import { PerspectiveCamera } from 'three/three-core';
 import {
   AmbientLight,
   DirectionalLight,
   DirectionalLightHelper,
   HemisphereLight,
   HemisphereLightHelper,
-  Light,
   PointLight,
   PointLightHelper,
   SpotLight,
   SpotLightHelper,
   SpotLightShadow
 } from 'three';
+import { EngineService } from '../engine.service';
+import { PerspectiveCamera } from 'three/three-core';
 
 const SHADOW_MAP_WIDTH = 2048,
   SHADOW_MAP_HEIGHT = 1024;

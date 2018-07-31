@@ -1,14 +1,13 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 
-import { InventoryItem } from './inventory-item.component';
+import {InventoryItem} from './inventory-item.component';
 
-import { ISlimScrollOptions } from 'ng2-slimscroll';
+//TODO: добавить обратно виртуал скрол
 
 @Component({
   selector: 'multi-col-list',
   template: ` 
     <div
-      slimScroll
       [options]="config"
       virtualScroll
        class="h100perc"
@@ -23,7 +22,7 @@ import { ISlimScrollOptions } from 'ng2-slimscroll';
 export class MultiColListComponent implements OnChanges {
   @Input() items: InventoryItem[];
 
-  config: ISlimScrollOptions = {
+  config: any = {
     position: 'right',
     barBackground: '#000000'
   };

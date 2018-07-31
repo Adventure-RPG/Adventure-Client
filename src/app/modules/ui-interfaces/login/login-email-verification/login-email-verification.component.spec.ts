@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginEmailVerificationComponent } from './login-email-verification.component';
+import {LoginEmailVerificationComponent} from './login-email-verification.component';
 
 describe('LoginEmailVerificationComponent', () => {
   let component: LoginEmailVerificationComponent;

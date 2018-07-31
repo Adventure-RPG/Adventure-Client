@@ -1,7 +1,5 @@
-import { Injectable } from '@angular/core';
-import { EngineService } from '../modules/engine/engine.service';
-import { OrthographicCamera } from 'three';
-import { SettingsService } from '../services/settings.service';
+import {Injectable} from '@angular/core';
+import {EngineService} from '../modules/engine/engine.service';
 
 @Injectable()
 export class OnWindowEventService {

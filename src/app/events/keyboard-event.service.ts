@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { SettingsService } from '../services/settings.service';
-import { CAMERA } from '../enums/settings.enum';
-
-import { Key } from 'ts-keycode-enum';
-import { EngineService } from '../modules/engine/engine.service';
-import { StorageService } from '../services/storage.service';
+import {Injectable} from '@angular/core';
+import {SettingsService} from '@services/settings.service';
+import {CAMERA} from '@enums/settings.enum';
+import {EngineService} from '@modules/engine/engine.service';
+import {StorageService} from '@services/storage.service';
 
 @Injectable()
 export class KeyboardEventService {
@@ -81,20 +79,22 @@ export class KeyboardEventService {
      */
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       //Сравниваем по типу, потом по кей коду, если есть то исполняем
+
       if (
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
-        (<number>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode) === event.keyCode
+        <number>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === event.keyCode
       ) {
         this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
         this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
       } else if (
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'object' &&
-        (<number[]>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode).indexOf(event.keyCode) !== -1
+        (<number[]>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode).indexOf(
+          event.keyCode
+        ) !== -1
       ) {
         this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
         this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
       }
     }
-
   }
 }

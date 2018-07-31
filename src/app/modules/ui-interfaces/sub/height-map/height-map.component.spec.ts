@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HeightMapComponent } from './height-map.component';
+import {HeightMapComponent} from './height-map.component';
 
 describe('HeightMapComponent', () => {
   let component: HeightMapComponent;

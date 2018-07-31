@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { HandleErrorService } from './handle-error.service';
+import {HandleErrorService} from './handle-error.service';
 
 describe('HandleErrorService', () => {
   beforeEach(() => {

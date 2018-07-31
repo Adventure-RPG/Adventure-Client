@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { OnNew } from '../../../../../decorators/on-new.decorator';
-import { EngineService } from '../../../../engine/engine.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {OnNew} from '../../../../../decorators/on-new.decorator';
+import {EngineService} from '../../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-layer',

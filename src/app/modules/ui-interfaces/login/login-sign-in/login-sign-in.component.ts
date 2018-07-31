@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../login.service';
-import { LoginResponse } from '../login';
-import { AppService } from '../../../../app.service';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LoginService} from '../login.service';
+import {LoginResponse} from '../login';
+import {AppService} from '../../../../app.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'adventure-login-sign-in',

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginEmailRecoveryComponent } from './login-email-recovery.component';
+import {LoginEmailRecoveryComponent} from './login-email-recovery.component';
 
 describe('LoginEmailRecoveryComponent', () => {
   let component: LoginEmailRecoveryComponent;

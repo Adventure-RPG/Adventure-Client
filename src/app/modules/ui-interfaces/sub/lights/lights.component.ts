@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DirectionalLight, HemisphereLight, Light, PointLight, SpotLight, Vector3 } from 'three';
-import { EngineService } from '../../../engine/engine.service';
-import { LightService } from '../../../engine/core/light.service';
-import { ColorPickerService } from 'ngx-color-picker';
+import {Component, OnInit} from '@angular/core';
+import {LightService} from '../../../engine/core/light.service';
+import {ColorPickerService} from 'ngx-color-picker';
 
 @Component({
   selector: 'adventure-lights',

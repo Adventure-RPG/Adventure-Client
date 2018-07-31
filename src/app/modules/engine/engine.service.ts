@@ -1,13 +1,13 @@
-import { Injectable, OnInit } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as THREE from 'three';
-import { HeightMapOptions } from './engine.types';
+import {AxesHelper, FBXLoader, Group, TextureLoader, Vector3} from 'three';
+import {HeightMapOptions} from './engine.types';
 
-import { HeightMapService } from './core/3d-helpers/height-map.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { SceneService } from './core/base/scene.service';
-import { CameraService } from './core/base/camera.service';
-import { SettingsService } from '../../services/settings.service';
-import { AxesHelper, FBXLoader, Geometry, Group, SceneUtils, TextureLoader, Vector3 } from 'three';
+import {HeightMapService} from './core/3d-helpers/height-map.service';
+import {BehaviorSubject} from 'rxjs';
+import {SceneService} from './core/base/scene.service';
+import {CameraService} from './core/base/camera.service';
+import {SettingsService} from '../../services/settings.service';
 
 declare let require: any;
 
