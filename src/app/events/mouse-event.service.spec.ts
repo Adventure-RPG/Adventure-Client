@@ -1,6 +1,6 @@
-import {inject, TestBed} from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
-import {MouseEventService} from './mouse-event.service';
+import { MouseEventService } from './mouse-event.service';
 
 describe('MouseEventService', () => {
   beforeEach(() => {

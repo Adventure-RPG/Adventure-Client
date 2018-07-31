@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as THREE from 'three';
-import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
-import {StorageService} from '@services/storage.service';
+import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import { StorageService } from '@services/storage.service';
 
 @Injectable()
 export class SceneService {

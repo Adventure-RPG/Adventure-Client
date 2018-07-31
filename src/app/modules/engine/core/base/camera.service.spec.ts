@@ -1,6 +1,6 @@
-import {inject, TestBed} from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
-import {CameraService} from './camera.service';
+import { CameraService } from './camera.service';
 
 describe('CameraService', () => {
   beforeEach(() => {

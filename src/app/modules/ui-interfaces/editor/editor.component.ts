@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {EngineService} from '../../engine/engine.service';
-import {LightService} from '../../engine/core/light.service';
-import {HeightMapService} from '../../engine/core/3d-helpers/height-map.service';
-import {SettingsService} from '../../../services/settings.service';
-import {KeyboardEventService} from '../../../events/keyboard-event.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { EngineService } from '../../engine/engine.service';
+import { LightService } from '../../engine/core/light.service';
+import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
+import { SettingsService } from '../../../services/settings.service';
+import { KeyboardEventService } from '../../../events/keyboard-event.service';
 
 //TODO: вынести в инциацию сцен
 @Component({

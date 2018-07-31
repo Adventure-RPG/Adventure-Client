@@ -1,6 +1,6 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
-import {OnWindowEventService} from '@events/on-window-event.service';
-import {KeyboardEventService} from '@events/keyboard-event.service';
+import { Directive, ElementRef, HostListener } from '@angular/core';
+import { OnWindowEventService } from '@events/on-window-event.service';
+import { KeyboardEventService } from '@events/keyboard-event.service';
 
 @Directive({
   selector: '[adventureSceneEvents]'

@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LayerComponent} from './layer.component';
+import { LayerComponent } from './layer.component';
 
 describe('LayerComponent', () => {
   let component: LayerComponent;

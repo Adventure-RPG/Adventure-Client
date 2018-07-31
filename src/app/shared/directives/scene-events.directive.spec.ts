@@ -1,4 +1,4 @@
-import {SceneEventsDirective} from './scene-events.directive';
+import { SceneEventsDirective } from './scene-events.directive';
 
 describe('SceneEventsDirective', () => {
   it('should create an instance', () => {

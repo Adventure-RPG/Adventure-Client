@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {BackpackComponent} from './backpack.component';
+import { BackpackComponent } from './backpack.component';
 
 describe('BackpackComponent', () => {
   let component: BackpackComponent;

@@ -1,12 +1,19 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  Blending, BlendingDstFactor, BlendingEquation, BlendingSrcFactor, Colors, DepthModes, Material,
-  MaterialParameters, Side
+  Blending,
+  BlendingDstFactor,
+  BlendingEquation,
+  BlendingSrcFactor,
+  Colors,
+  DepthModes,
+  Material,
+  MaterialParameters,
+  Side
 } from 'three';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'reflect-metadata';
-import {Utils} from '../../../../utils/utils';
-import {MaterialEnum} from '../../../../enums/material.enum';
+import { Utils } from '../../../../utils/utils';
+import { MaterialEnum } from '../../../../enums/material.enum';
 
 // Validation methods
 

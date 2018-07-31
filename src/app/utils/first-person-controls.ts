@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {Vector3} from 'three';
-import {StorageService} from '@services/storage.service';
-import {Key} from 'ts-keycode-enum';
+import { Vector3 } from 'three';
+import { StorageService } from '@services/storage.service';
+import { Key } from 'ts-keycode-enum';
 
 export class FirstPersonControls {
   object;

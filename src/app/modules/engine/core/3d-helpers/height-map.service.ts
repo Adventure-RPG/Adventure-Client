@@ -1,11 +1,19 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {IGEOJson} from '../../engine.types';
+import { IGEOJson } from '../../engine.types';
 import {
-  BoxGeometry, Geometry, Matrix4, Mesh, MeshLambertMaterial, MeshPhongMaterial, Scene, ShadowMaterial, Vector3,
+  BoxGeometry,
+  Geometry,
+  Matrix4,
+  Mesh,
+  MeshLambertMaterial,
+  MeshPhongMaterial,
+  Scene,
+  ShadowMaterial,
+  Vector3,
   VertexColors
 } from 'three';
-import {Terrain} from '../../../../utils/terrain';
+import { Terrain } from '../../../../utils/terrain';
 
 // import * as SimplexNoise from 'simplex-noise';
 

@@ -1,7 +1,7 @@
-import {map} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
-import {Http} from '@angular/http';
-import {InventoryItem} from './lists/inventory-item.component';
+import { map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
+import { InventoryItem } from './lists/inventory-item.component';
 
 @Component({
   selector: 'adventure-backpack',
@@ -15,8 +15,8 @@ export class BackpackComponent implements OnInit {
 
   ngOnInit() {
     this.http
-      .get('assets/data/items.json').pipe(
-      map(response => response.json()))
+      .get('assets/data/items.json')
+      .pipe(map(response => response.json()))
       .subscribe(data => (this.items = data));
   }
 }
