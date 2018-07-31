@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
 import * as THREE from 'three';
 import {StorageService} from "@services/storage.service";
+import {CAMERA} from "../../../../enums/settings.enum";
+import { SettingsService } from '../../../../services/settings.service';
 
 @Injectable()
 export class SceneService {
@@ -10,7 +12,8 @@ export class SceneService {
   private _camera: Camera | OrthographicCamera | CubeCamera;
 
   constructor(
-    private storageService: StorageService
+    private storageService: StorageService,
+    private settingsService: SettingsService
   ) {
     this.scene = new Scene();
 
@@ -41,8 +44,10 @@ export class SceneService {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
 
-    for (let rendererCommand in this.storageService.rendererStorageCommands) {
-      this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+    if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
+      for (let rendererCommand in this.storageService.rendererStorageCommands) {
+        this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+      }
     }
 
 
