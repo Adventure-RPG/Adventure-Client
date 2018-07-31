@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginPasswordAcceptenceComponent } from './login-password-acceptence/login-password-acceptence.component';
 import { LoginEmailAcceptenceComponent } from './login-email-acceptence/login-email-acceptence.component';
 import { LoginEmailRecoveryComponent } from './login-email-recovery/login-email-recovery.component';

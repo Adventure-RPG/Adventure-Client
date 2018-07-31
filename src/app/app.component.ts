@@ -1,7 +1,4 @@
-import { Component, HostListener } from '@angular/core';
-import { RouterLinkActive, RouterLinkWithHref, RouterLink, RouterOutlet } from '@angular/router';
-import { KeyboardEventService } from './events/keyboard-event.service';
-import { OnWindowEventService } from './events/on-window-event.service';
+import { Component } from '@angular/core';
 import { SnotifyService } from 'ng-snotify';
 import { AppService } from './app.service';
 import { ApiService } from './services/api.service';

@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { InventoryItem } from './lists/inventory-item.component';
 
@@ -15,7 +16,7 @@ export class BackpackComponent implements OnInit {
   ngOnInit() {
     this.http
       .get('assets/data/items.json')
-      .map(response => response.json())
+      .pipe(map(response => response.json()))
       .subscribe(data => (this.items = data));
   }
 }

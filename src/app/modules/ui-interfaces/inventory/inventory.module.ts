@@ -7,7 +7,6 @@ import { HeroItemsComponent } from './hero-items/hero-items.component';
 import { VirtualScrollModule } from 'angular2-virtual-scroll';
 import { InventoryItemComponent } from './backpack/lists/inventory-item.component';
 import { MultiColListComponent } from './backpack/lists/multi-col-list.component';
-import { SlimScrollModule } from 'ng2-slimscroll';
 
 const Components = [
   InventoryComponent,
@@ -18,7 +17,7 @@ const Components = [
 ];
 
 @NgModule({
-  imports: [InventoryRoutingModule, CommonModule, VirtualScrollModule, SlimScrollModule],
+  imports: [InventoryRoutingModule, CommonModule, VirtualScrollModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [...Components],
   exports: [...Components]
