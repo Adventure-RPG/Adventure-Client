@@ -32,17 +32,23 @@ export class SceneService {
   // TODO: добавить сглаживание
   // Render logic
   public animation() {
+    requestAnimationFrame(this.animation.bind(this));
+
     let clock = new Clock();
+    let delta = clock.getDelta();
 
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
 
     for (let rendererCommand in this.storageService.rendererStorageCommands) {
-      this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+      this.storageService.rendererStorageCommands[rendererCommand].update(delta);
     }
 
-    requestAnimationFrame(this.animation.bind(this));
+    for (let mixerCommand in this.storageService.mixerCommands) {
+      this.storageService.mixerCommands[mixerCommand].update(delta);
+    }
+
   }
 
   get scene(): Scene {

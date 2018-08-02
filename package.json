@@ -50,8 +50,8 @@
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.2.2",
     "simplex-noise": "^2.4.0",
-    "three": "^0.93.0",
-    "three-fbx-loader": "^1.0.2",
+    "three": "^0.95.0",
+    "three-fbx-loader": "^1.0.3",
     "zone.js": "^0.7.6"
   },
   "devDependencies": {

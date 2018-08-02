@@ -146,7 +146,7 @@ export class FirstPersonControls {
     });
 
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
-      rendererUpdate: delta => {
+      update: delta => {
         if (this.enabled === false) {
           return;
         }
