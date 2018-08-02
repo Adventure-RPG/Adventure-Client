@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
-import {AnimationMixer, Group} from "three";
+import { AnimationMixer, Group } from 'three';
 
 export interface Commands {
   [key: string]: Command;
@@ -23,9 +23,8 @@ export interface RendererCommands {
 }
 
 export interface RendererCommand {
-  update?(delta?)
+  update?(delta?);
 }
-
 
 export interface MixerCommands {
   [key: string]: AnimationMixer;
@@ -103,9 +102,7 @@ export class StorageService {
    * @type {BehaviorSubject<MixerCommands>}
    * @private
    */
-  private _mixerCommands: BehaviorSubject<MixerCommands> = new BehaviorSubject<
-    MixerCommands
-  >({});
+  private _mixerCommands: BehaviorSubject<MixerCommands> = new BehaviorSubject<MixerCommands>({});
   public _mixerCommands$ = this._mixerCommands.asObservable();
 
   public get mixerCommands(): MixerCommands {
@@ -120,7 +117,7 @@ export class StorageService {
     const tempObj = {};
     tempObj[K] = V;
     this.mixerCommands = Lodash.merge(this.mixerCommands, tempObj);
-    console.log(this.mixerCommands)
+    console.log(this.mixerCommands);
   }
 
   constructor() {}

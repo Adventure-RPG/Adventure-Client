@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3} from 'three';
-import {HeightMapOptions} from './engine.types';
+import { Injectable } from '@angular/core';
+import { AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3 } from 'three';
+import { HeightMapOptions } from './engine.types';
 
-import {HeightMapService} from './core/3d-helpers/height-map.service';
-import {BehaviorSubject} from 'rxjs';
-import {SceneService} from './core/base/scene.service';
-import {CameraService} from './core/base/camera.service';
-import {SettingsService} from '../../services/settings.service';
-import * as threeFBXLoader from '@node_modules/three-fbx-loader'
-import {StorageService} from "@services/storage.service";
+import { HeightMapService } from './core/3d-helpers/height-map.service';
+import { BehaviorSubject } from 'rxjs';
+import { SceneService } from './core/base/scene.service';
+import { CameraService } from './core/base/camera.service';
+import { SettingsService } from '../../services/settings.service';
+import * as threeFBXLoader from '@node_modules/three-fbx-loader';
+import { StorageService } from '@services/storage.service';
 
 //TODO: избавиться с помощью сторейджев
 
@@ -89,7 +89,6 @@ export class EngineService {
     private _settingsService: SettingsService,
     private _storageService: StorageService
   ) {
-
     //this.settingsService.settings$.subscribe(data => {
     // console.log(data);
     //this.cameraService.initIsometricCamera();
@@ -119,7 +118,6 @@ export class EngineService {
     // let test = require('./../../libs/inflate.min');
     // console.log(test.Zlib)
     //Инцилизация модуля.
-
 
     // let texture = new TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
 
@@ -169,12 +167,11 @@ export class EngineService {
       // });
     }
 
-    if (model.name){
-      let loader:FBXLoader = new threeFBXLoader();
+    if (model.name) {
+      let loader: FBXLoader = new threeFBXLoader();
       loader.load(
         model.path,
-        (group: Group) =>
-        {
+        (group: Group) => {
           //Остноавился тут
           // if (false){
           //   group['mixer'] = new AnimationMixer( group );
@@ -192,14 +189,12 @@ export class EngineService {
           //   } );
           // }
 
-
           // let material = new MeshNormalMaterial();
           // let mesh = new Mesh(geometry, material);
           // console.log(mesh)
           // this.sceneService.scene.add(mesh);
 
           // if you want to add your custom material
-
 
           // let materialObj = new MeshPhongMaterial({
           //   map: texture
@@ -216,9 +211,9 @@ export class EngineService {
           //     }
           // });
 
-          console.log(group)
+          console.log(group);
 
-          this.sceneService.scene.add( group );
+          this.sceneService.scene.add(group);
         },
         event => {
           console.log(event);

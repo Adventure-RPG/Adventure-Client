@@ -4,7 +4,7 @@ import { LightService } from '../../engine/core/light.service';
 import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import {Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry} from "three";
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry } from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -86,25 +86,26 @@ export class EditorComponent implements OnInit {
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
     // ground
-    let mesh = new Mesh( new PlaneBufferGeometry( 2000, 2000 ), new MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
-    mesh.rotation.x = - Math.PI / 2;
+    let mesh = new Mesh(
+      new PlaneBufferGeometry(2000, 2000),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    );
+    mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
-    this.engineService.sceneService.scene.add( mesh );
+    this.engineService.sceneService.scene.add(mesh);
 
-    let grid = new GridHelper( 2000, 20, 0x000000, 0x000000 );
+    let grid = new GridHelper(2000, 20, 0x000000, 0x000000);
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
-    this.engineService.sceneService.scene.add( grid );
+    this.engineService.sceneService.scene.add(grid);
 
-    this.engineService.sceneService.scene.background = new Color( 0xa0a0a0 );
+    this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
 
     this.keyboardEventService.engineService = this.engineService;
-
-
 
     let hemisphereLightOptions = {
       color: '#ffffff',
@@ -192,13 +193,13 @@ export class EditorComponent implements OnInit {
       }
     };
 
-    this.lightService.addLight(hemisphereLightOptions, "HemisphereLight");
+    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
-    this.lightService.addLight(directionalLightOptions, "DirectionalLight");
+    this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
     // this.lightService.addLight(spotLightOptions, 'SpotLight');
 

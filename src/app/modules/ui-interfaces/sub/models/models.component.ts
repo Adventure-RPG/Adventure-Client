@@ -21,7 +21,7 @@ export class ModelsComponent implements OnInit {
     },
     {
       name: 'Samba Dancing.fbx',
-      path: '/assets/models/custom/Samba Dancing.fbx',
+      path: '/assets/models/custom/Samba Dancing.fbx'
     }
   ];
 

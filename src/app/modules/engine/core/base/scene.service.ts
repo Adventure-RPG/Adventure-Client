@@ -48,7 +48,6 @@ export class SceneService {
     for (let mixerCommand in this.storageService.mixerCommands) {
       this.storageService.mixerCommands[mixerCommand].update(delta);
     }
-
   }
 
   get scene(): Scene {
