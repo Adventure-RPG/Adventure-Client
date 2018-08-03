@@ -15,12 +15,12 @@ import {
 import { EngineService } from '../engine.service';
 import { PerspectiveCamera } from 'three/three-core';
 
-const SHADOW_MAP_WIDTH = 2048,
+const SHADOW_MAP_WIDTH = 1024,
   SHADOW_MAP_HEIGHT = 1024;
 
 export interface Shadow {
   castShadow: boolean;
-  camera: PerspectiveCamera;
+  camera: PerspectiveCamera | any;
 }
 
 export interface Position {

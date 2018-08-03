@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
-import { AxesHelper, FBXLoader, Group, TextureLoader, Vector3 } from 'three';
+import { AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3 } from 'three';
 import { HeightMapOptions } from './engine.types';
 
 import { HeightMapService } from './core/3d-helpers/height-map.service';
@@ -8,8 +7,10 @@ import { BehaviorSubject } from 'rxjs';
 import { SceneService } from './core/base/scene.service';
 import { CameraService } from './core/base/camera.service';
 import { SettingsService } from '../../services/settings.service';
+import * as threeFBXLoader from '@node_modules/three-fbx-loader';
+import { StorageService } from '@services/storage.service';
 
-declare let require: any;
+//TODO: избавиться с помощью сторейджев
 
 @Injectable()
 export class EngineService {
@@ -73,11 +74,20 @@ export class EngineService {
     this._sceneService = value;
   }
 
+  get storageService(): StorageService {
+    return this._storageService;
+  }
+
+  set storageService(value: StorageService) {
+    this._storageService = value;
+  }
+
   constructor(
     private _heightMapService: HeightMapService,
     private _sceneService: SceneService,
     private _cameraService: CameraService,
-    private _settingsService: SettingsService
+    private _settingsService: SettingsService,
+    private _storageService: StorageService
   ) {
     //this.settingsService.settings$.subscribe(data => {
     // console.log(data);
@@ -108,70 +118,86 @@ export class EngineService {
     // let test = require('./../../libs/inflate.min');
     // console.log(test.Zlib)
     //Инцилизация модуля.
-    require('three-fbx-loader')(THREE);
 
-    let loader = new FBXLoader();
+    // let texture = new TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
 
-    // let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
-
-    let texture;
+    // let texture;
     if (model.texturePath) {
-      texture = new TextureLoader().load(model.texturePath, data => {
-        console.log(data);
-        let modelLoader = loader.load(
-          model.path,
-          (group: Group) => {
-            // let material = new THREE.MeshNormalMaterial();
-            // let mesh = new THREE.Mesh(geometry, material);
-            // console.log(mesh)
-            // this.scene.add(mesh);
-            // if you want to add your custom material
-            //
-            // let materialObj = new THREE.MeshPhongMaterial({
-            // map: texture
-            // });
-            // TODO: getSize() требует аргумент
-            // let box = new THREE.Box3().setFromObject(group);
-            // console.log(box.min, box.max, box.getSize() );
-            //
-            //
-            //
-            // group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
-            // // group.scale.set(1, 1, 1);
-            // group.traverse((child: THREE.Mesh) => {
-            //     if (child instanceof THREE.Mesh) {
-            //
-            //         console.log(child);
-            //         (<THREE.MeshLambertMaterial>child.material).map = texture;
-            //         (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
-            //
-            //     }
-            // });
-            //
-            // this._sceneService.scene.add(group);
-          },
-          event => {
-            console.log(event);
-          },
-          event => {
-            console.error(event);
-          }
-        );
-      });
-    } else {
-      let modelLoader = loader.load(
+      // texture = new TextureLoader().load(model.texturePath, data => {
+      //   console.log(data);
+      //   let modelLoader = loader.load(
+      //     model.path,
+      //     (group: Group) => {
+      //       // let material = new MeshNormalMaterial();
+      //       // let mesh = new Mesh(geometry, material);
+      //       // console.log(mesh)
+      //       // this.scene.add(mesh);
+      //       // // if you want to add your custom material
+      //       //
+      //       // let materialObj = new THREE.MeshPhongMaterial({
+      //       // map: texture
+      //       // });
+      //       // TODO: getSize() требует аргумент
+      //       // let box = new Box3().setFromObject(group);
+      //       // console.log(box.min, box.max, box.getSize() );
+      //       //
+      //       //
+      //
+      //       // group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
+      //       // group.scale.set(1, 1, 1);
+      //       // group.traverse((child: Mesh) => {
+      //       //     if (child instanceof Mesh) {
+      //       //
+      //       //         console.log(child);
+      //       //         (<MeshLambertMaterial>child.material).map = texture;
+      //       //         (<MeshLambertMaterial>child.material).needsUpdate = true;
+      //       //
+      //       //     }
+      //       // });
+      //
+      //       this._sceneService.scene.add(group);
+      //     },
+      //     event => {
+      //       console.log(event);
+      //     },
+      //     event => {
+      //       console.error(event);
+      //     }
+      //   );
+      // });
+    }
+
+    if (model.name) {
+      let loader: FBXLoader = new threeFBXLoader();
+      loader.load(
         model.path,
         (group: Group) => {
-          // let material = new THREE.MeshNormalMaterial();
-          // let mesh = new THREE.Mesh(geometry, material);
+          //Остноавился тут
+          // if (false){
+          //   group['mixer'] = new AnimationMixer( group );
+          //
+          //   this.storageService.mixerCommandPush(`mixers::${model.name}`, group['mixer']);
+          //
+          //   let action = group['mixer'].clipAction( group['animations'][ 0 ] );
+          //   action.play();
+          //
+          //   group.traverse( ( child: Mesh ) => {
+          //     if ( child.isMesh ) {
+          //       child.castShadow = true;
+          //       child.receiveShadow = true;
+          //     }
+          //   } );
+          // }
+
+          // let material = new MeshNormalMaterial();
+          // let mesh = new Mesh(geometry, material);
           // console.log(mesh)
           // this.sceneService.scene.add(mesh);
 
           // if you want to add your custom material
-          //
 
-          // let materialObj = new THREE.MeshPhongMaterial({
-          // map: texture
+          // let materialObj = new MeshPhongMaterial({
+          //   map: texture
           // });
 
           group.scale.set(0.1, 0.1, 0.1);
@@ -185,7 +211,9 @@ export class EngineService {
           //     }
           // });
 
-          this._sceneService.scene.add(group);
+          console.log(group);
+
+          this.sceneService.scene.add(group);
         },
         event => {
           console.log(event);
@@ -195,7 +223,6 @@ export class EngineService {
         }
       );
     }
-
     // console.log(texture);
 
     // console.log(model)
