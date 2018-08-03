@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
 import * as THREE from 'three';
-import {StorageService} from "@services/storage.service";
+import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
 import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
 import { MouseCommands } from 'app/enums/MouseCommands';
@@ -84,7 +84,6 @@ export class FirstPersonControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-
     this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveForward, {
       onMouseUp: function() {
         this.pressed = false;
@@ -121,7 +120,7 @@ export class FirstPersonControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
-      onMouseMove: (event) => {
+      onMouseMove: event => {
         if (this.domElement === document) {
           this.mouseX = event.pageX - this.viewHalfX;
           this.mouseY = event.pageY - this.viewHalfY;
@@ -131,7 +130,7 @@ export class FirstPersonControls {
         }
       },
       name: 'onMouseMove'
-    })
+    });
 
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
       onKeyUp: () => {
@@ -198,8 +197,8 @@ export class FirstPersonControls {
         this.moveUp = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь наверх')
-        console.log(this.object)
+        console.log('Двигаюсь наверх');
+        console.log(this.object);
 
         this.moveUp = true;
       },
@@ -213,8 +212,8 @@ export class FirstPersonControls {
         this.moveDown = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь вниз')
-        console.log(this.object)
+        console.log('Двигаюсь вниз');
+        console.log(this.object);
 
         this.moveDown = true;
       },
@@ -223,8 +222,8 @@ export class FirstPersonControls {
       name: 'moveDown'
     });
     //TODO:END
-    this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater',{
-      rendererUpdate: (delta) => {
+    this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
+      rendererUpdate: delta => {
         if (this.enabled === false) {
           return;
         }
@@ -285,8 +284,6 @@ export class FirstPersonControls {
         this.object.lookAt(targetPosition);
       }
     });
-
-
   }
 
   //TODO: проверить ресайз, если не работает вынести логику в соотвесттвующее место
@@ -364,6 +361,4 @@ export class FirstPersonControls {
     }
   }
   //TODO: END
-
-
 }

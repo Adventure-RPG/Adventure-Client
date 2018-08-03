@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
+import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import * as THREE from 'three';
-import {StorageService} from "@services/storage.service";
-import {CAMERA} from "../../../../enums/settings.enum";
+import { StorageService } from '@services/storage.service';
+import { CAMERA } from '../../../../enums/settings.enum';
 import { SettingsService } from '../../../../services/settings.service';
 
 @Injectable()
@@ -11,10 +11,7 @@ export class SceneService {
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
 
-  constructor(
-    private storageService: StorageService,
-    private settingsService: SettingsService
-  ) {
+  constructor(private storageService: StorageService, private settingsService: SettingsService) {
     this.scene = new Scene();
 
     // Render
@@ -26,7 +23,6 @@ export class SceneService {
     this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
-
 
     this.animation();
   }
@@ -46,10 +42,11 @@ export class SceneService {
 
     if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
       for (let rendererCommand in this.storageService.rendererStorageCommands) {
-        this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+        this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(
+          clock.getDelta()
+        );
       }
     }
-
 
     requestAnimationFrame(this.animation.bind(this));
   }
