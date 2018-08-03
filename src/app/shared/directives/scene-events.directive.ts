@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 import { OnWindowEventService } from '@events/on-window-event.service';
 import { KeyboardEventService } from '@events/keyboard-event.service';
-import {MouseEventService} from "@events/mouse-event.service";
+import { MouseEventService } from '@events/mouse-event.service';
 
 @Directive({
   selector: '[adventureSceneEvents]'
@@ -16,8 +16,6 @@ export class SceneEventsDirective {
 
   //TODO: разобраться с ивентами, Что бы работали только над сценой -
   //TODO: наверно трабл в document: - должно быть не документ, либо его передавать
-
-
 
   @HostListener('document:mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {

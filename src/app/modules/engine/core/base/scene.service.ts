@@ -44,9 +44,9 @@ export class SceneService {
     }
 
     // if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-      for (let rendererCommand in this.storageService.rendererStorageCommands) {
-        this.storageService.rendererStorageCommands[rendererCommand].update(delta);
-      }
+    for (let rendererCommand in this.storageService.rendererStorageCommands) {
+      this.storageService.rendererStorageCommands[rendererCommand].update(delta);
+    }
     // }
 
     for (let mixerCommand in this.storageService.mixerCommands) {
