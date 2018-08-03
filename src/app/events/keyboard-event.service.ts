@@ -84,16 +84,28 @@ export class KeyboardEventService {
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
         <number>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === event.keyCode
       ) {
-        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
-        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+
+        if (event.type === 'keyup'){
+          this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+        }
+        if (event.type === 'keydown'){
+          this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
+        }
+
       } else if (
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'object' &&
         (<number[]>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode).indexOf(
           event.keyCode
         ) !== -1
       ) {
-        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
-        this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+
+        if (event.type === 'keyup'){
+          this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
+        }
+        if (event.type === 'keydown'){
+          this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
+        }
+
       }
     }
   }
