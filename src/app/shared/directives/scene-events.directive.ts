@@ -18,6 +18,12 @@ export class SceneEventsDirective {
     console.log(punchEditor);
   }
 
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeyDown(event: KeyboardEvent) {
+    console.log(event);
+    this.keyboardEventService.keyboardPressEvent(event);
+  }
+
   @HostListener('document:keyup', ['$event'])
   onDocumentKeyUp(event: KeyboardEvent) {
     console.log(event);
