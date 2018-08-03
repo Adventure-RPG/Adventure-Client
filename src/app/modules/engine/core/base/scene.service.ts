@@ -10,6 +10,7 @@ export class SceneService {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
+  private clock = new Clock();
 
   constructor(private storageService: StorageService, private settingsService: SettingsService) {
     this.scene = new Scene();
@@ -35,9 +36,9 @@ export class SceneService {
   // Render logic
   public animation() {
     requestAnimationFrame(this.animation.bind(this));
+    let delta = this.clock.getDelta();
 
-    let clock = new Clock();
-    let delta = clock.getDelta();
+    console.log(delta);
 
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);

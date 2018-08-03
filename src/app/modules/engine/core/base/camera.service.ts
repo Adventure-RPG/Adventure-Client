@@ -88,7 +88,6 @@ export class CameraService implements OnInit {
     this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 20000);
     this.camera.position.set(d * 8, d * 8, d * 8);
     this.camera.rotation.y = (-135 * Math.PI) / 180;
-
     // require('three-first-person-controls')(THREE);
     //
     // console.log(FPC);
@@ -110,10 +109,9 @@ export class CameraService implements OnInit {
   }
 
   public updateFirstPersonCamera() {
-    let d = this.settingsService.settings.camera.d;
+    // let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
-    this.camera.position.set(d * 8, d * 8, d * 8);
-    (<PerspectiveCamera>this.camera).far = d * 40;
+    // this.camera.position.set(d * 8, d * 8, d * 8);
   }
 
   public initIsometricCamera() {

@@ -86,8 +86,7 @@ export class KeyboardEventService {
       ) {
         if (event.type === 'keyup') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
-        }
-        if (event.type === 'keydown') {
+        } else if (event.type === 'keydown') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
         }
       } else if (
@@ -98,11 +97,9 @@ export class KeyboardEventService {
       ) {
         if (event.type === 'keyup') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
-        }
-        if (event.type === 'keydown') {
+        } else if (event.type === 'keydown') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
-        }
-      }
+        }}
     }
   }
 }

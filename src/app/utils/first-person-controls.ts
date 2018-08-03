@@ -135,12 +135,12 @@ export class FirstPersonControls {
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
       onKeyUp: () => {
         this.moveForward = false;
+        console.log(this.moveForward);
       },
       onKeyDown: () => {
         console.log('Двигаюсь вперед');
-        console.log(this.object);
-
         this.moveForward = true;
+        console.log(this.moveForward);
       },
       pressed: false,
       keyCode: [Key.W, Key.UpArrow],
@@ -222,6 +222,7 @@ export class FirstPersonControls {
       name: 'moveDown'
     });
     //TODO:END
+
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
       update: delta => {
         if (this.enabled === false) {
@@ -255,6 +256,7 @@ export class FirstPersonControls {
           this.object.translateY(-actualMoveSpeed);
         }
 
+
         let actualLookSpeed = delta * this.lookSpeed;
 
         if (!this.activeLook) {
@@ -276,6 +278,7 @@ export class FirstPersonControls {
         if (this.constrainVertical) {
           this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
         }
+
         let targetPosition = this.target,
           position = this.object.position;
         targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
