@@ -11,7 +11,7 @@ export class KeyboardEventService {
   engineService: EngineService;
 
   keyboardPressEvent(event: KeyboardEvent) {
-    console.log(event);
+    // console.log(event);
     /**
      * TODO:
      * В этот сервис тебе надо загнать все кейборд ивенты
@@ -99,7 +99,8 @@ export class KeyboardEventService {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
         } else if (event.type === 'keydown') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
-        }}
+        }
+      }
     }
   }
 }

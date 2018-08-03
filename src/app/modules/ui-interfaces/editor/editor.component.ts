@@ -59,6 +59,7 @@ export class EditorComponent implements OnInit {
     // console.log(event);
   }
 
+  //TODO: выпилить.
   mouseWheel(event) {
     this.settingsService.changeSetting('camera', {
       d: this.settingsService.settings.camera.d + event.deltaY / 100

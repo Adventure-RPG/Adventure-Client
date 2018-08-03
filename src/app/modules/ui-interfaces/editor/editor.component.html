@@ -10,6 +10,7 @@
 </div>
 
 <div id="scene"
+     (mouseover)="dragStartMouse($event)"
      (mousedown)="dragStartMouse($event)"
      (mousemove)="dragMoveMouse($event)"
      (mouseup)="dragEndMouse($event)"
