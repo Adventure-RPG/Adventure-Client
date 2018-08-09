@@ -103,6 +103,7 @@ export class CameraService implements OnInit {
     controls.verticalMax = 2.2;
 
     let obj = {};
+    // controls.update();
     obj[CAMERA.FirstPersonCamera] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
     this.cameries = mergeModel;
