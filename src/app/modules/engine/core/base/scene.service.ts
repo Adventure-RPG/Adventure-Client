@@ -12,7 +12,10 @@ export class SceneService {
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private clock = new Clock();
 
-  constructor(private storageService: StorageService, private settingsService: SettingsService) {
+  constructor(
+    private storageService: StorageService,
+    private settingsService: SettingsService
+  ) {
     this.scene = new Scene();
 
     // свойства Render'а

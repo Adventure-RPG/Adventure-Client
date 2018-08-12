@@ -88,14 +88,14 @@ export class EditorComponent implements OnInit {
 
     // ground
     let mesh = new Mesh(
-      new PlaneBufferGeometry(2000, 2000),
+      new PlaneBufferGeometry(100, 100),
       new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
-    let grid = new GridHelper(2000, 20, 0x000000, 0x000000);
+    let grid = new GridHelper(100, 20, 0x000000, 0x000000);
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
     this.engineService.sceneService.scene.add(grid);
@@ -169,10 +169,10 @@ export class EditorComponent implements OnInit {
       shadow: {
         castShadow: true,
         camera: {
-          left: -400,
-          right: 400,
-          top: 400,
-          bottom: -400,
+          left: -4000,
+          right: 4000,
+          top: 4000,
+          bottom: -4000,
           near: 0.5,
           far: 1000
         }
@@ -189,8 +189,8 @@ export class EditorComponent implements OnInit {
       decay: 2,
       position: {
         x: 0,
-        y: 150,
-        z: 100
+        y: 1500,
+        z: 1000
       }
     };
 
@@ -200,9 +200,9 @@ export class EditorComponent implements OnInit {
 
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
-    this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
+    // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
-    // this.lightService.addLight(spotLightOptions, 'SpotLight');
+    this.lightService.addLight(spotLightOptions, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");

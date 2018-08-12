@@ -30,6 +30,7 @@ import { LoginService } from './modules/ui-interfaces/login/login.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
+import {ModelLoaderService} from "@modules/engine/core/base/model-loader.service";
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -55,7 +56,9 @@ const Services = [
   AppService,
   ApiService,
   LoginService,
-  StorageService
+  StorageService,
+  //TODO: разобраться почему модел лоадер не работает на уровне engine.module
+  ModelLoaderService
 ];
 
 const Guards = [AuthGuard];

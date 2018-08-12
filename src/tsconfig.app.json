@@ -20,6 +20,7 @@
       "@enums/*": ["app/enums/*"],
       "@events/*": ["app/events/*"],
       "@guards/*": ["app/guards/*"],
+      "@libs/*": ["app/libs/*"],
       "@modules/*": ["app/modules/*"],
       "@services/*": ["app/services/*"],
       "@shared/*": ["app/shared/*"]
