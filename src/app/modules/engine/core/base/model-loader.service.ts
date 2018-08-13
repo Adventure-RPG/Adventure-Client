@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {AnimationMixer, FBXLoader, Group, Mesh} from "three";
-import fbxLoader from "@libs/FBXLoader";
-import {SceneService} from "@modules/engine/core/base/scene.service";
-import {StorageService} from "@services/storage.service";
-import {Utils} from "../../../../utils/utils";
-import UuidStatic = require("uuid");
+import { AnimationMixer, FBXLoader, Group, Mesh } from 'three';
+import fbxLoader from '@libs/FBXLoader';
+import { SceneService } from '@modules/engine/core/base/scene.service';
+import { StorageService } from '@services/storage.service';
+import { Utils } from '../../../../utils/utils';
+import UuidStatic = require('uuid');
 
 @Injectable()
 export class ModelLoaderService {
@@ -24,10 +24,7 @@ export class ModelLoaderService {
     this._storageService = value;
   }
 
-  constructor(
-    private _sceneService: SceneService,
-    private _storageService: StorageService
-  ) { }
+  constructor(private _sceneService: SceneService, private _storageService: StorageService) {}
 
   //TODO: вынести в отдельный модуль
   //TODO: вынести аплойд файлов
@@ -37,8 +34,6 @@ export class ModelLoaderService {
    */
   public loadFBX(model) {
     // Вынести в отдельный флоу
-
-
 
     // let test = require('./../../libs/inflate.min');
     // console.log(test.Zlib)
@@ -93,7 +88,6 @@ export class ModelLoaderService {
     }
 
     if (model.name) {
-
       let loader: FBXLoader = fbxLoader().prototype;
       let modelGuid = UuidStatic.v1();
       loader.load(
@@ -101,19 +95,22 @@ export class ModelLoaderService {
         (group: Group) => {
           //Остноавился тут
           // if (false){
-          group['mixer'] = new AnimationMixer( group );
+          group['mixer'] = new AnimationMixer(group);
 
-          this.storageService.mixerCommandPush(`mixers::${model.name}::${modelGuid}`, group['mixer']);
+          this.storageService.mixerCommandPush(
+            `mixers::${model.name}::${modelGuid}`,
+            group['mixer']
+          );
 
-          let action = group['mixer'].clipAction( group['animations'][ 0 ] );
+          let action = group['mixer'].clipAction(group['animations'][0]);
           action.play();
 
-          group.traverse( ( child: Mesh ) => {
-            if ( child.isMesh ) {
+          group.traverse((child: Mesh) => {
+            if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
             }
-          } );
+          });
           // }
 
           // let material = new MeshNormalMaterial();
@@ -154,5 +151,4 @@ export class ModelLoaderService {
 
     // console.log(model)
   }
-
 }

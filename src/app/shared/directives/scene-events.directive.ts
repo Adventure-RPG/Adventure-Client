@@ -24,77 +24,77 @@ export class SceneEventsDirective {
 
   @HostListener('document:mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:dbclick', ['$event'])
   onDoubleClick(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mouseover', ['$event'])
   onMouseOver(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mouseout', ['$event'])
   onMouseOut(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mouseenter', ['$event'])
   onMouseEnter(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:mouseleave', ['$event'])
   onMouseLeave(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:contextmenu', ['$event'])
   onContextmenu(event: MouseEvent) {
-    if (debugEvents.mouseEvents){
+    if (debugEvents.mouseEvents) {
       console.log(event);
     }
   }
 
   @HostListener('document:keydown', ['$event'])
   onDocumentKeyDown(event: KeyboardEvent) {
-    if (debugEvents.keyboardEvents){
+    if (debugEvents.keyboardEvents) {
       console.log(event);
     }
     this.keyboardEventService.keyboardPressEvent(event);
@@ -102,7 +102,7 @@ export class SceneEventsDirective {
 
   @HostListener('document:keyup', ['$event'])
   onDocumentKeyUp(event: KeyboardEvent) {
-    if (debugEvents.keyboardEvents){
+    if (debugEvents.keyboardEvents) {
       console.log(event);
     }
     this.keyboardEventService.keyboardPressEvent(event);
@@ -110,7 +110,7 @@ export class SceneEventsDirective {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (debugEvents.keyboardEvents){
+    if (debugEvents.keyboardEvents) {
       console.log(event);
     }
     this.onWindowEventService.onResize(event);

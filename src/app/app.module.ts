@@ -30,7 +30,7 @@ import { LoginService } from './modules/ui-interfaces/login/login.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
-import {ModelLoaderService} from "@modules/engine/core/base/model-loader.service";
+import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{

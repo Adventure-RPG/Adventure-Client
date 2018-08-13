@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3} from 'three';
+import { AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3 } from 'three';
 
-import fbxLoader from '@libs/FBXloader'
+import fbxLoader from '@libs/FBXloader';
 
 import { HeightMapOptions } from './engine.types';
 
@@ -11,8 +11,6 @@ import { SceneService } from './core/base/scene.service';
 import { CameraService } from './core/base/camera.service';
 import { SettingsService } from '@services/settings.service';
 import { StorageService } from '@services/storage.service';
-
-
 
 //TODO: избавиться с помощью сторейджев
 
@@ -82,7 +80,7 @@ export class EngineService {
     private _heightMapService: HeightMapService,
     private _sceneService: SceneService,
     private _cameraService: CameraService,
-    private _settingsService: SettingsService,
+    private _settingsService: SettingsService
   ) {
     //this.settingsService.settings$.subscribe(data => {
     // console.log(data);

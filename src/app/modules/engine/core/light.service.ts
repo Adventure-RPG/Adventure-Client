@@ -4,16 +4,17 @@ import {
   DirectionalLight,
   DirectionalLightHelper,
   HemisphereLight,
-  HemisphereLightHelper, LightShadow,
+  HemisphereLightHelper,
+  LightShadow,
   PointLight,
   PointLightHelper,
   SpotLight,
   SpotLightHelper,
   SpotLightShadow,
-  PerspectiveCamera, Color
+  PerspectiveCamera,
+  Color
 } from 'three';
 import { EngineService } from '../engine.service';
-
 
 //Тень зависит от размера картины
 
@@ -79,7 +80,7 @@ export class LightService {
         light = new DirectionalLight(color, lightEntity.intensity);
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER
-        console.log(light)
+        console.log(light);
         light.castShadow = lightEntity.shadow.castShadow;
         light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
         light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
@@ -173,9 +174,9 @@ export class LightService {
         // (<SpotLightShadow>light.shadow).camera.near = 20;
         // (<SpotLightShadow>light.shadow).camera.fov = 50;
 
-        light.target.position.set( 0, 0, 0 );
+        light.target.position.set(0, 0, 0);
 
-        light.shadow = new LightShadow( new PerspectiveCamera( 50, 1, 700, 2000 ) );
+        light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
         light.shadow.bias = 0.0001;
         light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
         light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
