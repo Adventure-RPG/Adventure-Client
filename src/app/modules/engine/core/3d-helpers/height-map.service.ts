@@ -14,13 +14,12 @@ import {
   VertexColors
 } from 'three';
 import { Terrain } from '../utils/terrain';
-import {Noise} from "@modules/engine/core/utils/noise";
+import { Noise } from '@modules/engine/core/utils/noise';
 
 // import * as SimplexNoise from 'simplex-noise';
 
 @Injectable()
 export class HeightMapService {
-
   private colorScheme;
   private mapData;
 
@@ -64,7 +63,6 @@ export class HeightMapService {
         //   }
         //   geometry.elementsNeedUpdate = true;
         // }
-
 
         let terrainMaterial = new MeshPhongMaterial({
           vertexColors: VertexColors,
@@ -110,15 +108,13 @@ export class HeightMapService {
   }
 
   public changeColorMapFromImage(options, scene, img) {
-    this.parseImageToColorGeo(img)
-      .then(res => {
+    this.parseImageToColorGeo(img).then(res => {
       console.log(res);
       this.colorScheme = res;
     });
   }
 
   //TODO: end
-
 
   /**
    * Парсим картину для создания карт высот
@@ -229,7 +225,7 @@ export class HeightMapService {
     for (let z = 0; z < worldDepth; z++) {
       for (let x = 0; x < worldWidth; x++) {
         //Делаем всех от одного уровня
-        let h = Noise.getY({mapData: this.mapData, x, z, worldWidth, k: 0.2});
+        let h = Noise.getY({ mapData: this.mapData, x, z, worldWidth, k: 0.2 });
 
         console.log(h);
 
@@ -369,7 +365,7 @@ export class HeightMapService {
         z++;
       }
 
-      let h = Noise.getY({mapData: this.mapData, x, z, worldWidth, k: 0.2});
+      let h = Noise.getY({ mapData: this.mapData, x, z, worldWidth, k: 0.2 });
 
       xMax = -((GRID_SIZE * RECT_SIZE) / 2 - RECT_SIZE * z + RECT_SIZE / 2);
       zMax = (GRID_SIZE * RECT_SIZE) / 2 - RECT_SIZE * x + RECT_SIZE / 2;
@@ -534,5 +530,4 @@ export class HeightMapService {
   //
   //   scene.add( mesh );
   // }
-
 }

@@ -1,7 +1,6 @@
 /* tslint:disable:no-bitwise */
 export class Noise {
-
-  static getY({mapData, x, z, worldWidth, k}) {
+  static getY({ mapData, x, z, worldWidth, k }) {
     if (!k) {
       k = 0.2;
     }
