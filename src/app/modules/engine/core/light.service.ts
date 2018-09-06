@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
 import {
   AmbientLight,
   DirectionalLight,
   DirectionalLightHelper,
   HemisphereLight,
   HemisphereLightHelper,
+  LightShadow,
   PointLight,
   PointLightHelper,
   SpotLight,
   SpotLightHelper,
-  SpotLightShadow
+  SpotLightShadow,
+  PerspectiveCamera,
+  Color
 } from 'three';
 import { EngineService } from '../engine.service';
-import { PerspectiveCamera } from 'three/three-core';
 
-const SHADOW_MAP_WIDTH = 1024,
-  SHADOW_MAP_HEIGHT = 1024;
+//Тень зависит от размера картины
+
+const SHADOW_MAP_WIDTH = 2048,
+  SHADOW_MAP_HEIGHT = 2048;
 
 export interface Shadow {
   castShadow: boolean;
@@ -56,15 +59,15 @@ export class LightService {
       | SpotLightHelper;
 
     // TODO: clean interface
-    // https://github.com/mrdoob/three.js/issues/12452
+    // https://github.com/mrdoob/js/issues/12452
     // any because Color type doesn't support
-    let color: any = new THREE.Color(lightEntity.color);
+    let color: any = new Color(lightEntity.color);
     // console.log(lightEntity.color);
     // console.log(color);
 
     switch (type) {
       case 'AmbientLight':
-        light = new THREE.AmbientLight(color, lightEntity.intensity);
+        light = new AmbientLight(color, lightEntity.intensity);
 
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
 
@@ -74,32 +77,32 @@ export class LightService {
         this.engineService.sceneService.scene.add(light);
         break;
       case 'DirectionalLight':
-        light = new THREE.DirectionalLight(color, lightEntity.intensity);
+        light = new DirectionalLight(color, lightEntity.intensity);
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER
-        light.castShadow = true;
-        light.shadow.mapSize.width = 50;
-        light.shadow.mapSize.height = 50;
+        console.log(light);
+        light.castShadow = lightEntity.shadow.castShadow;
+        light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+        light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+        (<DirectionalLight>light).shadow.camera.left = lightEntity.shadow.camera.left;
+        (<DirectionalLight>light).shadow.camera.right = lightEntity.shadow.camera.right;
+        (<DirectionalLight>light).shadow.camera.bottom = lightEntity.shadow.camera.bottom;
+        (<DirectionalLight>light).shadow.camera.top = lightEntity.shadow.camera.top;
 
         //TODO: косяк типов, написать ПР
-        (<any>light.shadow.camera).left = -50;
-        (<any>light.shadow.camera).right = 50;
-        (<any>light.shadow.camera).top = 50;
-        (<any>light.shadow.camera).bottom = -50;
-        (<any>light.shadow.camera).far = 5000;
         this.engineService.sceneService.scene.add(light);
 
         //TODO: in configurate layers
-        dirLightHelper = new THREE.DirectionalLightHelper(<DirectionalLight>light, lightLength);
-        this.engineService.sceneService.scene.add(new THREE.CameraHelper(light.shadow.camera));
+        dirLightHelper = new DirectionalLightHelper(<DirectionalLight>light, lightLength);
+        this.engineService.sceneService.scene.add(new CameraHelper(light.shadow.camera));
 
         this.engineService.sceneService.scene.add(dirLightHelper);
 
         break;
       case 'HemisphereLight':
-        light = new THREE.HemisphereLight(
+        light = new HemisphereLight(
           color,
-          <any>new THREE.Color(lightEntity.groundColor),
+          <any>new Color(lightEntity.groundColor),
           lightEntity.intensity
         );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
@@ -110,13 +113,13 @@ export class LightService {
         // console.log(lightEntity.intensity);
         // console.log(lightEntity.distance);
         // console.log(lightEntity.decay);
-        light = new THREE.PointLight(
+        light = new PointLight(
           color,
           lightEntity.intensity,
           lightEntity.distance,
           lightEntity.decay
         );
-        // light = new THREE.PointLight( color,  1, 100 );
+        // light = new PointLight( color,  1, 100 );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER
         // light.castShadow = true;
@@ -130,16 +133,16 @@ export class LightService {
         this.engineService.sceneService.scene.add(light);
 
         let sphereSize = 1;
-        let pointLightHelper = new THREE.PointLightHelper(<PointLight>light, sphereSize);
+        let pointLightHelper = new PointLightHelper(<PointLight>light, sphereSize);
         this.engineService.sceneService.scene.add(pointLightHelper);
 
-        // dirLightHelper = new THREE.PointLightHelper( light, lightLength );
+        // dirLightHelper = new PointLightHelper( light, lightLength );
         // this.engineService.sceneService.scene.add( dirLightHelper );
 
         break;
       // TODO: update and add
       // case 'RectAreaLight':
-      //   light = new THREE.RectAreaLight( 0xffffff, undefined,  100, 100 );
+      //   light = new RectAreaLight( 0xffffff, undefined,  100, 100 );
       //   light.color.setHSL( 0.1, 1, 0.95 );
       //   light.position.set( -lightLength, lightLength, lightLength );
       //   light.shadow.bias = 0.0001;
@@ -156,23 +159,27 @@ export class LightService {
       //   // dirLight.shadow.camera.far = 5;
       //
       //   this.engineService.sceneService.scene.add( light );
-      //   dirLightHelper = new THREE.PointLightHelper( light, lightLength );
+      //   dirLightHelper = new PointLightHelper( light, lightLength );
       //   this.engineService.sceneService.scene.add( dirLightHelper );
       //
       //   break;
       case 'SpotLight':
-        light = new THREE.SpotLight(0xffffff, 0.5, 0, Math.PI / 2, 1);
-        // light = new THREE.SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
+        light = new SpotLight(0xffffff);
+        // light = new SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
         // light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
-        light.shadow.bias = 0.0001;
         //HELPLER
-        // light.castShadow = true;
+        light.castShadow = true;
+        // (<SpotLightShadow>light.shadow).camera.far = 1000;
+        // (<SpotLightShadow>light.shadow).camera.near = 20;
+        // (<SpotLightShadow>light.shadow).camera.fov = 50;
+
+        light.target.position.set(0, 0, 0);
+
+        light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
+        light.shadow.bias = 0.0001;
         light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
         light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
-        (<SpotLightShadow>light.shadow).camera.far = 5000;
-        (<SpotLightShadow>light.shadow).camera.near = 1200;
-        (<SpotLightShadow>light.shadow).camera.fov = 50;
 
         // dirLight.shadow.camera.left   = -d;
         // dirLight.shadow.camera.right  =  d;
@@ -182,7 +189,7 @@ export class LightService {
         // dirLight.shadow.camera.far = 5;
 
         this.engineService.sceneService.scene.add(light);
-        dirLightHelper = new THREE.SpotLightHelper(<any>light);
+        dirLightHelper = new SpotLightHelper(<any>light);
         this.engineService.sceneService.scene.add(dirLightHelper);
 
         break;

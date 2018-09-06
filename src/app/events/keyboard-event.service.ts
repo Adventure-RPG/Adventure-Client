@@ -11,7 +11,7 @@ export class KeyboardEventService {
   engineService: EngineService;
 
   keyboardPressEvent(event: KeyboardEvent) {
-    console.log(event);
+    // console.log(event);
     /**
      * TODO:
      * В этот сервис тебе надо загнать все кейборд ивенты

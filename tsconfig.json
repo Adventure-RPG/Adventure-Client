@@ -33,6 +33,7 @@
       "@guards/*": [
         "app/guards/*"
       ],
+      "@libs/*": ["app/libs/*"],
       "@modules/*": [
         "app/modules/*"
       ],

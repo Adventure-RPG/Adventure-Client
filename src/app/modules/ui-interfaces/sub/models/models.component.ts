@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EngineService } from '../../../engine/engine.service';
+import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
 
 @Component({
   selector: 'adventure-models',
@@ -25,10 +26,10 @@ export class ModelsComponent implements OnInit {
     }
   ];
 
-  constructor(private engineService: EngineService) {}
+  constructor(private modelLoaderService: ModelLoaderService) {}
 
   loadFBX(url: string) {
-    this.engineService.loadFBX(url);
+    this.modelLoaderService.loadFBX(url);
   }
 
   ngOnInit() {}

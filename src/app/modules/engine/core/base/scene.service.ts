@@ -15,7 +15,7 @@ export class SceneService {
   constructor(private storageService: StorageService, private settingsService: SettingsService) {
     this.scene = new Scene();
 
-    // Render
+    // свойства Render'а
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -32,8 +32,9 @@ export class SceneService {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  // TODO: добавить сглаживание
-  // Render logic
+  /**
+   * Render logic
+   */
   public animation() {
     requestAnimationFrame(this.animation.bind(this));
     let delta = this.clock.getDelta();
@@ -42,10 +43,11 @@ export class SceneService {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
 
+    // if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
     for (let rendererCommand in this.storageService.rendererStorageCommands) {
       this.storageService.rendererStorageCommands[rendererCommand].update(delta);
-
     }
+    // }
 
     for (let mixerCommand in this.storageService.mixerCommands) {
       this.storageService.mixerCommands[mixerCommand].update(delta);
