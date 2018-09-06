@@ -38,16 +38,13 @@ export class SceneService {
     requestAnimationFrame(this.animation.bind(this));
     let delta = this.clock.getDelta();
 
-    console.log(delta);
-
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
 
-    if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-      for (let rendererCommand in this.storageService.rendererStorageCommands) {
-        this.storageService.rendererStorageCommands[rendererCommand].update(delta);
-      }
+    for (let rendererCommand in this.storageService.rendererStorageCommands) {
+      this.storageService.rendererStorageCommands[rendererCommand].update(delta);
+
     }
 
     for (let mixerCommand in this.storageService.mixerCommands) {

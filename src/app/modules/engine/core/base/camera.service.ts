@@ -95,7 +95,7 @@ export class CameraService implements OnInit {
     let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
     console.log(this.storageService.hotkeySceneCommands);
 
-    controls.movementSpeed = 1000;
+    controls.movementSpeed = 100;
     controls.lookSpeed = 0.125;
     controls.lookVertical = true;
     controls.constrainVertical = true;

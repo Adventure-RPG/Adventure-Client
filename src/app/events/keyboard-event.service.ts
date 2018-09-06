@@ -99,7 +99,8 @@ export class KeyboardEventService {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyUp(event);
         } else if (event.type === 'keydown') {
           this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
-        }}
+        }
+      }
     }
   }
 }
