@@ -12,7 +12,7 @@ import {
   SpotLightHelper,
   SpotLightShadow,
   PerspectiveCamera,
-  Color
+  Color, CameraHelper
 } from 'three';
 import { EngineService } from '../engine.service';
 
@@ -174,7 +174,7 @@ export class LightService {
         // (<SpotLightShadow>light.shadow).camera.near = 20;
         // (<SpotLightShadow>light.shadow).camera.fov = 50;
 
-        light.target.position.set(0, 0, 0);
+        (<SpotLight>light).target.position.set(0, 0, 0);
 
         light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
         light.shadow.bias = 0.0001;

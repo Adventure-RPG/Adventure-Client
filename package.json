@@ -51,12 +51,14 @@
     "rxjs": "^6.2.2",
     "simplex-noise": "^2.4.0",
     "three": "^0.95.0",
+    "socket.io": "^2.1.1",
     "uuid": "^3.3.2",
     "zone.js": "^0.7.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular/cli": "^6.1.1",
+    "@types/socket.io-client": "^1.4.32",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "^2.5.38",
     "@types/lodash": "^4.14.92",
