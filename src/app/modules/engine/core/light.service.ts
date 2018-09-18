@@ -12,7 +12,8 @@ import {
   SpotLightHelper,
   SpotLightShadow,
   PerspectiveCamera,
-  Color, CameraHelper
+  Color,
+  CameraHelper
 } from 'three';
 import { EngineService } from '../engine.service';
 

@@ -31,6 +31,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
+import { SanitizeHtmlDirective } from './shared/directives/sanitize-html.directive';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -62,8 +63,6 @@ const Services = [
 ];
 
 const Guards = [AuthGuard];
-
-const Directive = [SceneEventsDirective];
 
 @NgModule({
   imports: [...Modules, ...ModulesForRootImport],

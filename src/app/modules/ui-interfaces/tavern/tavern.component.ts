@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import io from 'socket.io-client';
-
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'adventure-tavern',
@@ -8,17 +7,10 @@ import io from 'socket.io-client';
   styleUrls: ['./tavern.component.scss']
 })
 export class TavernComponent implements OnInit {
-
-
   socket;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.socket = io('http://localhost:9999');
-    this.socket.on('connect', function(){});
-    this.socket.on('event', function(data){});
-    this.socket.on('disconnect', function(){});
   }
-
 }

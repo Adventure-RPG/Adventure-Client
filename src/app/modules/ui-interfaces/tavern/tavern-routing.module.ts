@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TavernComponent } from "@modules/ui-interfaces/tavern/tavern.component";
+import { TavernComponent } from '@modules/ui-interfaces/tavern/tavern.component';
 
 const routes: Routes = [
   {
