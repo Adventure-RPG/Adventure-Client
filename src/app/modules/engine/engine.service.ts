@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
-import { AxesHelper, FBXLoader, Group, TextureLoader, Vector3 } from 'three';
+import { AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3 } from 'three';
+
+import fbxLoader from '@libs/FBXloader';
+
 import { HeightMapOptions } from './engine.types';
 
 import { HeightMapService } from './core/3d-helpers/height-map.service';
 import { BehaviorSubject } from 'rxjs';
 import { SceneService } from './core/base/scene.service';
 import { CameraService } from './core/base/camera.service';
-import { SettingsService } from '../../services/settings.service';
+import { SettingsService } from '@services/settings.service';
+import { StorageService } from '@services/storage.service';
 
-declare let require: any;
+//TODO: избавиться с помощью сторейджев
 
 @Injectable()
 export class EngineService {
@@ -96,111 +99,6 @@ export class EngineService {
     this._initStatus.next(value);
   }
 
-  // TODO: вынести в отдельный модуль
-  //TODO: вынести аплойд файлов
-  /**
-   * Метод загрузки FBX модели
-   * @param url
-   */
-  public loadFBX(model) {
-    // Вынести в отдельный флоу
-
-    // let test = require('./../../libs/inflate.min');
-    // console.log(test.Zlib)
-    //Инцилизация модуля.
-    require('three-fbx-loader')(THREE);
-
-    let loader = new FBXLoader();
-
-    // let texture = new THREE.TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
-
-    let texture;
-    if (model.texturePath) {
-      texture = new TextureLoader().load(model.texturePath, data => {
-        console.log(data);
-        let modelLoader = loader.load(
-          model.path,
-          (group: Group) => {
-            // let material = new THREE.MeshNormalMaterial();
-            // let mesh = new THREE.Mesh(geometry, material);
-            // console.log(mesh)
-            // this.scene.add(mesh);
-            // if you want to add your custom material
-            //
-            // let materialObj = new THREE.MeshPhongMaterial({
-            // map: texture
-            // });
-            // TODO: getSize() требует аргумент
-            // let box = new THREE.Box3().setFromObject(group);
-            // console.log(box.min, box.max, box.getSize() );
-            //
-            //
-            //
-            // group.scale.set(1 / box.getSize().x * 8, 1 / box.getSize().x  * 8, 1 / box.getSize().x  * 8);
-            // // group.scale.set(1, 1, 1);
-            // group.traverse((child: THREE.Mesh) => {
-            //     if (child instanceof THREE.Mesh) {
-            //
-            //         console.log(child);
-            //         (<THREE.MeshLambertMaterial>child.material).map = texture;
-            //         (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
-            //
-            //     }
-            // });
-            //
-            // this._sceneService.scene.add(group);
-          },
-          event => {
-            console.log(event);
-          },
-          event => {
-            console.error(event);
-          }
-        );
-      });
-    } else {
-      let modelLoader = loader.load(
-        model.path,
-        (group: Group) => {
-          // let material = new THREE.MeshNormalMaterial();
-          // let mesh = new THREE.Mesh(geometry, material);
-          // console.log(mesh)
-          // this.sceneService.scene.add(mesh);
-
-          // if you want to add your custom material
-          //
-
-          // let materialObj = new THREE.MeshPhongMaterial({
-          // map: texture
-          // });
-
-          group.scale.set(0.1, 0.1, 0.1);
-          // group.traverse((child: THREE.Mesh) => {
-          //     if (child instanceof THREE.Mesh) {
-          //
-          //       console.log(child);
-          //         (<THREE.MeshLambertMaterial>child.material).map = texture;
-          //         (<THREE.MeshLambertMaterial>child.material).needsUpdate = true;
-          //
-          //     }
-          // });
-
-          this._sceneService.scene.add(group);
-        },
-        event => {
-          console.log(event);
-        },
-        event => {
-          console.error(event);
-        }
-      );
-    }
-
-    // console.log(texture);
-
-    // console.log(model)
-  }
-
   public init() {
     // Scene
     // let d = this.settings.camera.d;
@@ -220,6 +118,7 @@ export class EngineService {
     this.updateCamera();
   }
 
+  //TODO: вынести
   public updateCamera(x?, y?, z?) {
     // console.log(this.x);
 
@@ -240,6 +139,7 @@ export class EngineService {
     this.sceneService.camera = camera;
   }
 
+  //TODO: вынести
   public map(img) {
     let options: HeightMapOptions = {
       grid: false
@@ -260,6 +160,7 @@ export class EngineService {
     // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
+  //TODO: вынести
   public colorMap(img) {
     let options: HeightMapOptions = {
       grid: false

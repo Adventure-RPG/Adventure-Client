@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
 import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import * as THREE from 'three';
 import { StorageService } from '@services/storage.service';
+import { CAMERA } from '../../../../enums/settings.enum';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Injectable()
 export class SceneService {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
   private _camera: Camera | OrthographicCamera | CubeCamera;
+  private clock = new Clock();
 
-  constructor(private storageService: StorageService) {
+  constructor(private storageService: StorageService, private settingsService: SettingsService) {
     this.scene = new Scene();
 
-    // Render
+    // свойства Render'а
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -29,20 +32,26 @@ export class SceneService {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  // TODO: добавить сглаживание
-  // Render logic
+  /**
+   * Render logic
+   */
   public animation() {
-    let clock = new Clock();
+    requestAnimationFrame(this.animation.bind(this));
+    let delta = this.clock.getDelta();
 
     if (this.camera) {
       this.renderer.render(this.scene, <Camera>this.camera);
     }
 
+    // if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
     for (let rendererCommand in this.storageService.rendererStorageCommands) {
-      this.storageService.rendererStorageCommands[rendererCommand].rendererUpdate(clock.getDelta());
+      this.storageService.rendererStorageCommands[rendererCommand].update(delta);
     }
+    // }
 
-    requestAnimationFrame(this.animation.bind(this));
+    for (let mixerCommand in this.storageService.mixerCommands) {
+      this.storageService.mixerCommands[mixerCommand].update(delta);
+    }
   }
 
   get scene(): Scene {

@@ -1,7 +1,9 @@
-import * as THREE from 'three';
 import { Vector3 } from 'three';
+import * as THREE from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
+import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
+import { MouseCommands } from 'app/enums/MouseCommands';
 
 export class FirstPersonControls {
   object;
@@ -82,7 +84,7 @@ export class FirstPersonControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    this.storageService.hotkeySceneCommandPush('mouseMoveForward', {
+    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveForward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -94,7 +96,7 @@ export class FirstPersonControls {
       name: 'moveForward'
     });
 
-    this.storageService.hotkeySceneCommandPush('mouseMoveBackward', {
+    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveBackward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -106,7 +108,7 @@ export class FirstPersonControls {
       name: 'moveBackward'
     });
 
-    this.storageService.hotkeySceneCommandPush('mouseDragOn', {
+    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseDragOn, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -117,7 +119,7 @@ export class FirstPersonControls {
       name: 'mouseDragOn'
     });
 
-    this.storageService.hotkeySceneCommandPush('onMouseMove', {
+    this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
       onMouseMove: event => {
         if (this.domElement === document) {
           this.mouseX = event.pageX - this.viewHalfX;
@@ -130,23 +132,99 @@ export class FirstPersonControls {
       name: 'onMouseMove'
     });
 
-    this.storageService.hotkeySceneCommandPush('moveForwardKeyboard', {
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
       onKeyUp: () => {
         this.moveForward = false;
+        console.log(this.moveForward);
       },
       onKeyDown: () => {
         console.log('Двигаюсь вперед');
-        console.log(this.object);
-
         this.moveForward = true;
+        console.log(this.moveForward);
       },
       pressed: false,
       keyCode: [Key.W, Key.UpArrow],
+      name: 'moveFackward'
+    });
+    //TODO:START
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveBackwardKeybord, {
+      onKeyUp: () => {
+        this.moveBackward = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь назад');
+        console.log(this.object);
+
+        this.moveBackward = true;
+      },
+      pressed: false,
+      keyCode: [Key.S, Key.DownArrow],
       name: 'moveBackward'
     });
 
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveLeftKeybord, {
+      onKeyUp: () => {
+        this.moveLeft = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь налево');
+        console.log(this.object);
+
+        this.moveLeft = true;
+      },
+      pressed: false,
+      keyCode: [Key.A, Key.LeftArrow],
+      name: 'moveLeft'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveRightKeybord, {
+      onKeyUp: () => {
+        this.moveRight = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь направо');
+        console.log(this.object);
+
+        this.moveRight = true;
+      },
+      pressed: false,
+      keyCode: [Key.D, Key.RightArrow],
+      name: 'moveRight'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveUpKeybord, {
+      onKeyUp: () => {
+        this.moveUp = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь наверх');
+        console.log(this.object);
+
+        this.moveUp = true;
+      },
+      pressed: false,
+      keyCode: [Key.R],
+      name: 'moveUp'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveDownKeybord, {
+      onKeyUp: () => {
+        this.moveDown = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь вниз');
+        console.log(this.object);
+
+        this.moveDown = true;
+      },
+      pressed: false,
+      keyCode: [Key.F],
+      name: 'moveDown'
+    });
+    //TODO:END
+
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
-      rendererUpdate: delta => {
+      update: delta => {
         if (this.enabled === false) {
           return;
         }
@@ -199,12 +277,13 @@ export class FirstPersonControls {
         if (this.constrainVertical) {
           this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
         }
+
         let targetPosition = this.target,
           position = this.object.position;
-        targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
-        targetPosition.y = position.y + 100 * Math.cos(this.phi);
-        targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
-        this.object.lookAt(targetPosition);
+        // targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
+        // targetPosition.y = position.y + 100 * Math.cos(this.phi);
+        // targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
+        // this.object.lookAt(targetPosition);
       }
     });
   }

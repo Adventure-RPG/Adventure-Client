@@ -32,7 +32,8 @@ export class MainComponent implements OnInit {
       content: {
         title: 'Таверна',
         subtitle: 'Здесь можно найти группу, для приключений'
-      }
+      },
+      routerLink: ['/tavern']
     },
     {
       baseClass: 'b',
