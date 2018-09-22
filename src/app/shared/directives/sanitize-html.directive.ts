@@ -1,13 +1,11 @@
-import {Directive, HostBinding, Input} from '@angular/core';
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import { Directive, HostBinding, Input } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Directive({
   selector: '[adventureSanitizeHtml]'
 })
 export class SanitizeHtmlDirective {
-
-  @Input()
-  public sanitizeHtml: string;
+  @Input() public sanitizeHtml: string;
 
   @HostBinding('innerHtml')
   public get innerHtml(): SafeHtml {
@@ -15,6 +13,5 @@ export class SanitizeHtmlDirective {
     return this._sanitizer.bypassSecurityTrustHtml(this.sanitizeHtml);
   }
 
-  constructor(private _sanitizer: DomSanitizer){}
-
+  constructor(private _sanitizer: DomSanitizer) {}
 }

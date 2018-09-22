@@ -12,7 +12,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NouisliderModule } from 'ng2-nouislider';
 import { CheckboxComponent } from './form-components/checkbox/checkbox.component';
 import { RangeComponent } from './form-components/range/range.component';
-import {SanitizeHtmlDirective} from "@shared/directives/sanitize-html.directive";
+import { SanitizeHtmlDirective } from '@shared/directives/sanitize-html.directive';
 
 const Modules = [
   CommonModule,
