@@ -4,6 +4,7 @@ import { LightService } from '../../engine/core/light.service';
 import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry } from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -58,6 +59,7 @@ export class EditorComponent implements OnInit {
     // console.log(event);
   }
 
+  //TODO: выпилить.
   mouseWheel(event) {
     this.settingsService.changeSetting('camera', {
       d: this.settingsService.settings.camera.d + event.deltaY / 100
@@ -84,6 +86,22 @@ export class EditorComponent implements OnInit {
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
+    // ground
+    let mesh = new Mesh(
+      new PlaneBufferGeometry(100, 100),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    );
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.receiveShadow = true;
+    this.engineService.sceneService.scene.add(mesh);
+
+    let grid = new GridHelper(100, 20, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    this.engineService.sceneService.scene.add(grid);
+
+    this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
+
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
@@ -91,17 +109,17 @@ export class EditorComponent implements OnInit {
     this.keyboardEventService.engineService = this.engineService;
 
     let hemisphereLightOptions = {
-      color: '#aaa',
-      groundColor: '#777',
+      color: '#ffffff',
+      groundColor: '#444444',
       intensity: 0.9,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position: {
-        x: 30,
-        y: 30,
-        z: 30
+        x: 50,
+        y: 200,
+        z: 50
       }
     };
 
@@ -145,16 +163,16 @@ export class EditorComponent implements OnInit {
       decay: 2,
       position: {
         x: 0,
-        y: 50,
-        z: 50
+        y: 200,
+        z: 100
       },
       shadow: {
         castShadow: true,
         camera: {
-          left: -400,
-          right: 400,
-          top: 400,
-          bottom: -400,
+          left: -4000,
+          right: 4000,
+          top: 4000,
+          bottom: -4000,
           near: 0.5,
           far: 1000
         }
@@ -171,18 +189,18 @@ export class EditorComponent implements OnInit {
       decay: 2,
       position: {
         x: 0,
-        y: 150,
-        z: 100
+        y: 1500,
+        z: 1000
       }
     };
 
-    // this.lightService.addLight(hemisphereLightOptions, "HemisphereLight");
+    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 
-    this.lightService.addLight(ambientLightOptions, 'AmbientLight');
+    // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
-    // this.lightService.addLight(directionalLightOptions, "DirectionalLight");
+    // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
     this.lightService.addLight(spotLightOptions, 'SpotLight');
 

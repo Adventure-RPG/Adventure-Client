@@ -23,6 +23,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'tavern',
+        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule',
+        canActivate: [AuthGuard]
+      },
+      {
         path: '',
         loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
       }

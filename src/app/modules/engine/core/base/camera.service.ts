@@ -109,9 +109,9 @@ export class CameraService implements OnInit {
   }
 
   public updateFirstPersonCamera() {
-    let d = this.settingsService.settings.camera.d;
+    // let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
-    this.camera.position.set(d * 8, d * 8, d * 8);
+    // this.camera.position.set(d * 8, d * 8, d * 8);
   }
 
   public initIsometricCamera() {
