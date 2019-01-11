@@ -26,56 +26,6 @@ export class EditorComponent implements OnInit {
     // this.engineService.renderEngine();
   }
 
-  public mouseData = {
-    dragStart: null,
-    dragMove: null,
-    dragEnd: null
-  };
-
-  dragStartMouse(event) {
-    this.mouseData.dragStart = event;
-    console.log(event);
-  }
-
-  dragMoveMouse(event) {
-    if (this.mouseData.dragStart) {
-      this.mouseData.dragMove = event;
-
-      // let x = this.mouseData.dragStart.offsetX - this.mouseData.dragMove.offsetX;
-      // let y = this.mouseData.dragStart.offsetY - this.mouseData.dragMove.offsetY;
-      // console.log(event)
-      // console.log(`${this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d}`);
-      // //
-      // if (this.engineService.sceneService.scene && this.settingsService.settings && this.settingsService.settings.camera && this.settingsService.settings.camera.d) {
-      //   this.engineService.updateCamera(x, y, 0);
-      // }
-    }
-  }
-
-  dragEndMouse(event) {
-    this.mouseData.dragStart = null;
-    this.mouseData.dragEnd = event;
-    // console.log(this.engineService.sceneService.scene)
-    // console.log(event);
-  }
-
-  //TODO: выпилить.
-  mouseWheel(event) {
-    this.settingsService.changeSetting('camera', {
-      d: this.settingsService.settings.camera.d + event.deltaY / 100
-    });
-
-    // TODO: delete if not needed
-    // if (
-    //   this.engineService.sceneService.scene &&
-    //   this.settingsService &&
-    //   this.settingsService.settings.camera &&
-    //   this.settingsService.settings.camera.d
-    // ) {
-    //   this.engineService.updateCamera();
-    // }
-  }
-
   ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
@@ -99,7 +49,6 @@ export class EditorComponent implements OnInit {
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
     this.engineService.sceneService.scene.add(grid);
-
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );

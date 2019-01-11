@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 /**
  * Mud hack for root services
+ * TODO: переписать на рут инджект
  */
 
 @Injectable()
