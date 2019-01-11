@@ -4,7 +4,7 @@ import { KeyboardEventService } from '@events/keyboard-event.service';
 import { MouseEventService } from '@events/mouse-event.service';
 
 const debugEvents = {
-  mouseEvents: false,
+  mouseEvents: true,
   keyboardEvents: false
 };
 
@@ -40,6 +40,7 @@ export class SceneEventsDirective {
   onMouseMove(event: MouseEvent) {
     if (debugEvents.mouseEvents) {
       console.log(event);
+      console.log(event.type);
     }
   }
 
@@ -92,6 +93,14 @@ export class SceneEventsDirective {
     }
   }
 
+  @HostListener('document:mousewheel', ['$event'])
+  onMouseWheel(event: MouseEvent) {
+    if (debugEvents.mouseEvents) {
+      console.log(event);
+      console.log(event.type);
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   onDocumentKeyDown(event: KeyboardEvent) {
     if (debugEvents.keyboardEvents) {
@@ -107,6 +116,8 @@ export class SceneEventsDirective {
     }
     this.keyboardEventService.keyboardPressEvent(event);
   }
+
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
