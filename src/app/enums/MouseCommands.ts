@@ -2,5 +2,13 @@ export enum MouseCommands {
   mouseMoveForward,
   mouseMoveBackward,
   mouseDragOn,
-  onMouseMove
+  onMouseMove,
+  mouseClick,
+  mouseDoubleClick,
+  mouseOver,
+  mouseOut,
+  mouseEnter,
+  mouseLeave,
+  contextMenu,
+  mouseWheel
 }

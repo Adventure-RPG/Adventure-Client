@@ -13,6 +13,7 @@ export interface Command {
   onMouseDown?(event);
   onMouseUp?(event);
   onMouseMove?(event);
+  onMouse?(event);
   pressed?: boolean;
   keyCode?: number | number[];
   name: string;

@@ -113,6 +113,14 @@ export class SceneEventsDirective {
     }
   }
 
+  @HostListener('mousewheel', ['$event'])
+  onMouseWheel(event: MouseEvent) {
+    if (debugEvents.mouseEvents) {
+      console.log(event);
+      console.log(event.type);
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   onDocumentKeyDown(event: KeyboardEvent) {
     if (this.element.nativeElement === this.currentElement) {

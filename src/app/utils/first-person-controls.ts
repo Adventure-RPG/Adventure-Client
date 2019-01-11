@@ -38,6 +38,8 @@ export class FirstPersonControls {
   mouseDragOn;
   viewHalfX;
   viewHalfY;
+  mouseWheelUp;
+  mouseWheelDown;
 
   constructor(object, domElement, private storageService: StorageService) {
     this.object = object;
@@ -205,6 +207,31 @@ export class FirstPersonControls {
       pressed: false,
       keyCode: [Key.R],
       name: 'moveUp'
+    });
+
+    //this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    //       onMouseMove: (event: MouseEvent) => {
+    //         this.mouseX = ( event.clientX - this.viewHalfX );
+    //         this.mouseY = ( event.clientY - this.viewHalfY );
+    //         console.log("moving");
+    //       },
+    //       pressed: false,
+    //       keyCode: [NaN],
+    //       name: 'mouseMove',
+    //     });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
+      onMouse: (event: MouseWheelEvent) => {
+        console.log('Колесико мышки');
+        if (event.deltaY === 100) {
+          this.object.zoom += 0.1;
+        } else {
+          this.object.zoom -= 0.1;
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mousewheel'
     });
 
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveDownKeybord, {
