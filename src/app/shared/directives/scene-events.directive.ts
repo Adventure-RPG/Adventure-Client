@@ -117,8 +117,6 @@ export class SceneEventsDirective {
     this.keyboardEventService.keyboardPressEvent(event);
   }
 
-
-
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     if (debugEvents.keyboardEvents) {

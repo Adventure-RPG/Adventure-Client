@@ -134,7 +134,6 @@ export class FirstPersonControls {
       name: 'onMouseMove'
     });
 
-
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
       onKeyUp: () => {
         this.moveForward = false;
@@ -223,7 +222,7 @@ export class FirstPersonControls {
 
     this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
       onMouse: (event: MouseWheelEvent) => {
-        console.log("Колесико мышки");
+        console.log('Колесико мышки');
         if (event.deltaY === 100) {
           this.object.zoom += 0.1;
         } else {
@@ -232,7 +231,7 @@ export class FirstPersonControls {
       },
       pressed: false,
       keyCode: [NaN],
-      name: "mousewheel"
+      name: 'mousewheel'
     });
 
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveDownKeybord, {

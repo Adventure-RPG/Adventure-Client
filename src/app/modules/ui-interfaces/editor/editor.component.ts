@@ -26,8 +26,6 @@ export class EditorComponent implements OnInit {
     // this.engineService.renderEngine();
   }
 
-
-
   ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();

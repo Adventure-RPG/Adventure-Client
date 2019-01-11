@@ -9,20 +9,18 @@ export class MouseEventService {
 
   engineService: EngineService;
 
-
   mousePressEvent(event: MouseEvent) {
-       /**
+    /**
        Обработчик эвентов на мышку
         **/
 
-       for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
-
-         if (
-           typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
-           <string>this.storageService.hotkeySceneCommands[sceneCommandName].name === event.type
-         ) {
-           this.storageService.hotkeySceneCommands[sceneCommandName].onMouse(event);
-         }
-       }
-     }
+    for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
+      if (
+        typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
+        <string>this.storageService.hotkeySceneCommands[sceneCommandName].name === event.type
+      ) {
+        this.storageService.hotkeySceneCommands[sceneCommandName].onMouse(event);
+      }
+    }
+  }
 }
