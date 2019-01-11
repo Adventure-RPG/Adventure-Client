@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '@modules/ui-interfaces/tavern/chat/chat.service';
 
-const TYPING_TIMER_LENGTH = 400;// ms
+const TYPING_TIMER_LENGTH = 400; // ms
 
 @Component({
   selector: 'adventure-chat',
@@ -17,11 +17,9 @@ export class ChatComponent implements OnInit {
   typing: boolean = false;
   lastTypingTime;
 
-
   constructor(public chat: ChatService) {}
 
   ngOnInit() {
-
     this.chat.connect();
     // this.chat.sendMsg({auth: {ololo: this.message}});
     this.chat.messages.subscribe(msg => {
@@ -30,26 +28,26 @@ export class ChatComponent implements OnInit {
     });
 
     setTimeout(() => {
-      this.getServerTime()
-    }, 1000 * 10)
+      this.getServerTime();
+    }, 1000 * 10);
   }
 
   sendMessage() {
-    this.chat.sendMsg({message: {"text": this.message}});
+    this.chat.sendMsg({ message: { text: this.message } });
     this.message = '';
   }
 
   typingMessage(typing: number) {
     this.typing = false;
-    this.chat.sendMsg({typing: typing});
+    this.chat.sendMsg({ typing: typing });
   }
 
-  getServerTime(){
-    this.chat.sendMsg({datetime: {time: new Date().getTime()}});
+  getServerTime() {
+    this.chat.sendMsg({ datetime: { time: new Date().getTime() } });
   }
 
-  leaveFromChat(){
-    this.chat.sendMsg({leave: true});
+  leaveFromChat() {
+    this.chat.sendMsg({ leave: true });
   }
 
   updateTyping = () => {
@@ -58,17 +56,15 @@ export class ChatComponent implements OnInit {
         this.typingMessage(1);
       }
 
-      this.lastTypingTime = (new Date()).getTime();
+      this.lastTypingTime = new Date().getTime();
 
       setTimeout(() => {
-        let typingTimer = (new Date()).getTime();
+        let typingTimer = new Date().getTime();
         let timeDiff = typingTimer - this.lastTypingTime;
         if (timeDiff >= TYPING_TIMER_LENGTH && this.typing) {
           this.typingMessage(0);
         }
       }, TYPING_TIMER_LENGTH);
     }
-  }
-
-
+  };
 }

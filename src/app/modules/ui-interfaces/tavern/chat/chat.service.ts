@@ -12,14 +12,10 @@ export class ChatService {
   messages: Subject<any>;
 
   // Our constructor calls our wsService connect method
-  constructor(private wsService: WebsocketIoService) {
-
-  }
+  constructor(private wsService: WebsocketIoService) {}
 
   connect() {
-    this.messages = <Subject<any>>this.wsService
-      .connect()
-      .pipe(
+    this.messages = <Subject<any>>this.wsService.connect().pipe(
       map(
         (response: any): any => {
           return response;
