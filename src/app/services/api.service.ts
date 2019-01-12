@@ -1,10 +1,11 @@
 import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-import {HttpClient, HttpEvent, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { AppService } from '../app.service';
 import { HandleErrorService } from './handle-error.service';
-import {Observable} from "rxjs/index";
+import { Observable } from 'rxjs/index';
+import {HttpResponse} from "@angular/common/http/src/response";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -31,7 +32,6 @@ export class ApiService {
     return this.httpClient
       .get(url, httpOptions || options)
       .pipe(catchError(this.handleErrorService.handleError.bind(this)))
-      .pipe(tap((res: Response) => res.json()));
   }
 
   post(url: string, body?: Object, options?) {
@@ -42,20 +42,14 @@ export class ApiService {
   }
 
   put<T>(url: string, body: Object, options?) {
-    return this.httpClient
-      .put<T>(url, body, options)
-      .pipe(
-        tap((res: HttpEvent<T>) => res.json()),
-        catchError(this.handleErrorService.handleError.bind(this.handleErrorService))
-      );
+    return this.httpClient.put<T>(url, body, options).pipe(
+      catchError(this.handleErrorService.handleError.bind(this.handleErrorService))
+    );
   }
 
   delete<T>(url: string, options?) {
-    return this.httpClient
-      .delete<T>(url, options)
-      .pipe(
-        tap((res: HttpEvent<T>) => res.json()),
-        catchError(this.handleErrorService.handleError.bind(this.handleErrorService))
-      );
+    return this.httpClient.delete<T>(url, options).pipe(
+      catchError(this.handleErrorService.handleError.bind(this.handleErrorService))
+    );
   }
 }
