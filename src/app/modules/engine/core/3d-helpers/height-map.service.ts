@@ -7,7 +7,8 @@ import {
   Matrix4,
   Mesh,
   MeshLambertMaterial,
-  MeshPhongMaterial, MeshStandardMaterial,
+  MeshPhongMaterial,
+  MeshStandardMaterial,
   Scene,
   ShadowMaterial,
   Vector3,
@@ -15,7 +16,7 @@ import {
 } from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
-import {MeshStandardMaterialParameters} from "three/three-core";
+import { MeshStandardMaterialParameters } from 'three/three-core';
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -356,7 +357,7 @@ export class HeightMapService {
 
     for (let i = 0; i < NUM_CUBES; i++) {
       let material = new MeshStandardMaterial({
-        color: Math.random() * 0xffffff,
+        color: Math.random() * 0xffffff
       });
 
       if (i % GRID_SIZE === 0) {

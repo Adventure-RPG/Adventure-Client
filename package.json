@@ -48,7 +48,7 @@
     "ngx-swiper-wrapper": "^7.2.0",
     "nouislider": "^12.1.0",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.2.2",
+    "rxjs": "^6.3.3",
     "simplex-noise": "^2.4.0",
     "three": "^0.100.0",
     "socket.io": "^2.1.1",

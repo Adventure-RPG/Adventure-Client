@@ -167,7 +167,14 @@ export class LightService {
       //   break;
       case 'SpotLight':
         // light = new SpotLight(0xffffff);
-        light = new SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
+        light = new SpotLight(
+          color,
+          lightEntity.intensity,
+          lightEntity.distance,
+          lightEntity.angle,
+          lightEntity.exponent,
+          lightEntity.decay
+        );
         // light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER

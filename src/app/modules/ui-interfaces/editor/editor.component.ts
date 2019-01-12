@@ -4,7 +4,15 @@ import { LightService } from '../../engine/core/light.service';
 import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import {BoxBufferGeometry, Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry, PlaneGeometry} from 'three';
+import {
+  BoxBufferGeometry,
+  Color,
+  GridHelper,
+  Mesh,
+  MeshPhongMaterial,
+  PlaneBufferGeometry,
+  PlaneGeometry
+} from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -19,7 +27,7 @@ export class EditorComponent implements OnInit {
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
-    public keyboardEventService: KeyboardEventService,
+    public keyboardEventService: KeyboardEventService
   ) {
     // this.engineService.renderEngine();
   }

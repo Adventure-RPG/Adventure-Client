@@ -33,8 +33,7 @@ export class SceneEventsDirective {
     private keyboardEventService: KeyboardEventService,
     private mouseEventService: MouseEventService,
     private onWindowEventService: OnWindowEventService
-  ) {
-  }
+  ) {}
 
   private currentElement;
 
