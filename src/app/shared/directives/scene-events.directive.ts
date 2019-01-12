@@ -5,7 +5,7 @@ import { MouseEventService } from '@events/mouse-event.service';
 
 const debugEvents = {
   mouseEvents: {
-    mousedown: true,
+    mousedown: false,
     mouseup: false,
     mousemove: false,
     click: false,
@@ -15,7 +15,7 @@ const debugEvents = {
     mouseenter: false,
     mouseleave: false,
     contextmenu: false,
-    mousewheel: false
+    mousewheel: true
   },
   keyboardEvents: {
     keydown: false,
@@ -121,6 +121,8 @@ export class SceneEventsDirective {
       console.log(event);
       console.log(event.type);
     }
+
+    this.mouseEventService.mousePressEvent(event);
   }
 
   @HostListener('document:keydown', ['$event'])

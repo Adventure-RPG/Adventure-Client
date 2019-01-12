@@ -23,7 +23,7 @@ export class SceneService {
 
     this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+    this.renderer.shadowMap.type = THREE.BasicShadowMap; // default THREE.PCFShadowMap
 
     this.animation();
   }

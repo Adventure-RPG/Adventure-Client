@@ -174,7 +174,9 @@ export class MaterialFormAnnotation implements Material, OnInit {
 
   addEventListener(type: string, listener: (event: Event) => void): void {}
 
-  hasEventListener(type: string, listener: (event: Event) => void): void {}
+  hasEventListener(type: string, listener: (event: Event) => void): boolean {
+    return null;
+  }
 
   removeEventListener(type: string, listener: (event: Event) => void): void {}
 

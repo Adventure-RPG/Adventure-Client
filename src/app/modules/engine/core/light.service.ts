@@ -18,9 +18,10 @@ import {
 import { EngineService } from '../engine.service';
 
 //Тень зависит от размера картины
+// TODO: Вынести все настройки теней в settings
 
-const SHADOW_MAP_WIDTH = 2048,
-  SHADOW_MAP_HEIGHT = 2048;
+const SHADOW_MAP_WIDTH = 4096,
+  SHADOW_MAP_HEIGHT = 4096;
 
 export interface Shadow {
   castShadow: boolean;
@@ -165,8 +166,8 @@ export class LightService {
       //
       //   break;
       case 'SpotLight':
-        light = new SpotLight(0xffffff);
-        // light = new SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
+        // light = new SpotLight(0xffffff);
+        light = new SpotLight( color,  lightEntity.intensity, lightEntity.distance, lightEntity.angle, lightEntity.exponent, lightEntity.decay   );
         // light.color.setHSL( 0.1, 1, 0.95 );
         light.position.set(lightEntity.position.x, lightEntity.position.y, lightEntity.position.z);
         //HELPLER

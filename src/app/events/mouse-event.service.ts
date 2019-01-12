@@ -11,8 +11,8 @@ export class MouseEventService {
 
   mousePressEvent(event: MouseEvent) {
     /**
-       Обработчик эвентов на мышку
-        **/
+     Обработчик эвентов на мышку
+      **/
 
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       if (

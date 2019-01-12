@@ -4,7 +4,7 @@ import { LightService } from '../../engine/core/light.service';
 import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry } from 'three';
+import {BoxBufferGeometry, Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry, PlaneGeometry} from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -20,8 +20,6 @@ export class EditorComponent implements OnInit {
     private lightService: LightService,
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
-    private heightMapService: HeightMapService,
-    private elementRef: ElementRef
   ) {
     // this.engineService.renderEngine();
   }
@@ -38,16 +36,17 @@ export class EditorComponent implements OnInit {
 
     // ground
     let mesh = new Mesh(
-      new PlaneBufferGeometry(100, 100),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+      new PlaneGeometry(100, 100, 10, 10),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: true })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
     let grid = new GridHelper(100, 20, 0x000000, 0x000000);
-    grid.material.opacity = 0.2;
-    grid.material.transparent = true;
+
+    // grid.material.opacity = 0.2;
+    // grid.material.transparent = true;
     this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
@@ -60,14 +59,14 @@ export class EditorComponent implements OnInit {
     let hemisphereLightOptions = {
       color: '#ffffff',
       groundColor: '#444444',
-      intensity: 0.9,
+      intensity: 0.5,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position: {
         x: 50,
-        y: 200,
+        y: 300,
         z: 50
       }
     };
@@ -131,15 +130,15 @@ export class EditorComponent implements OnInit {
     let spotLightOptions = {
       color: '0xffffff',
       groundColor: '#fff',
-      intensity: 0.5,
-      distance: 2500,
+      intensity: 1,
+      distance: 1500,
       exponent: 0,
       angle: 1.52,
       decay: 2,
       position: {
         x: 0,
-        y: 1500,
-        z: 1000
+        y: 1000,
+        z: 500
       }
     };
 
