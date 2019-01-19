@@ -29,6 +29,7 @@
     "@angular/platform-browser-dynamic": "^7.2.0",
     "@angular/platform-server": "^7.2.0",
     "@angular/router": "^7.2.0",
+    "@jscad/csg": "^0.7.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.1",
     "@ng-select/ng-select": "^2.3.6",
     "angular2-virtual-scroll": "^0.4.16",
@@ -50,8 +51,9 @@
     "reflect-metadata": "^0.1.12",
     "rxjs": "^6.3.3",
     "simplex-noise": "^2.4.0",
-    "three": "^0.100.0",
     "socket.io": "^2.1.1",
+    "three": "^0.100.0",
+    "three-js-csg": "^72.0.0",
     "uuid": "^3.3.2",
     "zone.js": "^0.8.27"
   },

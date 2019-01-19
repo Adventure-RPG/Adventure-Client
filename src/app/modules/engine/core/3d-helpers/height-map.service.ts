@@ -6,6 +6,7 @@ import {
   Geometry,
   Matrix4,
   Mesh,
+  MeshBasicMaterial,
   MeshLambertMaterial,
   MeshPhongMaterial,
   MeshStandardMaterial,
@@ -17,6 +18,11 @@ import {
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
 import { MeshStandardMaterialParameters } from 'three/three-core';
+import * as CSG from '@jscad/csg/csg.js';
+// import * as ThreeBSP from 'three-js-csg';
+import * as Three from 'three';
+
+const ThreeCSG = require('three-js-csg')(Three);
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -205,8 +211,8 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene) {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 16;
-    let worldWidth = 16;
+    let worldDepth = 5;
+    let worldWidth = 5;
     let cubeWidth = 1;
     let worldHalfWidth = worldWidth / 2,
       worldHalfDepth = worldDepth / 2;
@@ -214,37 +220,72 @@ export class HeightMapService {
     this.mapData = Noise.generateHeight(worldWidth, worldDepth);
     let matrix = new Matrix4();
 
-    let geometry = new Geometry();
-
-    let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
-
     //Нужен для перемещения в 0
     const min = Math.min(...this.mapData) * 0.2;
 
     // console.log(min);
     let geometryMatrix: Array<Vector3> = [];
 
+    let meshBSP = new ThreeCSG(new Mesh(new BoxGeometry(0), new MeshBasicMaterial()));
+    // console.log(box);
+    // console.log(
+    //   x * cubeWidth - worldHalfWidth * cubeWidth,
+    //   (y - min) * cubeWidth,
+    //   z * cubeWidth - worldHalfDepth * cubeWidth
+    // ));
+    console.log(meshBSP);
+    // let geometryBSP = meshBSP.toGeometry();
+    // console.log(geometryBSP);
+    // console.log(new ThreeBSP(geometry));
+
+    let geometries = [];
+
     for (let z = 0; z < worldDepth; z++) {
       for (let x = 0; x < worldWidth; x++) {
         //Делаем всех от одного уровня
         let h = Noise.getY({ mapData: this.mapData, x, z, worldWidth, k: 0.2 });
 
-        console.log(h);
+        // console.log(h);
 
         for (let y = min; y <= h + 2; y++) {
-          matrix.makeTranslation(
+          // matrix.makeTranslation(
+          //   x * cubeWidth - worldHalfWidth * cubeWidth,
+          //   (y - min) * cubeWidth,
+          //   z * cubeWidth - worldHalfDepth * cubeWidth
+          // );
+          //
+          let box = new BoxGeometry(1, 1, 1);
+          box.translate(
             x * cubeWidth - worldHalfWidth * cubeWidth,
             (y - min) * cubeWidth,
             z * cubeWidth - worldHalfDepth * cubeWidth
           );
 
-          geometry.merge(boxGeometry, matrix);
+          let cube = new Mesh(box, new MeshBasicMaterial());
+          console.log(box);
+          console.log(
+            x * cubeWidth - worldHalfWidth * cubeWidth,
+            (y - min) * cubeWidth,
+            z * cubeWidth - worldHalfDepth * cubeWidth
+          );
+
+          geometries.push(new ThreeCSG(cube));
         }
 
         // x - worldHalfWidth
         // z - worldHalfDepth
       }
     }
+
+    for (let i = 0; i < geometries.length; i++) {
+      meshBSP.union(geometries[i]);
+    }
+
+    console.log(geometries);
+    console.log(meshBSP.toGeometry());
+    console.log(meshBSP);
+
+    let geometry = meshBSP.toGeometry();
 
     // let index = 0;
     // for (let obj of geometryMatrix) {
@@ -256,15 +297,7 @@ export class HeightMapService {
     //
     // console.log(geometryMatrix)
     // console.log(geometry)
-
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-
     //TODO: Вынести материалы и нижнию логику
-
-    let material = new MeshLambertMaterial({
-      color: Math.random() * 0xffffff
-    });
 
     let baseMaterial = new MeshLambertMaterial({
       flatShading: true,
@@ -277,17 +310,21 @@ export class HeightMapService {
     });
     // console.log(geometry)
 
-    geometry.verticesNeedUpdate = true;
-    // geometry.computeFlatVertexNormals();
-    // geometry.computeFaceNormals();
-    // geometry.computeBoundingSphere();
-    // geometry.computeBoundingBox();
-    geometry.mergeVertices();
+    let material = new MeshPhongMaterial({
+      flatShading: true,
+      shininess: 100,
+      vertexColors: VertexColors,
+      color: '#89ff90'
+    });
 
-    let mesh = new Mesh(geometry, material);
+    // console.log(new CSG.CSG);
+
+    // removeDuplicateFaces(geometry);
+
+    console.log(geometry);
     //
-    // console.log(geometry);
-    //
+    let mesh = new Mesh(geometry, baseMaterial);
+
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     mesh.updateMatrix();
@@ -350,7 +387,7 @@ export class HeightMapService {
 
     let RECT_SIZE = 3,
       RECT_HEIGHT = 10 * RECT_SIZE,
-      GRID_SIZE = 10;
+      GRID_SIZE = 5;
     let NUM_CUBES = GRID_SIZE * GRID_SIZE;
 
     let geometry = new BoxGeometry(RECT_SIZE, RECT_HEIGHT, RECT_SIZE);

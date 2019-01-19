@@ -67,7 +67,7 @@ export class EditorComponent implements OnInit {
     let hemisphereLightOptions = {
       color: '#ffffff',
       groundColor: '#444444',
-      intensity: 0.5,
+      intensity: 1,
       distance: 200,
       exponent: 0,
       angle: 0.52,
@@ -136,17 +136,32 @@ export class EditorComponent implements OnInit {
     };
 
     let spotLightOptions = {
-      color: '0xffffff',
-      groundColor: '#fff',
+      color: '0x777',
+      groundColor: '#777',
       intensity: 1,
-      distance: 1500,
-      exponent: 0,
-      angle: 1.52,
+      distance: 1000,
+      exponent: 1,
+      angle: Math.PI / 4,
       decay: 2,
       position: {
         x: 0,
-        y: 1000,
-        z: 500
+        y: 10,
+        z: -20
+      }
+    };
+
+    let spotLightOptions2 = {
+      color: '0x777',
+      groundColor: '#777',
+      intensity: 1,
+      distance: 1000,
+      exponent: 1,
+      angle: Math.PI / 4,
+      decay: 2,
+      position: {
+        x: 0,
+        y: 50,
+        z: 0
       }
     };
 
@@ -159,6 +174,7 @@ export class EditorComponent implements OnInit {
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
     this.lightService.addLight(spotLightOptions, 'SpotLight');
+    // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
