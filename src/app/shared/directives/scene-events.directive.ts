@@ -15,7 +15,7 @@ const debugEvents = {
     mouseenter: false,
     mouseleave: false,
     contextmenu: false,
-    mousewheel: true
+    mousewheel: false
   },
   keyboardEvents: {
     keydown: false,
@@ -56,6 +56,7 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mousemove) {
       console.log(event);
     }
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('click', ['$event'])
@@ -118,10 +119,8 @@ export class SceneEventsDirective {
   onMouseWheel(event: MouseEvent) {
     if (debugEvents.mouseEvents.mousewheel) {
       console.log(event);
-      console.log(event.type);
     }
-
-    this.mouseEventService.mousePressEvent(event);
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('document:keydown', ['$event'])
