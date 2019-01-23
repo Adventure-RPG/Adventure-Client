@@ -77,9 +77,9 @@ export class KeyboardEventService {
     /**
      * Обработчик хоткеи ивентов.
      */
+    console.log(event);
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       //Сравниваем по типу, потом по кей коду, если есть то исполняем
-
       if (
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'number' &&
         <number>this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === event.keyCode
