@@ -155,7 +155,6 @@ export class EngineService {
     // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
-
   //TODO: вынести
   public colorMap(img) {
     let options: HeightMapOptions = {

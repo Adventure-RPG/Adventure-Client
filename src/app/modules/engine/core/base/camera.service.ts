@@ -9,7 +9,9 @@ import { StorageService } from '../../../../services/storage.service';
 @Injectable()
 export class CameraService implements OnInit {
   private _camera: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
-  private _cameries: { [key: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera };
+  private _cameries: {
+    [key: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
+  };
   private _domElement;
 
   x;
@@ -26,11 +28,13 @@ export class CameraService implements OnInit {
     this._camera = value;
   }
 
-  get cameries(): { [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera} {
+  get cameries(): { [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera } {
     return this._cameries;
   }
 
-  set cameries(value: { [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera}) {
+  set cameries(value: {
+    [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
+  }) {
     this._cameries = value;
   }
 

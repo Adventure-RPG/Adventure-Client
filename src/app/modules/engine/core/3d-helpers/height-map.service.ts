@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {IGEOJson} from '../../engine.types';
-import {Mesh, MeshPhongMaterial, Scene, ShadowMaterial, VertexColors} from 'three';
-import {Terrain} from '../utils/terrain';
-import {Noise} from '@modules/engine/core/utils/noise';
-import {fromCSG, toCSG} from 'three-2-csg';
+import { IGEOJson } from '../../engine.types';
+import { Mesh, MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
+import { Terrain } from '../utils/terrain';
+import { Noise } from '@modules/engine/core/utils/noise';
+import { fromCSG, toCSG } from 'three-2-csg';
 
 const csgApi = require('@jscad/csg');
 
@@ -218,19 +218,13 @@ export class HeightMapService {
         for (let y = min; y <= h; y++) {
           geometries.push(
             csgApi.CSG.cube({
-              radius: cubeWidth/2,
-              center: [
-                x * cubeWidth,
-                (y - min) * cubeWidth + cubeWidth/2,
-                z * cubeWidth
-              ],
+              radius: cubeWidth / 2,
+              center: [x * cubeWidth, (y - min) * cubeWidth + cubeWidth / 2, z * cubeWidth]
             })
           );
         }
-
       }
     }
-
 
     // geometries.push(
     //   csgApi.CSG.cube({
@@ -246,7 +240,7 @@ export class HeightMapService {
     //   })
     // );
 
-    console.log(geometries)
+    console.log(geometries);
 
     let csgModel = geometries[0];
 
@@ -255,7 +249,6 @@ export class HeightMapService {
     for (let i = 0; i < geometries.length; i++) {
       csgModel = csgModel.union(geometries[i]);
     }
-
 
     //TODO: Вынести материалы и нижнию логику
 
@@ -279,6 +272,4 @@ export class HeightMapService {
     mesh.updateMatrix();
     scene.add(mesh);
   }
-
-
 }
