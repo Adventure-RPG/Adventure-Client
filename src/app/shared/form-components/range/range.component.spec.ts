@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RangeComponent } from './range.component';
+import {RangeComponent} from './range.component';
 
 describe('RangeComponent', () => {
   let component: RangeComponent;

@@ -1,4 +1,4 @@
-import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
+import {BoxGeometry, Geometry, Material, Mesh, PlaneGeometry} from 'three';
 
 export class Terrain {
   size: number;

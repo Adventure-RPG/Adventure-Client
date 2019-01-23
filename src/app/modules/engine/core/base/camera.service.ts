@@ -1,10 +1,10 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera } from 'three';
-import { SettingsService } from '../../../../services/settings.service';
+import {Injectable, OnInit} from '@angular/core';
+import {Camera, CubeCamera, OrthographicCamera, PerspectiveCamera} from 'three';
+import {SettingsService} from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
-import { CAMERA } from '../../../../enums/settings.enum';
-import { FirstPersonControls } from 'app/utils/first-person-controls';
-import { StorageService } from '../../../../services/storage.service';
+import {CAMERA} from '../../../../enums/settings.enum';
+import {FirstPersonControls} from 'app/utils/first-person-controls';
+import {StorageService} from '../../../../services/storage.service';
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -72,6 +72,7 @@ export class CameraService implements OnInit {
       this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
+        console.log(this.settingsService.settings.camera.type);
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
@@ -80,10 +81,7 @@ export class CameraService implements OnInit {
       }
     }
 
-    console.log('out');
-
     this.camera.lookAt(position); // or the origin
-
     return this.camera;
   }
 
@@ -123,6 +121,7 @@ export class CameraService implements OnInit {
     let d = this.settingsService.settings.camera.d;
 
     //Остановился на добавление второго типа камеры и переключателя для камер.
+    console.log(d);
 
     this.camera = new OrthographicCamera(
       -d * this.settingsService.settings.browser.aspectRatio,
@@ -144,17 +143,22 @@ export class CameraService implements OnInit {
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.IsometricCamera];
 
-    // console.log(x, y, z);
+    console.log(d);
 
     (<OrthographicCamera>this.camera).left = -d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).right =
-      -d * this.settingsService.settings.browser.aspectRatio;
+      d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).top = d;
     (<OrthographicCamera>this.camera).bottom = -d;
     (<OrthographicCamera>this.camera).near = 1;
     (<OrthographicCamera>this.camera).far = d * 40;
-
     this.camera.position.set(d * 8, d * 8, d * 8);
+
+    (<OrthographicCamera>this.camera).updateProjectionMatrix();
+    let obj = {};
+    obj[CAMERA.IsometricCamera] = this.camera;
+    let mergeModel = Lodash.merge(this.cameries, obj);
+    this.cameries = mergeModel;
   }
 
   public init2dCamera() {

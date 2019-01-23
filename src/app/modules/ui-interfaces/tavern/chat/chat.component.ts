@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ChatService } from '@modules/ui-interfaces/tavern/chat/chat.service';
+import {Component, OnInit} from '@angular/core';
+import {ChatService} from '@modules/ui-interfaces/tavern/chat/chat.service';
 
 const TYPING_TIMER_LENGTH = 400; // ms
 

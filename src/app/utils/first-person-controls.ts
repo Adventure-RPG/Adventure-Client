@@ -1,10 +1,9 @@
-import { Vector3 } from 'three';
 import * as THREE from 'three';
-import { StorageService } from '@services/storage.service';
-import { Key } from 'ts-keycode-enum';
-import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
-import { MouseCommands } from 'app/enums/MouseCommands';
-import {PerspectiveCamera} from "@node_modules/@types/three";
+import {Vector3} from 'three';
+import {StorageService} from '@services/storage.service';
+import {Key} from 'ts-keycode-enum';
+import {KeybordCommands} from 'app/enums/KeybordCommands.enum';
+import {MouseCommands} from 'app/enums/MouseCommands';
 
 export class FirstPersonControls {
   object;

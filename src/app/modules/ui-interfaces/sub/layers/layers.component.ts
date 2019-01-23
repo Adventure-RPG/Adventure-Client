@@ -1,11 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit
-} from '@angular/core';
-import { EngineService } from '../../../engine/engine.service';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {EngineService} from '../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-layers',

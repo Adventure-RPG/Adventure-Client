@@ -1,6 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
-import { CAMERA } from '../enums/settings.enum';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Injectable, OnInit} from '@angular/core';
+import {CAMERA} from '../enums/settings.enum';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 import * as Lodash from 'lodash';
 

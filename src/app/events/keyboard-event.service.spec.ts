@@ -1,6 +1,6 @@
-import { inject, TestBed } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { KeyboardEventService } from './keyboard-event.service';
+import {KeyboardEventService} from './keyboard-event.service';
 
 describe('KeyboardEventService', () => {
   beforeEach(() => {

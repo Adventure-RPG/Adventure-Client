@@ -2,7 +2,7 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
-import { Group, Matrix4, Mesh } from 'three';
+import {Group, Matrix4, Mesh} from 'three';
 
 export class SceneUtils {
   static createMultiMaterialObject(geometry, materials) {

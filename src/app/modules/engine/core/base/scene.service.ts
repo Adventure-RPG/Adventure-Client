@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import {Injectable} from '@angular/core';
 import * as THREE from 'three';
-import { StorageService } from '@services/storage.service';
-import { CAMERA } from '../../../../enums/settings.enum';
-import { SettingsService } from '../../../../services/settings.service';
+import {Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer} from 'three';
+import {StorageService} from '@services/storage.service';
+import {SettingsService} from '../../../../services/settings.service';
 
 @Injectable()
 export class SceneService {
@@ -34,6 +33,7 @@ export class SceneService {
 
   /**
    * Render logic
+   * Быть очень аккуратным здесь!!!
    */
   public animation() {
     requestAnimationFrame(this.animation.bind(this));

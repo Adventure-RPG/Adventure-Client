@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LoginRecoveryComponent } from './login-recovery.component';
+import {LoginRecoveryComponent} from './login-recovery.component';
 
 describe('LoginRecoveryComponent', () => {
   let component: LoginRecoveryComponent;

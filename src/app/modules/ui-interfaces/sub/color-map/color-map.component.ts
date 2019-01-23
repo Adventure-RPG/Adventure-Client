@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { EngineService } from '../../../engine/engine.service';
+import {Component, OnInit} from '@angular/core';
+import {EngineService} from '../../../engine/engine.service';
 
 @Component({
   selector: 'adventure-color-map',

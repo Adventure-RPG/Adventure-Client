@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   AmbientLight,
+  CameraHelper,
+  Color,
   DirectionalLight,
   DirectionalLightHelper,
   HemisphereLight,
   HemisphereLightHelper,
   LightShadow,
+  PerspectiveCamera,
   PointLight,
   PointLightHelper,
   SpotLight,
-  SpotLightHelper,
-  SpotLightShadow,
-  PerspectiveCamera,
-  Color,
-  CameraHelper
+  SpotLightHelper
 } from 'three';
 import { EngineService } from '../engine.service';
 

@@ -1,5 +1,5 @@
-import { Directive, HostBinding, Input } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {Directive, HostBinding, Input} from '@angular/core';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 @Directive({
   selector: '[adventureSanitizeHtml]'

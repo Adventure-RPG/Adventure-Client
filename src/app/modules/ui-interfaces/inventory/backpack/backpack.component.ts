@@ -1,7 +1,7 @@
-import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
-import { InventoryItem } from './lists/inventory-item.component';
+import {map} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {Http} from '@angular/http';
+import {InventoryItem} from './lists/inventory-item.component';
 
 @Component({
   selector: 'adventure-backpack',

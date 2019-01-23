@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { ModelLoaderService } from './model-loader.service';
+import {ModelLoaderService} from './model-loader.service';
 
 describe('ModelLoaderService', () => {
   beforeEach(() => {

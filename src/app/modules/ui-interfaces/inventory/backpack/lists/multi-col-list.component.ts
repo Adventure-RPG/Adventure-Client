@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 
-import { InventoryItem } from './inventory-item.component';
+import {InventoryItem} from './inventory-item.component';
 
 //TODO: добавить обратно виртуал скрол
 

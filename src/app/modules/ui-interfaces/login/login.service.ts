@@ -1,9 +1,9 @@
-import { tap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
-import { BehaviorSubject } from 'rxjs';
-import { RegistrateReq } from './login';
-import { SnotifyService } from 'ng-snotify';
+import {tap} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {ApiService} from '../../../services/api.service';
+import {BehaviorSubject} from 'rxjs';
+import {RegistrateReq} from './login';
+import {SnotifyService} from 'ng-snotify';
 
 @Injectable()
 export class LoginService {

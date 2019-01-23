@@ -1,6 +1,6 @@
-import { inject, TestBed } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { OnWindowEventService } from './on-window-event.service';
+import {OnWindowEventService} from './on-window-event.service';
 
 describe('OnWindowEventService', () => {
   beforeEach(() => {

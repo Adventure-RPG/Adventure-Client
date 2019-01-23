@@ -1,4 +1,4 @@
-import { SanitizeHtmlDirective } from './sanitize-html.directive';
+import {SanitizeHtmlDirective} from './sanitize-html.directive';
 
 describe('SanitizeHtmlDirective', () => {
   it('should create an instance', () => {

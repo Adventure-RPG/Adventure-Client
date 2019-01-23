@@ -1,11 +1,9 @@
-import { catchError, tap } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import {catchError} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
-import { AppService } from '../app.service';
-import { HandleErrorService } from './handle-error.service';
-import { Observable } from 'rxjs/index';
-import { HttpResponse } from '@angular/common/http/src/response';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {AppService} from '../app.service';
+import {HandleErrorService} from './handle-error.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

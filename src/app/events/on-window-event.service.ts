@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
-import { EngineService } from '../modules/engine/engine.service';
+import {Injectable} from '@angular/core';
+import {EngineService} from '../modules/engine/engine.service';
 
 @Injectable()
 export class OnWindowEventService {
-  constructor(private engineService: EngineService) {
+  constructor(
+    private engineService: EngineService,
+  ) {
     this.engineService.settingsService.changeSetting('browser', {
       aspectRatio: window.innerWidth / window.innerHeight
     });
@@ -18,5 +20,6 @@ export class OnWindowEventService {
     this.engineService.sceneService.resizeEvent(event);
 
     console.log(event);
+    console.log(this.engineService.settingsService.settings.browser);
   }
 }
