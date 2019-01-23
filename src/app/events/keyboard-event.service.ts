@@ -78,6 +78,7 @@ export class KeyboardEventService {
      * Обработчик хоткеи ивентов.
      */
     console.log(event);
+    console.log(this.storageService.hotkeySceneCommands);
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       //Сравниваем по типу, потом по кей коду, если есть то исполняем
       if (

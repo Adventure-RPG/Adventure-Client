@@ -1,8 +1,8 @@
 export enum KeybordCommands {
-  moveForwardKeyboard,
-  moveBackwardKeybord,
-  moveLeftKeybord,
-  moveRightKeybord,
-  moveUpKeybord,
-  moveDownKeybord
+  moveForwardKeyboard = 'moveForwardKeyboard',
+  moveBackwardKeybord = 'moveBackwardKeybord',
+  moveLeftKeybord = 'moveLeftKeybord',
+  moveRightKeybord = 'moveRightKeybord',
+  moveUpKeybord = 'moveUpKeybord',
+  moveDownKeybord = 'moveDownKeybord'
 }

@@ -71,6 +71,8 @@ export class StorageService {
   public hotkeySceneCommandPush(K, V: Command) {
     const tempObj = {};
     tempObj[K] = V;
+    console.log(tempObj);
+    console.log(this.hotkeySceneCommands);
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
   }
 
