@@ -45,7 +45,7 @@ export class EditorComponent implements OnInit {
     // ground
     let mesh = new Mesh(
       new PlaneGeometry(100, 100, 10, 10),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: true })
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 0.8 })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
@@ -67,7 +67,7 @@ export class EditorComponent implements OnInit {
     let hemisphereLightOptions = {
       color: '#ffffff',
       groundColor: '#444444',
-      intensity: 1,
+      intensity: 0.4,
       distance: 200,
       exponent: 0,
       angle: 0.52,
@@ -136,17 +136,17 @@ export class EditorComponent implements OnInit {
     };
 
     let spotLightOptions = {
-      color: '0x777',
-      groundColor: '#777',
-      intensity: 1,
-      distance: 1000,
-      exponent: 1,
-      angle: Math.PI / 4,
+      color: '0xffffff',
+      groundColor: '#fff',
+      intensity: 3,
+      distance: 1500,
+      exponent: 0,
+      angle: 1.52,
       decay: 2,
       position: {
         x: 0,
-        y: 10,
-        z: -20
+        y: 1000,
+        z: -800
       }
     };
 

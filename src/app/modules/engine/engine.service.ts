@@ -155,10 +155,6 @@ export class EngineService {
     // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
-  public generateFromNoise2() {
-    this.heightMapService.generateDungeonTerrain2(this.sceneService.scene);
-    // this.heightMapService.getHeightMap(this.sceneService.scene);
-  }
 
   //TODO: вынести
   public colorMap(img) {
