@@ -5,7 +5,7 @@ import { MouseEventService } from '@events/mouse-event.service';
 
 const debugEvents = {
   mouseEvents: {
-    mousedown: true,
+    mousedown: false,
     mouseup: false,
     mousemove: false,
     click: false,
@@ -33,8 +33,7 @@ export class SceneEventsDirective {
     private keyboardEventService: KeyboardEventService,
     private mouseEventService: MouseEventService,
     private onWindowEventService: OnWindowEventService
-  ) {
-  }
+  ) {}
 
   private currentElement;
 
@@ -57,6 +56,7 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mousemove) {
       console.log(event);
     }
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('click', ['$event'])
@@ -119,8 +119,8 @@ export class SceneEventsDirective {
   onMouseWheel(event: MouseEvent) {
     if (debugEvents.mouseEvents.mousewheel) {
       console.log(event);
-      console.log(event.type);
     }
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('document:keydown', ['$event'])

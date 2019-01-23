@@ -15,7 +15,9 @@ export interface InventoryItem {
 
 @Component({
   selector: 'inventory-item',
-  template: `<div class="avatar">{{item.index}}</div>`,
+  template: `
+    <div class="avatar">{{ item.index }}</div>
+  `,
   styleUrls: ['./inventory-item.scss']
 })
 export class InventoryItemComponent {

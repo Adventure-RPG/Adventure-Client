@@ -1,10 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EngineService } from '../../engine/engine.service';
 import { LightService } from '../../engine/core/light.service';
-import { HeightMapService } from '../../engine/core/3d-helpers/height-map.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneBufferGeometry } from 'three';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -19,9 +18,7 @@ export class EditorComponent implements OnInit {
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
-    public keyboardEventService: KeyboardEventService,
-    private heightMapService: HeightMapService,
-    private elementRef: ElementRef
+    public keyboardEventService: KeyboardEventService
   ) {
     // this.engineService.renderEngine();
   }
@@ -38,16 +35,17 @@ export class EditorComponent implements OnInit {
 
     // ground
     let mesh = new Mesh(
-      new PlaneBufferGeometry(100, 100),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+      new PlaneGeometry(100, 100, 10, 10),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 0.8 })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
     let grid = new GridHelper(100, 20, 0x000000, 0x000000);
-    grid.material.opacity = 0.2;
-    grid.material.transparent = true;
+
+    // grid.material.opacity = 0.2;
+    // grid.material.transparent = true;
     this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
@@ -60,14 +58,14 @@ export class EditorComponent implements OnInit {
     let hemisphereLightOptions = {
       color: '#ffffff',
       groundColor: '#444444',
-      intensity: 0.9,
+      intensity: 0.4,
       distance: 200,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position: {
         x: 50,
-        y: 200,
+        y: 300,
         z: 50
       }
     };
@@ -131,15 +129,30 @@ export class EditorComponent implements OnInit {
     let spotLightOptions = {
       color: '0xffffff',
       groundColor: '#fff',
-      intensity: 0.5,
-      distance: 2500,
+      intensity: 3,
+      distance: 1500,
       exponent: 0,
       angle: 1.52,
       decay: 2,
       position: {
         x: 0,
-        y: 1500,
-        z: 1000
+        y: 1000,
+        z: -800
+      }
+    };
+
+    let spotLightOptions2 = {
+      color: '0x777',
+      groundColor: '#777',
+      intensity: 1,
+      distance: 1000,
+      exponent: 1,
+      angle: Math.PI / 4,
+      decay: 2,
+      position: {
+        x: 0,
+        y: 50,
+        z: 0
       }
     };
 
@@ -152,6 +165,7 @@ export class EditorComponent implements OnInit {
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
     this.lightService.addLight(spotLightOptions, 'SpotLight');
+    // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");

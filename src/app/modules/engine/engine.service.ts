@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AnimationMixer, AxesHelper, FBXLoader, Group, Mesh, Vector3 } from 'three';
-
-import fbxLoader from '@libs/FBXloader';
+import { AxesHelper, Vector3 } from 'three';
 
 import { HeightMapOptions } from './engine.types';
 
@@ -10,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
 import { SceneService } from './core/base/scene.service';
 import { CameraService } from './core/base/camera.service';
 import { SettingsService } from '@services/settings.service';
-import { StorageService } from '@services/storage.service';
 
 //TODO: избавиться с помощью сторейджев
 
@@ -152,11 +149,6 @@ export class EngineService {
 
   public generateFromNoise() {
     this.heightMapService.generateDungeonTerrain(this.sceneService.scene);
-    // this.heightMapService.getHeightMap(this.sceneService.scene);
-  }
-
-  public generateFromNoise2() {
-    this.heightMapService.generateDungeonTerrain2(this.sceneService.scene);
     // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 

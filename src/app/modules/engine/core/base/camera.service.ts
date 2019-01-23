@@ -8,8 +8,10 @@ import { StorageService } from '../../../../services/storage.service';
 
 @Injectable()
 export class CameraService implements OnInit {
-  private _camera: Camera | OrthographicCamera | CubeCamera;
-  private _cameries: { [key: string]: Camera | OrthographicCamera | CubeCamera };
+  private _camera: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
+  private _cameries: {
+    [key: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
+  };
   private _domElement;
 
   x;
@@ -18,19 +20,21 @@ export class CameraService implements OnInit {
 
   constructor(private settingsService: SettingsService, private storageService: StorageService) {}
 
-  get camera(): Camera | OrthographicCamera | CubeCamera {
+  get camera(): Camera | OrthographicCamera | CubeCamera | PerspectiveCamera {
     return this._camera;
   }
 
-  set camera(value: Camera | OrthographicCamera | CubeCamera) {
+  set camera(value: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera) {
     this._camera = value;
   }
 
-  get cameries(): { [p: string]: Camera | OrthographicCamera | CubeCamera } {
+  get cameries(): { [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera } {
     return this._cameries;
   }
 
-  set cameries(value: { [p: string]: Camera | OrthographicCamera | CubeCamera }) {
+  set cameries(value: {
+    [p: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
+  }) {
     this._cameries = value;
   }
 
@@ -68,6 +72,7 @@ export class CameraService implements OnInit {
       this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
+        console.log(this.settingsService.settings.camera.type);
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
@@ -76,10 +81,7 @@ export class CameraService implements OnInit {
       }
     }
 
-    console.log('out');
-
     this.camera.lookAt(position); // or the origin
-
     return this.camera;
   }
 
@@ -110,15 +112,16 @@ export class CameraService implements OnInit {
   }
 
   public updateFirstPersonCamera() {
-    // let d = this.settingsService.settings.camera.d;
+    //let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
-    // this.camera.position.set(d * 8, d * 8, d * 8);
+    //this.camera.position.set(d * 8, d * 8, d * 8);
   }
 
   public initIsometricCamera() {
     let d = this.settingsService.settings.camera.d;
 
     //Остановился на добавление второго типа камеры и переключателя для камер.
+    console.log(d);
 
     this.camera = new OrthographicCamera(
       -d * this.settingsService.settings.browser.aspectRatio,
@@ -140,17 +143,21 @@ export class CameraService implements OnInit {
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.IsometricCamera];
 
-    // console.log(x, y, z);
+    console.log(d);
 
     (<OrthographicCamera>this.camera).left = -d * this.settingsService.settings.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).right =
-      -d * this.settingsService.settings.browser.aspectRatio;
+    (<OrthographicCamera>this.camera).right = d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).top = d;
     (<OrthographicCamera>this.camera).bottom = -d;
     (<OrthographicCamera>this.camera).near = 1;
     (<OrthographicCamera>this.camera).far = d * 40;
-
     this.camera.position.set(d * 8, d * 8, d * 8);
+
+    (<OrthographicCamera>this.camera).updateProjectionMatrix();
+    let obj = {};
+    obj[CAMERA.IsometricCamera] = this.camera;
+    let mergeModel = Lodash.merge(this.cameries, obj);
+    this.cameries = mergeModel;
   }
 
   public init2dCamera() {

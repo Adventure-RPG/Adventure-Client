@@ -6,15 +6,16 @@ import { InventoryItem } from './inventory-item.component';
 
 @Component({
   selector: 'multi-col-list',
-  template: ` 
+  template: `
     <div
       [options]="config"
       virtualScroll
-       class="h100perc"
+      class="h100perc"
       [items]="filteredList"
       (update)="scrollItems = $event"
-      (change)="indices = $event">
-      <list-item *ngFor="let item of scrollItems" [item]="item"> </list-item> 
+      (change)="indices = $event"
+    >
+      <list-item *ngFor="let item of scrollItems" [item]="item"> </list-item>
     </div>
   `,
   styleUrls: ['./multi-col-list.scss']

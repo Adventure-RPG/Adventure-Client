@@ -3,7 +3,6 @@ import { AnimationMixer, FBXLoader, Group, Mesh } from 'three';
 import fbxLoader from '@libs/FBXLoader';
 import { SceneService } from '@modules/engine/core/base/scene.service';
 import { StorageService } from '@services/storage.service';
-import { Utils } from '../../../../utils/utils';
 import UuidStatic = require('uuid');
 
 @Injectable()

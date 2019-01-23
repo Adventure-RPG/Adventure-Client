@@ -1,4 +1,4 @@
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -29,8 +29,7 @@ export class ApiService {
     console.log(this.config);
     return this.httpClient
       .get(url, httpOptions || options)
-      .pipe(catchError(this.handleErrorService.handleError.bind(this)))
-      .pipe(tap((res: Response) => res.json()));
+      .pipe(catchError(this.handleErrorService.handleError.bind(this)));
   }
 
   post(url: string, body?: Object, options?) {
@@ -40,18 +39,15 @@ export class ApiService {
       .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)));
   }
 
-  put(url: string, body: Object, options?) {
+  put<T>(url: string, body: Object, options?) {
     return this.httpClient
-      .put(url, body, options)
-
-      .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)))
-      .pipe(tap((res: Response) => res.json()));
+      .put<T>(url, body, options)
+      .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)));
   }
 
-  delete(url: string, options?) {
+  delete<T>(url: string, options?) {
     return this.httpClient
-      .delete(url, options)
-      .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)))
-      .pipe(tap((res: Response) => res.json()));
+      .delete<T>(url, options)
+      .pipe(catchError(this.handleErrorService.handleError.bind(this.handleErrorService)));
   }
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import * as THREE from 'three';
+import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { StorageService } from '@services/storage.service';
-import { CAMERA } from '../../../../enums/settings.enum';
 import { SettingsService } from '../../../../services/settings.service';
 
 @Injectable()
@@ -23,7 +22,7 @@ export class SceneService {
 
     this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+    this.renderer.shadowMap.type = THREE.BasicShadowMap; // default THREE.PCFShadowMap
 
     this.animation();
   }
@@ -34,6 +33,7 @@ export class SceneService {
 
   /**
    * Render logic
+   * Быть очень аккуратным здесь!!!
    */
   public animation() {
     requestAnimationFrame(this.animation.bind(this));

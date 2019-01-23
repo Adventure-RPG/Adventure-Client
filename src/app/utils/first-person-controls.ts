@@ -1,5 +1,5 @@
-import { Vector3 } from 'three';
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
 import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
@@ -48,20 +48,6 @@ export class FirstPersonControls {
     this.domElement = domElement !== undefined ? domElement : document;
 
     this.enabled = true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     this.movementSpeed = 1.0;
     this.lookSpeed = 0.005;
@@ -135,18 +121,19 @@ export class FirstPersonControls {
       name: 'mouseDragOn'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
-      onMouseMove: event => {
-        if (this.domElement === document) {
-          this.mouseX = event.pageX - this.viewHalfX;
-          this.mouseY = event.pageY - this.viewHalfY;
-        } else {
-          this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
-          this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
-        }
-      },
-      name: 'onMouseMove'
-    });
+    //this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    //       onMouseMove: event => {
+    //         if (this.domElement === document) {
+    //           this.mouseX = event.pageX - this.viewHalfX;
+    //           this.mouseY = event.pageY - this.viewHalfY;
+    //         } else {
+    //           this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
+    //           this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
+    //         }
+    //         console.log("tut");
+    //       },
+    //       name: 'onMouseMove'
+    //     });
 
     this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
       onKeyUp: () => {
@@ -223,24 +210,42 @@ export class FirstPersonControls {
       name: 'moveUp'
     });
 
-    //this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
-    //       onMouseMove: (event: MouseEvent) => {
-    //         this.mouseX = ( event.clientX - this.viewHalfX );
-    //         this.mouseY = ( event.clientY - this.viewHalfY );
-    //         console.log("moving");
-    //       },
-    //       pressed: false,
-    //       keyCode: [NaN],
-    //       name: 'mouseMove',
-    //     });
+    this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+      onMouseMove: (event: MouseEvent) => {
+        if (event.altKey === true) {
+          console.log('here');
+          console.log(event.movementX);
+          console.log(event.movementY);
+          this.object.rotateX((event.movementY * Math.PI) / 360 / 10);
+          this.object.rotateY((-event.movementX * Math.PI) / 360 / 10);
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mousemove'
+    });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseClick, {
+      onKeyDown: (event: MouseEvent) => {
+        console.log('1');
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'click'
+    });
 
     this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
-      onMouse: (event: MouseWheelEvent) => {
+      onMouse: (event: WheelEvent) => {
         console.log('Колесико мышки');
-        if (event.deltaY === 100) {
+        console.log(typeof this.object);
+        if (event.deltaY === -100) {
           this.object.zoom += 0.1;
+          console.log(this.object.zoom);
         } else {
-          this.object.zoom -= 0.1;
+          if (this.object.zoom - 0.1 > 0.1) {
+            this.object.zoom -= 0.1;
+          }
+          console.log(this.object.zoom);
         }
       },
       pressed: false,
@@ -318,9 +323,12 @@ export class FirstPersonControls {
         if (this.constrainVertical) {
           this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
         }
-
         let targetPosition = this.target,
           position = this.object.position;
+        /**
+         * This is for zoom being actually updated
+         */
+        this.object.updateProjectionMatrix();
         // targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
         // targetPosition.y = position.y + 100 * Math.cos(this.phi);
         // targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
