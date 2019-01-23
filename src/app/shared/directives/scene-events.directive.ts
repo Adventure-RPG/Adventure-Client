@@ -1,7 +1,7 @@
-import {Directive, ElementRef, HostListener} from '@angular/core';
-import {OnWindowEventService} from '@events/on-window-event.service';
-import {KeyboardEventService} from '@events/keyboard-event.service';
-import {MouseEventService} from '@events/mouse-event.service';
+import { Directive, ElementRef, HostListener } from '@angular/core';
+import { OnWindowEventService } from '@events/on-window-event.service';
+import { KeyboardEventService } from '@events/keyboard-event.service';
+import { MouseEventService } from '@events/mouse-event.service';
 
 const debugEvents = {
   mouseEvents: {

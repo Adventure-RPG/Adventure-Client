@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ColorMapComponent} from './color-map.component';
+import { ColorMapComponent } from './color-map.component';
 
 describe('ColorMapComponent', () => {
   let component: ColorMapComponent;

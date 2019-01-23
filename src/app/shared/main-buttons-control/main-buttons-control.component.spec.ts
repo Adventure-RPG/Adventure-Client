@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MainButtonsControlComponent} from './main-buttons-control.component';
+import { MainButtonsControlComponent } from './main-buttons-control.component';
 
 describe('MainButtonsControlComponent', () => {
   let component: MainButtonsControlComponent;

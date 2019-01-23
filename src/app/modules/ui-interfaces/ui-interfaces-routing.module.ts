@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {SharedModule} from '../../shared/shared-module.module';
-import {ModalComponent} from '../../shared/modal/modal.component';
-import {AuthGuard} from '../../guards/auth.guard';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../../shared/shared-module.module';
+import { ModalComponent } from '../../shared/modal/modal.component';
+import { AuthGuard } from '../../guards/auth.guard';
 
 const routes: Routes = [
   {

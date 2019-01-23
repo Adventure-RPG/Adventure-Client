@@ -1,6 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LoginEmailAcceptenceComponent} from './login-email-acceptence.component';
+import { LoginEmailAcceptenceComponent } from './login-email-acceptence.component';
 
 describe('LoginEmailAcceptenceComponent', () => {
   let component: LoginEmailAcceptenceComponent;

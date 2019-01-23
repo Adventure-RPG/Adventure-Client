@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import {Vector3} from 'three';
-import {StorageService} from '@services/storage.service';
-import {Key} from 'ts-keycode-enum';
-import {KeybordCommands} from 'app/enums/KeybordCommands.enum';
-import {MouseCommands} from 'app/enums/MouseCommands';
+import { Vector3 } from 'three';
+import { StorageService } from '@services/storage.service';
+import { Key } from 'ts-keycode-enum';
+import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
+import { MouseCommands } from 'app/enums/MouseCommands';
 
 export class FirstPersonControls {
   object;
@@ -189,7 +189,6 @@ export class FirstPersonControls {
         console.log(this.object);
 
         this.moveRight = true;
-
       },
       pressed: false,
       keyCode: [Key.D, Key.RightArrow],
@@ -214,26 +213,26 @@ export class FirstPersonControls {
     this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
       onMouseMove: (event: MouseEvent) => {
         if (event.altKey === true) {
-          console.log("here");
+          console.log('here');
           console.log(event.movementX);
           console.log(event.movementY);
-          this.object.rotateX(event.movementY * Math.PI / 360 / 10)
-          this.object.rotateY(- event.movementX * Math.PI / 360 / 10);
-          }
-        },
+          this.object.rotateX((event.movementY * Math.PI) / 360 / 10);
+          this.object.rotateY((-event.movementX * Math.PI) / 360 / 10);
+        }
+      },
       pressed: false,
       keyCode: [NaN],
-      name: 'mousemove',
+      name: 'mousemove'
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommands.mouseClick, {
       onKeyDown: (event: MouseEvent) => {
-        console.log("1");
+        console.log('1');
       },
       pressed: false,
       keyCode: [NaN],
       name: 'click'
-    })
+    });
 
     this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
       onMouse: (event: WheelEvent) => {

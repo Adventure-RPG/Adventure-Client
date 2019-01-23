@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
-import {Camera, CubeCamera, OrthographicCamera, PerspectiveCamera} from 'three';
-import {SettingsService} from '../../../../services/settings.service';
+import { Injectable, OnInit } from '@angular/core';
+import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera } from 'three';
+import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
-import {CAMERA} from '../../../../enums/settings.enum';
-import {FirstPersonControls} from 'app/utils/first-person-controls';
-import {StorageService} from '../../../../services/storage.service';
+import { CAMERA } from '../../../../enums/settings.enum';
+import { FirstPersonControls } from 'app/utils/first-person-controls';
+import { StorageService } from '../../../../services/storage.service';
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -146,8 +146,7 @@ export class CameraService implements OnInit {
     console.log(d);
 
     (<OrthographicCamera>this.camera).left = -d * this.settingsService.settings.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).right =
-      d * this.settingsService.settings.browser.aspectRatio;
+    (<OrthographicCamera>this.camera).right = d * this.settingsService.settings.browser.aspectRatio;
     (<OrthographicCamera>this.camera).top = d;
     (<OrthographicCamera>this.camera).bottom = -d;
     (<OrthographicCamera>this.camera).near = 1;

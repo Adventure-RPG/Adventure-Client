@@ -1,9 +1,9 @@
-import {catchError} from 'rxjs/operators';
-import {Injectable} from '@angular/core';
+import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AppService} from '../app.service';
-import {HandleErrorService} from './handle-error.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AppService } from '../app.service';
+import { HandleErrorService } from './handle-error.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

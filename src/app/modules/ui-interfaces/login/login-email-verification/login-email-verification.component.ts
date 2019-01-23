@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {LoginResponse} from '../login';
-import {LoginService} from '../login.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AppService} from '../../../../app.service';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { LoginResponse } from '../login';
+import { LoginService } from '../login.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppService } from '../../../../app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'adventure-login-email-verification',

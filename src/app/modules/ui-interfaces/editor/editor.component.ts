@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {EngineService} from '../../engine/engine.service';
-import {LightService} from '../../engine/core/light.service';
-import {SettingsService} from '../../../services/settings.service';
-import {KeyboardEventService} from '../../../events/keyboard-event.service';
-import {Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { EngineService } from '../../engine/engine.service';
+import { LightService } from '../../engine/core/light.service';
+import { SettingsService } from '../../../services/settings.service';
+import { KeyboardEventService } from '../../../events/keyboard-event.service';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 
 //TODO: вынести в инциацию сцен
 @Component({
