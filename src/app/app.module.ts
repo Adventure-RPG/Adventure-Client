@@ -24,14 +24,12 @@ import { OnWindowEventService } from './events/on-window-event.service';
 import { AppService } from './app.service';
 import { ApiService } from './services/api.service';
 import { HandleErrorService } from './services/handle-error.service';
-import { SceneEventsDirective } from './shared/directives/scene-events.directive';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginService } from './modules/ui-interfaces/login/login.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
-import { SanitizeHtmlDirective } from './shared/directives/sanitize-html.directive';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{

@@ -18,5 +18,6 @@ export class OnWindowEventService {
     this.engineService.sceneService.resizeEvent(event);
 
     console.log(event);
+    console.log(this.engineService.settingsService.settings.browser);
   }
 }

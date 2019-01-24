@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   AmbientLight,
+  CameraHelper,
+  Color,
   DirectionalLight,
   DirectionalLightHelper,
   HemisphereLight,
   HemisphereLightHelper,
   LightShadow,
+  PerspectiveCamera,
   PointLight,
   PointLightHelper,
   SpotLight,
-  SpotLightHelper,
-  SpotLightShadow,
-  PerspectiveCamera,
-  Color,
-  CameraHelper
+  SpotLightHelper
 } from 'three';
 import { EngineService } from '../engine.service';
 
@@ -186,7 +185,7 @@ export class LightService {
         (<SpotLight>light).target.position.set(0, 0, 0);
 
         light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
-        light.shadow.bias = 0.0001;
+        light.shadow.bias = 0.00001;
         light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
         light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
 

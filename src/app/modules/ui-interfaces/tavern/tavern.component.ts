@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as io from 'socket.io-client';
 
 @Component({
   selector: 'adventure-tavern',

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { EngineService } from '../../../engine/engine.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
 
 @Component({
