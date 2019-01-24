@@ -14,7 +14,6 @@ export class MouseEventService {
      Обработчик эвентов на мышку
       **/
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
-
       /**
        * Заменил number на object, потому что он всегда возвращает тип объект и нифига не работает.
        */
@@ -43,10 +42,6 @@ export class MouseEventService {
             this.storageService.hotkeySceneCommands[sceneCommandName].onMouse(event);
             break;
         }
-
-
-
-
       }
     }
   }
