@@ -42,7 +42,7 @@ export class FirstPersonControls {
 
   constructor(object, domElement, private storageService: StorageService) {
     this.object = object;
-    this.target = new Vector3(0, 0, 0);
+    this.target = new THREE.Vector3(0, 0, 0);
 
     this.domElement = domElement !== undefined ? domElement : document;
 
