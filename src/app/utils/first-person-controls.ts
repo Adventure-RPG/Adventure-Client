@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
-import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
-import { MouseCommands } from 'app/enums/MouseCommands';
+import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
+import { MouseCommandsEnum } from 'app/enums/MouseCommands.enum';
+import {CameraControls} from "./camera-controls";
 
-export class FirstPersonControls {
+export class FirstPersonControls extends CameraControls{
   object;
   target;
   domElement;
@@ -40,7 +41,8 @@ export class FirstPersonControls {
   mouseWheelUp;
   mouseWheelDown;
 
-  constructor(object, domElement, private storageService: StorageService) {
+  constructor(object, domElement, storageService) {
+    super(storageService);
     this.object = object;
     this.target = new THREE.Vector3(0, 0, 0);
 
@@ -85,7 +87,11 @@ export class FirstPersonControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveForward, {
+
+  }
+
+  initCommands() {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveForward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -97,7 +103,7 @@ export class FirstPersonControls {
       name: 'moveForward'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveBackward, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveBackward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -109,7 +115,7 @@ export class FirstPersonControls {
       name: 'moveBackward'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseDragOn, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDragOn, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -120,7 +126,7 @@ export class FirstPersonControls {
       name: 'mouseDragOn'
     });
 
-    //this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    //this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
     //       onMouseMove: event => {
     //         if (this.domElement === document) {
     //           this.mouseX = event.pageX - this.viewHalfX;
@@ -134,7 +140,7 @@ export class FirstPersonControls {
     //       name: 'onMouseMove'
     //     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveForwardKeyboard, {
       onKeyUp: () => {
         this.moveForward = false;
         console.log(this.moveForward);
@@ -149,7 +155,7 @@ export class FirstPersonControls {
       name: 'moveFackward'
     });
     //TODO:START
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveBackwardKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveBackwardKeyboard, {
       onKeyUp: () => {
         this.moveBackward = false;
       },
@@ -164,7 +170,7 @@ export class FirstPersonControls {
       name: 'moveBackward'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveLeftKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
       onKeyUp: () => {
         this.moveLeft = false;
       },
@@ -179,7 +185,7 @@ export class FirstPersonControls {
       name: 'moveLeft'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveRightKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
       onKeyUp: () => {
         this.moveRight = false;
       },
@@ -194,7 +200,7 @@ export class FirstPersonControls {
       name: 'moveRight'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveUpKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveUpKeyboard, {
       onKeyUp: () => {
         this.moveUp = false;
       },
@@ -209,7 +215,7 @@ export class FirstPersonControls {
       name: 'moveUp'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       onMouseMove: (event: MouseEvent) => {
         if (event.altKey === true) {
           console.log('here');
@@ -224,7 +230,7 @@ export class FirstPersonControls {
       name: 'mousemove'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseClick, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseClick, {
       onKeyDown: (event: MouseEvent) => {
         console.log('1');
       },
@@ -233,7 +239,7 @@ export class FirstPersonControls {
       name: 'click'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseWheel, {
       onMouse: (event: WheelEvent) => {
         console.log('Колесико мышки');
         console.log(typeof this.object);
@@ -252,7 +258,7 @@ export class FirstPersonControls {
       name: 'mousewheel'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveDownKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveDownKeyboard, {
       onKeyUp: () => {
         this.moveDown = false;
       },
@@ -334,6 +340,7 @@ export class FirstPersonControls {
         // this.object.lookAt(targetPosition);
       }
     });
+    console.log(this.storageService.hotkeySceneCommands);
   }
 
   //TODO: проверить ресайз, если не работает вынести логику в соотвесттвующее место
