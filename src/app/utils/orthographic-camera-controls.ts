@@ -4,7 +4,7 @@ import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/mouseCommands.enum';
 
-export class OrthographicCameraControls{
+export class OrthographicCameraControls {
   object;
   target;
   domElement;

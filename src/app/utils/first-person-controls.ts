@@ -3,9 +3,9 @@ import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/MouseCommands.enum';
-import {CameraControls} from "./camera-controls";
+import { CameraControls } from './camera-controls';
 
-export class FirstPersonControls extends CameraControls{
+export class FirstPersonControls extends CameraControls {
   object;
   target;
   domElement;
@@ -40,6 +40,8 @@ export class FirstPersonControls extends CameraControls{
   viewHalfY;
   mouseWheelUp;
   mouseWheelDown;
+  angleFi;
+  angleTeta;
 
   constructor(object, domElement, storageService) {
     super(storageService);
@@ -87,7 +89,8 @@ export class FirstPersonControls extends CameraControls{
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-
+    this.angleFi = Math.PI / 2;
+    this.angleTeta = Math.PI / 2;
   }
 
   initCommands() {
@@ -100,7 +103,7 @@ export class FirstPersonControls extends CameraControls{
       },
       pressed: false,
       keyCode: 0,
-      name: 'moveForward'
+      name: 'mouseForward'
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveBackward, {
@@ -112,7 +115,7 @@ export class FirstPersonControls extends CameraControls{
       },
       pressed: false,
       keyCode: 2,
-      name: 'moveBackward'
+      name: 'mouseBackward'
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDragOn, {
@@ -152,7 +155,7 @@ export class FirstPersonControls extends CameraControls{
       },
       pressed: false,
       keyCode: [Key.W, Key.UpArrow],
-      name: 'moveFackward'
+      name: 'moveForward'
     });
     //TODO:START
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveBackwardKeyboard, {
@@ -217,12 +220,21 @@ export class FirstPersonControls extends CameraControls{
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       onMouseMove: (event: MouseEvent) => {
-        if (event.altKey === true) {
+        if (event.shiftKey === true) {
           console.log('here');
           console.log(event.movementX);
           console.log(event.movementY);
-          this.object.rotateX((event.movementY * Math.PI) / 360 / 10);
-          this.object.rotateY((-event.movementX * Math.PI) / 360 / 10);
+          this.object.rotateX(event.movementY * Math.PI / 180);
+          this.object.rotateY(-event.movementX * Math.PI / 180);
+        } else  if (event.altKey === true) {
+          console.log("Rotation")
+          let radius = Math.sqrt(Math.pow(this.object.position.x, 2) + Math.pow(this.object.position.y, 2) + Math.pow(this.object.position.z, 2));
+          this.angleFi += event.movementX * Math.PI / 180;
+          this.angleTeta += event.movementY * Math.PI / 180;
+          this.object.position.x = radius * Math.cos(this.angleFi) * Math.sin(this.angleTeta);
+          this.object.position.y = radius * Math.sin(this.angleFi) * Math.sin(this.angleTeta);
+          this.object.position.z = radius * Math.cos(this.angleTeta);
+          this.object.lookAt(this.target);
         }
       },
       pressed: false,

@@ -1,12 +1,11 @@
-import {StorageService} from "@services/storage.service";
-import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
-import {KeyboardCommandsEnum} from 'app/enums/KeyboardCommands.enum';
-
+import { StorageService } from '@services/storage.service';
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 
 export class CameraControls {
-  storageService
+  storageService;
   constructor(storageService) {
-    this.storageService = storageService
+    this.storageService = storageService;
     this.initCommands();
     console.log(this.storageService.hotkeySceneCommands);
   }
