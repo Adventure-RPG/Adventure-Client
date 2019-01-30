@@ -230,13 +230,13 @@ export class FirstPersonControls extends CameraControls {
           console.log(event.movementX);
           console.log(event.movementY);
           this.object.rotateX((event.movementY * Math.PI) / 180);
-          this.object.rotateY((-event.movementX * Math.PI) / 180);
+          this.object.rotateZ((-event.movementX * Math.PI) / 180);
         } else if (event.altKey === true) {
           console.log('Rotation');
           let radius = Math.sqrt(
             Math.pow(this.object.position.x, 2) +
-            Math.pow(this.object.position.y, 2) +
-            Math.pow(this.object.position.z, 2)
+              Math.pow(this.object.position.y, 2) +
+              Math.pow(this.object.position.z, 2)
           );
           this.angleFi += (event.movementX * Math.PI) / 180;
           this.angleTheta += (event.movementY * Math.PI) / 180;
@@ -244,6 +244,9 @@ export class FirstPersonControls extends CameraControls {
           this.object.position.z = radius * Math.sin(this.angleFi) * Math.sin(this.angleTheta);
           this.object.position.y = radius * Math.cos(this.angleTheta);
           this.object.lookAt(this.target);
+          console.log(this.angleFi, Math.cos(this.angleFi), Math.sin(this.angleFi));
+          console.log(this.angleTheta, Math.cos(this.angleTheta), Math.sin(this.angleTheta));
+          console.log(this.object.position);
         }
       },
       pressed: false,
@@ -327,7 +330,6 @@ export class FirstPersonControls extends CameraControls {
         if (this.moveDown) {
           this.object.translateY(-actualMoveSpeed);
         }
-
 
         //let actualLookSpeed = delta * this.lookSpeed;
 
