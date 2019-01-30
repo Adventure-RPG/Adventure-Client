@@ -25,10 +25,6 @@ export class FirstPersonControls extends CameraControls {
   autoSpeedFactor;
   mouseX;
   mouseY;
-  lat;
-  lon;
-  phi;
-  theta;
   moveForward;
   moveBackward;
   moveLeft;
@@ -40,8 +36,8 @@ export class FirstPersonControls extends CameraControls {
   viewHalfY;
   mouseWheelUp;
   mouseWheelDown;
-  angleFi;
-  angleTheta;
+  phi;
+  theta;
 
   constructor(object, domElement, storageService) {
     super(storageService);
@@ -74,11 +70,6 @@ export class FirstPersonControls extends CameraControls {
     this.mouseX = 0;
     this.mouseY = 0;
 
-    this.lat = 0;
-    this.lon = 0;
-    this.phi = 0;
-    this.theta = 0;
-
     this.moveForward = false;
     this.moveBackward = false;
     this.moveLeft = false;
@@ -94,8 +85,8 @@ export class FirstPersonControls extends CameraControls {
         Math.pow(this.object.position.y, 2) +
         Math.pow(this.object.position.z, 2)
     );
-    this.angleTheta = Math.acos(this.object.position.z / radius);
-    this.angleFi = Math.acos(this.object.position.x / (radius * Math.sin(this.angleTheta)));
+    this.theta = Math.acos(this.object.position.z / radius);
+    this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
   }
 
   initCommands() {
@@ -233,20 +224,17 @@ export class FirstPersonControls extends CameraControls {
           this.object.rotateZ((-event.movementX * Math.PI) / 180);
         } else if (event.altKey === true) {
           console.log('Rotation');
+          this.phi += (event.movementX * Math.PI) / 180;
+          this.theta += (event.movementY * Math.PI) / 180;
           let radius = Math.sqrt(
             Math.pow(this.object.position.x, 2) +
-              Math.pow(this.object.position.y, 2) +
-              Math.pow(this.object.position.z, 2)
+            Math.pow(this.object.position.y, 2) +
+            Math.pow(this.object.position.z, 2)
           );
-          this.angleFi += (event.movementX * Math.PI) / 180;
-          this.angleTheta += (event.movementY * Math.PI) / 180;
-          this.object.position.x = radius * Math.cos(this.angleFi) * Math.sin(this.angleTheta);
-          this.object.position.z = radius * Math.sin(this.angleFi) * Math.sin(this.angleTheta);
-          this.object.position.y = radius * Math.cos(this.angleTheta);
+          this.object.position.x = radius * Math.cos(this.phi) * Math.sin(this.theta);
+          this.object.position.z = radius * Math.sin(this.phi) * Math.sin(this.theta);
+          this.object.position.y = radius * Math.cos(this.theta);
           this.object.lookAt(this.target);
-          console.log(this.angleFi, Math.cos(this.angleFi), Math.sin(this.angleFi));
-          console.log(this.angleTheta, Math.cos(this.angleTheta), Math.sin(this.angleTheta));
-          console.log(this.object.position);
         }
       },
       pressed: false,
@@ -331,36 +319,8 @@ export class FirstPersonControls extends CameraControls {
           this.object.translateY(-actualMoveSpeed);
         }
 
-        //let actualLookSpeed = delta * this.lookSpeed;
-
-        //if (!this.activeLook) {
-        //  actualLookSpeed = 0;
-        //}
-        //let verticalLookRatio = 1;
-        //if (this.constrainVertical) {
-        //  verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
-        //}
-        //this.lon += this.mouseX * actualLookSpeed;
-        //if (this.lookVertical) {
-        //  this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
-        //}
-        //this.lat = Math.max(-85, Math.min(85, this.lat));
-        //         this.phi = THREE.Math.degToRad(90 - this.lat);
-        //         this.theta = THREE.Math.degToRad(this.lon);
-        //
-        //         if (this.constrainVertical) {
-        //           this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
-        //         }
-        //         let targetPosition = this.target,
-        //           position = this.object.position;
-        /**
-         * This is for zoom being actually updated
-         */
         this.object.updateProjectionMatrix();
-        // targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
-        // targetPosition.y = position.y + 100 * Math.cos(this.phi);
-        // targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
-        // this.object.lookAt(targetPosition);
+
       }
     });
     console.log(this.storageService.hotkeySceneCommands);
