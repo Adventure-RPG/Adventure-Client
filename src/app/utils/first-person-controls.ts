@@ -41,7 +41,7 @@ export class FirstPersonControls extends CameraControls {
   mouseWheelUp;
   mouseWheelDown;
   angleFi;
-  angleTeta;
+  angleTheta;
 
   constructor(object, domElement, storageService) {
     super(storageService);
@@ -89,8 +89,10 @@ export class FirstPersonControls extends CameraControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    this.angleFi = Math.PI / 2;
-    this.angleTeta = Math.PI / 2;
+    let radius = Math.sqrt(Math.pow(this.object.position.x, 2) + Math.pow(this.object.position.y, 2) + Math.pow(this.object.position.z, 2));
+    this.angleTheta = Math.acos(this.object.position.z / radius);
+    this.angleFi = Math.acos(this.object.position.x / (radius * Math.sin(this.angleTheta)));
+
   }
 
   initCommands() {
@@ -230,10 +232,10 @@ export class FirstPersonControls extends CameraControls {
           console.log("Rotation")
           let radius = Math.sqrt(Math.pow(this.object.position.x, 2) + Math.pow(this.object.position.y, 2) + Math.pow(this.object.position.z, 2));
           this.angleFi += event.movementX * Math.PI / 180;
-          this.angleTeta += event.movementY * Math.PI / 180;
-          this.object.position.x = radius * Math.cos(this.angleFi) * Math.sin(this.angleTeta);
-          this.object.position.y = radius * Math.sin(this.angleFi) * Math.sin(this.angleTeta);
-          this.object.position.z = radius * Math.cos(this.angleTeta);
+          this.angleTheta += event.movementY * Math.PI / 180;
+          this.object.position.x = radius * Math.cos(this.angleFi) * Math.sin(this.angleTheta);
+          this.object.position.y = radius * Math.sin(this.angleFi) * Math.sin(this.angleTheta);
+          this.object.position.z = radius * Math.cos(this.angleTheta);
           this.object.lookAt(this.target);
         }
       },
