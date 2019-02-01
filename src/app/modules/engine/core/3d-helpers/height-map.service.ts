@@ -65,7 +65,9 @@ export class HeightMapService {
 
         let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
-        let terrainObject = terrain.getTerrainWithMaterial(terrainMaterial);
+        let terrainObject = terrain.getTerrainWithMaterial({
+          isDungeon: true
+        }, terrainMaterial);
         terrainObject.castShadow = true;
         terrainObject.receiveShadow = true;
         scene.add(terrainObject);
@@ -195,11 +197,9 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene) {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 8;
-    let worldWidth = 8;
+    let worldDepth = 16;
+    let worldWidth = 16;
     let cubeWidth = 1;
-    let worldHalfWidth = worldWidth / 2,
-      worldHalfDepth = worldDepth / 2;
 
     this.mapData = Noise.generateHeight(worldWidth, worldDepth);
 
@@ -210,19 +210,24 @@ export class HeightMapService {
 
     for (let z = 0; z < worldDepth; z++) {
       for (let x = 0; x < worldWidth; x++) {
+        //ВАЖНО! Подумать в сторону кастомных алгоритмов по объеденению
+        //http://evanw.github.io/csg.js/docs/
+
         //Делаем всех от одного уровня
         let h = Noise.getY({ mapData: this.mapData, x, z, worldWidth, k: 0.2 });
 
         // x - worldHalfWidth
         // z - worldHalfDepth
-        for (let y = min; y <= h; y++) {
-          geometries.push(
-            csgApi.CSG.cube({
-              radius: cubeWidth / 2,
-              center: [x * cubeWidth, (y - min) * cubeWidth + cubeWidth / 2, z * cubeWidth]
-            })
-          );
-        }
+        let diff = h - min;
+        let hres;
+        diff >= 1 ? hres = diff : hres = 1;
+
+        geometries.push(
+          csgApi.CSG.cube({
+            radius: [cubeWidth / 2, hres, cubeWidth / 2],
+            center: [x * cubeWidth, 0, z * cubeWidth]
+          })
+        );
       }
     }
 
@@ -245,13 +250,13 @@ export class HeightMapService {
     let csgModel = geometries[0];
 
     // console.log(arrayTest);
-
+    console.time('merge geometries')
     for (let i = 0; i < geometries.length; i++) {
       csgModel = csgModel.union(geometries[i]);
     }
+    console.timeEnd('merge geometries');
 
     //TODO: Вынести материалы и нижнию логику
-
     let shadowMaterial = new ShadowMaterial({
       opacity: 0.9
     });
