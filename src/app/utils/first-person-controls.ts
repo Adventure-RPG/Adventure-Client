@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { Vector3 } from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
-import { KeybordCommands } from 'app/enums/KeybordCommands.enum';
-import { MouseCommands } from 'app/enums/MouseCommands';
+import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
+import { MouseCommandsEnum } from 'app/enums/MouseCommands.enum';
+import { CameraControls } from './camera-controls';
 
-export class FirstPersonControls {
+export class FirstPersonControls extends CameraControls {
   object;
   target;
   domElement;
@@ -25,10 +25,6 @@ export class FirstPersonControls {
   autoSpeedFactor;
   mouseX;
   mouseY;
-  lat;
-  lon;
-  phi;
-  theta;
   moveForward;
   moveBackward;
   moveLeft;
@@ -40,10 +36,13 @@ export class FirstPersonControls {
   viewHalfY;
   mouseWheelUp;
   mouseWheelDown;
+  phi;
+  theta;
 
-  constructor(object, domElement, private storageService: StorageService) {
+  constructor(object, domElement, storageService) {
+    super(storageService);
     this.object = object;
-    this.target = new Vector3(0, 0, 0);
+    this.target = new THREE.Vector3(0, 0, 0);
 
     this.domElement = domElement !== undefined ? domElement : document;
 
@@ -71,11 +70,6 @@ export class FirstPersonControls {
     this.mouseX = 0;
     this.mouseY = 0;
 
-    this.lat = 0;
-    this.lon = 0;
-    this.phi = 0;
-    this.theta = 0;
-
     this.moveForward = false;
     this.moveBackward = false;
     this.moveLeft = false;
@@ -86,7 +80,17 @@ export class FirstPersonControls {
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveForward, {
+    let radius = Math.sqrt(
+      Math.pow(this.object.position.x, 2) +
+        Math.pow(this.object.position.y, 2) +
+        Math.pow(this.object.position.z, 2)
+    );
+    this.theta = Math.acos(this.object.position.z / radius);
+    this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
+  }
+
+  initCommands() {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveForward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -95,10 +99,10 @@ export class FirstPersonControls {
       },
       pressed: false,
       keyCode: 0,
-      name: 'moveForward'
+      name: 'mouseForward'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseMoveBackward, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveBackward, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -107,10 +111,10 @@ export class FirstPersonControls {
       },
       pressed: false,
       keyCode: 2,
-      name: 'moveBackward'
+      name: 'mouseBackward'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseDragOn, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDragOn, {
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -121,7 +125,7 @@ export class FirstPersonControls {
       name: 'mouseDragOn'
     });
 
-    //this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    //this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
     //       onMouseMove: event => {
     //         if (this.domElement === document) {
     //           this.mouseX = event.pageX - this.viewHalfX;
@@ -135,7 +139,7 @@ export class FirstPersonControls {
     //       name: 'onMouseMove'
     //     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveForwardKeyboard, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveForwardKeyboard, {
       onKeyUp: () => {
         this.moveForward = false;
         console.log(this.moveForward);
@@ -147,10 +151,10 @@ export class FirstPersonControls {
       },
       pressed: false,
       keyCode: [Key.W, Key.UpArrow],
-      name: 'moveFackward'
+      name: 'moveForward'
     });
     //TODO:START
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveBackwardKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveBackwardKeyboard, {
       onKeyUp: () => {
         this.moveBackward = false;
       },
@@ -165,7 +169,7 @@ export class FirstPersonControls {
       name: 'moveBackward'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveLeftKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
       onKeyUp: () => {
         this.moveLeft = false;
       },
@@ -180,7 +184,7 @@ export class FirstPersonControls {
       name: 'moveLeft'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveRightKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
       onKeyUp: () => {
         this.moveRight = false;
       },
@@ -195,7 +199,7 @@ export class FirstPersonControls {
       name: 'moveRight'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveUpKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveUpKeyboard, {
       onKeyUp: () => {
         this.moveUp = false;
       },
@@ -210,14 +214,27 @@ export class FirstPersonControls {
       name: 'moveUp'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.onMouseMove, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       onMouseMove: (event: MouseEvent) => {
-        if (event.altKey === true) {
+        if (event.shiftKey === true) {
           console.log('here');
           console.log(event.movementX);
           console.log(event.movementY);
-          this.object.rotateX((event.movementY * Math.PI) / 360 / 10);
-          this.object.rotateY((-event.movementX * Math.PI) / 360 / 10);
+          this.object.rotateX((event.movementY * Math.PI) / 180);
+          this.object.rotateZ((-event.movementX * Math.PI) / 180);
+        } else if (event.altKey === true) {
+          console.log('Rotation');
+          this.phi += (event.movementX * Math.PI) / 180;
+          this.theta += (event.movementY * Math.PI) / 180;
+          let radius = Math.sqrt(
+            Math.pow(this.object.position.x, 2) +
+            Math.pow(this.object.position.y, 2) +
+            Math.pow(this.object.position.z, 2)
+          );
+          this.object.position.x = radius * Math.cos(this.phi) * Math.sin(this.theta);
+          this.object.position.z = radius * Math.sin(this.phi) * Math.sin(this.theta);
+          this.object.position.y = radius * Math.cos(this.theta);
+          this.object.lookAt(this.target);
         }
       },
       pressed: false,
@@ -225,7 +242,7 @@ export class FirstPersonControls {
       name: 'mousemove'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseClick, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseClick, {
       onKeyDown: (event: MouseEvent) => {
         console.log('1');
       },
@@ -234,7 +251,7 @@ export class FirstPersonControls {
       name: 'click'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommands.mouseWheel, {
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseWheel, {
       onMouse: (event: WheelEvent) => {
         console.log('Колесико мышки');
         console.log(typeof this.object);
@@ -253,7 +270,7 @@ export class FirstPersonControls {
       name: 'mousewheel'
     });
 
-    this.storageService.hotkeySceneCommandPush(KeybordCommands.moveDownKeybord, {
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveDownKeyboard, {
       onKeyUp: () => {
         this.moveDown = false;
       },
@@ -302,39 +319,11 @@ export class FirstPersonControls {
           this.object.translateY(-actualMoveSpeed);
         }
 
-        let actualLookSpeed = delta * this.lookSpeed;
-
-        if (!this.activeLook) {
-          actualLookSpeed = 0;
-        }
-        let verticalLookRatio = 1;
-        if (this.constrainVertical) {
-          verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
-        }
-        this.lon += this.mouseX * actualLookSpeed;
-        if (this.lookVertical) {
-          this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
-        }
-
-        this.lat = Math.max(-85, Math.min(85, this.lat));
-        this.phi = THREE.Math.degToRad(90 - this.lat);
-        this.theta = THREE.Math.degToRad(this.lon);
-
-        if (this.constrainVertical) {
-          this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
-        }
-        let targetPosition = this.target,
-          position = this.object.position;
-        /**
-         * This is for zoom being actually updated
-         */
         this.object.updateProjectionMatrix();
-        // targetPosition.x = position.x + 100 * Math.sin(this.phi) * Math.cos(this.theta);
-        // targetPosition.y = position.y + 100 * Math.cos(this.phi);
-        // targetPosition.z = position.z + 100 * Math.sin(this.phi) * Math.sin(this.theta);
-        // this.object.lookAt(targetPosition);
+
       }
     });
+    console.log(this.storageService.hotkeySceneCommands);
   }
 
   //TODO: проверить ресайз, если не работает вынести логику в соотвесттвующее место

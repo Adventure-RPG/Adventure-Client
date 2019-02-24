@@ -1,4 +1,4 @@
-export enum MouseCommands {
+export enum MouseCommandsEnum {
   mouseMoveForward = 'mouseMoveForward',
   mouseMoveBackward = 'mouseMoveBackward',
   mouseDragOn = 'mouseDragOn',
