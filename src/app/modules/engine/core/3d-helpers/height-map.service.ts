@@ -65,9 +65,12 @@ export class HeightMapService {
 
         let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
-        let terrainObject = terrain.getTerrainWithMaterial({
-          isDungeon: true
-        }, terrainMaterial);
+        let terrainObject = terrain.getTerrainWithMaterial(
+          {
+            isDungeon: true
+          },
+          terrainMaterial
+        );
         terrainObject.castShadow = true;
         terrainObject.receiveShadow = true;
         scene.add(terrainObject);
@@ -220,7 +223,7 @@ export class HeightMapService {
         // z - worldHalfDepth
         let diff = h - min;
         let hres;
-        diff >= 1 ? hres = diff : hres = 1;
+        diff >= 1 ? (hres = diff) : (hres = 1);
 
         geometries.push(
           csgApi.CSG.cube({
@@ -250,7 +253,7 @@ export class HeightMapService {
     let csgModel = geometries[0];
 
     // console.log(arrayTest);
-    console.time('merge geometries')
+    console.time('merge geometries');
     for (let i = 0; i < geometries.length; i++) {
       csgModel = csgModel.union(geometries[i]);
     }

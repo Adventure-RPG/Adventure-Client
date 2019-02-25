@@ -1,10 +1,10 @@
 import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
-import {Noise} from "@modules/engine/core/utils/noise";
+import { Noise } from '@modules/engine/core/utils/noise';
 const csgApi = require('@jscad/csg');
 import { fromCSG, toCSG } from 'three-2-csg';
 
 interface TerrainOptions {
-  isDungeon: boolean
+  isDungeon: boolean;
 }
 
 export class Terrain {
@@ -103,8 +103,7 @@ export class Terrain {
   }
 
   getTerrain(terrainOptions: TerrainOptions): PlaneGeometry {
-    if (terrainOptions.isDungeon){
-
+    if (terrainOptions.isDungeon) {
       let cubeWidth = 1;
       let csgModel;
       let geometries = [];
@@ -118,22 +117,22 @@ export class Terrain {
             csgApi.CSG.cube({
               radius: [cubeWidth / 2, h, cubeWidth / 2],
               center: [
-                x * cubeWidth - this.size/2,
-                (h + 1/2) * cubeWidth,
-                z * cubeWidth - this.size/2,
+                x * cubeWidth - this.size / 2,
+                (h + 1 / 2) * cubeWidth,
+                z * cubeWidth - this.size / 2
               ]
             })
           );
         }
       }
       console.log(geometries);
-      if (!csgModel){
+      if (!csgModel) {
         csgModel = geometries[0];
       }
       console.time('mergeEvery100geometries');
       for (let i = 0; i < geometries.length; i++) {
-        if(i % 100 === 0){
-          console.log(`${i+100}\ ${geometries.length} геометрий слили`);
+        if (i % 100 === 0) {
+          console.log(`${i + 100}\ ${geometries.length} геометрий слили`);
           console.timeEnd('mergeEvery100geometries');
           console.time('mergeEvery100geometries');
         }
