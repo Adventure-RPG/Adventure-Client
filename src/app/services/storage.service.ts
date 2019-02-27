@@ -14,6 +14,7 @@ export interface Command {
   onMouseUp?(event);
   onMouseMove?(event);
   onMouse?(event);
+  type: string; //TODO: переделать в енам
   pressed?: boolean;
   keyCode?: number | number[];
   name: string;
@@ -24,6 +25,7 @@ export interface RendererCommands {
 }
 
 export interface RendererCommand {
+  type: string; // TODO: переделать в енам и сделать общее наследование с командами, дабы не дублировать код
   update?(delta?);
 }
 
@@ -76,6 +78,19 @@ export class StorageService {
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
   }
 
+  //TODO: переделать на enum
+  public hotkeySceneCommandDelete(type: string) {
+    let hotkeySceneCommands = this.hotkeySceneCommands;
+
+    for (const command in this.hotkeySceneCommands) {
+      if (this.hotkeySceneCommands[command].type === type) {
+        delete hotkeySceneCommands[command];
+      }
+    }
+
+    this.hotkeySceneCommands = hotkeySceneCommands;
+  }
+
   /**
    * Сторейдж для хранения правил по обновлению сцены
    * @type {BehaviorSubject<RendererCommands>}
@@ -100,6 +115,18 @@ export class StorageService {
     this.rendererStorageCommands = Lodash.merge(this.rendererStorageCommands, tempObj);
   }
 
+  //TODO: переделать на enum
+  public rendererStorageCommandDelete(type: string) {
+    let rendererStorageCommands = this.rendererStorageCommands;
+
+    for (const command in this.rendererStorageCommands) {
+      if (this.rendererStorageCommands[command].type === type) {
+        delete rendererStorageCommands[command];
+      }
+    }
+
+    this.rendererStorageCommands = rendererStorageCommands;
+  }
   /**
    * Сторейдж для хранения правил по обновлению моделей
    * @type {BehaviorSubject<MixerCommands>}
