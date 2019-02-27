@@ -87,6 +87,7 @@ export class FirstPersonControls extends CameraControls {
     );
     this.theta = Math.acos(this.object.position.z / radius);
     this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
+
   }
 
   initCommands() {
@@ -228,8 +229,8 @@ export class FirstPersonControls extends CameraControls {
           this.theta += (event.movementY * Math.PI) / 180;
           let radius = Math.sqrt(
             Math.pow(this.object.position.x, 2) +
-            Math.pow(this.object.position.y, 2) +
-            Math.pow(this.object.position.z, 2)
+              Math.pow(this.object.position.y, 2) +
+              Math.pow(this.object.position.z, 2)
           );
           this.object.position.x = radius * Math.cos(this.phi) * Math.sin(this.theta);
           this.object.position.z = radius * Math.sin(this.phi) * Math.sin(this.theta);
@@ -320,7 +321,6 @@ export class FirstPersonControls extends CameraControls {
         }
 
         this.object.updateProjectionMatrix();
-
       }
     });
     console.log(this.storageService.hotkeySceneCommands);
