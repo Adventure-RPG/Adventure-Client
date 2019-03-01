@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
+import {Types} from "@enums/types.enum";
 
 export interface Commands {
   [key: string]: Command;
@@ -14,7 +15,7 @@ export interface Command {
   onMouseUp?(event);
   onMouseMove?(event);
   onMouse?(event);
-  type: string; //TODO: переделать в енам
+  type: Types; //TODO: переделать в енам
   pressed?: boolean;
   keyCode?: number | number[];
   name: string;
@@ -25,7 +26,7 @@ export interface RendererCommands {
 }
 
 export interface RendererCommand {
-  type: string; // TODO: переделать в енам и сделать общее наследование с командами, дабы не дублировать код
+  type: Types; // TODO: переделать в енам и сделать общее наследование с командами, дабы не дублировать код
   update?(delta?);
 }
 
@@ -79,7 +80,7 @@ export class StorageService {
   }
 
   //TODO: переделать на enum
-  public hotkeySceneCommandDelete(type: string) {
+  public hotkeySceneCommandDelete(type: Types) {
     let hotkeySceneCommands = this.hotkeySceneCommands;
 
     for (const command in this.hotkeySceneCommands) {
@@ -116,7 +117,7 @@ export class StorageService {
   }
 
   //TODO: переделать на enum
-  public rendererStorageCommandDelete(type: string) {
+  public rendererStorageCommandDelete(type: Types) {
     let rendererStorageCommands = this.rendererStorageCommands;
 
     for (const command in this.rendererStorageCommands) {

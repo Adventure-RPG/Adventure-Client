@@ -4,6 +4,7 @@ import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/MouseCommands.enum';
 import { CameraControls } from './camera-controls';
+import { Types} from "@enums/types.enum";
 
 export class FirstPersonControls extends CameraControls {
   object;
@@ -48,10 +49,6 @@ export class FirstPersonControls extends CameraControls {
 
     this.enabled = true;
 
-    this.movementSpeed = 1.0;
-    this.lookSpeed = 0.005;
-
-    this.lookVertical = true;
     this.autoForward = false;
 
     this.activeLook = true;
@@ -60,10 +57,6 @@ export class FirstPersonControls extends CameraControls {
     this.heightCoef = 1.0;
     this.heightMin = 0.0;
     this.heightMax = 1.0;
-
-    this.constrainVertical = false;
-    this.verticalMin = 0;
-    this.verticalMax = Math.PI;
 
     this.autoSpeedFactor = 0.0;
 
@@ -88,6 +81,12 @@ export class FirstPersonControls extends CameraControls {
     this.theta = Math.acos(this.object.position.z / radius);
     this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
 
+    this.movementSpeed = 100;
+    this.lookSpeed = 0.125;
+    this.lookVertical = true;
+    this.constrainVertical = true;
+    this.verticalMin = 1.1;
+    this.verticalMax = 2.2;
   }
 
   initCommands() {
@@ -95,7 +94,7 @@ export class FirstPersonControls extends CameraControls {
     this.storageService.rendererStorageCommandDelete('camera');
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveForward, {
-      type: 'camera',
+      type: Types.Camera,
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -108,7 +107,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseMoveBackward, {
-      type: 'camera',
+      type: Types.Camera,
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -121,7 +120,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDragOn, {
-      type: 'camera',
+      type: Types.Camera,
       onMouseUp: function() {
         this.pressed = false;
       },
@@ -147,7 +146,7 @@ export class FirstPersonControls extends CameraControls {
     //     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveForwardKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveForward = false;
         console.log(this.moveForward);
@@ -163,7 +162,7 @@ export class FirstPersonControls extends CameraControls {
     });
     //TODO:START
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveBackwardKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveBackward = false;
       },
@@ -179,7 +178,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveLeft = false;
       },
@@ -195,7 +194,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveRight = false;
       },
@@ -211,7 +210,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveUpKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveUp = false;
       },
@@ -227,7 +226,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-      type: 'camera',
+      type: Types.Camera,
       onMouseMove: (event: MouseEvent) => {
         if (event.shiftKey === true) {
           console.log('here');
@@ -256,7 +255,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseClick, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyDown: (event: MouseEvent) => {
         console.log('1');
       },
@@ -286,7 +285,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveDownKeyboard, {
-      type: 'camera',
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveDown = false;
       },
@@ -303,7 +302,7 @@ export class FirstPersonControls extends CameraControls {
     //TODO:END
 
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
-      type: 'camera',
+      type: Types.Camera,
       update: delta => {
         if (this.enabled === false) {
           return;
