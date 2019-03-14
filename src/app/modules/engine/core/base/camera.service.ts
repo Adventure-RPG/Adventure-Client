@@ -5,7 +5,8 @@ import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
 import { FirstPersonControls } from 'app/utils/first-person-controls';
 import { StorageService } from '../../../../services/storage.service';
-import {Types} from "@enums/types.enum";
+import { Types } from '@enums/types.enum';
+import {OrthographicCameraControls} from "../../../../utils/orthographic-camera-controls";
 //import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
 
 @Injectable()
@@ -126,29 +127,26 @@ export class CameraService implements OnInit {
       1,
       d * 40
     );
-    this.camera.position.set(0, 0, d * 8);
-//    let controls = new OrthographicCameraControls(
-//       this.camera,
-//       this.domElement,
-//       this.storageService
-//     );
-//
-//     controls.movementSpeed = 100;
-//     controls.lookSpeed = 0.125;
-//     controls.lookVertical = true;
-//     controls.constrainVertical = true;
-//     controls.verticalMin = 1.1;
-//     controls.verticalMax = 2.2;
+    this.camera.position.set(0, 0, 100);
+   let controls = new OrthographicCameraControls( this.camera, this.domElement, this.storageService );
 
-    let obj = {};
-    obj[CAMERA.IsometricCamera] = this.camera;
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
+   controls.movementSpeed = 1000;
+   controls.lookSpeed = 0.125;
+   controls.lookVertical = true;
+   controls.constrainVertical = true;
+   controls.verticalMin = 1.1;
+   controls.verticalMax = 2.2;
+
+   let obj = {};
+   obj[CAMERA.IsometricCamera] = this.camera;
+   let mergeModel = Lodash.merge(this.cameries, obj);
+   this.cameries = mergeModel;
   }
 
   public updateIsometricCamera(x?, y?, z?) {
     this.commandsCleanUp();
     this.camera = this.cameries[CAMERA.IsometricCamera];
+    let controls = new OrthographicCameraControls( this.camera, this.domElement, this.storageService );
   }
 
   public init2dCamera() {

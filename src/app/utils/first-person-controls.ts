@@ -4,7 +4,7 @@ import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/MouseCommands.enum';
 import { CameraControls } from './camera-controls';
-import { Types} from "@enums/types.enum";
+import { Types } from '@enums/types.enum';
 
 export class FirstPersonControls extends CameraControls {
   object;
@@ -225,6 +225,22 @@ export class FirstPersonControls extends CameraControls {
       name: 'moveUp'
     });
 
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveDownKeyboard, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        this.moveDown = false;
+      },
+      onKeyDown: () => {
+        console.log('Двигаюсь Вниз');
+        console.log(this.object);
+
+        this.moveDown = true;
+      },
+      pressed: false,
+      keyCode: [Key.Q],
+      name: 'moveDown'
+    });
+
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       type: Types.Camera,
       onMouseMove: (event: MouseEvent) => {
@@ -265,7 +281,7 @@ export class FirstPersonControls extends CameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseWheel, {
-      type: 'camera',
+      type: Types.Camera,
       onMouse: (event: WheelEvent) => {
         console.log('Колесико мышки');
         console.log(typeof this.object);

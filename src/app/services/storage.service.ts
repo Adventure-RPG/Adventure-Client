@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
-import {Types} from "@enums/types.enum";
+import { Types } from '@enums/types.enum';
 
 export interface Commands {
   [key: string]: Command;
