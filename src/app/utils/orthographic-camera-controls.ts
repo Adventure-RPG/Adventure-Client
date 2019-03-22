@@ -3,7 +3,7 @@ import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/mouseCommands.enum';
-import {Types} from "@enums/types.enum";
+import { Types } from '@enums/types.enum';
 
 export class OrthographicCameraControls {
   object;
@@ -120,7 +120,7 @@ export class OrthographicCameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
-      type : Types.Camera,
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveLeft = false;
       },
@@ -136,7 +136,7 @@ export class OrthographicCameraControls {
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
-      type : Types.Camera,
+      type: Types.Camera,
       onKeyUp: () => {
         this.moveRight = false;
       },
@@ -151,9 +151,8 @@ export class OrthographicCameraControls {
       name: 'moveRight'
     });
 
-
     this.storageService.rendererStorageCommandPush('orthographicCameraUpdater', {
-      type : Types.Camera,
+      type: Types.Camera,
       update: delta => {
         if (this.enabled === false) {
           return;
