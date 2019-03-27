@@ -4,9 +4,6 @@ import { IGEOJson } from '../../engine.types';
 import { Mesh, MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
-import { fromCSG, toCSG } from 'three-2-csg';
-
-const csgApi = require('@jscad/csg');
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -226,10 +223,10 @@ export class HeightMapService {
         diff >= 1 ? (hres = diff) : (hres = 1);
 
         geometries.push(
-          csgApi.CSG.cube({
-            radius: [cubeWidth / 2, hres, cubeWidth / 2],
-            center: [x * cubeWidth, 0, z * cubeWidth]
-          })
+          // csgApi.CSG.cube({
+          //   radius: [cubeWidth / 2, hres, cubeWidth / 2],
+          //   center: [x * cubeWidth, 0, z * cubeWidth]
+          // })
         );
       }
     }
@@ -272,12 +269,12 @@ export class HeightMapService {
       color: '#89ff90'
     });
 
-    let mesh = new Mesh(fromCSG(csgModel), [material, shadowMaterial]);
-    mesh.geometry.computeVertexNormals();
-    //
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.updateMatrix();
-    scene.add(mesh);
+    // let mesh = new Mesh(fromCSG(csgModel), [material, shadowMaterial]);
+    // mesh.geometry.computeVertexNormals();
+    // //
+    // mesh.castShadow = true;
+    // mesh.receiveShadow = true;
+    // mesh.updateMatrix();
+    // scene.add(mesh);
   }
 }
