@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from "three";
-import {KeyboardEventService} from "@events/keyboard-event.service";
-import {LightService} from "@modules/engine/core/light.service";
-import {EngineService} from "@modules/engine/engine.service";
-import {SettingsService} from "@services/settings.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { KeyboardEventService } from '@events/keyboard-event.service';
+import { LightService } from '@modules/engine/core/light.service';
+import { EngineService } from '@modules/engine/engine.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'adventure-arena',
@@ -11,7 +11,6 @@ import {SettingsService} from "@services/settings.service";
   styleUrls: ['./arena.component.scss']
 })
 export class ArenaComponent implements OnInit {
-
   @ViewChild('scene') scene;
 
   constructor(
@@ -37,7 +36,7 @@ export class ArenaComponent implements OnInit {
     // ground
     let mesh = new Mesh(
       new PlaneGeometry(width, width),
-      new MeshPhongMaterial({ color: 0xF58426, depthWrite: true, opacity: 1 })
+      new MeshPhongMaterial({ color: 0xf58426, depthWrite: true, opacity: 1 })
     );
 
     mesh.rotation.x = -Math.PI / 2;
@@ -47,19 +46,25 @@ export class ArenaComponent implements OnInit {
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
-
     //TODO: вынести функцию в утилиты
-    let size = 180, divisions = 36, deviation = 10, cell = size / divisions;
+    let size = 180,
+      divisions = 36,
+      deviation = 10,
+      cell = size / divisions;
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
         // ground
         let mesh = new Mesh(
           new PlaneGeometry(cell, cell),
-          new MeshPhongMaterial({ color: ((i * cell + j) % 2) ? 0xFFFFFF : 0x000000, depthWrite: true, opacity: 1 })
+          new MeshPhongMaterial({
+            color: (i * cell + j) % 2 ? 0xffffff : 0x000000,
+            depthWrite: true,
+            opacity: 1
+          })
         );
 
         mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX(- (deviation + cell * i) );
+        mesh.translateX(-(deviation + cell * i));
         mesh.translateY(deviation + cell * j);
         mesh.translateZ(1);
 

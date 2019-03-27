@@ -222,12 +222,13 @@ export class HeightMapService {
         let hres;
         diff >= 1 ? (hres = diff) : (hres = 1);
 
-        geometries.push(
+        geometries
+          .push
           // csgApi.CSG.cube({
           //   radius: [cubeWidth / 2, hres, cubeWidth / 2],
           //   center: [x * cubeWidth, 0, z * cubeWidth]
           // })
-        );
+          ();
       }
     }
 
