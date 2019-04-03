@@ -200,10 +200,11 @@ export class CSG {
       ].map(info => {
         return new Polygon(
           info[0].map(i => {
+            //TODO: ВАЖНО, если буду использовать csg проверить
             const pos = new Vector(
-              c.x + r[0] * (2 * !!(i & 1) - 1),
-              c.y + r[1] * (2 * !!(i & 2) - 1),
-              c.z + r[2] * (2 * !!(i & 4) - 1)
+              c.x + r[0] * (2 * (!!(i & 1) ? 1 : 0) - 1),
+              c.y + r[1] * (2 * (!!(i & 2) ? 1 : 0) - 1),
+              c.z + r[2] * (2 * (!!(i & 4) ? 1 : 0) - 1)
             );
             return new Vertex(pos, new Vector(info[1]));
           })
