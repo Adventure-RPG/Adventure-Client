@@ -18,6 +18,11 @@ const routes: Routes = [
         loadChildren: 'app/modules/ui-interfaces/login/login.module#LoginModule'
       },
       {
+        path: 'arena',
+        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule',
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'editor',
         loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule',
         canActivate: [AuthGuard]

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
+import { Types } from '@enums/types.enum';
 
 export interface Commands {
   [key: string]: Command;
@@ -14,6 +15,7 @@ export interface Command {
   onMouseUp?(event);
   onMouseMove?(event);
   onMouse?(event);
+  type: Types; //TODO: переделать в енам
   pressed?: boolean;
   keyCode?: number | number[];
   name: string;
@@ -24,6 +26,7 @@ export interface RendererCommands {
 }
 
 export interface RendererCommand {
+  type: Types; // TODO: переделать в енам и сделать общее наследование с командами, дабы не дублировать код
   update?(delta?);
 }
 
@@ -71,7 +74,22 @@ export class StorageService {
   public hotkeySceneCommandPush(K, V: Command) {
     const tempObj = {};
     tempObj[K] = V;
+    console.log(tempObj);
+    console.log(this.hotkeySceneCommands);
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
+  }
+
+  //TODO: переделать на enum
+  public hotkeySceneCommandDelete(type: Types) {
+    let hotkeySceneCommands = this.hotkeySceneCommands;
+
+    for (const command in this.hotkeySceneCommands) {
+      if (this.hotkeySceneCommands[command].type === type) {
+        delete hotkeySceneCommands[command];
+      }
+    }
+
+    this.hotkeySceneCommands = hotkeySceneCommands;
   }
 
   /**
@@ -98,6 +116,18 @@ export class StorageService {
     this.rendererStorageCommands = Lodash.merge(this.rendererStorageCommands, tempObj);
   }
 
+  //TODO: переделать на enum
+  public rendererStorageCommandDelete(type: Types) {
+    let rendererStorageCommands = this.rendererStorageCommands;
+
+    for (const command in this.rendererStorageCommands) {
+      if (this.rendererStorageCommands[command].type === type) {
+        delete rendererStorageCommands[command];
+      }
+    }
+
+    this.rendererStorageCommands = rendererStorageCommands;
+  }
   /**
    * Сторейдж для хранения правил по обновлению моделей
    * @type {BehaviorSubject<MixerCommands>}

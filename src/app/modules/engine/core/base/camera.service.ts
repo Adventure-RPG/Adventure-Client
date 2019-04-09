@@ -5,6 +5,9 @@ import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
 import { FirstPersonControls } from 'app/utils/first-person-controls';
 import { StorageService } from '../../../../services/storage.service';
+import { Types } from '@enums/types.enum';
+import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
+//import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -97,13 +100,6 @@ export class CameraService implements OnInit {
     let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
     console.log(this.storageService.hotkeySceneCommands);
 
-    controls.movementSpeed = 100;
-    controls.lookSpeed = 0.125;
-    controls.lookVertical = true;
-    controls.constrainVertical = true;
-    controls.verticalMin = 1.1;
-    controls.verticalMax = 2.2;
-
     let obj = {};
     // controls.update();
     obj[CAMERA.FirstPersonCamera] = this.camera;
@@ -112,9 +108,9 @@ export class CameraService implements OnInit {
   }
 
   public updateFirstPersonCamera() {
-    //let d = this.settingsService.settings.camera.d;
+    this.commandsCleanUp();
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
-    //this.camera.position.set(d * 8, d * 8, d * 8);
+    let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
   }
 
   public initIsometricCamera() {
@@ -131,8 +127,20 @@ export class CameraService implements OnInit {
       1,
       d * 40
     );
+    this.camera.position.set(0, 0, 100);
+    let controls = new OrthographicCameraControls(
+      this.camera,
+      this.domElement,
+      this.storageService
+    );
 
-    this.camera.position.set(d * 8, d * 8, d * 8); // all components equal
+    controls.movementSpeed = 1000;
+    controls.lookSpeed = 0.125;
+    controls.lookVertical = true;
+    controls.constrainVertical = true;
+    controls.verticalMin = 1.1;
+    controls.verticalMax = 2.2;
+
     let obj = {};
     obj[CAMERA.IsometricCamera] = this.camera;
     let mergeModel = Lodash.merge(this.cameries, obj);
@@ -140,24 +148,13 @@ export class CameraService implements OnInit {
   }
 
   public updateIsometricCamera(x?, y?, z?) {
-    let d = this.settingsService.settings.camera.d;
+    this.commandsCleanUp();
     this.camera = this.cameries[CAMERA.IsometricCamera];
-
-    console.log(d);
-
-    (<OrthographicCamera>this.camera).left = -d * this.settingsService.settings.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).right = d * this.settingsService.settings.browser.aspectRatio;
-    (<OrthographicCamera>this.camera).top = d;
-    (<OrthographicCamera>this.camera).bottom = -d;
-    (<OrthographicCamera>this.camera).near = 1;
-    (<OrthographicCamera>this.camera).far = d * 40;
-    this.camera.position.set(d * 8, d * 8, d * 8);
-
-    (<OrthographicCamera>this.camera).updateProjectionMatrix();
-    let obj = {};
-    obj[CAMERA.IsometricCamera] = this.camera;
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
+    let controls = new OrthographicCameraControls(
+      this.camera,
+      this.domElement,
+      this.storageService
+    );
   }
 
   public init2dCamera() {
@@ -175,6 +172,11 @@ export class CameraService implements OnInit {
   public update2dCamera() {
     let d = this.settingsService.settings.camera.d;
     this.camera.position.set(0, d * 4, 0); // all components equal
+  }
+
+  public commandsCleanUp() {
+    this.storageService.hotkeySceneCommandDelete(Types.Camera);
+    this.storageService.rendererStorageCommandDelete(Types.Camera);
   }
 
   ngOnInit(): void {}
