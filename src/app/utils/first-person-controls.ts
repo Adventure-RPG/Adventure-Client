@@ -4,7 +4,7 @@ import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
-import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
 
 export class FirstPersonControls extends CameraControls {
   object;
