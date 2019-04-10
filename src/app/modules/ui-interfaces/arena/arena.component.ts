@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {Color, EffectComposer, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import { Color, EffectComposer, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -10,6 +10,8 @@ import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/postprocessing/RenderPass';
 import 'three/examples/js/postprocessing/ShaderPass';
 import 'three/examples/js/postprocessing/OutlinePass';
+
+declare const THREE;
 
 @Component({
   selector: 'adventure-arena',
@@ -202,8 +204,7 @@ export class ArenaComponent implements OnInit {
     this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
-
-    let composer = new EffectComposer( this.engineService.sceneService.renderer );
+    let composer = new THREE.EffectComposer(this.engineService.sceneService.renderer);
     console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
