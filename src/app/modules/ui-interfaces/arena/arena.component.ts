@@ -203,7 +203,7 @@ export class ArenaComponent implements OnInit {
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
 
-    let composer = new THREE.EffectComposer( this.engineService.sceneService.renderer );
+    let composer = new EffectComposer( this.engineService.sceneService.renderer );
     console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
