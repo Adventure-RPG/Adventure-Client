@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EngineService } from '../../engine/engine.service';
 import { StorageService } from '@services/storage.service';
-import {Types} from "@enums/types.enum";
-import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
+import { Types } from '@enums/types.enum';
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
 
 declare const THREE;
 
@@ -34,58 +34,57 @@ export class SceneTestComponent implements OnInit {
       type: Types.Camera,
       onMouseDown: (event: MouseEvent) => {
         selectionBox.startPoint.set(
-        ( event.clientX / window.innerWidth ) * 2 - 1,
-        - ( event.clientY / window.innerHeight ) * 2 + 1,
-        0.5 );
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
       },
       pressed: false,
       keyCode: [NaN],
       name: 'mouseDown'
-      }
-    );
+    });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
-        type: Types.Camera,
-        onMouseUp: (event: MouseEvent) => {
-          selectionBox.endPoint.set(
-            ( event.clientX / window.innerWidth ) * 2 - 1,
-            - ( event.clientY / window.innerHeight ) * 2 + 1,
-            0.5 );
-          let allSelected = selectionBox.select();
-          for ( let i = 0; i < allSelected.length; i ++ ) {
-            allSelected[ i ].material.emissive = new THREE.Color( 0x0000ff );
-          }
-        },
-        pressed: false,
-        keyCode: [NaN],
-        name: 'mouseUp'
-      }
-    );
+      type: Types.Camera,
+      onMouseUp: (event: MouseEvent) => {
+        selectionBox.endPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+        let allSelected = selectionBox.select();
+        for (let i = 0; i < allSelected.length; i++) {
+          allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mouseUp'
+    });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-        type: Types.Camera,
-        onMouseMove: (event: MouseEvent) => {
-          if ( helper.isDown ) {
-            for ( let i = 0; i < selectionBox.collection.length; i ++ ) {
-              selectionBox.collection[ i ].material.emissive = new THREE.Color( 0x000000 );
-            }
-            selectionBox.endPoint.set(
-              ( event.clientX / window.innerWidth ) * 2 - 1,
-              - ( event.clientY / window.innerHeight ) * 2 + 1,
-              0.5 );
-            let allSelected = selectionBox.select();
-            for ( let i = 0; i < allSelected.length; i ++ ) {
-              allSelected[ i ].material.emissive = new THREE.Color( 0x0000ff );
-            }
+      type: Types.Camera,
+      onMouseMove: (event: MouseEvent) => {
+        if (helper.isDown) {
+          for (let i = 0; i < selectionBox.collection.length; i++) {
+            selectionBox.collection[i].material.emissive = new THREE.Color(0x000000);
           }
-        },
-        pressed: false,
-        keyCode: [NaN],
-        name: 'mouseMove'
-      }
-    );
+          selectionBox.endPoint.set(
+            (event.clientX / window.innerWidth) * 2 - 1,
+            -(event.clientY / window.innerHeight) * 2 + 1,
+            0.5
+          );
+          let allSelected = selectionBox.select();
+          for (let i = 0; i < allSelected.length; i++) {
+            allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+          }
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mouseMove'
+    });
   }
-
 
   ngOnInit() {}
 }

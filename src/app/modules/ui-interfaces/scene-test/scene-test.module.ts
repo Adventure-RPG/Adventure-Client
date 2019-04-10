@@ -5,9 +5,6 @@ import { SceneTestRoutingModule } from './scene-test-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    SceneTestRoutingModule
-  ]
+  imports: [CommonModule, SceneTestRoutingModule]
 })
-export class SceneTestModule { }
+export class SceneTestModule {}
