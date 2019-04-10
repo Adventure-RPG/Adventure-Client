@@ -9,6 +9,6 @@ import { SceneTestComponent } from './scene-test/scene-test.component';
 @NgModule({
   imports: [CommonModule, UiInterfacesRoutingModule, SubModule, SharedModule],
   providers: [],
-  declarations: [SceneTestComponent]
+  declarations: []
 })
 export class UiInterfacesModule {}

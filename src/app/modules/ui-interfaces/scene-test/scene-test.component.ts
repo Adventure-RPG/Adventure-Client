@@ -20,12 +20,12 @@ export class SceneTestComponent implements OnInit {
   helper;
   constructor(private engineService: EngineService, private storageService: StorageService) {
     this.engineService.init();
-    selectionBox = new THREE.SelectionBox(
+    this.selectionBox = new THREE.SelectionBox(
       this.engineService.sceneService.camera,
       this.engineService.sceneService.scene
     );
-    helper = new THREE.SelectionHelper(
-      selectionBox,
+    this.helper = new THREE.SelectionHelper(
+      this.selectionBox,
       this.engineService.sceneService.renderer,
       'selectBox'
     );
@@ -33,7 +33,7 @@ export class SceneTestComponent implements OnInit {
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
       type: Types.Camera,
       onMouseDown: (event: MouseEvent) => {
-        selectionBox.startPoint.set(
+        this.selectionBox.startPoint.set(
           (event.clientX / window.innerWidth) * 2 - 1,
           -(event.clientY / window.innerHeight) * 2 + 1,
           0.5
@@ -47,12 +47,12 @@ export class SceneTestComponent implements OnInit {
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
       type: Types.Camera,
       onMouseUp: (event: MouseEvent) => {
-        selectionBox.endPoint.set(
+        this.selectionBox.endPoint.set(
           (event.clientX / window.innerWidth) * 2 - 1,
           -(event.clientY / window.innerHeight) * 2 + 1,
           0.5
         );
-        let allSelected = selectionBox.select();
+        let allSelected = this.selectionBox.select();
         for (let i = 0; i < allSelected.length; i++) {
           allSelected[i].material.emissive = new THREE.Color(0x0000ff);
         }
@@ -65,16 +65,16 @@ export class SceneTestComponent implements OnInit {
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       type: Types.Camera,
       onMouseMove: (event: MouseEvent) => {
-        if (helper.isDown) {
-          for (let i = 0; i < selectionBox.collection.length; i++) {
-            selectionBox.collection[i].material.emissive = new THREE.Color(0x000000);
+        if (this.helper.isDown) {
+          for (let i = 0; i < this.selectionBox.collection.length; i++) {
+            this.selectionBox.collection[i].material.emissive = new THREE.Color(0x000000);
           }
-          selectionBox.endPoint.set(
+          this.selectionBox.endPoint.set(
             (event.clientX / window.innerWidth) * 2 - 1,
             -(event.clientY / window.innerHeight) * 2 + 1,
             0.5
           );
-          let allSelected = selectionBox.select();
+          let allSelected = this.selectionBox.select();
           for (let i = 0; i < allSelected.length; i++) {
             allSelected[i].material.emissive = new THREE.Color(0x0000ff);
           }
