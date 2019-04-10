@@ -241,34 +241,34 @@ export class FirstPersonControls extends CameraControls {
       name: 'moveDown'
     });
 
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-      type: Types.Camera,
-      onMouseMove: (event: MouseEvent) => {
-        if (event.shiftKey === true) {
-          console.log('here');
-          console.log(event.movementX);
-          console.log(event.movementY);
-          this.object.rotateX((event.movementY * Math.PI) / 180);
-          this.object.rotateZ((-event.movementX * Math.PI) / 180);
-        } else if (event.altKey === true) {
-          console.log('Rotation');
-          this.phi += (event.movementX * Math.PI) / 180;
-          this.theta += (event.movementY * Math.PI) / 180;
-          let radius = Math.sqrt(
-            Math.pow(this.object.position.x, 2) +
-              Math.pow(this.object.position.y, 2) +
-              Math.pow(this.object.position.z, 2)
-          );
-          this.object.position.x = radius * Math.cos(this.phi) * Math.sin(this.theta);
-          this.object.position.z = radius * Math.sin(this.phi) * Math.sin(this.theta);
-          this.object.position.y = radius * Math.cos(this.theta);
-          this.object.lookAt(this.target);
-        }
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mousemove'
-    });
+    //this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
+    //       type: Types.Camera,
+    //       onMouseMove: (event: MouseEvent) => {
+    //         if (event.shiftKey === true) {
+    //           console.log('here');
+    //           console.log(event.movementX);
+    //           console.log(event.movementY);
+    //           this.object.rotateX((event.movementY * Math.PI) / 180);
+    //           this.object.rotateZ((-event.movementX * Math.PI) / 180);
+    //         } else if (event.altKey === true) {
+    //           console.log('Rotation');
+    //           this.phi += (event.movementX * Math.PI) / 180;
+    //           this.theta += (event.movementY * Math.PI) / 180;
+    //           let radius = Math.sqrt(
+    //             Math.pow(this.object.position.x, 2) +
+    //               Math.pow(this.object.position.y, 2) +
+    //               Math.pow(this.object.position.z, 2)
+    //           );
+    //           this.object.position.x = radius * Math.cos(this.phi) * Math.sin(this.theta);
+    //           this.object.position.z = radius * Math.sin(this.phi) * Math.sin(this.theta);
+    //           this.object.position.y = radius * Math.cos(this.theta);
+    //           this.object.lookAt(this.target);
+    //         }
+    //       },
+    //       pressed: false,
+    //       keyCode: [NaN],
+    //       name: 'mousemove'
+    //     });
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseClick, {
       type: Types.Camera,

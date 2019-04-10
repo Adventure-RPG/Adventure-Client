@@ -35,6 +35,11 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
+      },
+      {
+        path: 'scene-test',
+        loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule',
+        canActivate: [AuthGuard]
       }
     ]
   },

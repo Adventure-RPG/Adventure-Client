@@ -10,5 +10,7 @@ export enum MouseCommandsEnum {
   mouseEnter = 'mouseEnter',
   mouseLeave = 'mouseLeave',
   contextMenu = 'contextMenu',
-  mouseWheel = 'mouseWheel'
+  mouseWheel = 'mouseWheel',
+  mouseDown = "mouseDown",
+  mouseUp = "mouseUp"
 }
