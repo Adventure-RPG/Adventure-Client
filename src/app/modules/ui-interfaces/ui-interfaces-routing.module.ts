@@ -25,7 +25,7 @@ const routes: Routes = [
       {
         path: 'editor',
         loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule',
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
       {
         path: 'tavern',
