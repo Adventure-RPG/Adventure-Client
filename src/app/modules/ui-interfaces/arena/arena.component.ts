@@ -10,8 +10,13 @@ import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/postprocessing/RenderPass';
 import 'three/examples/js/postprocessing/ShaderPass';
 import 'three/examples/js/postprocessing/OutlinePass';
+import {StorageService} from "@services/storage.service";
+import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
+import {Types} from "@enums/types.enum";
+import 'three/examples/js/interactive/SelectionBox';
+import 'three/examples/js/interactive/SelectionHelper';
+import * as THREE from 'three';
 
-declare const THREE;
 
 @Component({
   selector: 'adventure-arena',
@@ -21,20 +26,94 @@ declare const THREE;
 export class ArenaComponent implements OnInit {
   @ViewChild('scene') scene;
 
+  sceneService;
+  camera;
+  renderer;
+  selectionBox;
+  helper;
+
   constructor(
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
-    public keyboardEventService: KeyboardEventService
+    public keyboardEventService: KeyboardEventService,
+    private storageService: StorageService
   ) {
-    // this.engineService.renderEngine();
+    console.log("adada");
+    console.log(THREE.SelectionBox);
+    console.log(new THREE);
+    this.engineService.init();
+    this.selectionBox = new THREE.SelectionBox(
+      this.engineService.sceneService.camera,
+      this.engineService.sceneService.scene
+    );
+    this.helper = new THREE.SelectionHelper(
+      this.selectionBox,
+      this.engineService.sceneService.renderer,
+      'selectBox'
+    );
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
+      type: Types.Camera,
+      onMouseDown: (event: MouseEvent) => {
+        this.selectionBox.startPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mouseDown'
+    });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
+      type: Types.Camera,
+      onMouseUp: (event: MouseEvent) => {
+        this.selectionBox.endPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+        let allSelected = this.selectionBox.select();
+        for (let i = 0; i < allSelected.length; i++) {
+          allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mouseUp'
+    });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
+      type: Types.Camera,
+      onMouseMove: (event: MouseEvent) => {
+        if (this.helper.isDown) {
+          for (let i = 0; i < this.selectionBox.collection.length; i++) {
+            this.selectionBox.collection[i].material.emissive = new THREE.Color(0x000000);
+          }
+          this.selectionBox.endPoint.set(
+            (event.clientX / window.innerWidth) * 2 - 1,
+            -(event.clientY / window.innerHeight) * 2 + 1,
+            0.5
+          );
+          let allSelected = this.selectionBox.select();
+          for (let i = 0; i < allSelected.length; i++) {
+            allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+          }
+        }
+      },
+      pressed: false,
+      keyCode: [NaN],
+      name: 'mouseMove'
+    });
   }
+    // this.engineService.renderEngine();
 
   ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
-
     console.log('init');
     this.engineService.init();
 

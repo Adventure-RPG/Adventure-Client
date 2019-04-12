@@ -33,6 +33,8 @@
               "./node_modules/three/examples/js/postprocessing/RenderPass.js",
               "./node_modules/three/examples/js/postprocessing/ShaderPass.js",
               "./node_modules/three/examples/js/postprocessing/OutlinePass.js",
+              "./node_modules/three/examples/js/interactive/SelectionBox.js",
+              "./node_modules/three/examples/js/interactive/SelectionHelper.js"
             ]
           },
           "configurations": {

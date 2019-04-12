@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared-module.module';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { AuthGuard } from '../../guards/auth.guard';
-import {SceneTestComponent} from "@modules/ui-interfaces/scene-test/scene-test.component";
+import { SceneTestComponent } from '@modules/ui-interfaces/scene-test/scene-test.component';
 
 const routes: Routes = [
   {
@@ -39,10 +39,9 @@ const routes: Routes = [
       },
       {
         path: 'scene-test',
-        loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule',
+        loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule'
         // canActivate: [AuthGuard]
-      },
-
+      }
     ]
   },
   {
