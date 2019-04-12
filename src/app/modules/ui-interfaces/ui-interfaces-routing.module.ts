@@ -25,7 +25,7 @@ const routes: Routes = [
       },
       {
         path: 'editor',
-        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule',
+        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
         // canActivate: [AuthGuard]
       },
       {
@@ -39,9 +39,8 @@ const routes: Routes = [
       },
       {
         path: 'scene-test',
-        component: SceneTestComponent,
         loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule',
-        canActivate: [AuthGuard]
+        // canActivate: [AuthGuard]
       },
 
     ]
