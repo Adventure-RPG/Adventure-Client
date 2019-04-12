@@ -60,12 +60,12 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.1",
     "@angular/cli": "^7.2.1",
-    "@types/socket.io-client": "^1.4.32",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "^3.3.5",
     "@types/lodash": "^4.14.92",
     "@types/node": "^10.12.18",
     "@types/requirejs": "^2.1.30",
+    "@types/socket.io-client": "^1.4.32",
     "@types/three": "^0.93.15",
     "@types/uuid": "^3.4.3",
     "codelyzer": "^4.4.2",
@@ -86,6 +86,6 @@
     "ts-keycode-enum": "^1.0.4",
     "ts-node": "~7.0.1",
     "tslint": "^5.10.0",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.4"
   }
 }

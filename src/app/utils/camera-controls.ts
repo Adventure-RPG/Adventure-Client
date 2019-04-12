@@ -1,6 +1,6 @@
 import { StorageService } from '@services/storage.service';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
+import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 
 export class CameraControls {
   storageService;

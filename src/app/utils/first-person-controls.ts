@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
-import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
+import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
