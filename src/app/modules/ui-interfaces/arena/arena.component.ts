@@ -1,22 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Color, EffectComposer, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
 import { SettingsService } from '@services/settings.service';
-import {StorageService} from "@services/storage.service";
-import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
-import {Types} from "@enums/types.enum";
+import { StorageService } from '@services/storage.service';
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { Types } from '@enums/types.enum';
 
 import 'three-full/sources/shaders/CopyShader';
 import 'three-full/sources/shaders/FXAAShader';
-import 'three-full/sources/postprocessing/EffectComposer';
+import { EffectComposer } from 'three-full/sources/postprocessing/EffectComposer';
 import 'three-full/sources/postprocessing/RenderPass';
 import 'three-full/sources/postprocessing/ShaderPass';
 import 'three-full/sources/postprocessing/OutlinePass';
-import {SelectionBox} from 'three-full/sources/interactive/SelectionBox';
-import {SelectionHelper} from 'three-full/sources/interactive/SelectionHelper';
-
+import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
+import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
 
 @Component({
   selector: 'adventure-arena',
@@ -39,7 +38,7 @@ export class ArenaComponent implements OnInit {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
   ) {
-    console.log("adada");
+    console.log('adada');
     this.engineService.init();
     this.selectionBox = new SelectionBox(
       this.engineService.sceneService.camera,
@@ -106,7 +105,7 @@ export class ArenaComponent implements OnInit {
       name: 'mouseMove'
     });
   }
-    // this.engineService.renderEngine();
+  // this.engineService.renderEngine();
 
   ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
