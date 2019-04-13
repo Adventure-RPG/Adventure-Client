@@ -4,18 +4,18 @@ import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
 import { SettingsService } from '@services/settings.service';
-import 'three/examples/js/shaders/CopyShader';
-import 'three/examples/js/shaders/FXAAShader';
-import 'three/examples/js/postprocessing/EffectComposer';
-import 'three/examples/js/postprocessing/RenderPass';
-import 'three/examples/js/postprocessing/ShaderPass';
-import 'three/examples/js/postprocessing/OutlinePass';
 import {StorageService} from "@services/storage.service";
 import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
 import {Types} from "@enums/types.enum";
-import 'three/examples/js/interactive/SelectionBox';
-import 'three/examples/js/interactive/SelectionHelper';
-import * as THREE from 'three';
+
+import 'three-full/sources/shaders/CopyShader';
+import 'three-full/sources/shaders/FXAAShader';
+import 'three-full/sources/postprocessing/EffectComposer';
+import 'three-full/sources/postprocessing/RenderPass';
+import 'three-full/sources/postprocessing/ShaderPass';
+import 'three-full/sources/postprocessing/OutlinePass';
+import {SelectionBox} from 'three-full/sources/interactive/SelectionBox';
+import {SelectionHelper} from 'three-full/sources/interactive/SelectionHelper';
 
 
 @Component({
@@ -40,14 +40,12 @@ export class ArenaComponent implements OnInit {
     private storageService: StorageService
   ) {
     console.log("adada");
-    console.log(THREE.SelectionBox);
-    console.log(new THREE);
     this.engineService.init();
-    this.selectionBox = new THREE.SelectionBox(
+    this.selectionBox = new SelectionBox(
       this.engineService.sceneService.camera,
       this.engineService.sceneService.scene
     );
-    this.helper = new THREE.SelectionHelper(
+    this.helper = new SelectionHelper(
       this.selectionBox,
       this.engineService.sceneService.renderer,
       'selectBox'
@@ -77,7 +75,7 @@ export class ArenaComponent implements OnInit {
         );
         let allSelected = this.selectionBox.select();
         for (let i = 0; i < allSelected.length; i++) {
-          allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+          allSelected[i].material.emissive = new Color(0x0000ff);
         }
       },
       pressed: false,
@@ -90,7 +88,7 @@ export class ArenaComponent implements OnInit {
       onMouseMove: (event: MouseEvent) => {
         if (this.helper.isDown) {
           for (let i = 0; i < this.selectionBox.collection.length; i++) {
-            this.selectionBox.collection[i].material.emissive = new THREE.Color(0x000000);
+            this.selectionBox.collection[i].material.emissive = new Color(0x000000);
           }
           this.selectionBox.endPoint.set(
             (event.clientX / window.innerWidth) * 2 - 1,
@@ -99,7 +97,7 @@ export class ArenaComponent implements OnInit {
           );
           let allSelected = this.selectionBox.select();
           for (let i = 0; i < allSelected.length; i++) {
-            allSelected[i].material.emissive = new THREE.Color(0x0000ff);
+            allSelected[i].material.emissive = new Color(0x0000ff);
           }
         }
       },
@@ -283,7 +281,7 @@ export class ArenaComponent implements OnInit {
     this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
-    let composer = new THREE.EffectComposer(this.engineService.sceneService.renderer);
+    let composer = new EffectComposer(this.engineService.sceneService.renderer);
     console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
