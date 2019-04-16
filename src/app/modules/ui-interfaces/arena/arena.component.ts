@@ -10,13 +10,12 @@ import 'three/examples/js/postprocessing/EffectComposer';
 import 'three/examples/js/postprocessing/RenderPass';
 import 'three/examples/js/postprocessing/ShaderPass';
 import 'three/examples/js/postprocessing/OutlinePass';
-import {StorageService} from "@services/storage.service";
-import {MouseCommandsEnum} from "@enums/mouseCommands.enum";
-import {Types} from "@enums/types.enum";
+import { StorageService } from '@services/storage.service';
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { Types } from '@enums/types.enum';
 import 'three/examples/js/interactive/SelectionBox';
 import 'three/examples/js/interactive/SelectionHelper';
 import * as THREE from 'three';
-
 
 @Component({
   selector: 'adventure-arena',
@@ -39,9 +38,9 @@ export class ArenaComponent implements OnInit {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
   ) {
-    console.log("adada");
+    console.log('adada');
     console.log(THREE.SelectionBox);
-    console.log(new THREE);
+    console.log(new THREE());
     this.engineService.init();
     this.selectionBox = new THREE.SelectionBox(
       this.engineService.sceneService.camera,
@@ -108,7 +107,7 @@ export class ArenaComponent implements OnInit {
       name: 'mouseMove'
     });
   }
-    // this.engineService.renderEngine();
+  // this.engineService.renderEngine();
 
   ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
