@@ -169,7 +169,11 @@ export class ArenaComponent implements OnInit {
 
     this.keyboardEventService.engineService = this.engineService;
 
-    Lightning.addLightning(this.engineService.sceneService.scene, this.engineService.sceneService.renderer, this.engineService.cameraService.camera);
+    Lightning.addLightning(
+      this.engineService.sceneService.scene,
+      this.engineService.sceneService.renderer,
+      this.engineService.cameraService.camera
+    );
 
     let hemisphereLightOptions = {
       color: '#ffffff',

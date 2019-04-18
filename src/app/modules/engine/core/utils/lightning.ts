@@ -49,8 +49,8 @@ export class Lightning {
     let coneHeight = 10;
     let coneHeightHalf = coneHeight * 0.5;
 
-    scene.userData.lightningColor = new Color( 0xB0FFFF );
-    scene.userData.outlineColor = new Color( 0x00FFFF );
+    scene.userData.lightningColor = new Color(0xb0ffff);
+    scene.userData.outlineColor = new Color(0x00ffff);
     let posLight = new PointLight(0x00ffff, 1, 5000, 2);
     scene.add(posLight);
 
