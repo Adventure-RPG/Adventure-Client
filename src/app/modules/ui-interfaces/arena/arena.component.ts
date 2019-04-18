@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three-full';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -16,6 +16,7 @@ import 'three-full/sources/postprocessing/ShaderPass';
 import 'three-full/sources/postprocessing/OutlinePass';
 import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
 import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
+import {Lightning} from "@modules/engine/core/utils/lightning";
 
 @Component({
   selector: 'adventure-arena',
@@ -38,6 +39,8 @@ export class ArenaComponent implements OnInit {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
   ) {
+
+
     console.log('adada');
     this.engineService.init();
     this.selectionBox = new SelectionBox(
@@ -168,6 +171,8 @@ export class ArenaComponent implements OnInit {
 
     this.keyboardEventService.engineService = this.engineService;
 
+    // Lightning.addLightning(this.engineService.sceneService.scene, this.engineService.sceneService.renderer, this.engineService.cameraService.camera);
+
     let hemisphereLightOptions = {
       color: '#ffffff',
       groundColor: '#444444',
@@ -280,8 +285,8 @@ export class ArenaComponent implements OnInit {
     this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
-    let composer = new EffectComposer(this.engineService.sceneService.renderer);
-    console.log(composer);
+    // let composer = new EffectComposer(this.engineService.sceneService.renderer);
+    // console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
