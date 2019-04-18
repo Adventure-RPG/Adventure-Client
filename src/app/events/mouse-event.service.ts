@@ -13,6 +13,8 @@ export class MouseEventService {
     /**
      Обработчик эвентов на мышку
       **/
+    console.log(event);
+    console.log(this.storageService.hotkeySceneCommands);
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       /**
        * Заменил number на object, потому что он всегда возвращает тип объект и нифига не работает.

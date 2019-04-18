@@ -50,60 +50,6 @@ export class ArenaComponent implements OnInit {
       'selectBox'
     );
 
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
-      type: Types.Camera,
-      onMouseDown: (event: MouseEvent) => {
-        this.selectionBox.startPoint.set(
-          (event.clientX / window.innerWidth) * 2 - 1,
-          -(event.clientY / window.innerHeight) * 2 + 1,
-          0.5
-        );
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseDown'
-    });
-
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
-      type: Types.Camera,
-      onMouseUp: (event: MouseEvent) => {
-        this.selectionBox.endPoint.set(
-          (event.clientX / window.innerWidth) * 2 - 1,
-          -(event.clientY / window.innerHeight) * 2 + 1,
-          0.5
-        );
-        let allSelected = this.selectionBox.select();
-        for (let i = 0; i < allSelected.length; i++) {
-          allSelected[i].material.emissive = new Color(0x0000ff);
-        }
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseUp'
-    });
-
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-      type: Types.Camera,
-      onMouseMove: (event: MouseEvent) => {
-        if (this.helper.isDown) {
-          for (let i = 0; i < this.selectionBox.collection.length; i++) {
-            this.selectionBox.collection[i].material.emissive = new Color(0x000000);
-          }
-          this.selectionBox.endPoint.set(
-            (event.clientX / window.innerWidth) * 2 - 1,
-            -(event.clientY / window.innerHeight) * 2 + 1,
-            0.5
-          );
-          let allSelected = this.selectionBox.select();
-          for (let i = 0; i < allSelected.length; i++) {
-            allSelected[i].material.emissive = new Color(0x0000ff);
-          }
-        }
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseMove'
-    });
   }
   // this.engineService.renderEngine();
 
@@ -156,6 +102,70 @@ export class ArenaComponent implements OnInit {
         this.engineService.sceneService.scene.add(mesh);
       }
     }
+
+    /**
+     * Start working on MouseEvents for SelectBox
+     */
+    console.log("here");
+    console.log(this.storageService.hotkeySceneCommands);
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
+      type: Types.Camera,
+      onMouseDown: (event: MouseEvent) => {
+        this.selectionBox.startPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+      },
+      pressed: true,
+      name: 'onmousedown',
+      keyCode: [0]
+    });
+
+    console.log(this.storageService.hotkeySceneCommands);
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
+      type: Types.Camera,
+      onMouseUp: (event: MouseEvent) => {
+        this.selectionBox.endPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+        let allSelected = this.selectionBox.select();
+        for (let i = 0; i < allSelected.length; i++) {
+          allSelected[i].material.emissive = new Color(0x0000ff);
+        }
+      },
+      pressed: false,
+      name: 'onmouseup',
+      keyCode: [0]
+    });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
+      type: Types.Camera,
+      onMouseMove: (event: MouseEvent) => {
+        if (this.helper.isDown) {
+          for (let i = 0; i < this.selectionBox.collection.length; i++) {
+            this.selectionBox.collection[i].material.emissive = new Color(0x000000);
+          }
+          this.selectionBox.endPoint.set(
+            (event.clientX / window.innerWidth) * 2 - 1,
+            -(event.clientY / window.innerHeight) * 2 + 1,
+            0.5
+          );
+          let allSelected = this.selectionBox.select();
+          for (let i = 0; i < allSelected.length; i++) {
+            allSelected[i].material.emissive = new Color(0x0000ff);
+          }
+        }
+      },
+      pressed: false,
+      name: 'mousemove'
+    });
+    console.log("here");
+    console.log(this.storageService.hotkeySceneCommands);
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
@@ -280,8 +290,8 @@ export class ArenaComponent implements OnInit {
     this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
-    let composer = new EffectComposer(this.engineService.sceneService.renderer);
-    console.log(composer);
+    //let composer = new EffectComposer(this.engineService.sceneService.renderer);
+    //console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
@@ -291,6 +301,6 @@ export class ArenaComponent implements OnInit {
     //
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
-    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3w
+    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
   }
 }
