@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: 'main',
-        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule',
+        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule'
         // canActivate: [AuthGuard]
       },
       {
@@ -20,7 +20,7 @@ const routes: Routes = [
       },
       {
         path: 'arena',
-        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule',
+        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule'
         // canActivate: [AuthGuard]
       },
       {
@@ -30,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'tavern',
-        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule',
+        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule'
         // canActivate: [AuthGuard]
       },
       {
