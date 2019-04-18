@@ -16,7 +16,7 @@ import 'three-full/sources/postprocessing/ShaderPass';
 import 'three-full/sources/postprocessing/OutlinePass';
 import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
 import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
-import {Lightning} from "@modules/engine/core/utils/lightning";
+import { Lightning } from '@modules/engine/core/utils/lightning';
 
 @Component({
   selector: 'adventure-arena',
@@ -39,8 +39,6 @@ export class ArenaComponent implements OnInit {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
   ) {
-
-
     console.log('adada');
     this.engineService.init();
     this.selectionBox = new SelectionBox(
