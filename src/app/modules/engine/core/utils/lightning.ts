@@ -40,18 +40,25 @@ export class Lightning {
     outlinePass.hiddenEdgeColor.set(0);
     composer.addPass(outlinePass);
     scene.userData.outlineEnabled = true;
-
     return outlinePass;
   }
 
-  static addLightning(scene: Scene, renderer: WebGLRenderer, camera: Camera) {
+  static addLightning(scene: Scene, renderer: WebGLRenderer, camera: any) {
     // Cones
-    let conesDistance = 1000;
-    let coneHeight = 200;
+    let conesDistance = 100;
+    let coneHeight = 10;
     let coneHeightHalf = coneHeight * 0.5;
 
+    scene.userData.lightningColor = new Color( 0xB0FFFF );
+    scene.userData.outlineColor = new Color( 0x00FFFF );
     let posLight = new PointLight(0x00ffff, 1, 5000, 2);
     scene.add(posLight);
+
+    scene.userData.outlineColorRGB = [
+      scene.userData.outlineColor.r * 255,
+      scene.userData.outlineColor.g * 255,
+      scene.userData.outlineColor.b * 255
+    ];
 
     posLight.position.set(0, (conesDistance + coneHeight) * 0.5, 0);
     posLight.color = scene.userData.outlineColor;
@@ -72,46 +79,46 @@ export class Lightning {
     scene.userData.lightningMaterial = new MeshBasicMaterial({
       color: scene.userData.lightningColor
     });
-    scene.userData.rayParams = {
-      sourceOffset: new Vector3(),
-      destOffset: new Vector3(),
-      radius0: 4,
-      radius1: 4,
-      minRadius: 2.5,
-      maxIterations: 7,
-      isEternal: true,
-      timeScale: 0.7,
-      propagationTimeFactor: 0.05,
-      vanishingTimeFactor: 0.95,
-      subrayPeriod: 3.5,
-      subrayDutyCycle: 0.6,
-      maxSubrayRecursion: 3,
-      ramification: 7,
-      recursionProbability: 0.6,
-      roughness: 0.85,
-      straightness: 0.6
-    };
+    // scene.userData.rayParams = {
+    //   sourceOffset: new Vector3(),
+    //   destOffset: new Vector3(),
+    //   radius0: 4,
+    //   radius1: 4,
+    //   minRadius: 2.5,
+    //   maxIterations: 7,
+    //   isEternal: true,
+    //   timeScale: 0.7,
+    //   propagationTimeFactor: 0.05,
+    //   vanishingTimeFactor: 0.95,
+    //   subrayPeriod: 3.5,
+    //   subrayDutyCycle: 0.6,
+    //   maxSubrayRecursion: 3,
+    //   ramification: 7,
+    //   recursionProbability: 0.6,
+    //   roughness: 0.85,
+    //   straightness: 0.6
+    // };
     console.log(scene.userData);
     let lightningStrike;
     let lightningStrikeMesh;
     let outlineMeshArray = [];
-    scene.userData.recreateRay = function() {
-      if (lightningStrikeMesh) {
-        scene.remove(lightningStrikeMesh);
-      }
-      lightningStrike = new LightningStrike(scene.userData.rayParams);
-      lightningStrikeMesh = new Mesh(lightningStrike, scene.userData.lightningMaterial);
-      outlineMeshArray.length = 0;
-      outlineMeshArray.push(lightningStrikeMesh);
-      scene.add(lightningStrikeMesh);
-    };
+    // scene.userData.recreateRay = function() {
+    //   if (lightningStrikeMesh) {
+    //     scene.remove(lightningStrikeMesh);
+    //   }
+    //   lightningStrike = new LightningStrike(scene.userData.rayParams);
+    //   lightningStrikeMesh = new Mesh(lightningStrike, scene.userData.lightningMaterial);
+    //   outlineMeshArray.length = 0;
+    //   outlineMeshArray.push(lightningStrikeMesh);
+    //   scene.add(lightningStrikeMesh);
+    // };
 
-    scene.userData.recreateRay();
+    // scene.userData.recreateRay();
     // Compose rendering
 
-    let composer = new EffectComposer(renderer);
-    composer.passes = [];
-    composer.addPass(new RenderPass(scene, camera));
+    // let composer = new EffectComposer(renderer);
+    // composer.passes = [];
+    // composer.addPass(new RenderPass(scene, camera));
     // this.createOutline( scene, outlineMeshArray, scene.userData.outlineColor, composer, camera );
 
     // scene.userData.render = function ( time ) {
