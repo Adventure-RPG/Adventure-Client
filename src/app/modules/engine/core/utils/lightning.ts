@@ -13,52 +13,65 @@ import {
   Vector2
 } from 'three-full';
 
-import {LightningStrike} from "three-full/sources/geometries/LightningStrike"
-import {LightningStorm} from "three-full/sources/objects/LightningStorm"
-import {SimplexNoise} from "three-full/sources/misc/SimplexNoise"
-import {CopyShader} from "three-full/sources/shaders/CopyShader"
-import {EffectComposer} from "three-full/sources/postprocessing/EffectComposer"
-import {RenderPass} from "three-full/sources/postprocessing/RenderPass"
-import {ShaderPass} from "three-full/sources/postprocessing/ShaderPass"
-import {OutlinePass} from "three-full/sources/postprocessing/OutlinePass"
-import {Camera} from "three-full/sources/cameras/Camera";
+import { LightningStrike } from 'three-full/sources/geometries/LightningStrike';
+import { LightningStorm } from 'three-full/sources/objects/LightningStorm';
+import { SimplexNoise } from 'three-full/sources/misc/SimplexNoise';
+import { CopyShader } from 'three-full/sources/shaders/CopyShader';
+import { EffectComposer } from 'three-full/sources/postprocessing/EffectComposer';
+import { RenderPass } from 'three-full/sources/postprocessing/RenderPass';
+import { ShaderPass } from 'three-full/sources/postprocessing/ShaderPass';
+import { OutlinePass } from 'three-full/sources/postprocessing/OutlinePass';
+import { Camera } from 'three-full/sources/cameras/Camera';
 
 export class Lightning {
-  constructor(){}
+  constructor() {}
 
-  static createOutline( scene, objectsArray, visibleColor, composer, camera ) {
-    const outlinePass = new OutlinePass( new Vector2( window.innerWidth, window.innerHeight ), scene, scene.userData.camera, objectsArray );
+  static createOutline(scene, objectsArray, visibleColor, composer, camera) {
+    const outlinePass = new OutlinePass(
+      new Vector2(window.innerWidth, window.innerHeight),
+      scene,
+      scene.userData.camera,
+      objectsArray
+    );
     outlinePass.edgeStrength = 2.5;
     outlinePass.edgeGlow = 0.7;
     outlinePass.edgeThickness = 2.8;
     outlinePass.visibleEdgeColor = visibleColor;
-    outlinePass.hiddenEdgeColor.set( 0 );
-    composer.addPass( outlinePass );
+    outlinePass.hiddenEdgeColor.set(0);
+    composer.addPass(outlinePass);
     scene.userData.outlineEnabled = true;
 
     return outlinePass;
   }
 
-  static addLightning(scene: Scene, renderer: WebGLRenderer, camera: Camera){
+  static addLightning(scene: Scene, renderer: WebGLRenderer, camera: Camera) {
     // Cones
     let conesDistance = 1000;
     let coneHeight = 200;
     let coneHeightHalf = coneHeight * 0.5;
 
-    let posLight = new PointLight( 0x00ffff, 1, 5000, 2 );
-    scene.add( posLight );
+    let posLight = new PointLight(0x00ffff, 1, 5000, 2);
+    scene.add(posLight);
 
-    posLight.position.set( 0, ( conesDistance + coneHeight ) * 0.5, 0 );
+    posLight.position.set(0, (conesDistance + coneHeight) * 0.5, 0);
     posLight.color = scene.userData.outlineColor;
-    let coneMesh1 = new Mesh( new ConeBufferGeometry( coneHeight, coneHeight, 30, 1, false ), new MeshPhongMaterial( { color: 0xFFFF00, emissive: 0x1F1F00 } ) );
+    let coneMesh1 = new Mesh(
+      new ConeBufferGeometry(coneHeight, coneHeight, 30, 1, false),
+      new MeshPhongMaterial({ color: 0xffff00, emissive: 0x1f1f00 })
+    );
     coneMesh1.rotation.x = Math.PI;
     coneMesh1.position.y = conesDistance + coneHeight;
-    scene.add( coneMesh1 );
-    let coneMesh2 = new Mesh( coneMesh1.geometry.clone(), new MeshPhongMaterial( { color: 0xFF2020, emissive: 0x1F0202 } ) );
+    scene.add(coneMesh1);
+    let coneMesh2 = new Mesh(
+      coneMesh1.geometry.clone(),
+      new MeshPhongMaterial({ color: 0xff2020, emissive: 0x1f0202 })
+    );
     coneMesh2.position.y = coneHeightHalf;
-    scene.add( coneMesh2 );
+    scene.add(coneMesh2);
     // Lightning strike
-    scene.userData.lightningMaterial = new MeshBasicMaterial( { color: scene.userData.lightningColor } );
+    scene.userData.lightningMaterial = new MeshBasicMaterial({
+      color: scene.userData.lightningColor
+    });
     scene.userData.rayParams = {
       sourceOffset: new Vector3(),
       destOffset: new Vector3(),
@@ -78,27 +91,27 @@ export class Lightning {
       roughness: 0.85,
       straightness: 0.6
     };
-    console.log(scene.userData)
+    console.log(scene.userData);
     let lightningStrike;
     let lightningStrikeMesh;
     let outlineMeshArray = [];
-    scene.userData.recreateRay = function () {
-      if ( lightningStrikeMesh ) {
-        scene.remove( lightningStrikeMesh );
+    scene.userData.recreateRay = function() {
+      if (lightningStrikeMesh) {
+        scene.remove(lightningStrikeMesh);
       }
-      lightningStrike = new LightningStrike( scene.userData.rayParams );
-      lightningStrikeMesh = new Mesh( lightningStrike, scene.userData.lightningMaterial );
+      lightningStrike = new LightningStrike(scene.userData.rayParams);
+      lightningStrikeMesh = new Mesh(lightningStrike, scene.userData.lightningMaterial);
       outlineMeshArray.length = 0;
-      outlineMeshArray.push( lightningStrikeMesh );
-      scene.add( lightningStrikeMesh );
+      outlineMeshArray.push(lightningStrikeMesh);
+      scene.add(lightningStrikeMesh);
     };
 
     scene.userData.recreateRay();
     // Compose rendering
 
-    let composer = new EffectComposer( renderer );
+    let composer = new EffectComposer(renderer);
     composer.passes = [];
-    composer.addPass( new RenderPass( scene, camera ) );
+    composer.addPass(new RenderPass(scene, camera));
     // this.createOutline( scene, outlineMeshArray, scene.userData.outlineColor, composer, camera );
 
     // scene.userData.render = function ( time ) {
@@ -120,7 +133,5 @@ export class Lightning {
     //   }
     // };
     // return scene;
-
   }
-
 }
