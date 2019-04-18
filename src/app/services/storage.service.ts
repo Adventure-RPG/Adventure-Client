@@ -77,6 +77,7 @@ export class StorageService {
     console.log(tempObj);
     console.log(this.hotkeySceneCommands);
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
+    console.log(this.hotkeySceneCommands);
   }
 
   //TODO: переделать на enum

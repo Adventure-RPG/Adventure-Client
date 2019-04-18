@@ -38,7 +38,10 @@ export class ArenaComponent implements OnInit {
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
-  ) {
+  ) {}
+  // this.engineService.renderEngine();
+
+  ngOnInit() {
     console.log('adada');
     this.engineService.init();
     this.selectionBox = new SelectionBox(
@@ -51,64 +54,6 @@ export class ArenaComponent implements OnInit {
       'selectBox'
     );
 
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
-      type: Types.Camera,
-      onMouseDown: (event: MouseEvent) => {
-        this.selectionBox.startPoint.set(
-          (event.clientX / window.innerWidth) * 2 - 1,
-          -(event.clientY / window.innerHeight) * 2 + 1,
-          0.5
-        );
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseDown'
-    });
-
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
-      type: Types.Camera,
-      onMouseUp: (event: MouseEvent) => {
-        this.selectionBox.endPoint.set(
-          (event.clientX / window.innerWidth) * 2 - 1,
-          -(event.clientY / window.innerHeight) * 2 + 1,
-          0.5
-        );
-        let allSelected = this.selectionBox.select();
-        for (let i = 0; i < allSelected.length; i++) {
-          allSelected[i].material.emissive = new Color(0x0000ff);
-        }
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseUp'
-    });
-
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-      type: Types.Camera,
-      onMouseMove: (event: MouseEvent) => {
-        if (this.helper.isDown) {
-          for (let i = 0; i < this.selectionBox.collection.length; i++) {
-            this.selectionBox.collection[i].material.emissive = new Color(0x000000);
-          }
-          this.selectionBox.endPoint.set(
-            (event.clientX / window.innerWidth) * 2 - 1,
-            -(event.clientY / window.innerHeight) * 2 + 1,
-            0.5
-          );
-          let allSelected = this.selectionBox.select();
-          for (let i = 0; i < allSelected.length; i++) {
-            allSelected[i].material.emissive = new Color(0x0000ff);
-          }
-        }
-      },
-      pressed: false,
-      keyCode: [NaN],
-      name: 'mouseMove'
-    });
-  }
-  // this.engineService.renderEngine();
-
-  ngOnInit() {
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
@@ -157,6 +102,75 @@ export class ArenaComponent implements OnInit {
         this.engineService.sceneService.scene.add(mesh);
       }
     }
+
+    /**
+     * Start working on MouseEvents for SelectBox
+     */
+    console.log('here');
+    console.log(this.storageService.hotkeySceneCommands);
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
+      type: Types.Camera,
+      onMouseDown: (event: MouseEvent) => {
+        console.log("mousedown");
+        this.selectionBox.startPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+      },
+      pressed: true,
+      name: 'mousedown',
+      keyCode: [0]
+    });
+
+    console.log(this.storageService.hotkeySceneCommands);
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
+      type: Types.Camera,
+      onMouseUp: (event: MouseEvent) => {
+        console.log("mouseup");
+        this.selectionBox.endPoint.set(
+          (event.clientX / window.innerWidth) * 2 - 1,
+          -(event.clientY / window.innerHeight) * 2 + 1,
+          0.5
+        );
+        let allSelected = this.selectionBox.select();
+        for (let i = 0; i < allSelected.length; i++) {
+          allSelected[i].material.emissive = new Color(0x0000ff);
+        }
+      },
+      pressed: false,
+      name: 'mouseup',
+      keyCode: [0]
+    });
+
+    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
+      type: Types.Camera,
+      onMouseMove: (event: MouseEvent) => {
+        console.log(this.helper);
+        console.log("mousemove");
+        if (this.helper.isDown) {
+          for (let i = 0; i < this.selectionBox.collection.length; i++) {
+            this.selectionBox.collection[i].material.emissive = new Color(0x000000);
+          }
+          this.selectionBox.endPoint.set(
+            (event.clientX / window.innerWidth) * 2 - 1,
+            -(event.clientY / window.innerHeight) * 2 + 1,
+            0.5
+          );
+          let allSelected = this.selectionBox.select();
+          for (let i = 0; i < allSelected.length; i++) {
+            allSelected[i].material.emissive = new Color(0x0000ff);
+          }
+        }
+      },
+      pressed: true,
+      keyCode: [NaN],
+      name: 'mousemove'
+    });
+    console.log('here');
+    console.log(this.storageService.hotkeySceneCommands);
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
@@ -298,6 +312,6 @@ export class ArenaComponent implements OnInit {
     //
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
-    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3w
+    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
   }
 }

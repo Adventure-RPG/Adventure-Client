@@ -87,6 +87,6 @@
     "ts-keycode-enum": "^1.0.4",
     "ts-node": "~7.0.1",
     "tslint": "^5.10.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.1.1"
   }
 }
