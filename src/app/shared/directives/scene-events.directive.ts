@@ -42,6 +42,7 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mousedown) {
       console.log(event);
     }
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('mouseup', ['$event'])
@@ -49,6 +50,7 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mouseup) {
       console.log(event);
     }
+    this.mouseEventService.mouseEvents(event);
   }
 
   @HostListener('mousemove', ['$event'])
