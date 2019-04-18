@@ -49,7 +49,6 @@ export class ArenaComponent implements OnInit {
       this.engineService.sceneService.renderer,
       'selectBox'
     );
-
   }
   // this.engineService.renderEngine();
 
@@ -106,7 +105,7 @@ export class ArenaComponent implements OnInit {
     /**
      * Start working on MouseEvents for SelectBox
      */
-    console.log("here");
+    console.log('here');
     console.log(this.storageService.hotkeySceneCommands);
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
@@ -164,7 +163,7 @@ export class ArenaComponent implements OnInit {
       pressed: false,
       name: 'mousemove'
     });
-    console.log("here");
+    console.log('here');
     console.log(this.storageService.hotkeySceneCommands);
 
     // grid.material.opacity = 0.2;
