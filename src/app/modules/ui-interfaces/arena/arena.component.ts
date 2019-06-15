@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three-full';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three-full';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -17,6 +17,8 @@ import 'three-full/sources/postprocessing/OutlinePass';
 import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
 import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
+import {PerspectiveCamera} from "@node_modules/@types/three";
+
 
 @Component({
   selector: 'adventure-arena',
@@ -27,7 +29,6 @@ export class ArenaComponent implements OnInit {
   @ViewChild('scene') scene;
 
   sceneService;
-  camera;
   renderer;
   selectionBox;
   helper;
@@ -144,6 +145,8 @@ export class ArenaComponent implements OnInit {
       name: 'mouseup',
       keyCode: [0]
     });
+
+
 
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
       type: Types.Camera,
@@ -290,6 +293,16 @@ export class ArenaComponent implements OnInit {
       }
     };
 
+    //this.engineService.sceneService.camera.rotateX(-45);
+    //     this.engineService.sceneService.camera.rotateZ(-90);
+    //     this.engineService.sceneService.camera.translateX(-350);
+    //     this.engineService.sceneService.camera.translateY(-180);
+    //     this.engineService.sceneService.camera.translateZ(100);
+    console.log(this.engineService.sceneService.camera);
+    console.log("adadad");
+    console.log(this.engineService.sceneService.camera.position);
+    this.engineService.sceneService.camera.position.set(-100, 100, 100)
+    this.engineService.sceneService.camera.lookAt(-100, 0, 0);
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
@@ -313,5 +326,9 @@ export class ArenaComponent implements OnInit {
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
     // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
+    //this.engineService.sceneService.camera.rotateX(-30);
+    //this.engineService.sceneService.camera.rotateY(30);
+    //this.engineService.sceneService.camera.rotateZ(-30);
+
   }
 }
