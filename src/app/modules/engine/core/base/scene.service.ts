@@ -42,7 +42,6 @@ export class SceneService {
    * Быть очень аккуратным здесь!!!
    */
   public animation() {
-
     // console.log(this);
 
     requestAnimationFrame(this.animation.bind(this));
@@ -68,26 +67,24 @@ export class SceneService {
     // this.composer.setSize( window.innerWidth, window.innerHeight );
   }
 
-  public render(delta){
-
+  public render(delta) {
     // console.log(this.scene.userData.timeRate, delta);
     this.renderer.gammaInput = true;
     this.renderer.gammaOutput = true;
 
     this.currentTime += this.lightningTimeRate * delta;
-    if ( this.currentTime < 0 ) {
+    if (this.currentTime < 0) {
       this.currentTime = 0;
     }
 
     if (this.scene.userData.render) {
       // console.log(this.scene.userData)
-      this.scene.userData.render( this.currentTime );
+      this.scene.userData.render(this.currentTime);
     }
 
     for (let utilCommand in this.storageService.utilCommands) {
       this.storageService.utilCommands[utilCommand].update(this.currentTime);
     }
-
   }
 
   get scene(): Scene {

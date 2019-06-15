@@ -1,54 +1,32 @@
-import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
 import {
-  Color,
-  Mesh,
-  MeshPhongMaterial,
-  PlaneGeometry,
-  Vector3,
-  ConeBufferGeometry,
-  MeshBasicMaterial,
-  Scene,
-  PointLight,
-  WebGLRenderer,
-  Vector2,
-  BufferGeometry
+  BufferGeometry, Color, ConeBufferGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry,
+  PointLight, Scene, Vector2, Vector3, WebGLRenderer
 } from 'three-full';
 
-import { LightningStrike } from 'three-full/sources/geometries/LightningStrike';
-import { LightningStorm } from 'three-full/sources/objects/LightningStorm';
-import { SimplexNoise } from 'three-full/sources/misc/SimplexNoise';
-import { CopyShader } from 'three-full/sources/shaders/CopyShader';
-import { EffectComposer } from 'three-full/sources/postprocessing/EffectComposer';
-import { RenderPass } from 'three-full/sources/postprocessing/RenderPass';
-import { ShaderPass } from 'three-full/sources/postprocessing/ShaderPass';
-import { OutlinePass } from 'three-full/sources/postprocessing/OutlinePass';
-import { Camera } from 'three-full/sources/cameras/Camera';
-import {StorageService, UtilCommands} from "@services/storage.service";
-import {Types} from "@enums/types.enum";
-import {Float32BufferAttribute} from "three-full/sources/core/BufferAttribute";
+import {LightningStrike} from 'three-full/sources/geometries/LightningStrike';
+import {EffectComposer} from 'three-full/sources/postprocessing/EffectComposer';
+import {RenderPass} from 'three-full/sources/postprocessing/RenderPass';
+import {OutlinePass} from 'three-full/sources/postprocessing/OutlinePass';
+import {StorageService, UtilCommands} from '@services/storage.service';
+import {Float32BufferAttribute} from 'three-full/sources/core/BufferAttribute';
 
 export class Lightning {
-
   constructor() {}
 
-  static ray( wide ) {
-    let h = (Math.random() * 2 - 1 ) * 0.5;
+  static ray(wide) {
+    let h = (Math.random() * 2 - 1) * 0.5;
     let geometry = new BufferGeometry();
     let position = [];
     for (let i = 0; i < wide.length; i++) {
-      position.push(
-        i, h
-      );
+      position.push(i, h);
     }
-    geometry.addAttribute( 'position', new Float32BufferAttribute( position, 3 ) );
+    geometry.addAttribute('position', new Float32BufferAttribute(position, 3));
     return geometry;
   }
 
-  static lightning (p1: Vector3, p2: Vector3, options: {breakpoint: number}){
-    let distance = p1.distanceTo( p2 );
-    let lightningParts = distance/options.breakpoint;
-
-
+  static lightning(p1: Vector3, p2: Vector3, options: { breakpoint: number }) {
+    let distance = p1.distanceTo(p2);
+    let lightningParts = distance / options.breakpoint;
   }
 
   static createOutline(scene, objectsArray, visibleColor, composer, camera) {
@@ -142,7 +120,6 @@ export class Lightning {
     let outlineMeshArray = [];
 
     scene.userData.recreateRay = () => {
-
       if (lightningStrikeMesh) {
         scene.remove(lightningStrikeMesh);
       }
@@ -157,7 +134,6 @@ export class Lightning {
       outlineMeshArray.push(lightningStrikeMesh);
 
       scene.add(lightningStrikeMesh);
-
     };
 
     scene.userData.recreateRay();
@@ -167,33 +143,37 @@ export class Lightning {
     composer.passes = [];
     composer.addPass(new RenderPass(scene, camera));
 
-    this.createOutline( scene, outlineMeshArray, scene.userData.outlineColor, composer, camera );
-
-
+    this.createOutline(scene, outlineMeshArray, scene.userData.outlineColor, composer, camera);
 
     // //TODO: check on 2 Lightnings
     storage.utilCommandPush('Lightning', {
-      update: ( time ) => {
+      update: time => {
         // Move cones and Update ray position
-        coneMesh1.position.set( Math.sin( 0.5 * time ) * conesDistance * 0.6,  conesDistance + coneHeight, Math.cos( 0.5 * time ) * conesDistance * 0.6 );
-        coneMesh2.position.set( Math.sin( 0.9 * time ) * conesDistance, coneHeightHalf, 0 );
-        lightningStrike.rayParameters.sourceOffset.copy( coneMesh1.position );
+        coneMesh1.position.set(
+          Math.sin(0.5 * time) * conesDistance * 0.6,
+          conesDistance + coneHeight,
+          Math.cos(0.5 * time) * conesDistance * 0.6
+        );
+        coneMesh2.position.set(Math.sin(0.9 * time) * conesDistance, coneHeightHalf, 0);
+        lightningStrike.rayParameters.sourceOffset.copy(coneMesh1.position);
         lightningStrike.rayParameters.sourceOffset.y -= coneHeightHalf;
-        lightningStrike.rayParameters.destOffset.copy( coneMesh2.position );
+        lightningStrike.rayParameters.destOffset.copy(coneMesh2.position);
         lightningStrike.rayParameters.destOffset.y += coneHeightHalf;
 
-        lightningStrike.update( time );
-
+        lightningStrike.update(time);
 
         // Update point light position to the middle of the ray
-        posLight.position.lerpVectors( lightningStrike.rayParameters.sourceOffset, lightningStrike.rayParameters.destOffset, 0.5 );
+        posLight.position.lerpVectors(
+          lightningStrike.rayParameters.sourceOffset,
+          lightningStrike.rayParameters.destOffset,
+          0.5
+        );
 
-        if ( scene.userData.outlineEnabled ) {
+        if (scene.userData.outlineEnabled) {
           // Молния не работает здесь.
           // composer.render();
-        }
-        else {
-          renderer.render( scene, camera );
+        } else {
+          renderer.render(scene, camera);
         }
       }
     });
