@@ -34,6 +34,11 @@ export interface MixerCommands {
   [key: string]: AnimationMixer;
 }
 
+
+export interface UtilCommands {
+  [key: string]: any;
+}
+
 @Injectable()
 export class StorageService {
   //TODO: add types
@@ -74,10 +79,10 @@ export class StorageService {
   public hotkeySceneCommandPush(K, V: Command) {
     const tempObj = {};
     tempObj[K] = V;
-    console.log(tempObj);
-    console.log(this.hotkeySceneCommands);
+    // console.log(tempObj);
+    // console.log(this.hotkeySceneCommands);
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
-    console.log(this.hotkeySceneCommands);
+    // console.log(this.hotkeySceneCommands);
   }
 
   //TODO: переделать на enum
@@ -129,13 +134,14 @@ export class StorageService {
 
     this.rendererStorageCommands = rendererStorageCommands;
   }
+
   /**
    * Сторейдж для хранения правил по обновлению моделей
    * @type {BehaviorSubject<MixerCommands>}
    * @private
    */
   private _mixerCommands: BehaviorSubject<MixerCommands> = new BehaviorSubject<MixerCommands>({});
-  public _mixerCommands$ = this._mixerCommands.asObservable();
+    public _mixerCommands$ = this._mixerCommands.asObservable();
 
   public get mixerCommands(): MixerCommands {
     return this._mixerCommands.getValue();
@@ -150,6 +156,30 @@ export class StorageService {
     tempObj[K] = V;
     this.mixerCommands = Lodash.merge(this.mixerCommands, tempObj);
     console.log(this.mixerCommands);
+  }
+
+
+  /**
+   * Сторейдж для хранения правил по обновлению моделей
+   * @type {BehaviorSubject<UtilCommands>}
+   * @private
+   */
+  private _utilCommands: BehaviorSubject<UtilCommands> = new BehaviorSubject<UtilCommands>({});
+    public _utilCommands$ = this._utilCommands.asObservable();
+
+  public get utilCommands(): UtilCommands {
+    return this._utilCommands.getValue();
+  }
+
+  public set utilCommands(value: UtilCommands) {
+    this._utilCommands.next(value);
+  }
+
+  public utilCommandPush(K, V: UtilCommands) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.utilCommands = Lodash.merge(this.utilCommands, tempObj);
+    // console.log(this.utilCommands);
   }
 
   constructor() {}

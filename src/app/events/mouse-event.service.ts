@@ -32,7 +32,6 @@ export class MouseEventService {
             this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
             break;
           case 'mousedown':
-
             this.storageService.hotkeySceneCommands[sceneCommandName].onMouseDown(event);
             break;
           case 'mouseup':

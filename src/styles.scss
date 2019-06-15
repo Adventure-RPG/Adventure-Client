@@ -40,6 +40,11 @@ $url-face: './assets/fonts';
 
 .dnd-drag-over {
   border: 2px dashed #000;
+
+  &:hover{
+  //
+  }
+
 }
 
 .dnd-sortable-drag {
