@@ -299,7 +299,7 @@ export class FirstPersonControls extends CameraControls {
           }
         }
         // console.log(this.zoom);
-        this.object.fov = this.fov * this.zoom ;
+        this.object.fov = this.fov * this.zoom;
       },
       pressed: false,
       keyCode: [NaN],
