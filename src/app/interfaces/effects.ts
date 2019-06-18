@@ -1,2 +1,1 @@
-export interface Effects {
-}
+export interface Effects {}

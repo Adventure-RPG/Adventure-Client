@@ -4,9 +4,14 @@ import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
 import { Types } from '@enums/types.enum';
 import {
-  Command, Commands, EffectsCommands, MixerCommands, RendererCommand,
-  RendererCommands, UtilCommands
-} from "@enums/storage.enum";
+  Command,
+  Commands,
+  EffectsCommands,
+  MixerCommands,
+  RendererCommand,
+  RendererCommands,
+  UtilCommands
+} from '@enums/storage.enum';
 
 @Injectable()
 export class StorageService {
@@ -132,7 +137,9 @@ export class StorageService {
    * @type {BehaviorSubject<EffectsCommands>}
    * @private
    */
-  private _effectsCommands: BehaviorSubject<EffectsCommands> = new BehaviorSubject<EffectsCommands>({});
+  private _effectsCommands: BehaviorSubject<EffectsCommands> = new BehaviorSubject<EffectsCommands>(
+    {}
+  );
   public _effectsCommands$ = this._effectsCommands.asObservable();
 
   public get effectsCommands(): EffectsCommands {

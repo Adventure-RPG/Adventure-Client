@@ -1,5 +1,5 @@
-import {Types} from "@enums/types.enum";
-import {AnimationMixer} from "three";
+import { Types } from '@enums/types.enum';
+import { AnimationMixer } from 'three';
 
 export interface Commands {
   [key: string]: Command;
