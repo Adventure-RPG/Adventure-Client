@@ -285,6 +285,10 @@ export class ArenaComponent implements OnInit {
       }
     };
 
+
+    this.engineService.sceneService.camera.position.set(-100, 100, 100);
+    this.engineService.sceneService.camera.lookAt(-100, 0, 0);
+
     // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");

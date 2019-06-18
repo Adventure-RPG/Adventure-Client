@@ -39,6 +39,8 @@ export class FirstPersonControls extends CameraControls {
   mouseWheelDown;
   phi;
   theta;
+  fov;
+  zoom;
 
   constructor(object, domElement, storageService) {
     super(storageService);
@@ -87,6 +89,8 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
+    this.fov = object.fov;
+    this.zoom = 1;
   }
 
   initCommands() {
@@ -140,7 +144,7 @@ export class FirstPersonControls extends CameraControls {
     //           this.mouseX = event.pageX - this.domElement.offsetLeft - this.viewHalfX;
     //           this.mouseY = event.pageY - this.domElement.offsetTop - this.viewHalfY;
     //         }
-    //         console.log("tut");
+    // //         console.log("tut");
     //       },
     //       name: 'onMouseMove'
     //     });
@@ -149,12 +153,12 @@ export class FirstPersonControls extends CameraControls {
       type: Types.Camera,
       onKeyUp: () => {
         this.moveForward = false;
-        console.log(this.moveForward);
+        // console.log(this.moveForward);
       },
       onKeyDown: () => {
-        console.log('Двигаюсь вперед');
+        // console.log('Двигаюсь вперед');
         this.moveForward = true;
-        console.log(this.moveForward);
+        // console.log(this.moveForward);
       },
       pressed: false,
       keyCode: [Key.W, Key.UpArrow],
@@ -167,8 +171,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveBackward = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь назад');
-        console.log(this.object);
+        // console.log('Двигаюсь назад');
+        // console.log(this.object);
 
         this.moveBackward = true;
       },
@@ -183,8 +187,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveLeft = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь налево');
-        console.log(this.object);
+        // console.log('Двигаюсь налево');
+        // console.log(this.object);
 
         this.moveLeft = true;
       },
@@ -199,8 +203,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveRight = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь направо');
-        console.log(this.object);
+        // console.log('Двигаюсь направо');
+        // console.log(this.object);
 
         this.moveRight = true;
       },
@@ -215,8 +219,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveUp = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь наверх');
-        console.log(this.object);
+        // console.log('Двигаюсь наверх');
+        // console.log(this.object);
 
         this.moveUp = true;
       },
@@ -231,8 +235,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveDown = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь Вниз');
-        console.log(this.object);
+        // console.log('Двигаюсь Вниз');
+        // console.log(this.object);
 
         this.moveDown = true;
       },
@@ -245,13 +249,13 @@ export class FirstPersonControls extends CameraControls {
     //       type: Types.Camera,
     //       onMouseMove: (event: MouseEvent) => {
     //         if (event.shiftKey === true) {
-    //           console.log('here');
-    //           console.log(event.movementX);
-    //           console.log(event.movementY);
+    // //           console.log('here');
+    // //           console.log(event.movementX);
+    // //           console.log(event.movementY);
     //           this.object.rotateX((event.movementY * Math.PI) / 180);
     //           this.object.rotateZ((-event.movementX * Math.PI) / 180);
     //         } else if (event.altKey === true) {
-    //           console.log('Rotation');
+    // //           console.log('Rotation');
     //           this.phi += (event.movementX * Math.PI) / 180;
     //           this.theta += (event.movementY * Math.PI) / 180;
     //           let radius = Math.sqrt(
@@ -273,7 +277,7 @@ export class FirstPersonControls extends CameraControls {
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseClick, {
       type: Types.Camera,
       onKeyDown: (event: MouseEvent) => {
-        console.log('1');
+        // console.log('1');
       },
       pressed: false,
       keyCode: [NaN],
@@ -283,17 +287,19 @@ export class FirstPersonControls extends CameraControls {
     this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseWheel, {
       type: Types.Camera,
       onMouse: (event: WheelEvent) => {
-        console.log('Колесико мышки');
-        console.log(typeof this.object);
-        if (event.deltaY === -100) {
-          this.object.zoom += 0.1;
-          console.log(this.object.zoom);
-        } else {
-          if (this.object.zoom - 0.1 > 0.1) {
-            this.object.zoom -= 0.1;
+        // console.log('Колесико мышки');
+        // console.log(typeof this.object);
+        if (event.deltaY === 100) {
+          if (this.zoom < 1) {
+            this.zoom += 0.1;
           }
-          console.log(this.object.zoom);
+        } else {
+          if (this.zoom - 0.1 > 0.2) {
+            this.zoom -= 0.1;
+          }
         }
+        // console.log(this.zoom);
+        this.object.fov = this.fov * this.zoom;
       },
       pressed: false,
       keyCode: [NaN],
@@ -306,8 +312,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveDown = false;
       },
       onKeyDown: () => {
-        console.log('Двигаюсь вниз');
-        console.log(this.object);
+        // console.log('Двигаюсь вниз');
+        // console.log(this.object);
 
         this.moveDown = true;
       },
@@ -334,9 +340,11 @@ export class FirstPersonControls extends CameraControls {
 
         if (this.moveForward || (this.autoForward && !this.moveBackward)) {
           this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+          this.object.translateY(actualMoveSpeed);
         }
         if (this.moveBackward) {
           this.object.translateZ(actualMoveSpeed);
+          this.object.translateY(-actualMoveSpeed);
         }
         if (this.moveLeft) {
           this.object.translateX(-actualMoveSpeed);
@@ -344,17 +352,19 @@ export class FirstPersonControls extends CameraControls {
         if (this.moveRight) {
           this.object.translateX(actualMoveSpeed);
         }
-        if (this.moveUp) {
-          this.object.translateY(actualMoveSpeed);
-        }
         if (this.moveDown) {
+          this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
+        }
+        if (this.moveUp) {
+          this.object.translateZ(-actualMoveSpeed);
+          this.object.translateY(actualMoveSpeed);
         }
 
         this.object.updateProjectionMatrix();
       }
     });
-    console.log(this.storageService.hotkeySceneCommands);
+    // console.log(this.storageService.hotkeySceneCommands);
   }
 
   //TODO: проверить ресайз, если не работает вынести логику в соотвесттвующее место

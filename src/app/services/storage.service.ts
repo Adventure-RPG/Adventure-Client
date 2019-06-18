@@ -11,7 +11,7 @@ import {
   RendererCommand,
   RendererCommands,
   UtilCommands
-} from '@enums/storage.enum';
+} from "../interfaces/storage";
 
 @Injectable()
 export class StorageService {
@@ -150,7 +150,7 @@ export class StorageService {
     this._effectsCommands.next(value);
   }
 
-  public mixerCommandPush(K, V: AnimationMixer) {
+  public effectsCommandPush(K, V: AnimationMixer) {
     const tempObj = {};
     tempObj[K] = V;
     this.effectsCommands = Lodash.merge(this.effectsCommands, tempObj);
