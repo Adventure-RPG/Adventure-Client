@@ -1,14 +1,25 @@
 import {
-  BufferGeometry, Color, ConeBufferGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry,
-  PointLight, Scene, Vector2, Vector3, WebGLRenderer
+  BufferGeometry,
+  Color,
+  ConeBufferGeometry,
+  Mesh,
+  MeshBasicMaterial,
+  MeshPhongMaterial,
+  PlaneGeometry,
+  PointLight,
+  Scene,
+  Vector2,
+  Vector3,
+  WebGLRenderer
 } from 'three-full';
 
-import {LightningStrike} from 'three-full/sources/geometries/LightningStrike';
-import {EffectComposer} from 'three-full/sources/postprocessing/EffectComposer';
-import {RenderPass} from 'three-full/sources/postprocessing/RenderPass';
-import {OutlinePass} from 'three-full/sources/postprocessing/OutlinePass';
-import {StorageService, UtilCommands} from '@services/storage.service';
-import {Float32BufferAttribute} from 'three-full/sources/core/BufferAttribute';
+import { LightningStrike } from 'three-full/sources/geometries/LightningStrike';
+import { EffectComposer } from 'three-full/sources/postprocessing/EffectComposer';
+import { RenderPass } from 'three-full/sources/postprocessing/RenderPass';
+import { OutlinePass } from 'three-full/sources/postprocessing/OutlinePass';
+import { StorageService } from '@services/storage.service';
+import { Float32BufferAttribute } from 'three-full/sources/core/BufferAttribute';
+import { UtilCommands } from "../../../../interfaces/storage";
 
 export class Lightning {
   constructor() {}
