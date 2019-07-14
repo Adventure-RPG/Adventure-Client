@@ -16,7 +16,7 @@ export class BackpackComponent implements OnInit {
   ngOnInit() {
     this.http
       .get('assets/data/items.json')
-      .pipe(map(response => response.json()))
-      .subscribe(data => (this.items = data));
+      .pipe(map((response) => response.json()))
+      .subscribe((data) => (this.items = data));
   }
 }

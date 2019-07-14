@@ -335,7 +335,7 @@ export class FirstPersonControls extends CameraControls {
 
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
       type: Types.Camera,
-      update: delta => {
+      update: (delta) => {
         if (this.enabled === false) {
           return;
         }

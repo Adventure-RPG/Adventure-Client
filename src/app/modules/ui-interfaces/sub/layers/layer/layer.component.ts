@@ -9,7 +9,7 @@ import { EngineService } from '../../../../engine/engine.service';
 })
 export class LayerComponent implements OnInit {
   @Input()
-  @OnNew<LayerComponent, any>(x => x.onNewLayer)
+  @OnNew<LayerComponent, any>((x) => x.onNewLayer)
   layer: any;
   @Input() index: number;
 

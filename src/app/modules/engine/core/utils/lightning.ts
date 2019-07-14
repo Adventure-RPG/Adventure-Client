@@ -163,7 +163,7 @@ export class Lightning {
 
     // //TODO: check on 2 Lightnings
     storage.utilCommandPush('Lightning', {
-      update: time => {
+      update: (time) => {
         // Move cones and Update ray position
         coneMesh1.position.set(Math.sin(0.5 * time) * conesDistance * 0.6, coneHeightHalf, -50);
         coneMesh2.position.set(Math.sin(0.9 * time) * conesDistance, coneHeightHalf, 0);

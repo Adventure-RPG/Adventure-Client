@@ -30,7 +30,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
-import {NgZorroAntdModule, NZ_I18N, en_US} from 'ng-zorro-antd';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /** config angular i18n **/

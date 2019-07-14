@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.chat.connect();
     // this.chat.sendMsg({auth: {ololo: this.message}});
-    this.chat.messages.subscribe(msg => {
+    this.chat.messages.subscribe((msg) => {
       this.messages.push({ msg: msg, userId: 0 });
       console.log(this.messages);
     });

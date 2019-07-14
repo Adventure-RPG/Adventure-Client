@@ -139,10 +139,10 @@ export class ModelLoaderService {
 
           this.sceneService.scene.add(group);
         },
-        event => {
+        (event) => {
           console.log(event);
         },
-        event => {
+        (event) => {
           console.error(event);
         }
       );

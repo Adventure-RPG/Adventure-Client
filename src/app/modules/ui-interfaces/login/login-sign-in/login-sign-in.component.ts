@@ -33,7 +33,7 @@ export class LoginSignInComponent implements OnInit {
         this.router.navigate(['../main']);
         console.log(res);
       },
-      error => {
+      (error) => {
         this.appSerivce.snotifyService.error(error, {
           timeout: 2000,
           showProgressBar: false,

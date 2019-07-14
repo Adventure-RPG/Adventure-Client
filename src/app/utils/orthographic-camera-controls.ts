@@ -153,7 +153,7 @@ export class OrthographicCameraControls {
 
     this.storageService.rendererStorageCommandPush('orthographicCameraUpdater', {
       type: Types.Camera,
-      update: delta => {
+      update: (delta) => {
         if (this.enabled === false) {
           return;
         }

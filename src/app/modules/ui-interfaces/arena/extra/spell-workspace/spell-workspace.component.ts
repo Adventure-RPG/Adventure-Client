@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./spell-workspace.component.scss']
 })
 export class SpellWorkspaceComponent implements OnInit {
-
   selectedValue = 'single';
 
   constructor() {}
