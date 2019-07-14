@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AnimationMixer, FBXLoader, Group, Mesh } from 'three';
+import { AnimationMixer, Group, Mesh } from 'three';
 import fbxLoader from '@libs/FBXLoader';
 import { SceneService } from '@modules/engine/core/base/scene.service';
 import { StorageService } from '@services/storage.service';
@@ -87,7 +87,8 @@ export class ModelLoaderService {
     }
 
     if (model.name) {
-      let loader: FBXLoader = fbxLoader().prototype;
+      // TODO: разобраться с типом лоадера
+      let loader: any = fbxLoader().prototype;
       let modelGuid = UuidStatic.v1();
       loader.load(
         model.path,

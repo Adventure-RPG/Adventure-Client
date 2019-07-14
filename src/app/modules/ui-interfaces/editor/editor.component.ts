@@ -12,7 +12,7 @@ import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-  @ViewChild('scene') scene;
+  @ViewChild('scene', { static: false }) scene;
 
   constructor(
     private engineService: EngineService,

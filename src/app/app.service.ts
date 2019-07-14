@@ -12,7 +12,6 @@ export class AppService {
   }
 
   set snotifyService(value) {
-    console.log(value);
     this._snotifyService = value;
   }
 

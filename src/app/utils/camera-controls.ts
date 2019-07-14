@@ -7,7 +7,6 @@ export class CameraControls {
   constructor(storageService) {
     this.storageService = storageService;
     this.initCommands();
-    console.log(this.storageService.hotkeySceneCommands);
   }
 
   initCommands() {

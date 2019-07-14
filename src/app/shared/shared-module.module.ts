@@ -6,20 +6,19 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { MainButtonsControlComponent } from './main-buttons-control/main-buttons-control.component';
 import { RouterModule } from '@angular/router';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
-import { HttpClientModule } from '@angular/common/http';
 import { SceneEventsDirective } from './directives/scene-events.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NouisliderModule } from 'ng2-nouislider';
 import { CheckboxComponent } from './form-components/checkbox/checkbox.component';
 import { RangeComponent } from './form-components/range/range.component';
 import { SanitizeHtmlDirective } from '@shared/directives/sanitize-html.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const Modules = [
   CommonModule,
   FormsModule,
   RouterModule,
   ReactiveFormsModule,
-  HttpClientModule,
   NgSelectModule,
   NgbModule,
   ColorPickerModule,

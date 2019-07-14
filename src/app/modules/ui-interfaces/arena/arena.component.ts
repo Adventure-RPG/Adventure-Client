@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three-full';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -24,7 +24,7 @@ import { Lightning } from '@modules/engine/core/utils/lightning';
   styleUrls: ['./arena.component.scss']
 })
 export class ArenaComponent implements OnInit {
-  @ViewChild('scene') scene;
+  @ViewChild('scene', { static: true }) scene;
 
   sceneService;
   camera;
@@ -57,7 +57,6 @@ export class ArenaComponent implements OnInit {
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
-    console.log('init');
 
     this.engineService.init();
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
@@ -284,7 +283,6 @@ export class ArenaComponent implements OnInit {
         z: 0
       }
     };
-
 
     this.engineService.sceneService.camera.position.set(-100, 100, 100);
     this.engineService.sceneService.camera.lookAt(-100, 0, 0);

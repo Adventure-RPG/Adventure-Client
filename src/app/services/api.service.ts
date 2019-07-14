@@ -15,9 +15,7 @@ export class ApiService {
     private httpClient: HttpClient,
     private appService: AppService,
     private handleErrorService: HandleErrorService
-  ) {
-    console.log('set');
-  }
+  ) {}
 
   private config = {
     apiUrl: 'http://194.58.122.189/'
