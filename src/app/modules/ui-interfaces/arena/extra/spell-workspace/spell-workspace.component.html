@@ -1,7 +1,100 @@
-<div>
-  <nz-select style="width: 120px;" [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose">
-    <nz-option nzValue="single" nzLabel="Single"></nz-option>
-    <nz-option nzValue="area" nzLabel="Area"></nz-option>
-    <!--<nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>-->
-  </nz-select>
-</div>
+<form nz-form (ngSubmit)="submitForm()" [formGroup]="spellForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="friendlyFire">Friendly fire</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-switch
+        formControlName="friendlyFire"
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+      ></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="range">Range</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-input-number formControlName="range" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-input-number formControlName="duration" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Area</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-input-number formControlName="area" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="type" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.spellType" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="savingThrow" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.savingThrow" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-switch
+        formControlName="spellResistance"
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+      ></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="castingTime" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.actions" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-collapse>
+    <nz-collapse-panel
+      [nzHeader]="panel.name"
+      [nzActive]="panel.active"
+      [nzDisabled]="panel.disabled"
+    >
+      <pre>
+        {{spellFormValue | json}}
+      </pre>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+</form>
+
+
+
+<ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+<ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
