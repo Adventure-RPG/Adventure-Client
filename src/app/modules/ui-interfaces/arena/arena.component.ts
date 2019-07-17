@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import {BoxGeometry, Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -18,6 +18,11 @@ import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
 import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
 
+export enum ArenaPanel {
+  ModelLoader,
+  Spell,
+}
+
 @Component({
   selector: 'adventure-arena',
   templateUrl: './arena.component.html',
@@ -31,6 +36,19 @@ export class ArenaComponent implements OnInit {
   renderer;
   selectionBox;
   helper;
+
+  panels = [
+    {
+      active: true,
+      name: ArenaPanel[0],
+      disabled: false
+    },
+    {
+      active: false,
+      name: ArenaPanel[1],
+      disabled: false
+    }
+  ];
 
   constructor(
     private engineService: EngineService,
@@ -170,6 +188,7 @@ export class ArenaComponent implements OnInit {
     // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0x000);
 
+
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
@@ -287,7 +306,7 @@ export class ArenaComponent implements OnInit {
     this.engineService.sceneService.camera.position.set(-100, 100, 100);
     this.engineService.sceneService.camera.lookAt(-100, 0, 0);
 
-    // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
+    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 

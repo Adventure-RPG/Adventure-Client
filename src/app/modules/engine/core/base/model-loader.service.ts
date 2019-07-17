@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AnimationMixer, Group, Mesh } from 'three';
+import {AnimationMixer, BoxGeometry, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import fbxLoader from '@libs/FBXLoader';
 import { SceneService } from '@modules/engine/core/base/scene.service';
 import { StorageService } from '@services/storage.service';
@@ -25,13 +25,30 @@ export class ModelLoaderService {
 
   constructor(private _sceneService: SceneService, private _storageService: StorageService) {}
 
-  //TODO: вынести в отдельный модуль
+  public loadModel(model){
+
+    console.log(model)
+
+    let re = /(?:\.([^.]+))?$/;
+    let loaderName = re.exec(model.path)[1];
+
+    switch(loaderName){
+      case 'fbx':
+        this.loadFBX(model);
+        break;
+      default:
+        break;
+    }
+
+  }
+
   //TODO: вынести аплойд файлов
   /**
    * Метод загрузки FBX модели
    * @param url
    */
   public loadFBX(model) {
+    console.log(model);
     // Вынести в отдельный флоу
 
     // let test = require('./../../libs/inflate.min');
@@ -39,6 +56,9 @@ export class ModelLoaderService {
     //Инцилизация модуля.
 
     // let texture = new TextureLoader().load("assets/models/polygon-knights/Textures/Texture_01_Swap_Snow_To_Grass.png");
+
+
+
 
     // let texture;
     if (model.texturePath) {
@@ -124,7 +144,7 @@ export class ModelLoaderService {
           //   map: texture
           // });
 
-          group.scale.set(0.1, 0.1, 0.1);
+          group.scale.set(1, 1, 1);
           // group.traverse((child: THREE.Mesh) => {
           //     if (child instanceof THREE.Mesh) {
           //

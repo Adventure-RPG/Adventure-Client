@@ -1,0 +1,10 @@
+
+<nz-select style="width: 120px;" [(ngModel)]="selectedModel" nzAllowClear nzPlaceHolder="Choose Model">
+  <nz-option [nzValue]="model" [nzLabel]="model.name" *ngFor="let model of models">
+    {{model.name}}
+  </nz-option>
+</nz-select>
+
+<button nz-button
+        (click)="load(selectedModel)"
+        nzType="primary">load model</button>
