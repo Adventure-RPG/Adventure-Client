@@ -52,7 +52,7 @@ export class Terrain {
       this.set(x, y, ave + offset);
     };
 
-    let divide = size => {
+    let divide = (size) => {
       let x,
         y,
         half = size / 2;
@@ -74,7 +74,7 @@ export class Terrain {
       divide(size / 2);
     };
 
-    let average = values => {
+    let average = (values) => {
       let valid = values.filter(function(val) {
         return val !== -1;
       });

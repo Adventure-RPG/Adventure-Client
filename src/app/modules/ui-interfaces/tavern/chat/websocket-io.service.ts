@@ -30,8 +30,8 @@ export class WebsocketIoService {
 
     // We define our observable which will observe any incoming messages
     // from our socket.io server.
-    let observable = new Observable(observer => {
-      this.socket.on('message', data => {
+    let observable = new Observable((observer) => {
+      this.socket.on('message', (data) => {
         console.log('Received message from Websocket Server');
         observer.next(data);
       });

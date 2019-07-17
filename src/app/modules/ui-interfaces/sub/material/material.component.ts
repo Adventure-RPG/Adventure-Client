@@ -98,9 +98,7 @@ export class MaterialFormComponent implements OnInit {
   }
 }
 
-export class MaterialFormAnnotation implements Material, OnInit {
-  ngOnInit() {}
-
+export class MaterialFormAnnotation extends Material {
   alphaTest: number;
 
   blendDst: BlendingDstFactor;
@@ -183,10 +181,6 @@ export class MaterialFormAnnotation implements Material, OnInit {
   dispatchEvent(event: { type: string; [p: string]: any }): void {}
 
   clone(): this {
-    return null;
-  }
-
-  copy(material: this): this {
     return null;
   }
 

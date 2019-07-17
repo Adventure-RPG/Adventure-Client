@@ -67,7 +67,7 @@ export class CameraService implements OnInit {
 
     // console.log(x, y);
 
-    console.log(this.camera);
+    // console.log(this.camera);
 
     if (!this.camera) {
       this.initIsometricCamera();
@@ -75,7 +75,7 @@ export class CameraService implements OnInit {
       this.initFirstPersonCamera();
     } else {
       if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
-        console.log(this.settingsService.settings.camera.type);
+        // console.log(this.settingsService.settings.camera.type);
         this.updateIsometricCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
@@ -84,7 +84,6 @@ export class CameraService implements OnInit {
       }
     }
 
-    this.camera.lookAt(position); // or the origin
     return this.camera;
   }
 
@@ -98,7 +97,7 @@ export class CameraService implements OnInit {
     // console.log(FPC);
 
     let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
-    console.log(this.storageService.hotkeySceneCommands);
+    // console.log(this.camera, this.domElement, this.storageService);
 
     let obj = {};
     // controls.update();
@@ -117,7 +116,7 @@ export class CameraService implements OnInit {
     let d = this.settingsService.settings.camera.d;
 
     //Остановился на добавление второго типа камеры и переключателя для камер.
-    console.log(d);
+    // console.log(d);
 
     this.camera = new OrthographicCamera(
       -d * this.settingsService.settings.browser.aspectRatio,

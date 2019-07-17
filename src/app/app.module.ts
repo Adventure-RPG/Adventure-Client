@@ -26,10 +26,17 @@ import { ApiService } from './services/api.service';
 import { HandleErrorService } from './services/handle-error.service';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginService } from './modules/ui-interfaces/login/login.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+/** config angular i18n **/
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+registerLocaleData(en);
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -37,11 +44,19 @@ export class MyHammerConfig extends HammerGestureConfig {
   };
 }
 
-const Modules = [BrowserModule, SharedModule, UiInterfacesModule, UiInterfacesRoutingModule];
+const Modules = [
+  BrowserModule,
+  BrowserAnimationsModule,
+  SharedModule,
+  HttpClientModule,
+  UiInterfacesModule,
+  UiInterfacesRoutingModule,
+  NgZorroAntdModule
+];
 
 const ModulesForRoot = [NgbModule];
 
-const ModulesForRootImport = [NgbModule.forRoot()];
+const ModulesForRootImport = [NgbModule];
 
 const Components = [SidebarModalComponent, ModalComponent];
 
@@ -77,7 +92,8 @@ const Guards = [AuthGuard];
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    { provide: NZ_I18N, useValue: en_US }
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [...ModulesForRoot, ...Components],

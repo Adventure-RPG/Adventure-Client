@@ -5,6 +5,7 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { Camera } from 'three';
 
 export class FirstPersonControls extends CameraControls {
   object;
@@ -39,13 +40,24 @@ export class FirstPersonControls extends CameraControls {
   mouseWheelDown;
   phi;
   theta;
-  fov;
-  zoom;
+
+  //TODO: могут возникать коллизии с зумом из-за этого места.
+  fov = 50;
+
+  private _zoom = 1;
+
+  get zoom() {
+    return this._zoom;
+  }
+
+  set zoom(value) {
+    this._zoom = value;
+    this.object.fov = this.fov * value;
+  }
 
   constructor(object, domElement, storageService) {
     super(storageService);
     this.object = object;
-    this.target = new THREE.Vector3(0, 0, 0);
 
     this.domElement = domElement !== undefined ? domElement : document;
 
@@ -89,8 +101,11 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
-    this.fov = object.fov;
-    this.zoom = 1;
+    // this.fov = object.fov;
+
+    if (parseFloat(localStorage.getItem('cameraZoom'))) {
+      this.zoom = parseFloat(localStorage.getItem('cameraZoom'));
+    }
   }
 
   initCommands() {
@@ -288,18 +303,13 @@ export class FirstPersonControls extends CameraControls {
       type: Types.Camera,
       onMouse: (event: WheelEvent) => {
         // console.log('Колесико мышки');
-        // console.log(typeof this.object);
-        if (event.deltaY > 0) {
-          if (this.zoom < 1) {
-            this.zoom += 0.1;
-          }
-        } else {
-          if (this.zoom - 0.1 > 0.2) {
-            this.zoom -= 0.1;
-          }
+        if (event.deltaY > 0 && this.zoom < 1) {
+          this.zoom += 0.1;
+          localStorage.setItem('cameraZoom', this.zoom.toString());
+        } else if (event.deltaY < 0 && this.zoom - 0.1 > 0.2) {
+          this.zoom -= 0.1;
+          localStorage.setItem('cameraZoom', this.zoom.toString());
         }
-        // console.log(this.zoom);
-        this.object.fov = this.fov * this.zoom;
       },
       pressed: false,
       keyCode: [NaN],
@@ -325,7 +335,7 @@ export class FirstPersonControls extends CameraControls {
 
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
       type: Types.Camera,
-      update: delta => {
+      update: (delta) => {
         if (this.enabled === false) {
           return;
         }

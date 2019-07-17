@@ -44,7 +44,7 @@ export class LoginService {
 
   public httpSignIn(body: RegistrateReq): any {
     return this.apiService.post(this.authUrl + this.version + this.module + 'login', body).pipe(
-      tap(data => {
+      tap((data) => {
         localStorage.setItem('auth', JSON.stringify(data));
         this.signIn = data;
       })
@@ -64,10 +64,10 @@ export class LoginService {
 
   public httpRecovery(body): any {
     this.apiService.post(this.authUrl + this.version + this.module + 'users', body).subscribe(
-      data => {
+      (data) => {
         console.log(data);
       },
-      error => {
+      (error) => {
         console.log(error);
       }
     );

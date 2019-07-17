@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
-import * as THREE from 'three';
-import { Camera, Clock, CubeCamera, OrthographicCamera, Scene, WebGLRenderer } from 'three';
+import {
+  BasicShadowMap,
+  Camera,
+  Clock,
+  CubeCamera,
+  OrthographicCamera,
+  Scene,
+  WebGLRenderer
+} from 'three';
 import { StorageService } from '@services/storage.service';
 import { SettingsService } from '@services/settings.service';
+import { PerspectiveCamera } from 'three';
 
 @Injectable()
 export class SceneService {
@@ -28,12 +36,17 @@ export class SceneService {
     this.renderer.gammaInput = true;
     this.renderer.gammaOutput = true;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.BasicShadowMap; // default THREE.PCFShadowMap
+    this.renderer.shadowMap.type = BasicShadowMap; // default THREE.PCFShadowMap
 
     this.animation();
   }
 
   public resizeEvent(event: Event) {
+    if (this.camera && this.camera.type === 'PerspectiveCamera') {
+      (<PerspectiveCamera>this.camera).aspect = window.innerWidth / window.innerHeight;
+      (<PerspectiveCamera>this.camera).updateProjectionMatrix();
+    }
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
