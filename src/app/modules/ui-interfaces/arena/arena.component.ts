@@ -17,9 +17,9 @@ import 'three-full/sources/postprocessing/OutlinePass';
 import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
 import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
-import {BoxGeometry} from "@node_modules/three-full/sources/geometries/BoxGeometry";
-import {MeshBasicMaterial} from "@node_modules/three-full/sources/materials/MeshBasicMaterial";
-import {Vector3} from "@node_modules/three-full/sources/math/Vector3";
+import { BoxGeometry } from '@node_modules/three-full/sources/geometries/BoxGeometry';
+import { MeshBasicMaterial } from '@node_modules/three-full/sources/materials/MeshBasicMaterial';
+import { Vector3 } from '@node_modules/three-full/sources/math/Vector3';
 
 @Component({
   selector: 'adventure-arena',
@@ -291,11 +291,11 @@ export class ArenaComponent implements OnInit {
     this.engineService.sceneService.camera.position.set(-100, 100, 100);
     this.engineService.sceneService.camera.lookAt(-100, 0, 0);
 
-    let geometry = new BoxGeometry( 10, 10, 10 );
-    let material = new MeshBasicMaterial( {color: 0x00ff00} );
-    let cube = new Mesh( geometry, material );
-    cube.position = (new Vector3(0, 0, 0));
-    this.sceneService.scene.add( cube );
+    let geometry = new BoxGeometry(10, 10, 10);
+    let material = new MeshBasicMaterial({ color: 0x00ff00 });
+    let cube = new Mesh(geometry, material);
+    cube.position = new Vector3(0, 0, 0);
+    this.sceneService.scene.add(cube);
 
     // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
