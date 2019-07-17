@@ -289,7 +289,7 @@ export class FirstPersonControls extends CameraControls {
       onMouse: (event: WheelEvent) => {
         // console.log('Колесико мышки');
         // console.log(typeof this.object);
-        if (event.deltaY === 100) {
+        if (event.deltaY > 0) {
           if (this.zoom < 1) {
             this.zoom += 0.1;
           }

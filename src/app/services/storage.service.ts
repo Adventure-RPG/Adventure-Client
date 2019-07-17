@@ -11,7 +11,7 @@ import {
   RendererCommand,
   RendererCommands,
   UtilCommands
-} from "../interfaces/storage";
+} from '../interfaces/storage';
 
 @Injectable()
 export class StorageService {
