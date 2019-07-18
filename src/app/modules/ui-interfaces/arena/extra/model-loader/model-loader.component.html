@@ -1,10 +1,55 @@
+<form nz-form (ngSubmit)="submitForm()" [formGroup]="modelForm">
 
-<nz-select style="width: 120px;" [(ngModel)]="selectedModel" nzAllowClear nzPlaceHolder="Choose Model">
-  <nz-option [nzValue]="model" [nzLabel]="model.name" *ngFor="let model of models">
-    {{model.name}}
-  </nz-option>
-</nz-select>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="model">Choose Model</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select
+        formControlName="model"
+        nzAllowClear nzPlaceHolder="Choose Model">
+        <nz-option [nzValue]="model" [nzLabel]="model.name" *ngFor="let model of models">
+          {{model.name}}
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
-<button nz-button
-        (click)="load(selectedModel)"
-        nzType="primary">load model</button>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="size">size</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-input-number formControlName="size" [nzMin]="0" [nzMax]="1000" [nzStep]="0.01"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="size">textures</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select
+        formControlName="texturePath"
+        nzAllowClear nzPlaceHolder="Choose Model">
+        <nz-option [nzValue]="texture" [nzLabel]="texture.name" *ngFor="let texture of textures">
+          {{texture.name}}
+        </nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item formGroupName="vector">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="x">vector</nz-form-label>
+    <nz-form-control [nzSm]="18" [nzXs]="24">
+      <nz-input-number formControlName="x" [nzMin]="0" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-input-number formControlName="y" [nzMin]="0" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-input-number formControlName="z" [nzMin]="0" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+
+  {{formValue | json}}
+
+
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button class="login-form-button" [nzType]="'primary'">load model</button>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>
+

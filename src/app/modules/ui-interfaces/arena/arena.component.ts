@@ -87,9 +87,10 @@ export class ArenaComponent implements OnInit {
     );
 
     mesh.rotation.x = -Math.PI / 2;
-    mesh.translateX(-width / 2);
-    mesh.translateY(width / 2);
+    mesh.translateX(width / 2);
+    mesh.translateY(-width / 2);
     // mesh.translateZ(width / 2);
+
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
@@ -112,8 +113,8 @@ export class ArenaComponent implements OnInit {
         );
 
         mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX(-(deviation + cell * i));
-        mesh.translateY(deviation + cell * j);
+        mesh.translateX((deviation + cell * i));
+        mesh.translateY(-(deviation + cell * j));
         mesh.translateZ(1);
 
         // mesh.translateX(size/divisions);
@@ -303,8 +304,8 @@ export class ArenaComponent implements OnInit {
       }
     };
 
-    this.engineService.sceneService.camera.position.set(-100, 100, 100);
-    this.engineService.sceneService.camera.lookAt(-100, 0, 0);
+    this.engineService.sceneService.camera.position.set(100, 100, 100);
+    this.engineService.sceneService.camera.lookAt(100, 0, 0);
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
