@@ -20,6 +20,7 @@ export class ModelLoaderComponent implements OnInit {
   selectedModel;
 
   modelsRaw: string[] = [
+    "/assets/models/polygon-knights/Models/Characters/Villain.fbx",
     "/assets/models/polygon-knights/Models/SM_Wep_Broadsword_01.fbx",
     "/assets/models/polygon-knights/Models/SM_Wep_Halberd_01.fbx",
     "/assets/models/polygon-knights/Models/SM_Wep_Rapier_01.fbx",

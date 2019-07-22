@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {BoxGeometry, Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import {BoxGeometry, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -21,6 +21,7 @@ import { Lightning } from '@modules/engine/core/utils/lightning';
 export enum ArenaPanel {
   ModelLoader,
   Spell,
+  Layers
 }
 
 @Component({
@@ -39,13 +40,18 @@ export class ArenaComponent implements OnInit {
 
   panels = [
     {
-      active: true,
+      active: false,
       name: ArenaPanel[0],
       disabled: false
     },
     {
       active: false,
       name: ArenaPanel[1],
+      disabled: false
+    },
+    {
+      active: true,
+      name: ArenaPanel[2],
       disabled: false
     }
   ];
@@ -98,7 +104,8 @@ export class ArenaComponent implements OnInit {
     let size = 180,
       divisions = 36,
       deviation = 10,
-      cell = size / divisions;
+      cell = size / divisions,
+      group = new Group();
 
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
@@ -117,10 +124,13 @@ export class ArenaComponent implements OnInit {
         mesh.translateY(-(deviation + cell * j));
         mesh.translateZ(1);
 
+        group.add(mesh);
+
         // mesh.translateX(size/divisions);
-        this.engineService.sceneService.scene.add(mesh);
       }
     }
+
+    this.engineService.sceneService.scene.add(group);
 
     /**
      * Start working on MouseEvents for SelectBox
