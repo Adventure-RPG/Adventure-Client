@@ -89,6 +89,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
     console.log(this.scene.nativeElement.getBoundingClientRect());
 
+    //TODO: подумать над тем как решить трабл
     // this.selectionBox = new SelectionBox(
     //   <Camera>this.engineService.sceneService.camera,
     //   this.engineService.sceneService.scene
