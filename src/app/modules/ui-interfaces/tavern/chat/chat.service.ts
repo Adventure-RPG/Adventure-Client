@@ -16,11 +16,9 @@ export class ChatService {
 
   connect() {
     this.messages = <Subject<any>>this.wsService.connect().pipe(
-      map(
-        (response: any): any => {
-          return response;
-        }
-      )
+      map((response: any): any => {
+        return response;
+      })
     );
   }
 

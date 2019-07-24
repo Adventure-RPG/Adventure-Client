@@ -21,19 +21,13 @@
               "src/favicon.ico"
             ],
             "styles": [
+              "src/ant-variables.less",
               "node_modules/ng-snotify/styles/material.scss",
-              "src/styles.scss"
+              "src/styles.scss",
             ],
             "scripts": [
-              "src/app/libs/inflate.min.js",
-              "./node_modules/three/build/three.js",
-              "./node_modules/three/examples/js/shaders/CopyShader.js",
-              "./node_modules/three/examples/js/shaders/FXAAShader.js",
-              "./node_modules/three/examples/js/postprocessing/EffectComposer.js",
-              "./node_modules/three/examples/js/postprocessing/RenderPass.js",
-              "./node_modules/three/examples/js/postprocessing/ShaderPass.js",
-              "./node_modules/three/examples/js/postprocessing/OutlinePass.js",
-            ]
+              "src/app/libs/inflate.min.js"
+            ],
           },
           "configurations": {
             "production": {
@@ -84,7 +78,7 @@
             ],
             "styles": [
               "node_modules/ng-snotify/styles/material.scss",
-              "src/styles.scss"
+              "src/styles.scss",
             ],
             "assets": [
               "src/assets",

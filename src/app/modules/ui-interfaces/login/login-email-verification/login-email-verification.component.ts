@@ -27,7 +27,7 @@ export class LoginEmailVerificationComponent implements OnInit {
     });
 
     this.route.params
-      .subscribe(params => {
+      .subscribe((params) => {
         if (params.token) {
           this.form.setValue(params);
           this.formAction();

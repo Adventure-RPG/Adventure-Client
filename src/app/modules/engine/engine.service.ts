@@ -96,7 +96,7 @@ export class EngineService {
     this._initStatus.next(value);
   }
 
-  public init() {
+  public init(width, height) {
     // Scene
     // let d = this.settings.camera.d;
 
@@ -106,6 +106,7 @@ export class EngineService {
     // this.test();
     // End Delete
 
+    this.sceneService.init(width, height);
     this.sceneService.scene.add(axesHelper);
 
     // console.log(this.sceneService.scene);

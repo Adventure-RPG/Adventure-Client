@@ -1,15 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {Color, EffectComposer, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import {BoxGeometry, Camera, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
 import { SettingsService } from '@services/settings.service';
-import 'three/examples/js/shaders/CopyShader';
-import 'three/examples/js/shaders/FXAAShader';
-import 'three/examples/js/postprocessing/EffectComposer';
-import 'three/examples/js/postprocessing/RenderPass';
-import 'three/examples/js/postprocessing/ShaderPass';
-import 'three/examples/js/postprocessing/OutlinePass';
+import { StorageService } from '@services/storage.service';
+import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { Types } from '@enums/types.enum';
+
+// import { SelectionBox } from 'three/sources/interactive/SelectionBox';
+// import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
+import { Lightning } from '@modules/engine/core/utils/lightning';
+import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
+import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
+
+export enum ArenaPanel {
+  ModelLoader,
+  Spell,
+  Layers
+}
 
 @Component({
   selector: 'adventure-arena',
@@ -17,24 +26,81 @@ import 'three/examples/js/postprocessing/OutlinePass';
   styleUrls: ['./arena.component.scss']
 })
 export class ArenaComponent implements OnInit {
-  @ViewChild('scene') scene;
+  @ViewChild('scene', {static: true}) scene;
+
+  sceneService;
+  camera;
+  renderer;
+  selectionBox;
+  helper;
+
+  panels = [
+    {
+      active: false,
+      name: ArenaPanel[0],
+      disabled: false
+    },
+    {
+      active: false,
+      name: ArenaPanel[1],
+      disabled: false
+    },
+    {
+      active: true,
+      name: ArenaPanel[2],
+      disabled: false
+    }
+  ];
+
+  //
+  events = {
+    mouseEvents: {
+      mousedown: false,
+      mouseup: true,
+      mousemove: false,
+      click: false,
+      dbclick: false,
+      mouseover: false,
+      mouseout: false,
+      mouseenter: false,
+      mouseleave: false,
+      contextmenu: false,
+      mousewheel: false
+    },
+    keyboardEvents: {
+      keydown: false,
+      keyup: true
+    },
+    resize: true
+  };
 
   constructor(
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
-    public keyboardEventService: KeyboardEventService
+    public keyboardEventService: KeyboardEventService,
+    private storageService: StorageService
   ) {
-    // this.engineService.renderEngine();
   }
+  // this.engineService.renderEngine();
 
   ngOnInit() {
+    this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
+    console.log(this.scene.nativeElement.getBoundingClientRect());
+
+    this.selectionBox = new SelectionBox(
+      <Camera>this.engineService.sceneService.camera,
+      this.engineService.sceneService.scene
+    );
+    this.helper = new SelectionHelper(
+      this.selectionBox,
+      this.engineService.sceneService.renderer,
+      'selectBox'
+    );
+
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
-
-    console.log('init');
-    this.engineService.init();
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
     let width = 200;
@@ -46,9 +112,10 @@ export class ArenaComponent implements OnInit {
     );
 
     mesh.rotation.x = -Math.PI / 2;
-    mesh.translateX(-width / 2);
-    mesh.translateY(width / 2);
+    mesh.translateX(width / 2);
+    mesh.translateY(-width / 2);
     // mesh.translateZ(width / 2);
+
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
@@ -56,7 +123,9 @@ export class ArenaComponent implements OnInit {
     let size = 180,
       divisions = 36,
       deviation = 10,
-      cell = size / divisions;
+      cell = size / divisions,
+      group = new Group();
+
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
         // ground
@@ -70,25 +139,99 @@ export class ArenaComponent implements OnInit {
         );
 
         mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX(-(deviation + cell * i));
-        mesh.translateY(deviation + cell * j);
+        mesh.translateX((deviation + cell * i));
+        mesh.translateY(-(deviation + cell * j));
         mesh.translateZ(1);
 
+        group.add(mesh);
+
         // mesh.translateX(size/divisions);
-        this.engineService.sceneService.scene.add(mesh);
       }
     }
+
+    this.engineService.sceneService.scene.add(group);
+
+    /**
+     * Start working on MouseEvents for SelectBox
+     * TODO: вынести в директиву SelectionBox. Передавать сдвиг по необходимости
+     */
+    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
+    //   type: Types.Camera,
+    //   onMouseDown: (event: MouseEvent) => {
+    //     console.log('mousedown');
+    //     this.selectionBox.startPoint.set(
+    //       ((event.clientX - 400)/ this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
+    //       0.5
+    //     );
+    //   },
+    //   pressed: true,
+    //   name: 'mousedown',
+    //   keyCode: [0]
+    // });
+    //
+    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
+    //   type: Types.Camera,
+    //   onMouseUp: (event: MouseEvent) => {
+    //     console.log('mouseup');
+    //     this.selectionBox.endPoint.set(
+    //       ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
+    //       0.5
+    //     );
+    //     let allSelected = this.selectionBox.select();
+    //     for (let i = 0; i < allSelected.length; i++) {
+    //       allSelected[i].material.emissive = new Color(0x0000ff);
+    //     }
+    //   },
+    //   pressed: false,
+    //   name: 'mouseup',
+    //   keyCode: [0]
+    // });
+    //
+    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
+    //   type: Types.Camera,
+    //   onMouseMove: (event: MouseEvent) => {
+    //     // console.log(this.helper);
+    //     // console.log('mousemove');
+    //     if (this.helper.isDown) {
+    //       for (let i = 0; i < this.selectionBox.collection.length; i++) {
+    //         this.selectionBox.collection[i].material.emissive = new Color(0x000000);
+    //       }
+    //       this.selectionBox.endPoint.set(
+    //         ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //         -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
+    //         0.5
+    //       );
+    //       let allSelected = this.selectionBox.select();
+    //       for (let i = 0; i < allSelected.length; i++) {
+    //         allSelected[i].material.emissive = new Color(0x0000ff);
+    //       }
+    //     }
+    //   },
+    //   pressed: true,
+    //   keyCode: [NaN],
+    //   name: 'mousemove'
+    // });
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
-    this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
+    this.engineService.sceneService.scene.background = new Color(0x000);
+
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
 
     this.keyboardEventService.engineService = this.engineService;
+
+    Lightning.addLightning(
+      this.engineService.sceneService.scene,
+      this.engineService.sceneService.renderer,
+      this.engineService.cameraService.camera,
+      this.storageService
+    );
 
     let hemisphereLightOptions = {
       color: '#ffffff',
@@ -108,8 +251,8 @@ export class ArenaComponent implements OnInit {
     let pointLightOptions = {
       color: '#89ff90',
       groundColor: '#444444',
-      intensity: 1,
-      distance: 250,
+      intensity: 0.001,
+      distance: 1,
       exponent: 0,
       angle: 0.52,
       decay: 1,
@@ -191,6 +334,9 @@ export class ArenaComponent implements OnInit {
       }
     };
 
+    this.engineService.sceneService.camera.position.set(100, 100, 100);
+    this.engineService.sceneService.camera.lookAt(100, 0, 0);
+
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
@@ -199,12 +345,11 @@ export class ArenaComponent implements OnInit {
 
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
-    this.lightService.addLight(spotLightOptions, 'SpotLight');
+    // this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
-
-    let composer = new THREE.EffectComposer( this.engineService.sceneService.renderer );
-    console.log(composer);
+    // let composer = new EffectComposer(this.engineService.sceneService.renderer);
+    // console.log(composer);
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
@@ -214,6 +359,6 @@ export class ArenaComponent implements OnInit {
     //
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
-    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3w
+    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
   }
 }

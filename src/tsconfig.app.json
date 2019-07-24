@@ -25,6 +25,7 @@
       "@libs/*": ["app/libs/*"],
       "@modules/*": ["app/modules/*"],
       "@services/*": ["app/services/*"],
+      "@interfaces/*": ["app/interfaces/*"],
       "@shared/*": ["app/shared/*"]
     }
   },

@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "assets/scss/bootstrap/bootstrap";
 
+//TODO: выпилить ng-select, bourbon
 @import "~bourbon/core/_bourbon";
-@import "~@ng-select/ng-select/themes/default.theme.css";
+//@import "assets/scss/ng-ant/ng-zorro-antd";
 
 /**
   FOOD
@@ -20,7 +21,7 @@ $url-face: './assets/fonts';
 @include font-face("komi",      $url-face + "/Komi", $file-formats: eot woff2 woff ttf svg);
 @import "assets/scss/font-awesome/font-awesome";
 @import "assets/scss/main";
-
+;
 /**
   Drag'n'drop
  */
@@ -40,6 +41,11 @@ $url-face: './assets/fonts';
 
 .dnd-drag-over {
   border: 2px dashed #000;
+
+  &:hover{
+  //
+  }
+
 }
 
 .dnd-sortable-drag {
@@ -53,15 +59,67 @@ $url-face: './assets/fonts';
 /**
   Slider
  */
-@import "~nouislider/distribute/nouislider.min.css";
-.noUi-handle{
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+//@import "~nouislider/distribute/nouislider.min.css";
+//.noUi-handle{
+//  -webkit-box-shadow: none;
+//  -moz-box-shadow: none;
+//  box-shadow: none;
+//
+//  background: $primary;
+//
+//  //TODO: обновлять модуль, так как разраб косоеб, а я ленивый
+//  pointer-events: none;
+//  //END: TODO
+//}
 
-  background: $primary;
+/**
+ant-collapse
+ */
+nz-collapse .ant-collapse {
+  width: 400px;
+  border-radius: 0px;
+  border-left: 0px !important;
+  border-top: 0px !important;
+  bottom: 0px !important;
 
-  //TODO: обновлять модуль, так как разраб косоеб, а я ленивый
-  pointer-events: none;
-  //END: TODO
+}
+
+.ant-collapse-item:last-child > .ant-collapse-content {
+  border-bottom: 0px;
+}
+
+
+/**
+  scroll native
+ */
+
+.main-scroll{
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: darken(#fff, 30%);
+    border: 0px none #ffffff;
+    border-radius: 50px;
+    &:hover {
+      background: darken(#fff, 40%);
+    }
+    &:active {
+      background: darken(#fff, 50%);
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 19px;
+  }
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }

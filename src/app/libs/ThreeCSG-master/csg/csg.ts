@@ -65,7 +65,7 @@ export class CSG {
 
   clone() {
     const csg = new CSG();
-    csg.polygons = this.polygons.map(p => {
+    csg.polygons = this.polygons.map((p) => {
       return p.clone();
     });
     return csg;
@@ -160,7 +160,7 @@ export class CSG {
   // not modified.
   inverse() {
     const csg = this.clone();
-    csg.polygons.map(p => {
+    csg.polygons.map((p) => {
       p.flip();
     });
     return csg;
@@ -197,9 +197,9 @@ export class CSG {
         [[2, 6, 7, 3], [0, +1, 0]],
         [[0, 2, 3, 1], [0, 0, -1]],
         [[4, 5, 7, 6], [0, 0, +1]]
-      ].map(info => {
+      ].map((info) => {
         return new Polygon(
-          info[0].map(i => {
+          info[0].map((i) => {
             //TODO: ВАЖНО, если буду использовать csg проверить
             const pos = new Vector(
               c.x + r[0] * (2 * (!!(i & 1) ? 1 : 0) - 1),
@@ -531,7 +531,7 @@ export class Polygon {
   }
 
   clone() {
-    const vertices = this.vertices.map(v => {
+    const vertices = this.vertices.map((v) => {
       return v.clone();
     });
     // console.log(this.shared);
@@ -539,7 +539,7 @@ export class Polygon {
   }
 
   flip() {
-    this.vertices.reverse().map(v => {
+    this.vertices.reverse().map((v) => {
       v.flip();
     });
     this.plane.flip();
@@ -572,7 +572,7 @@ export class Node {
     node.plane = this.plane && this.plane.clone();
     node.front = this.front && this.front.clone();
     node.back = this.back && this.back.clone();
-    node.polygons = this.polygons.map(p => {
+    node.polygons = this.polygons.map((p) => {
       return p.clone();
     });
     return node;

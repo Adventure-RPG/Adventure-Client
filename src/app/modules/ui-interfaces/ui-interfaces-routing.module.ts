@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared-module.module';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { AuthGuard } from '../../guards/auth.guard';
+import { SceneTestComponent } from '@modules/ui-interfaces/scene-test/scene-test.component';
 
 const routes: Routes = [
   {
@@ -10,8 +11,8 @@ const routes: Routes = [
     children: [
       {
         path: 'main',
-        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule',
-        canActivate: [AuthGuard]
+        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule'
+        // canActivate: [AuthGuard]
       },
       {
         path: 'login',
@@ -19,22 +20,27 @@ const routes: Routes = [
       },
       {
         path: 'arena',
-        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule',
-        canActivate: [AuthGuard]
+        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule'
+        // canActivate: [AuthGuard]
       },
       {
         path: 'editor',
-        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule',
-        canActivate: [AuthGuard]
+        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
+        // canActivate: [AuthGuard]
       },
       {
         path: 'tavern',
-        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule',
-        canActivate: [AuthGuard]
+        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule'
+        // canActivate: [AuthGuard]
       },
       {
         path: '',
         loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
+      },
+      {
+        path: 'scene-test',
+        loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule'
+        // canActivate: [AuthGuard]
       }
     ]
   },

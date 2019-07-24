@@ -46,7 +46,7 @@ import {
   ZeroFactor
 } from 'three';
 
-import { Shading } from 'three/three-core';
+import { Shading } from 'three';
 
 export class MaterialEnum {
   static side: { [key: string]: Side } = {

@@ -1,7 +1,5 @@
 import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
 import { Noise } from '@modules/engine/core/utils/noise';
-const csgApi = require('@jscad/csg');
-import { fromCSG, toCSG } from 'three-2-csg';
 
 interface TerrainOptions {
   isDungeon: boolean;
@@ -52,7 +50,7 @@ export class Terrain {
       this.set(x, y, ave + offset);
     };
 
-    let divide = size => {
+    let divide = (size) => {
       let x,
         y,
         half = size / 2;
@@ -74,7 +72,7 @@ export class Terrain {
       divide(size / 2);
     };
 
-    let average = values => {
+    let average = (values) => {
       let valid = values.filter(function(val) {
         return val !== -1;
       });
@@ -103,45 +101,6 @@ export class Terrain {
   }
 
   getTerrain(terrainOptions: TerrainOptions): PlaneGeometry {
-    if (terrainOptions.isDungeon) {
-      let cubeWidth = 1;
-      let csgModel;
-      let geometries = [];
-      // console.log(arrayTest);
-      for (let z = 0; z < this.size; z++) {
-        for (let x = 0; x < this.size; x++) {
-          //Делаем всех от одного уровня
-          let h = this.get(x, z);
-
-          geometries.push(
-            csgApi.CSG.cube({
-              radius: [cubeWidth / 2, h, cubeWidth / 2],
-              center: [
-                x * cubeWidth - this.size / 2,
-                (h + 1 / 2) * cubeWidth,
-                z * cubeWidth - this.size / 2
-              ]
-            })
-          );
-        }
-      }
-      console.log(geometries);
-      if (!csgModel) {
-        csgModel = geometries[0];
-      }
-      console.time('mergeEvery100geometries');
-      for (let i = 0; i < geometries.length; i++) {
-        if (i % 100 === 0) {
-          console.log(`${i + 100}\ ${geometries.length} геометрий слили`);
-          console.timeEnd('mergeEvery100geometries');
-          console.time('mergeEvery100geometries');
-        }
-        csgModel = csgModel.union(geometries[i]);
-      }
-      console.log(csgModel.toPolygons());
-
-      return fromCSG(csgModel);
-    } else {
       let terrain_geometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
       let min_height = Infinity;
       let max_height = -Infinity;
@@ -162,7 +121,6 @@ export class Terrain {
           }
           terrain_geometry.vertices[y * this.size + x].z = height_val;
         }
-      }
 
       terrain_geometry.computeFaceNormals();
       terrain_geometry.computeVertexNormals();

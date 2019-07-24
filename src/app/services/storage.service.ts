@@ -3,36 +3,15 @@ import { BehaviorSubject } from 'rxjs';
 import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
 import { Types } from '@enums/types.enum';
-
-export interface Commands {
-  [key: string]: Command;
-}
-
-export interface Command {
-  onKeyUp?(event);
-  onKeyDown?(event);
-  onMouseDown?(event);
-  onMouseUp?(event);
-  onMouseMove?(event);
-  onMouse?(event);
-  type: Types; //TODO: переделать в енам
-  pressed?: boolean;
-  keyCode?: number | number[];
-  name: string;
-}
-
-export interface RendererCommands {
-  [key: string]: RendererCommand;
-}
-
-export interface RendererCommand {
-  type: Types; // TODO: переделать в енам и сделать общее наследование с командами, дабы не дублировать код
-  update?(delta?);
-}
-
-export interface MixerCommands {
-  [key: string]: AnimationMixer;
-}
+import {
+  Command,
+  Commands,
+  EffectsCommands,
+  MixerCommands,
+  RendererCommand,
+  RendererCommands,
+  UtilCommands
+} from '../interfaces/storage';
 
 @Injectable()
 export class StorageService {
@@ -74,9 +53,10 @@ export class StorageService {
   public hotkeySceneCommandPush(K, V: Command) {
     const tempObj = {};
     tempObj[K] = V;
-    console.log(tempObj);
-    console.log(this.hotkeySceneCommands);
+    // console.log(tempObj);
+    // console.log(this.hotkeySceneCommands);
     this.hotkeySceneCommands = Lodash.merge(this.hotkeySceneCommands, tempObj);
+    // console.log(this.hotkeySceneCommands);
   }
 
   //TODO: переделать на enum
@@ -128,6 +108,7 @@ export class StorageService {
 
     this.rendererStorageCommands = rendererStorageCommands;
   }
+
   /**
    * Сторейдж для хранения правил по обновлению моделей
    * @type {BehaviorSubject<MixerCommands>}
@@ -149,6 +130,54 @@ export class StorageService {
     tempObj[K] = V;
     this.mixerCommands = Lodash.merge(this.mixerCommands, tempObj);
     console.log(this.mixerCommands);
+  }
+
+  /**
+   * Сторейдж для хранения правил по обновлению эффектов
+   * @type {BehaviorSubject<EffectsCommands>}
+   * @private
+   */
+  private _effectsCommands: BehaviorSubject<EffectsCommands> = new BehaviorSubject<EffectsCommands>(
+    {}
+  );
+  public _effectsCommands$ = this._effectsCommands.asObservable();
+
+  public get effectsCommands(): EffectsCommands {
+    return this._effectsCommands.getValue();
+  }
+
+  public set effectsCommands(value: EffectsCommands) {
+    this._effectsCommands.next(value);
+  }
+
+  public effectsCommandPush(K, V: AnimationMixer) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.effectsCommands = Lodash.merge(this.effectsCommands, tempObj);
+    console.log(this.effectsCommands);
+  }
+
+  /**
+   * Сторейдж для хранения правил по обновлению моделей
+   * @type {BehaviorSubject<UtilCommands>}
+   * @private
+   */
+  private _utilCommands: BehaviorSubject<UtilCommands> = new BehaviorSubject<UtilCommands>({});
+  public _utilCommands$ = this._utilCommands.asObservable();
+
+  public get utilCommands(): UtilCommands {
+    return this._utilCommands.getValue();
+  }
+
+  public set utilCommands(value: UtilCommands) {
+    this._utilCommands.next(value);
+  }
+
+  public utilCommandPush(K, V: UtilCommands) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.utilCommands = Lodash.merge(this.utilCommands, tempObj);
+    // console.log(this.utilCommands);
   }
 
   constructor() {}

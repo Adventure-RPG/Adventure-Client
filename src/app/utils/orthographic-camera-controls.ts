@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
-import { KeyboardCommandsEnum } from 'app/enums/KeyboardCommands.enum';
+import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { MouseCommandsEnum } from 'app/enums/mouseCommands.enum';
 import { Types } from '@enums/types.enum';
 
@@ -153,7 +153,7 @@ export class OrthographicCameraControls {
 
     this.storageService.rendererStorageCommandPush('orthographicCameraUpdater', {
       type: Types.Camera,
-      update: delta => {
+      update: (delta) => {
         if (this.enabled === false) {
           return;
         }

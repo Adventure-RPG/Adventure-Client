@@ -13,11 +13,13 @@ export class MouseEventService {
     /**
      Обработчик эвентов на мышку
       **/
+
     for (let sceneCommandName in this.storageService.hotkeySceneCommands) {
       /**
        * Заменил number на object, потому что он всегда возвращает тип объект и нифига не работает.
        */
       //console.log(this.storageService.hotkeySceneCommands[sceneCommandName].name);
+
       if (
         typeof this.storageService.hotkeySceneCommands[sceneCommandName].keyCode === 'object' &&
         <string>this.storageService.hotkeySceneCommands[sceneCommandName].name === event.type
@@ -29,10 +31,11 @@ export class MouseEventService {
           case 'keydown':
             this.storageService.hotkeySceneCommands[sceneCommandName].onKeyDown(event);
             break;
-          case 'onmousedown':
+          case 'mousedown':
             this.storageService.hotkeySceneCommands[sceneCommandName].onMouseDown(event);
             break;
-          case 'onmouseup':
+          case 'mouseup':
+            console.log(this.storageService.hotkeySceneCommands);
             this.storageService.hotkeySceneCommands[sceneCommandName].onMouseUp(event);
             break;
           case 'mousemove':

@@ -23,7 +23,7 @@ export class HeightMapService {
     //TODO: вынести все текстуры и материалы в отдельный сервис
 
     return this.parseImageToGeo(img)
-      .then(res => {
+      .then((res) => {
         let geoJsonObject: IGEOJson = {
           type: 'Feature',
           geometry: {
@@ -89,20 +89,20 @@ export class HeightMapService {
 
         return geoJsonObject;
       })
-      .then(geoObj => {
+      .then((geoObj) => {
         let options = { body: geoObj };
         // return new Api().points(options);
       })
-      .then(response => {
+      .then((response) => {
         console.log(response);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
 
   public changeColorMapFromImage(options, scene, img) {
-    this.parseImageToColorGeo(img).then(res => {
+    this.parseImageToColorGeo(img).then((res) => {
       console.log(res);
       this.colorScheme = res;
     });
