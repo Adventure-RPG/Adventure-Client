@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import {Directive, ElementRef, HostListener, Input, NgZone} from '@angular/core';
 import { OnWindowEventService } from '@events/on-window-event.service';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { MouseEventService } from '@events/mouse-event.service';
@@ -7,7 +7,7 @@ const debugEvents = {
   mouseEvents: {
     mousedown: false,
     mouseup: false,
-    mousemove: false,
+    mousemove: true,
     click: false,
     dbclick: false,
     mouseover: false,
@@ -25,7 +25,7 @@ const debugEvents = {
 };
 
 @Directive({
-  selector: '[adventureSceneEvents]'
+  selector: '[adventureSceneEvents]',
 })
 export class SceneEventsDirective {
 
@@ -54,7 +54,8 @@ export class SceneEventsDirective {
     private element: ElementRef,
     private keyboardEventService: KeyboardEventService,
     private mouseEventService: MouseEventService,
-    private onWindowEventService: OnWindowEventService
+    private onWindowEventService: OnWindowEventService,
+    private zone: NgZone
   ) {}
 
   private currentElement;
@@ -79,13 +80,14 @@ export class SceneEventsDirective {
     }
   }
 
-  @HostListener('mousemove', ['$event'])
-  onMouseMove(event: MouseEvent) {
-    if (debugEvents.mouseEvents.mousemove) {
-      console.log(event);
-    }
-    this.mouseEventService.mouseEvents(event);
-  }
+  //ОТКЛЮЧЕНО, потому что дико фпс просидал из-за ЦДРа
+  // @HostListener('mousemove', ['$event'])
+  // onMouseMove(event: MouseEvent) {
+  //   if (debugEvents.mouseEvents.mousemove) {
+  //     console.log(event);
+  //   }
+  //   this.mouseEventService.mouseEvents(event);
+  // }
 
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
@@ -107,15 +109,15 @@ export class SceneEventsDirective {
     }
   }
 
-  @HostListener('mouseover', ['$event'])
-  onMouseOver(event: MouseEvent) {
-    if (debugEvents.mouseEvents.mouseover) {
-      console.log(event);
-    }
-    if (this.enabledEvents.mouseEvents.mouseover) {
-      console.log(event);
-    }
-  }
+  // @HostListener('mouseover', ['$event'])
+  // onMouseOver(event: MouseEvent) {
+  //   if (debugEvents.mouseEvents.mouseover) {
+  //     console.log(event);
+  //   }
+  //   if (this.enabledEvents.mouseEvents.mouseover) {
+  //     console.log(event);
+  //   }
+  // }
 
   @HostListener('mouseout', ['$event'])
   onMouseOut(event: MouseEvent) {

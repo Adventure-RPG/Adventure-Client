@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BoxGeometry, Camera, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
@@ -13,6 +13,7 @@ import { Types } from '@enums/types.enum';
 import { Lightning } from '@modules/engine/core/utils/lightning';
 import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
 import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
+import {fromEvent, Subscription} from "rxjs/index";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -23,9 +24,9 @@ export enum ArenaPanel {
 @Component({
   selector: 'adventure-arena',
   templateUrl: './arena.component.html',
-  styleUrls: ['./arena.component.scss']
+  styleUrls: ['./arena.component.scss'],
 })
-export class ArenaComponent implements OnInit {
+export class ArenaComponent implements OnInit, OnDestroy {
   @ViewChild('scene', {static: true}) scene;
 
   sceneService;
@@ -79,24 +80,24 @@ export class ArenaComponent implements OnInit {
     private lightService: LightService,
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private zone: NgZone
   ) {
   }
-  // this.engineService.renderEngine();
 
   ngOnInit() {
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
     console.log(this.scene.nativeElement.getBoundingClientRect());
 
-    this.selectionBox = new SelectionBox(
-      <Camera>this.engineService.sceneService.camera,
-      this.engineService.sceneService.scene
-    );
-    this.helper = new SelectionHelper(
-      this.selectionBox,
-      this.engineService.sceneService.renderer,
-      'selectBox'
-    );
+    // this.selectionBox = new SelectionBox(
+    //   <Camera>this.engineService.sceneService.camera,
+    //   this.engineService.sceneService.scene
+    // );
+    // this.helper = new SelectionHelper(
+    //   this.selectionBox,
+    //   this.engineService.sceneService.renderer,
+    //   'selectBox'
+    // );
 
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
@@ -188,12 +189,23 @@ export class ArenaComponent implements OnInit {
     //   name: 'mouseup',
     //   keyCode: [0]
     // });
+
+    // this.zone.runOutsideAngular(() => {
     //
-    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
-    //   type: Types.Camera,
-    //   onMouseMove: (event: MouseEvent) => {
-    //     // console.log(this.helper);
-    //     // console.log('mousemove');
+    //   let throttled = (delay, fn) => {
+    //     let lastCall = 0;
+    //     return function (...args) {
+    //       const now = (new Date).getTime();
+    //       if (now - lastCall < delay) {
+    //         return;
+    //       }
+    //       lastCall = now;
+    //       return fn(...args);
+    //     }
+    //   };
+    //
+    //   let mouseMoveHandler = (event) => {
+    //     console.log(event);
     //     if (this.helper.isDown) {
     //       for (let i = 0; i < this.selectionBox.collection.length; i++) {
     //         this.selectionBox.collection[i].material.emissive = new Color(0x000000);
@@ -208,11 +220,14 @@ export class ArenaComponent implements OnInit {
     //         allSelected[i].material.emissive = new Color(0x0000ff);
     //       }
     //     }
-    //   },
-    //   pressed: true,
-    //   keyCode: [NaN],
-    //   name: 'mousemove'
+    //   };
+    //
+    //   const tHandler = throttled(200, mouseMoveHandler);
+    //   window.addEventListener("mousemove", tHandler);
+    //
+    //
     // });
+
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
@@ -360,5 +375,9 @@ export class ArenaComponent implements OnInit {
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
     // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
+  }
+
+
+  ngOnDestroy() {
   }
 }
