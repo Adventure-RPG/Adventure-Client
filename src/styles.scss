@@ -106,17 +106,18 @@ nz-collapse .ant-collapse {
     background: darken(#fff, 30%);
     border: 0px none #ffffff;
     border-radius: 50px;
+    &:hover {
+      background: darken(#fff, 40%);
+    }
+    &:active {
+      background: darken(#fff, 50%);
+    }
   }
+
   &::-webkit-scrollbar-track {
     background: transparent;
     border: 0px none #ffffff;
     border-radius: 19px;
-  }
-  &::-webkit-scrollbar-track:hover {
-    background:  darken(#fff, 40%);
-  }
-  &::-webkit-scrollbar-track:active {
-    background:  darken(#fff, 50%);
   }
   &::-webkit-scrollbar-corner {
     background: transparent;

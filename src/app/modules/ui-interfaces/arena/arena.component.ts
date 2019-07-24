@@ -153,14 +153,15 @@ export class ArenaComponent implements OnInit {
 
     /**
      * Start working on MouseEvents for SelectBox
+     * TODO: вынести в директиву SelectionBox. Передавать сдвиг по необходимости
      */
     // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
     //   type: Types.Camera,
     //   onMouseDown: (event: MouseEvent) => {
     //     console.log('mousedown');
     //     this.selectionBox.startPoint.set(
-    //       (event.clientX / window.innerWidth) * 2 - 1,
-    //       -(event.clientY / window.innerHeight) * 2 + 1,
+    //       ((event.clientX - 400)/ this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
     //       0.5
     //     );
     //   },
@@ -174,8 +175,8 @@ export class ArenaComponent implements OnInit {
     //   onMouseUp: (event: MouseEvent) => {
     //     console.log('mouseup');
     //     this.selectionBox.endPoint.set(
-    //       (event.clientX / window.innerWidth) * 2 - 1,
-    //       -(event.clientY / window.innerHeight) * 2 + 1,
+    //       ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
     //       0.5
     //     );
     //     let allSelected = this.selectionBox.select();
@@ -198,8 +199,8 @@ export class ArenaComponent implements OnInit {
     //         this.selectionBox.collection[i].material.emissive = new Color(0x000000);
     //       }
     //       this.selectionBox.endPoint.set(
-    //         (event.clientX / window.innerWidth) * 2 - 1,
-    //         -(event.clientY / window.innerHeight) * 2 + 1,
+    //         ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
+    //         -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
     //         0.5
     //       );
     //       let allSelected = this.selectionBox.select();
