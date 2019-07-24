@@ -62,7 +62,7 @@ export class LayersComponent implements OnInit, AfterViewInit {
     if (event.node && event.eventName === 'check' && event.node.level === 0) {
       event.node.children.forEach((node: NzTreeNode) => {
         node.origin.element.traverse( (child) => {
-          if (child instanceof Mesh) {
+          if (child) {
             child.visible = !child.visible;
           }
         });
@@ -70,7 +70,7 @@ export class LayersComponent implements OnInit, AfterViewInit {
     } else if (event.node && event.eventName === 'check' && event.node.level !== 0) {
       // Для остальных уровней
       event.node.origin.element.traverse( (child) => {
-        if (child instanceof Mesh) {
+        if (child) {
           child.visible = !child.visible;
         }
       });

@@ -19,16 +19,17 @@ export class SceneService {
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private clock = new Clock();
   private currentTime = 0;
+  private sceneDimension = {width: 100, height: 100};
 
   //Подумать о том что бы вынести
   private lightningTimeRate = 1;
 
   constructor(private storageService: StorageService, private settingsService: SettingsService) {
+
     this.scene = new Scene();
 
     // свойства Render'а
     this.renderer = new WebGLRenderer({ antialias: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setClearColor(0x000);
 
@@ -37,17 +38,24 @@ export class SceneService {
     this.renderer.gammaOutput = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = BasicShadowMap; // default THREE.PCFShadowMap
+  }
 
+  public init(width, height){
+    this.sceneDimension = {
+      width, height
+    };
+
+    this.renderer.setSize(this.sceneDimension.width, this.sceneDimension.height);
     this.animation();
   }
 
   public resizeEvent(event: Event) {
     if (this.camera && this.camera.type === 'PerspectiveCamera') {
-      (<PerspectiveCamera>this.camera).aspect = window.innerWidth / window.innerHeight;
+      (<PerspectiveCamera>this.camera).aspect = this.sceneDimension.width / this.sceneDimension.height;
       (<PerspectiveCamera>this.camera).updateProjectionMatrix();
     }
 
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.sceneDimension.width, this.sceneDimension.height);
   }
 
   /**

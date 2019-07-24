@@ -21,12 +21,13 @@
               "src/favicon.ico"
             ],
             "styles": [
+              "src/ant-variables.less",
               "node_modules/ng-snotify/styles/material.scss",
-              "src/styles.scss"
+              "src/styles.scss",
             ],
             "scripts": [
               "src/app/libs/inflate.min.js"
-            ]
+            ],
           },
           "configurations": {
             "production": {

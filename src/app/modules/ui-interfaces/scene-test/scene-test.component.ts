@@ -20,7 +20,7 @@ export class SceneTestComponent implements OnInit {
   helper;
   constructor(private engineService: EngineService, private storageService: StorageService) {
     console.log('adada');
-    this.engineService.init();
+    this.engineService.init(window.innerWidth, window.innerHeight);
     this.selectionBox = new THREE.SelectionBox(
       this.engineService.sceneService.camera,
       this.engineService.sceneService.scene

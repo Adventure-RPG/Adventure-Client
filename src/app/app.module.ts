@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared-module.module';
 import { UiInterfacesRoutingModule } from './modules/ui-interfaces/ui-interfaces-routing.module';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UiInterfacesModule } from './modules/ui-interfaces/ui-interfaces.module';
 import { ModalComponent } from './shared/modal/modal.component';
 import { SidebarModalComponent } from './shared/sidebar-modal/sidebar-modal.component';
@@ -54,9 +53,9 @@ const Modules = [
   NgZorroAntdModule,
 ];
 
-const ModulesForRoot = [NgbModule];
+const ModulesForRoot = [];
 
-const ModulesForRootImport = [NgbModule];
+const ModulesForRootImport = [];
 
 const Components = [SidebarModalComponent, ModalComponent];
 

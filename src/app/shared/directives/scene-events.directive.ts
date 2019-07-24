@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import { OnWindowEventService } from '@events/on-window-event.service';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { MouseEventService } from '@events/mouse-event.service';
@@ -28,6 +28,28 @@ const debugEvents = {
   selector: '[adventureSceneEvents]'
 })
 export class SceneEventsDirective {
+
+  @Input('enabledEvents') enabledEvents = {
+    mouseEvents: {
+      mousedown: true,
+      mouseup: true,
+      mousemove: true,
+      click: true,
+      dbclick: true,
+      mouseover: true,
+      mouseout: true,
+      mouseenter: true,
+      mouseleave: true,
+      contextmenu: true,
+      mousewheel: true
+    },
+    keyboardEvents: {
+      keydown: true,
+      keyup: true
+    },
+    resize: true
+  };
+
   constructor(
     private element: ElementRef,
     private keyboardEventService: KeyboardEventService,
@@ -42,7 +64,9 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mousedown) {
       console.log(event);
     }
-    this.mouseEventService.mouseEvents(event);
+    if (this.enabledEvents.mouseEvents.mousedown) {
+      this.mouseEventService.mouseEvents(event);
+    }
   }
 
   @HostListener('mouseup', ['$event'])
@@ -50,7 +74,9 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mouseup) {
       console.log(event);
     }
-    this.mouseEventService.mouseEvents(event);
+    if (this.enabledEvents.mouseEvents.mouseup) {
+      this.mouseEventService.mouseEvents(event);
+    }
   }
 
   @HostListener('mousemove', ['$event'])
@@ -66,11 +92,17 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.click) {
       console.log(event);
     }
+    if (this.enabledEvents.mouseEvents.mouseup) {
+
+    }
   }
 
   @HostListener('dbclick', ['$event'])
   onDoubleClick(event: MouseEvent) {
     if (debugEvents.mouseEvents.dbclick) {
+      console.log(event);
+    }
+    if (this.enabledEvents.mouseEvents.dbclick) {
       console.log(event);
     }
   }
@@ -80,11 +112,17 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mouseover) {
       console.log(event);
     }
+    if (this.enabledEvents.mouseEvents.mouseover) {
+      console.log(event);
+    }
   }
 
   @HostListener('mouseout', ['$event'])
   onMouseOut(event: MouseEvent) {
     if (debugEvents.mouseEvents.mouseout) {
+      console.log(event);
+    }
+    if (this.enabledEvents.mouseEvents.mouseout) {
       console.log(event);
     }
   }
@@ -99,7 +137,9 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mouseenter) {
       console.log(event);
     }
-    this.currentElement = event.target;
+    if (this.enabledEvents.mouseEvents.mouseenter) {
+      this.currentElement = event.target;
+    }
   }
 
   @HostListener('mouseleave', ['$event'])
@@ -107,12 +147,17 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mouseleave) {
       console.log(event);
     }
-    this.currentElement = null;
+    if (this.enabledEvents.mouseEvents.mouseleave) {
+      this.currentElement = null;
+    }
   }
 
   @HostListener('contextmenu', ['$event'])
   onContextmenu(event: MouseEvent) {
     if (debugEvents.mouseEvents.contextmenu) {
+      console.log(event);
+    }
+    if (this.enabledEvents.mouseEvents.contextmenu) {
       console.log(event);
     }
   }
@@ -122,7 +167,9 @@ export class SceneEventsDirective {
     if (debugEvents.mouseEvents.mousewheel) {
       console.log(event);
     }
-    this.mouseEventService.mouseEvents(event);
+    if (this.enabledEvents.mouseEvents.mousewheel) {
+      this.mouseEventService.mouseEvents(event);
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -131,18 +178,26 @@ export class SceneEventsDirective {
       if (debugEvents.keyboardEvents.keydown) {
         console.log(event);
       }
-      this.keyboardEventService.keyboardPressEvent(event);
+      if (this.enabledEvents.keyboardEvents.keydown) {
+        this.keyboardEventService.keyboardPressEvent(event);
+      }
     }
   }
 
   @HostListener('document:keyup', ['$event'])
   onDocumentKeyUp(event: KeyboardEvent) {
-    if (this.element.nativeElement === this.currentElement) {
+    // console.log(this.enabledEvents)
+    // console.log(this.element.nativeElement)
+    // console.log(this.currentElement)
+    // if (this.element.nativeElement === this.currentElement) {
       if (debugEvents.keyboardEvents.keyup) {
         console.log(event);
       }
-      this.keyboardEventService.keyboardPressEvent(event);
-    }
+      console.log(event);
+      if (this.enabledEvents.keyboardEvents.keyup) {
+        this.keyboardEventService.keyboardPressEvent(event);
+      }
+    // }
   }
 
   //Вынести в глобальные ивенты

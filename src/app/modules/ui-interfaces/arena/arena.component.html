@@ -1,27 +1,31 @@
-<div id="arena"
-     adventureSceneEvents
-     #scene></div>
+<div class="container-flex">
 
-<router-outlet></router-outlet>
-
-<div class="selectBox"></div>
-
-
-
-<nz-collapse class="toolbar"
-             adventureSceneEvents>
-  <nz-collapse-panel
-    class="wide"
-    *ngFor="let panel of panels"
-    [nzHeader]="panel.name"
-    [nzActive]="panel.active"
-    [nzDisabled]="panel.disabled"
+  <nz-collapse class="toolbar main-scroll"
+               adventureSceneEvents
+               [enabledEvents]="events"
   >
-    <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>
+    <nz-collapse-panel
+      class="wide"
+      *ngFor="let panel of panels"
+      [nzHeader]="panel.name"
+      [nzActive]="panel.active"
+      [nzDisabled]="panel.disabled"
+    >
+      <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>
 
-    <adventure-model-loader *ngIf="panel.name === 'ModelLoader'"></adventure-model-loader>
+      <adventure-model-loader *ngIf="panel.name === 'ModelLoader'"></adventure-model-loader>
 
-    <adventure-layers *ngIf="panel.name === 'Layers'"></adventure-layers>
+      <adventure-layers *ngIf="panel.name === 'Layers'"></adventure-layers>
 
-  </nz-collapse-panel>
-</nz-collapse>
+      <router-outlet></router-outlet>
+
+    </nz-collapse-panel>
+  </nz-collapse>
+
+
+  <div class="selectBox"></div>
+
+  <div id="arena"
+       adventureSceneEvents
+       #scene></div>
+</div>

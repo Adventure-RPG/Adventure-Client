@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {BoxGeometry, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import {BoxGeometry, Camera, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -8,15 +8,11 @@ import { StorageService } from '@services/storage.service';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
 import { Types } from '@enums/types.enum';
 
-import 'three-full/sources/shaders/CopyShader';
-import 'three-full/sources/shaders/FXAAShader';
-import { EffectComposer } from 'three-full/sources/postprocessing/EffectComposer';
-import 'three-full/sources/postprocessing/RenderPass';
-import 'three-full/sources/postprocessing/ShaderPass';
-import 'three-full/sources/postprocessing/OutlinePass';
-import { SelectionBox } from 'three-full/sources/interactive/SelectionBox';
-import { SelectionHelper } from 'three-full/sources/interactive/SelectionHelper';
+// import { SelectionBox } from 'three/sources/interactive/SelectionBox';
+// import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
+import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
+import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -30,7 +26,7 @@ export enum ArenaPanel {
   styleUrls: ['./arena.component.scss']
 })
 export class ArenaComponent implements OnInit {
-  @ViewChild('scene', { static: true }) scene;
+  @ViewChild('scene', {static: true}) scene;
 
   sceneService;
   camera;
@@ -56,20 +52,44 @@ export class ArenaComponent implements OnInit {
     }
   ];
 
+  //
+  events = {
+    mouseEvents: {
+      mousedown: false,
+      mouseup: true,
+      mousemove: false,
+      click: false,
+      dbclick: false,
+      mouseover: false,
+      mouseout: false,
+      mouseenter: false,
+      mouseleave: false,
+      contextmenu: false,
+      mousewheel: false
+    },
+    keyboardEvents: {
+      keydown: false,
+      keyup: true
+    },
+    resize: true
+  };
+
   constructor(
     private engineService: EngineService,
     private lightService: LightService,
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService
-  ) {}
+  ) {
+  }
   // this.engineService.renderEngine();
 
   ngOnInit() {
-    // console.log('adada');
-    this.engineService.init();
+    this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
+    console.log(this.scene.nativeElement.getBoundingClientRect());
+
     this.selectionBox = new SelectionBox(
-      this.engineService.sceneService.camera,
+      <Camera>this.engineService.sceneService.camera,
       this.engineService.sceneService.scene
     );
     this.helper = new SelectionHelper(
@@ -82,7 +102,6 @@ export class ArenaComponent implements OnInit {
       this.engineService.updateCamera();
     });
 
-    this.engineService.init();
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
     let width = 200;
 

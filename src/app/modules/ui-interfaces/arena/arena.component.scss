@@ -1,13 +1,30 @@
 #arena{
-  width: 100%;
+  width: calc(100% - 400px);
   height:100vh;
+  display: flex;
   overflow: hidden;
 }
 
 
 .toolbar{
+
+  display: flex;
   width: 400px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  //top: 20px;
+  //left: 20px;
+
 }
+
+.container-flex{
+  display: flex;
+  flex-direction: row
+}
+
+nz-collapse > :host .ant-collapse {
+  width: 400px;
+}
+

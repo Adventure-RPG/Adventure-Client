@@ -29,7 +29,7 @@ export class EditorComponent implements OnInit {
     });
 
     console.log('init');
-    this.engineService.init();
+    this.engineService.init(window.innerWidth, window.innerHeight);
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
