@@ -71,6 +71,7 @@ export class SpellWorkspaceComponent implements OnInit {
     actions: this.enumValue(Actions),
   };
 
+  //TODO: вынести енамы
 
   enumValue(enumValue){
     return EnumHelpers.getSelectListAsArray(enumValue, (arg: number) => {

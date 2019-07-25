@@ -8,9 +8,11 @@ import { SpellWorkspaceComponent } from './extra/spell-workspace/spell-workspace
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ModelLoaderComponent } from './extra/model-loader/model-loader.component';
 import { LayersComponent } from './extra/layers/layers.component';
+import { SaveComponent } from './extra/save/save.component';
+import { LoadComponent } from './extra/load/load.component';
 
 @NgModule({
-  declarations: [ArenaComponent, SpellWorkspaceComponent, ModelLoaderComponent, LayersComponent],
+  declarations: [ArenaComponent, SpellWorkspaceComponent, ModelLoaderComponent, LayersComponent, SaveComponent, LoadComponent],
   imports: [EngineModule, ArenaRoutingModule, SharedModule, CommonModule, NgZorroAntdModule],
   providers: [],
   exports: []

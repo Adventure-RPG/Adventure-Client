@@ -11,6 +11,9 @@ import {
 import { StorageService } from '@services/storage.service';
 import { SettingsService } from '@services/settings.service';
 import { PerspectiveCamera } from 'three';
+import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
+import * as FileSaver from "file-saver";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 @Injectable()
 export class SceneService {
@@ -57,6 +60,64 @@ export class SceneService {
 
     this.renderer.setSize(this.sceneDimension.width, this.sceneDimension.height);
   }
+
+
+  /**
+   * Export scene
+   * @param sceneName
+   */
+
+  public exportScene(sceneName){
+    let exporter = new GLTFExporter();
+
+// Parse the input and generate the glTF output
+    exporter.parse( this.scene, ( gltf ) => {
+      this.download( gltf, sceneName, '.gltf' );
+    }, {})
+  };
+
+  //TODO: возможно вынести в будущем
+  public download(exportObj, exportName, exportFormat){
+    let file = new File([JSON.stringify(exportObj)], exportName + exportFormat, {type: "text/json;charset=utf-8"});
+    FileSaver.saveAs(file);
+  };
+
+  public importScene(file: string){
+    // Instantiate a loader
+    let loader = new GLTFLoader();
+
+// Optional: Provide a DRACOLoader instance to decode compressed mesh data
+//     THREE.DRACOLoader.setDecoderPath( '/examples/js/libs/draco' );
+//     loader.setDRACOLoader( new THREE.DRACOLoader() );
+
+// Optional: Pre-fetch Draco WASM/JS module, to save time while parsing.
+//     THREE.DRACOLoader.getDecoderModule();
+
+// Load a glTF resource
+    loader.load(
+      // resource URL
+      file,
+      // called when the resource is loaded
+      ( gltf ) => {
+        console.log(gltf);
+        // this.scene.add( gltf.scene );
+        // gltf.animations; // Array<THREE.AnimationClip>
+        // gltf.scene; // THREE.Scene
+        // gltf.scenes; // Array<THREE.Scene>
+        // gltf.cameras; // Array<THREE.Camera>
+        // gltf.asset; // Object
+      },
+      // called while loading is progressing
+      ( xhr ) => {
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+      },
+      // called when loading has errors
+      ( error ) => {
+        console.log( 'An error happened' );
+      }
+    );
+  }
+
 
   /**
    * Render logic

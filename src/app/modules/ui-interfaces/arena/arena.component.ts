@@ -18,7 +18,9 @@ import {fromEvent, Subscription} from "rxjs/index";
 export enum ArenaPanel {
   ModelLoader,
   Spell,
-  Layers
+  Layers,
+  Save,
+  Load
 }
 
 @Component({
@@ -35,6 +37,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   selectionBox;
   helper;
 
+  //TODO: генерировать из енама
   panels = [
     {
       active: false,
@@ -47,8 +50,18 @@ export class ArenaComponent implements OnInit, OnDestroy {
       disabled: false
     },
     {
-      active: true,
+      active: false,
       name: ArenaPanel[2],
+      disabled: false
+    },
+    {
+      active: false,
+      name: ArenaPanel[3],
+      disabled: false
+    },
+    {
+      active: false,
+      name: ArenaPanel[4],
       disabled: false
     }
   ];

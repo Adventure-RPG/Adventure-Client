@@ -125,7 +125,7 @@ export class SceneEventsDirective {
       console.log(event);
     }
     if (this.enabledEvents.mouseEvents.mouseout) {
-      console.log(event);
+      // console.log(event);
     }
   }
 
