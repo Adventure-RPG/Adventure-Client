@@ -29,12 +29,6 @@ export class LoadComponent implements OnInit {
     return this.loadForm.value;
   }
 
-  upload(){
-    // this.engineService.sceneService.exportScene(this.saveFormValue['name']);
-    console.log(this.loadForm);
-  }
-
-
   loading = false;
   avatarUrl: string;
   avatar;
@@ -46,6 +40,7 @@ export class LoadComponent implements OnInit {
       console.log(file, fileList);
     }
     if (status === 'done') {
+      console.log(file);
       this.readFileIntoMemory(file, (data) => {
         console.log(data);
         this.msg.success(`${file.name} file uploaded successfully.`);
@@ -57,14 +52,20 @@ export class LoadComponent implements OnInit {
 
   readFileIntoMemory (file, callback) {
     let reader = new FileReader();
-    reader.onload = function () {
-      callback({
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        content: new Uint8Array(this.result)
-      });
+    console.log(file);
+
+    reader.onload = function (f) {
+
+      return function(e) {
+        console.log(e);
+        callback({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          content: new Uint8Array(e.target.result)
+        });
+      }
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file.originFileObj);
   }
 }
