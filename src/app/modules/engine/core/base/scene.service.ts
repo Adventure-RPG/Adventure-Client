@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {ChangeDetectorRef, Injectable} from '@angular/core';
 import {
   BasicShadowMap,
   Camera,
@@ -14,6 +14,7 @@ import { PerspectiveCamera } from 'three';
 import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
 import * as FileSaver from "file-saver";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {BehaviorSubject} from "rxjs/index";
 
 @Injectable()
 export class SceneService {
@@ -27,7 +28,10 @@ export class SceneService {
   //Подумать о том что бы вынести
   private lightningTimeRate = 1;
 
-  constructor(private storageService: StorageService, private settingsService: SettingsService) {
+  constructor(
+    private storageService: StorageService,
+    private settingsService: SettingsService
+  ) {
 
     this.scene = new Scene();
 
@@ -82,7 +86,7 @@ export class SceneService {
     FileSaver.saveAs(file);
   };
 
-  public importScene(file: string){
+  public importScene(data){
     // Instantiate a loader
     let loader = new GLTFLoader();
 
@@ -93,19 +97,16 @@ export class SceneService {
 // Optional: Pre-fetch Draco WASM/JS module, to save time while parsing.
 //     THREE.DRACOLoader.getDecoderModule();
 
-// Load a glTF resource
     loader.load(
       // resource URL
-      file,
+      data.result,
       // called when the resource is loaded
       ( gltf ) => {
         console.log(gltf);
-        // this.scene.add( gltf.scene );
-        // gltf.animations; // Array<THREE.AnimationClip>
-        // gltf.scene; // THREE.Scene
-        // gltf.scenes; // Array<THREE.Scene>
-        // gltf.cameras; // Array<THREE.Camera>
-        // gltf.asset; // Object
+
+        this.scene = gltf.scene;
+        this.layersList();
+
       },
       // called while loading is progressing
       ( xhr ) => {
@@ -113,9 +114,96 @@ export class SceneService {
       },
       // called when loading has errors
       ( error ) => {
-        console.log( 'An error happened' );
+        console.error( error );
       }
     );
+
+  }
+
+  nodes = new BehaviorSubject<any[]>([]);
+
+  addNode(node:any):void{
+    this.nodes.next(this.nodes.getValue().concat([node]));
+  }
+
+  checkedKeys = new BehaviorSubject<string[]>([]);
+
+  addCheckedKeys(key: string):void{
+    this.checkedKeys.next(this.checkedKeys.getValue().concat([key]));
+  }
+
+  selectedKeys = new BehaviorSubject<string[]>([]);
+
+  addSelectedKeys(key: string):void{
+    this.selectedKeys.next(this.selectedKeys.getValue().concat([key]));
+  }
+
+  expandedKeys = new BehaviorSubject<string[]>([]);
+
+  addExpandedKeys(key: string):void{
+    this.expandedKeys.next(this.expandedKeys.getValue().concat([key]));
+  }
+
+  public layersList() {
+    if (this.scene) {
+      console.log(this.scene.children);
+
+      this.nodes.next([]);
+      this.checkedKeys.next([]);
+      this.selectedKeys.next([]);
+      this.expandedKeys.next([]);
+
+      for (let obj of this.scene.children) {
+        let node = this.nodes.getValue().find(node => {
+          return node.key === obj.type
+        });
+
+        //TODO: подумать над тем нужен ли отдельный кей
+        if (!node){
+          node = {
+            title: obj.type,
+            key: obj.type,
+            element: obj,
+          };
+
+          this.addNode(node);
+        }
+
+        // if (node && node.key === 'Group'){
+        //   console.log(node.key);
+        //   console.log(node.element.children.length);
+        // for (let i = 0; i < node.element.children.length; i++) {
+        //   let groupChild = node.element.children[i];
+        //   node.children.push({
+        //     title: groupChild.type,
+        //     key: groupChild.type,
+        //     element: groupChild
+        //   })
+        // }
+        // } else
+
+        if (node) {
+
+          if (!node.children){
+            node.children = [];
+          }
+
+          node.children.push({
+            title: `${obj.type}-${obj.uuid}`,
+            key: obj.uuid,
+            element: obj,
+            isLeaf: true,
+            isSelected: true
+          });
+
+          this.addCheckedKeys(obj.uuid);
+        }
+
+      }
+      // this.engineService.sceneService.scene.children = [];
+      console.log(this.nodes);
+      console.log(this.scene.children)
+    }
   }
 
 

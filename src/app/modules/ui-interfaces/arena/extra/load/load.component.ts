@@ -3,6 +3,8 @@ import {EngineService} from "../../../../engine/engine.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {NzMessageService, UploadFile} from "ng-zorro-antd";
 import {Observable, Observer} from "rxjs/index";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
 
 @Component({
   selector: 'adventure-load',
@@ -40,9 +42,11 @@ export class LoadComponent implements OnInit {
       console.log(file, fileList);
     }
     if (status === 'done') {
-      console.log(file);
-      this.readFileIntoMemory(file, (data) => {
-        console.log(data);
+      this.readFileIntoMemory(file.originFileObj, (data) => {
+        // console.log(data);
+        // Load a glTF resource
+        this.engineService.sceneService.importScene(data);
+
         this.msg.success(`${file.name} file uploaded successfully.`);
       })
     } else if (status === 'error') {
@@ -52,20 +56,14 @@ export class LoadComponent implements OnInit {
 
   readFileIntoMemory (file, callback) {
     let reader = new FileReader();
-    console.log(file);
 
-    reader.onload = function (f) {
-
-      return function(e) {
-        console.log(e);
-        callback({
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          content: new Uint8Array(e.target.result)
-        });
+    reader.onload = ((file: any) => {
+      return (e: Event) => {
+        callback({file, result: reader.result});
+        //use "e" or "file"
       }
-    };
-    reader.readAsDataURL(file.originFileObj);
+    })(file);
+
+    reader.readAsDataURL(file);
   }
 }

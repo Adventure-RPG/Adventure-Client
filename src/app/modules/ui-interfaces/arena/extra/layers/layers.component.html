@@ -1,10 +1,10 @@
 
 <nz-tree
-  [nzData]="nodes"
   nzCheckable
-  [nzCheckedKeys]="defaultCheckedKeys"
-  [nzExpandedKeys]="defaultExpandedKeys"
-  [nzSelectedKeys]="defaultSelectedKeys"
+  [nzData]="this.engineService.sceneService.nodes | async"
+  [nzCheckedKeys]="this.engineService.sceneService.checkedKeys | async"
+  [nzExpandedKeys]="this.engineService.sceneService.expandedKeys | async"
+  [nzSelectedKeys]="this.engineService.sceneService.selectedKeys | async"
   (nzClick)="nzEvent($event)"
   (nzExpandChange)="nzEvent($event)"
   (nzCheckBoxChange)="nzEvent($event)"
