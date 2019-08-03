@@ -10,6 +10,7 @@
       [nzHeader]="panel.name"
       [nzActive]="panel.active"
       [nzDisabled]="panel.disabled"
+      (nzActiveChange)="panelChanged(panel, $event)"
     >
       <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>
 

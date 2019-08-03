@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Vector3} from "three";
 import {FormBuilder, Validators} from "@angular/forms";
 import {EnumHelpers} from "@enums/enum-helpers";
+import {SceneService} from "@modules/engine/core/base/scene.service";
+import {EngineService} from "@modules/engine/engine.service";
 
 //TODO: вынести spell
 export interface Spell {
@@ -94,9 +96,17 @@ export class SpellWorkspaceComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    public engineService: EngineService
   ) {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      let nodes = this.engineService.sceneService.nodes.getValue();
+      let foundNode = nodes.find(item => item.key === 'Mesh');
+
+      console.log(foundNode);
+    }, 1000)
+
   }
 }

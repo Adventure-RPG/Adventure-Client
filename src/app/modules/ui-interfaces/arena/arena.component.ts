@@ -14,6 +14,7 @@ import { Lightning } from '@modules/engine/core/utils/lightning';
 import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
 import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
 import {fromEvent, Subscription} from "rxjs/index";
+import {EnumHelpers} from "@enums/enum-helpers";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -37,36 +38,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
   selectionBox;
   helper;
 
-  //TODO: генерировать из енама
-  panels = [
-    {
-      active: false,
-      name: ArenaPanel[0],
-      disabled: false
-    },
-    {
-      active: false,
-      name: ArenaPanel[1],
-      disabled: false
-    },
-    {
-      active: false,
-      name: ArenaPanel[2],
-      disabled: false
-    },
-    {
-      active: false,
-      name: ArenaPanel[3],
-      disabled: false
-    },
-    {
-      active: false,
-      name: ArenaPanel[4],
-      disabled: false
-    }
-  ];
-
-  //
   events = {
     mouseEvents: {
       mousedown: false,
@@ -95,8 +66,48 @@ export class ArenaComponent implements OnInit, OnDestroy {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService,
     private zone: NgZone
-  ) {
-  }
+  ) {}
+
+  //TODO: генерировать из енама
+  panels = (() => {
+
+    let nodes: {
+      name: string,
+      value: number,
+      active?: boolean,
+      disabled?: false
+    }[] = EnumHelpers.getNamesAndValues(ArenaPanel);
+
+    let activePanelIndex = JSON.parse(localStorage.getItem('activePanelIndex')) || [];
+
+
+    nodes.forEach((item, index) => {
+      item.active = false;
+      item.disabled = false;
+      if (activePanelIndex.indexOf(index) !== -1){
+        item.active = true;
+      }
+    });
+
+    console.log(nodes);
+
+    return nodes;
+  })();
+
+  panelChanged = (panel, event: boolean) => {
+
+    panel.active = event;
+
+    let activePanelIndex = [];
+
+    this.panels.forEach((item) => {
+      if (item.active){
+        activePanelIndex.push(item.value)
+      }
+    });
+
+    localStorage.setItem('activePanelIndex', `[${activePanelIndex.toString()}]`);
+  };
 
   ngOnInit() {
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
