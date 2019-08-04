@@ -46,7 +46,6 @@ const Modules = [
   HttpClientModule,
   UiInterfacesModule,
   UiInterfacesRoutingModule,
-  NgZorroAntdModule,
 ];
 
 const ModulesForRoot = [];
