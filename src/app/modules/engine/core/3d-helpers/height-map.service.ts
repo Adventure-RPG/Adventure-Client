@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
-import { Mesh, MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
+import { MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
 

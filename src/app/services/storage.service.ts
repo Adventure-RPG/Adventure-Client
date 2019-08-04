@@ -4,13 +4,7 @@ import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
 import { Types } from '@enums/types.enum';
 import {
-  Command,
-  Commands,
-  EffectsCommands,
-  MixerCommands,
-  RendererCommand,
-  RendererCommands,
-  UtilCommands
+  Command, Commands, EffectsCommands, MixerCommands, RendererCommand, RendererCommands, UtilCommands
 } from '../interfaces/storage';
 
 @Injectable()

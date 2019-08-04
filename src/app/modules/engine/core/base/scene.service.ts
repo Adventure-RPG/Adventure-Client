@@ -1,20 +1,13 @@
-import {ChangeDetectorRef, Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-  BasicShadowMap,
-  Camera,
-  Clock,
-  CubeCamera,
-  OrthographicCamera,
-  Scene,
-  WebGLRenderer
+  BasicShadowMap, Camera, Clock, CubeCamera, OrthographicCamera, PerspectiveCamera, Scene, WebGLRenderer
 } from 'three';
 import { StorageService } from '@services/storage.service';
 import { SettingsService } from '@services/settings.service';
-import { PerspectiveCamera } from 'three';
-import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
+import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import * as FileSaver from "file-saver";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {BehaviorSubject} from "rxjs/index";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { BehaviorSubject } from "rxjs/index";
 
 @Injectable()
 export class SceneService {

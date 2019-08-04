@@ -1,20 +1,8 @@
 import {
-  BufferGeometry,
-  Color,
-  ConeBufferGeometry,
-  Mesh,
-  MeshBasicMaterial,
-  MeshPhongMaterial,
-  PlaneGeometry,
-  PointLight,
-  Scene,
-  Vector2,
-  Vector3,
-  WebGLRenderer
+  Color, ConeBufferGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, PointLight, Scene, WebGLRenderer
 } from 'three';
 
 import { StorageService } from '@services/storage.service';
-import { UtilCommands } from '../../../../interfaces/storage';
 
 export class Lightning {
   constructor() {}

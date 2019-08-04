@@ -1,27 +1,21 @@
-import {ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BoxGeometry, Camera, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
 import { SettingsService } from '@services/settings.service';
 import { StorageService } from '@services/storage.service';
-import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { Types } from '@enums/types.enum';
-
 // import { SelectionBox } from 'three/sources/interactive/SelectionBox';
 // import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
-import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
-import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
-import {fromEvent, Subscription} from "rxjs/index";
-import {EnumHelpers} from "@enums/enum-helpers";
+import { EnumHelpers } from "@enums/enum-helpers";
 
 export enum ArenaPanel {
   ModelLoader,
   Spell,
   Layers,
   Save,
-  Load
+  Load,
 }
 
 @Component({
@@ -68,7 +62,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
     private zone: NgZone
   ) {}
 
-  //TODO: генерировать из енама
   panels = (() => {
 
     let nodes: {

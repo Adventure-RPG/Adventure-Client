@@ -1,5 +1,4 @@
 import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
-import { Noise } from '@modules/engine/core/utils/noise';
 
 interface TerrainOptions {
   isDungeon: boolean;

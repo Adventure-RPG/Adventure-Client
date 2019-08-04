@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {EngineService} from "@modules/engine/engine.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import { EngineService } from "@modules/engine/engine.service";
+import { FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'adventure-save',

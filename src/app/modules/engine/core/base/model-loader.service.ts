@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  AnimationMixer, BoxGeometry, Group, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, PlaneGeometry,
-  TextureLoader
-} from 'three';
-import fbxLoader from '@libs/FBXLoader';
+import { AnimationMixer, Group, Mesh, MeshBasicMaterial, TextureLoader } from 'three';
 import { SceneService } from '@modules/engine/core/base/scene.service';
 import { StorageService } from '@services/storage.service';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-
 import UuidStatic = require('uuid');
 
 @Injectable()

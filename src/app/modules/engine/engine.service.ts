@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {AxesHelper, Vector3} from 'three';
+import { Injectable } from '@angular/core';
+import { AxesHelper, Vector3 } from 'three';
 
-import {HeightMapOptions} from './engine.types';
+import { HeightMapOptions } from './engine.types';
 
-import {HeightMapService} from './core/3d-helpers/height-map.service';
-import {BehaviorSubject} from 'rxjs';
-import {SceneService} from './core/base/scene.service';
-import {CameraService} from './core/base/camera.service';
-import {SettingsService} from '@services/settings.service';
+import { HeightMapService } from './core/3d-helpers/height-map.service';
+import { BehaviorSubject } from 'rxjs';
+import { SceneService } from './core/base/scene.service';
+import { CameraService } from './core/base/camera.service';
+import { SettingsService } from '@services/settings.service';
 
 //TODO: избавиться с помощью сторейджев
 

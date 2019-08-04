@@ -1,20 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-  LineBasicMaterial,
-  LineDashedMaterial,
-  Material,
-  MeshBasicMaterial,
-  MeshDepthMaterial,
-  MeshLambertMaterial,
-  MeshNormalMaterial,
-  MeshPhongMaterial,
-  MeshPhysicalMaterial,
-  MeshStandardMaterial,
-  PointsMaterial,
-  RawShaderMaterial,
-  ShaderMaterial,
-  ShadowMaterial,
-  SpriteMaterial
+  LineBasicMaterial, LineDashedMaterial, Material, MeshBasicMaterial, MeshDepthMaterial, MeshLambertMaterial,
+  MeshNormalMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial, PointsMaterial, RawShaderMaterial,
+  ShaderMaterial, ShadowMaterial, SpriteMaterial
 } from 'three';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import {Component, NgZone} from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { SnotifyService } from 'ng-snotify';
 import { AppService } from './app.service';
 import { ApiService } from './services/api.service';

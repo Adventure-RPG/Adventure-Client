@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {EngineService} from "../../../../engine/engine.service";
-import {FormBuilder, Validators} from "@angular/forms";
-import {NzMessageService, UploadFile} from "ng-zorro-antd";
-import {Observable, Observer} from "rxjs/index";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
+import { EngineService } from "../../../../engine/engine.service";
+import { FormBuilder, Validators } from "@angular/forms";
+import { NzMessageService, UploadFile } from "ng-zorro-antd";
 
 @Component({
   selector: 'adventure-load',
