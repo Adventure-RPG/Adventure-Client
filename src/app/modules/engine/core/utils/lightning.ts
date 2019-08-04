@@ -44,6 +44,7 @@ export class Lightning {
     );
     coneMesh1.rotation.x = Math.PI / 2;
     coneMesh1.position.z = -50;
+    coneMesh1.name = 'yellow';
     scene.add(coneMesh1);
 
     //coneMesh2
@@ -53,6 +54,8 @@ export class Lightning {
     );
     coneMesh2.rotation.x = -Math.PI / 2;
     coneMesh2.position.y = coneHeightHalf;
+    coneMesh2.name = 'red';
+
     scene.add(coneMesh2);
 
     // Lightning strike

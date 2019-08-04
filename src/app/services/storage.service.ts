@@ -4,7 +4,7 @@ import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
 import { Types } from '@enums/types.enum';
 import {
-  Command, Commands, EffectsCommands, MixerCommands, RendererCommand, RendererCommands, UtilCommands
+  Command, Commands, EffectsCommands, MixerCommands, RendererCommand, RendererCommands, SpellCommands, UtilCommands
 } from '../interfaces/storage';
 
 @Injectable()
@@ -124,6 +124,29 @@ export class StorageService {
     tempObj[K] = V;
     this.mixerCommands = Lodash.merge(this.mixerCommands, tempObj);
     console.log(this.mixerCommands);
+  }
+
+  /**
+   * Сторейдж для хранения правил по обновлению заклинаний
+   * @type {BehaviorSubject<MixerCommands>}
+   * @private
+   */
+  private _spellCommands: BehaviorSubject<SpellCommands> = new BehaviorSubject<SpellCommands>({});
+  public _spellCommands$ = this._spellCommands.asObservable();
+
+  public get spellCommands(): SpellCommands {
+    return this._spellCommands.getValue();
+  }
+
+  public set spellCommands(value: SpellCommands) {
+    this._spellCommands.next(value);
+  }
+
+  public spellCommandPush(K, V: AnimationMixer) {
+    const tempObj = {};
+    tempObj[K] = V;
+    this.spellCommands = Lodash.merge(this.spellCommands, tempObj);
+    console.log(this.spellCommands);
   }
 
   /**

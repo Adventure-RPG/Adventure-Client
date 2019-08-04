@@ -31,6 +31,15 @@ export interface MixerCommands {
   [key: string]: AnimationMixer;
 }
 
+export interface SpellCommands {
+  [key: string]: SpellCommand;
+}
+
+export interface SpellCommand {
+  update?(delta?);
+  destroy?(delta?);
+}
+
 //Ваня тут описывать интерфейс
 export interface EffectsCommands {
   [key: string]: any;

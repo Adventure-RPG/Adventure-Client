@@ -17,6 +17,8 @@ export class SceneService {
   private clock = new Clock();
   private currentTime = 0;
   private sceneDimension = {width: 100, height: 100};
+  public delta;
+
 
   //Подумать о том что бы вынести
   private lightningTimeRate = 1;
@@ -67,7 +69,7 @@ export class SceneService {
   public exportScene(sceneName){
     let exporter = new GLTFExporter();
 
-// Parse the input and generate the glTF output
+    // Parse the input and generate the glTF output
     exporter.parse( this.scene, ( gltf ) => {
       this.download( gltf, sceneName, '.gltf' );
     }, {})
@@ -83,12 +85,12 @@ export class SceneService {
     // Instantiate a loader
     let loader = new GLTFLoader();
 
-// Optional: Provide a DRACOLoader instance to decode compressed mesh data
-//     THREE.DRACOLoader.setDecoderPath( '/examples/js/libs/draco' );
-//     loader.setDRACOLoader( new THREE.DRACOLoader() );
+    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
+    //     THREE.DRACOLoader.setDecoderPath( '/examples/js/libs/draco' );
+    //     loader.setDRACOLoader( new THREE.DRACOLoader() );
 
-// Optional: Pre-fetch Draco WASM/JS module, to save time while parsing.
-//     THREE.DRACOLoader.getDecoderModule();
+    // Optional: Pre-fetch Draco WASM/JS module, to save time while parsing.
+    //     THREE.DRACOLoader.getDecoderModule();
 
     loader.load(
       // resource URL
@@ -112,6 +114,12 @@ export class SceneService {
     );
 
   }
+
+
+  /**
+   * Tree of elements in Scene
+   * @type {BehaviorSubject<any[]>}
+   */
 
   nodes = new BehaviorSubject<any[]>([]);
 
@@ -208,7 +216,7 @@ export class SceneService {
     // console.log(this);
 
     requestAnimationFrame(this.animation.bind(this));
-    let delta = this.clock.getDelta();
+    this.delta = this.clock.getDelta();
 
     if (this.camera && this.scene) {
       // console.log(this.camera, this.scene)
@@ -216,14 +224,14 @@ export class SceneService {
     }
 
     for (let rendererCommand in this.storageService.rendererStorageCommands) {
-      this.storageService.rendererStorageCommands[rendererCommand].update(delta);
+      this.storageService.rendererStorageCommands[rendererCommand].update(this.delta);
     }
 
     for (let mixerCommand in this.storageService.mixerCommands) {
-      this.storageService.mixerCommands[mixerCommand].update(delta);
+      this.storageService.mixerCommands[mixerCommand].update(this.delta);
     }
 
-    this.render(delta);
+    this.render(this.delta);
 
     // this.renderer.setSize( window.innerWidth, window.innerHeight );
 

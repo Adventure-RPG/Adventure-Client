@@ -32,6 +32,26 @@
   </nz-form-item>
 
   <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="savingThrow" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.savingThrow" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Sender</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="sender" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
@@ -41,12 +61,12 @@
     </nz-form-control>
   </nz-form-item>
 
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
+  <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Target</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
-                 formControlName="savingThrow" nzAllowClear nzPlaceHolder="Choose">
-        <nz-option *ngFor="let option of options.savingThrow" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+                 formControlName="target" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>
