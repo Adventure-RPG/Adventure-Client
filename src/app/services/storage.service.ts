@@ -4,7 +4,8 @@ import * as Lodash from 'lodash';
 import { AnimationMixer } from 'three';
 import { Types } from '@enums/types.enum';
 import {
-  Command, Commands, EffectsCommands, MixerCommands, RendererCommand, RendererCommands, SpellCommands, UtilCommands
+  Command, Commands, EffectsCommands, MixerCommands, RendererCommand, RendererCommands, SpellCommand, SpellCommands,
+  UtilCommands
 } from '../interfaces/storage';
 
 @Injectable()
@@ -142,11 +143,15 @@ export class StorageService {
     this._spellCommands.next(value);
   }
 
-  public spellCommandPush(K, V: AnimationMixer) {
+  public spellCommandPush(K, V: SpellCommand) {
     const tempObj = {};
     tempObj[K] = V;
     this.spellCommands = Lodash.merge(this.spellCommands, tempObj);
     console.log(this.spellCommands);
+  }
+
+  public spellCommandDelete(K) {
+    delete this.spellCommands[K];
   }
 
   /**

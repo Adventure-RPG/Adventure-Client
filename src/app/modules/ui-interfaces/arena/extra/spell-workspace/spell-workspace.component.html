@@ -1,6 +1,6 @@
 <form nz-form (ngSubmit)="submitForm()" [formGroup]="spellForm">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="friendlyFire">Friendly fire</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="friendlyFire">Friendly fire</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-switch
         formControlName="friendlyFire"
@@ -11,28 +11,28 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="range">Range</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="range">Range</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-input-number formControlName="range" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-input-number formControlName="duration" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Area</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Area</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-input-number formControlName="area" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="savingThrow" nzAllowClear nzPlaceHolder="Choose">
@@ -42,7 +42,7 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Sender</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Sender</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="sender" nzAllowClear nzPlaceHolder="Choose">
@@ -52,7 +52,7 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="type" nzAllowClear nzPlaceHolder="Choose">
@@ -62,7 +62,7 @@
   </nz-form-item>
 
   <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Target</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Target</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="target" nzAllowClear nzPlaceHolder="Choose">
@@ -73,7 +73,7 @@
 
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-switch
         formControlName="spellResistance"
@@ -85,7 +85,7 @@
 
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="castingTime" nzAllowClear nzPlaceHolder="Choose">

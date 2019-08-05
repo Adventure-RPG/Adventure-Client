@@ -31,7 +31,7 @@ export class Lightning {
       scene.userData.outlineColor.b * 255
     ];
 
-    posLight.position.set(0, (conesDistance + coneHeight) * 0.5, 0);
+    posLight.position.set(0, (conesDistance + coneHeight) * 0.1, 0);
     posLight.color = scene.userData.outlineColor;
 
     // scene.userData.camera.position.set( 5 * coneHeight, 4 * coneHeight, 18 * coneHeight );
@@ -40,8 +40,9 @@ export class Lightning {
     //
     let coneMesh1 = new Mesh(
       new ConeBufferGeometry(3, coneHeight, 5, 1, false),
-      new MeshPhongMaterial({ color: 0xffff00, emissive: 0x1f1f00 })
+      new MeshPhongMaterial({ color: 0xffff00, emissive: 0x1f1f00, flatShading: true })
     );
+
     coneMesh1.rotation.x = Math.PI / 2;
     coneMesh1.position.z = -50;
     coneMesh1.name = 'yellow';
@@ -50,7 +51,7 @@ export class Lightning {
     //coneMesh2
     let coneMesh2 = new Mesh(
       new ConeBufferGeometry(3, coneHeight, 5, 1, false),
-      new MeshPhongMaterial({ color: 0xff2020, emissive: 0x1f0202 })
+      new MeshPhongMaterial({ color: 0xff2020, emissive: 0x1f0202, flatShading: true})
     );
     coneMesh2.rotation.x = -Math.PI / 2;
     coneMesh2.position.y = coneHeightHalf;

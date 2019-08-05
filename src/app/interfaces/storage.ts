@@ -38,6 +38,7 @@ export interface SpellCommands {
 export interface SpellCommand {
   update?(delta?);
   destroy?(delta?);
+  [key: string]: any;
 }
 
 //Ваня тут описывать интерфейс

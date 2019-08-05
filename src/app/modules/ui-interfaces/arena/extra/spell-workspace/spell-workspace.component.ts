@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Mesh, Vector3 } from "three";
+import { ConeGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, Vector3 } from "three";
 import { FormBuilder, Validators } from "@angular/forms";
 import { EnumHelpers } from "@enums/enum-helpers";
 import { EngineService } from "@modules/engine/engine.service";
 import { TreeElement } from "../../../../../../typings";
 import { timer } from "rxjs/index";
 import { debounce } from "rxjs/internal/operators";
+import { StorageService } from "@services/storage.service";
+import { Geometry } from "three/src/core/Geometry";
+import {v4} from 'uuid';
 
 //TODO: вынести spell
 export interface Spell {
@@ -17,6 +20,8 @@ export interface Spell {
   savingThrow: SavingThrow,
   spellResistance: boolean,
   castingTime: Actions,
+  sender: Mesh,
+  target: Mesh,
 
   //LifeCycle for spells
   time: number,
@@ -64,7 +69,10 @@ export class SpellWorkspaceComponent implements OnInit {
     sender: [0, [Validators.required]],
     target: [0, [Validators.required]],
 
-    time: [0],
+    uuid: [v4()],
+    destroy: (uuid) => {
+      this.storageService.spellCommandDelete(`spell-${uuid}`);
+    }
   });
 
 
@@ -97,35 +105,70 @@ export class SpellWorkspaceComponent implements OnInit {
 
   submitForm(){
     //TODO: отсюда вызывать сервис
+
+    let uuid = v4();
+
+
     console.log(this.spellFormValue);
     for (const i in this.spellForm.controls) {
       this.spellForm.controls[i].markAsDirty();
       this.spellForm.controls[i].updateValueAndValidity();
     }
 
+
+
     let value = this.spellFormValue;
 
-    value.update = (delta) => {
-      if (delta < 1000){
-        console.log(delta);
+    let self = this;
+    let stage = 0;
+
+    let mesh = new Mesh(
+      new ConeGeometry(1, 5, 3),
+      new MeshPhongMaterial( {
+        color: 0xffffff,
+        flatShading: true
+      }));
+
+    //init position into sender
+    mesh.position.set((<Mesh>value.sender).position.x, (<Mesh>value.sender).position.y, (<Mesh>value.sender).position.z);
+
+
+    this.engineService.sceneService.scene.add(mesh);
+
+    value.update = function(delta){
+
+
+      if(this.sender && this.target) {
+
+        let meshVector = new Vector3().setFromMatrixPosition( (mesh.matrixWorld ) );
+        let targetVector = new Vector3().setFromMatrixPosition( (<Mesh>this.target).matrixWorld );
+
+        let dir = new Vector3(); // create once an reuse it
+        dir.subVectors( meshVector, targetVector ).normalize();
+
+        mesh.position.set(mesh.position.x - dir.x, mesh.position.y - dir.y, mesh.position.z - dir.z);
+
+        if (meshVector.distanceTo(targetVector) < 1){
+          this.destroy(uuid);
+          self.engineService.sceneService.scene.remove(mesh);
+        }
+
       }
-      // let mesh: Mesh = new Mesh();
+
+      this.time += delta;
+
+
     };
 
-    value.update(this.engineService.sceneService.delta);
 
-    value.destroy = (delta) => {
-      console.log(delta);
-      // let mesh: Mesh = new Mesh();
-    };
 
-    value.destroy(this.engineService.sceneService.delta);
-      // destroy: () => {},
+    this.storageService.spellCommandPush(`spell-${uuid}`, value);
   }
 
   constructor(
     private formBuilder: FormBuilder,
-    public engineService: EngineService
+    public engineService: EngineService,
+    public storageService: StorageService
   ) {
   }
 
