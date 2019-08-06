@@ -13,21 +13,44 @@
   <nz-form-item>
     <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="range">Range</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="range" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="range"
+                 [nzMin]="0"
+                 [nzMax]="20"
+                 [nzStep]="0.1"
+                 [nzTooltipVisible]="'always'"></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="duration" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="duration"
+                 [nzMin]="0"
+                 [nzMax]="3"
+                 [nzStep]="0.1"
+                 [nzTooltipVisible]="'always'"></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
     <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Area</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="area" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="area"
+                 [nzMin]="1"
+                 [nzMax]="1000"
+                 [nzStep]="1"
+                 [nzTooltipVisible]="'always'"></nz-slider>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Factor</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-slider formControlName="factor"
+                 [nzMin]="0"
+                 [nzMax]="3"
+                 [nzStep]="0.01"
+                 [nzTooltipVisible]="'always'"></nz-slider>
     </nz-form-control>
   </nz-form-item>
 

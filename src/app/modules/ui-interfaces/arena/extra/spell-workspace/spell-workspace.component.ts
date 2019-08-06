@@ -59,8 +59,8 @@ export class SpellWorkspaceComponent implements OnInit {
 
   spellForm = this.formBuilder.group({
     friendlyFire: [false, [Validators.required]],
-    range: [10, [Validators.required]],
-    duration: [10, [Validators.required]],
+    range: [50, [Validators.required]],
+    duration: [2, [Validators.required]],
     area: [100, [Validators.required]],
     type: [0, [Validators.required]],
     savingThrow: [0, [Validators.required]],
@@ -70,6 +70,7 @@ export class SpellWorkspaceComponent implements OnInit {
     target: [0, [Validators.required]],
 
     uuid: [v4()],
+    factor: [1, [Validators.required]],
     destroy: (uuid) => {
       this.storageService.spellCommandDelete(`spell-${uuid}`);
     }
@@ -151,7 +152,7 @@ export class SpellWorkspaceComponent implements OnInit {
 
         // Передвигаем меху
         let factor = 10;
-        mesh.position.set(mesh.position.x - dir.x/factor, mesh.position.y - dir.y/factor, mesh.position.z - dir.z/factor);
+        mesh.position.set(mesh.position.x - dir.x * value.factor, mesh.position.y - dir.y * value.factor, mesh.position.z - dir.z * value.factor);
 
         mesh.lookAt(meshVector);
         mesh.rotateX(-Math.PI/2);
