@@ -131,6 +131,7 @@ export class SpellWorkspaceComponent implements OnInit {
 
     //init position into sender
     mesh.position.set((<Mesh>value.sender).position.x, (<Mesh>value.sender).position.y, (<Mesh>value.sender).position.z);
+    mesh.rotateX(Math.PI / 2);
 
 
     this.engineService.sceneService.scene.add(mesh);
@@ -149,8 +150,10 @@ export class SpellWorkspaceComponent implements OnInit {
         let angle = meshVector.angleTo(targetVector);
 
         // Передвигаем меху
-        mesh.position.set(mesh.position.x - dir.x, mesh.position.y - dir.y, mesh.position.z - dir.z);
-        // mesh.rotation.setFromVector3(targetVector);
+        let factor = 10;
+        mesh.position.set(mesh.position.x - dir.x/factor, mesh.position.y - dir.y/factor, mesh.position.z - dir.z/factor);
+        // mesh.lookAt(meshVector);
+        // mesh.setRotationFromAxisAngle(new Vector3(0,0,0), angle);
 
         if (meshVector.distanceTo(targetVector) < 1){
           this.destroy(uuid);
