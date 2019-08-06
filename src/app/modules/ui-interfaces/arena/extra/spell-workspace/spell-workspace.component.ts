@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConeGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial, Vector3 } from "three";
+import { ConeGeometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Quaternion, Vector3 } from "three";
 import { FormBuilder, Validators } from "@angular/forms";
 import { EnumHelpers } from "@enums/enum-helpers";
 import { EngineService } from "@modules/engine/engine.service";
@@ -145,8 +145,11 @@ export class SpellWorkspaceComponent implements OnInit {
 
         let dir = new Vector3(); // create once an reuse it
         dir.subVectors( meshVector, targetVector ).normalize();
+        let angle = meshVector.angleTo(targetVector);
 
         mesh.position.set(mesh.position.x - dir.x, mesh.position.y - dir.y, mesh.position.z - dir.z);
+
+        mesh.rotation.setFromVector3(targetVector);
 
         if (meshVector.distanceTo(targetVector) < 1){
           this.destroy(uuid);
@@ -156,6 +159,7 @@ export class SpellWorkspaceComponent implements OnInit {
       }
 
       this.time += delta;
+
 
 
     };
