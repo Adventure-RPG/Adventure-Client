@@ -152,7 +152,9 @@ export class SpellWorkspaceComponent implements OnInit {
         // Передвигаем меху
         let factor = 10;
         mesh.position.set(mesh.position.x - dir.x/factor, mesh.position.y - dir.y/factor, mesh.position.z - dir.z/factor);
-        // mesh.lookAt(meshVector);
+
+        mesh.lookAt(meshVector);
+        mesh.rotateX(-Math.PI/2);
         // mesh.setRotationFromAxisAngle(new Vector3(0,0,0), angle);
 
         if (meshVector.distanceTo(targetVector) < 1){
