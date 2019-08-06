@@ -143,13 +143,14 @@ export class SpellWorkspaceComponent implements OnInit {
         let meshVector = new Vector3().setFromMatrixPosition( (mesh.matrixWorld ) );
         let targetVector = new Vector3().setFromMatrixPosition( (<Mesh>this.target).matrixWorld );
 
-        let dir = new Vector3(); // create once an reuse it
+        let dir = new Vector3();
+        // Находим вектор между двумя точками в пространстве
         dir.subVectors( meshVector, targetVector ).normalize();
         let angle = meshVector.angleTo(targetVector);
 
+        // Передвигаем меху
         mesh.position.set(mesh.position.x - dir.x, mesh.position.y - dir.y, mesh.position.z - dir.z);
-
-        mesh.rotation.setFromVector3(targetVector);
+        // mesh.rotation.setFromVector3(targetVector);
 
         if (meshVector.distanceTo(targetVector) < 1){
           this.destroy(uuid);
