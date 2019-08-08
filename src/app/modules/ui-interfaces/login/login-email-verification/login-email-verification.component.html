@@ -2,9 +2,13 @@
   <img id="profile-img" class="profile-img-card" src="/assets/images/login-reg.svg" />
   <p id="profile-name" class="profile-name-card"></p>
 
-  <form [formGroup]="form" class="form-signin mb-2">
-    <input type="text" id="inputName" [formControlName]="'token'" class="form-control text-center mb-2" placeholder="Put secret key here" autofocus>
-    <button (click)="formAction()" [disabled]="this.form.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Confirm</button>
+  <form nz-form [formGroup]="form" class="form-signin mb-2">
+    <nz-form-item>
+      <nz-form-control>
+        <input type="text" id="inputName" [formControlName]="'token'" class="form-control text-center mb-2" placeholder="Put secret key here" autofocus>
+      </nz-form-control>
+      <button nz-button (click)="formAction()" [disabled]="this.form.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Confirm</button>
+    </nz-form-item>
   </form><!-- /form -->
 
 </div><!-- /card-container -->
