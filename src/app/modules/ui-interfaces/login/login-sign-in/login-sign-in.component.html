@@ -3,23 +3,25 @@
   <p id="profile-name" class="profile-name-card"></p>
 
   <form nz-form [formGroup]="loginForm" class="form-signin mb-2">
-    <nz-form-item>
+    <nz-form-item class="mb-2">
       <span id="reauth-email" class="reauth-email"></span>
       <nz-form-control [nzSpan]="24">
-        <input nz-input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" autofocus>
+        <input nz-input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center" placeholder="Email address" autofocus>
       </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-2">
       <nz-form-control [nzSpan]="24">
-        <input nz-input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center mb-2" placeholder="Password" >
+        <input nz-input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center" placeholder="Password" >
       </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-2">
       <label nz-checkbox>Remember me</label>
-      <button nz-button (click)="loginFormSubmit()"  [disabled]="this.loginForm.invalid"  class="btn btn-outline-secondary btn-block btn-signin" type="submit">Sign in</button>
-      <nz-anchor>
-        <nz-link [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">
-          Registrate
-        </nz-link>
-        <nz-link [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">Forgot the password?
-        </nz-link>
-      </nz-anchor>
+    </nz-form-item>
+    <nz-form-item>
+      <button nz-button (click)="loginFormSubmit()"  [disabled]="this.loginForm.invalid"  class="btn btn-outline-secondary btn-block btn-signin mb-2" type="submit">Sign in</button>
+
+      <a [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">Registrate</a>
+      <a [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">Forgot the password?</a>
     </nz-form-item>
   </form><!-- /form -->
 </div><!-- /card-container -->

@@ -3,27 +3,36 @@
   <p id="profile-name" class="profile-name-card"></p>
 
   <form nz-form [formGroup]="loginForm" class="form-signin mb-2">
-    <nz-form-item>
+    <nz-form-item class="mb-2">
       <span id="reauth-email" class="reauth-email"></span>
       <nz-form-control [nzSpan]="24">
-        <input type="text" id="inputName" [formControlName]="'username'" class="form-control text-center mb-2" placeholder="Name" autofocus>
+        <input type="text" id="inputName" [formControlName]="'username'" class="form-control text-center " placeholder="Name" autofocus>
       </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="mb-2">
       <nz-form-control [nzSpan]="24">
-        <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" >
+        <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center " placeholder="Email address" >
       </nz-form-control>
-      <!--TODO: add password repeat-->
+    </nz-form-item>
+
+    <nz-form-item class="mb-2">
+    <!--TODO: add password repeat-->
       <nz-form-control [nzSpan]="24">
-        <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center mb-2" placeholder="Password" >
+        <input type="password" id="inputPassword" [formControlName]="'password'" class="form-control text-center" placeholder="Password" >
       </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="mb-2">
       <button nz-button (click)="loginFormSubmit()" [disabled]="this.loginForm.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Registrate</button>
-      <nz-anchor>
-        <nz-link [routerLink]="'/login'" class="forgot-password text-right d-block">
-          Sign in
-        </nz-link>
-        <nz-link [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">
-          Forgot the password?
-        </nz-link>
-      </nz-anchor>
+    </nz-form-item>
+
+    <nz-form-item class="mb-2">
+      <a [routerLink]="'/login'" class="forgot-password text-right d-block">
+        Sign in
+      </a>
+      <a [routerLink]="'/login/login-recovery'" class="forgot-password text-right d-block">
+        Forgot the password?
+      </a>
     </nz-form-item>
   </form><!-- /form -->
 </div><!-- /card-container -->
