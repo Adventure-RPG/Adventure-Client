@@ -3,21 +3,17 @@
   <p id="profile-name" class="profile-name-card"></p>
 
   <form nz-form [formGroup]="loginForm" class="form-signin mb-2">
-    <nz-form-item>
+    <nz-form-item class="mb-2">
       <span id="reauth-email" class="reauth-email"></span>
-      <nz-form-control>
-        <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center mb-2" placeholder="Email address" >
+      <nz-form-control [nzSpan]="24">
+        <input type="email" id="inputEmail" [formControlName]="'email'" class="form-control text-center" placeholder="Email address" >
       </nz-form-control>
+    </nz-form-item>
       <!--TODO: add password repeat-->
-      <button nz-button (click)="loginFormSubmit()" [disabled]="this.loginForm.invalid" class="btn btn-outline-secondary btn-block btn-signin" type="submit">Recovery</button>
-      <nz-anchor>
-        <nz-link [routerLink]="'/login'" class="forgot-password text-right d-block">
-          Sign in
-        </nz-link>
-        <nz-link [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">
-          Registrate
-        </nz-link>
-      </nz-anchor>
+    <nz-form-item class="mb-2">
+      <button nz-button (click)="loginFormSubmit()" [disabled]="this.loginForm.invalid" class="btn btn-outline-secondary btn-block btn-signin mb-2" type="submit">Recovery</button>
+      <a [routerLink]="'/login'" class="forgot-password text-right d-block">Sign in</a>
+      <a [routerLink]="'/login/login-reg'" class="forgot-password text-right d-block">Registrate</a>
     </nz-form-item>
   </form><!-- /form -->
 </div><!-- /card-container -->
