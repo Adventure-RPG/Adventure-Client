@@ -4,5 +4,7 @@ export enum KeyboardCommandsEnum {
   moveLeftKeyboard = 'moveLeftKeyboard',
   moveRightKeyboard = 'moveRightKeyboard',
   moveUpKeyboard = 'moveUpKeyboard',
-  moveDownKeyboard = 'moveDownKeyboard'
+  moveDownKeyboard = 'moveDownKeyboard',
+  cameraLeftRotation = 'cameraLeftRotation',
+  cameraRightRotation = 'cameraRightRotation'
 }
