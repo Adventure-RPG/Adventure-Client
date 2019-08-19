@@ -4,6 +4,8 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { Vector } from '@libs/ThreeCSG-master/csg/csg';
+import { Vector3 } from 'three';
 
 export class FirstPersonControls extends CameraControls {
   object;
@@ -36,6 +38,9 @@ export class FirstPersonControls extends CameraControls {
   viewHalfY;
   mouseWheelUp;
   mouseWheelDown;
+  leftRotation;
+  rightRotation;
+  radius;
   phi;
   theta;
 
@@ -82,16 +87,19 @@ export class FirstPersonControls extends CameraControls {
 
     this.mouseDragOn = false;
 
+    this.leftRotation = false;
+    this.rightRotation = false;
+
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    let radius = Math.sqrt(
+    this.radius = Math.sqrt(
       Math.pow(this.object.position.x, 2) +
         Math.pow(this.object.position.y, 2) +
         Math.pow(this.object.position.z, 2)
     );
-    this.theta = Math.acos(this.object.position.z / radius);
-    this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
+    this.theta = Math.acos(this.object.position.z / this.radius);
+    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
 
     this.movementSpeed = 100;
     this.lookSpeed = 0.125;
@@ -99,6 +107,7 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
+    this.target = new Vector3(0, 0, 0);
     // this.fov = object.fov;
 
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
@@ -254,9 +263,43 @@ export class FirstPersonControls extends CameraControls {
         this.moveDown = true;
       },
       pressed: false,
-      keyCode: [Key.Q],
+      keyCode: [Key.F],
       name: 'moveDown'
     });
+
+    // 19.08.2019
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraLeftRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        this.leftRotation = false;
+      },
+      onKeyDown: () => {
+        console.log('Поворачиваю камеру влево');
+
+        this.leftRotation = true;
+      },
+      pressed: false,
+      keyCode: [Key.Q],
+      name: 'leftRotation'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraRightRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        this.rightRotation = false;
+      },
+      onKeyDown: () => {
+        console.log('Поворачиваю камеру вправо');
+        this.rightRotation = true;
+      },
+      pressed: false,
+      keyCode: [Key.E],
+      name: 'rightRotation'
+    });
+
+
+    //
 
     //this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
     //       type: Types.Camera,
@@ -345,30 +388,83 @@ export class FirstPersonControls extends CameraControls {
           this.autoSpeedFactor = 0.0;
         }
         let actualMoveSpeed = delta * this.movementSpeed;
-
+        let coordinatesUpdated = false;
         if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+          console.log(this.object.position);
           this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
           this.object.translateY(actualMoveSpeed);
+          this.target = new Vector(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
         if (this.moveBackward) {
+          console.log(this.object.position);
           this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
+          this.target = new Vector(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
         if (this.moveLeft) {
+          console.log(this.object.position);
           this.object.translateX(-actualMoveSpeed);
+          this.target = new Vector(this.target.x - actualMoveSpeed, this.target.y, this.target.z)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
         if (this.moveRight) {
+          console.log(this.object.position);
           this.object.translateX(actualMoveSpeed);
+          this.target = new Vector(this.target.x + actualMoveSpeed, this.target.y, this.target.z)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
         if (this.moveDown) {
+          console.log(this.object.position);
           this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
+          this.target = new Vector(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
         if (this.moveUp) {
+          console.log(this.object.position);
           this.object.translateZ(-actualMoveSpeed);
           this.object.translateY(actualMoveSpeed);
+          this.target = new Vector(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed)
+          coordinatesUpdated = true;
+          console.log(this.target);
+          console.log(this.object.position);
         }
 
+        if (coordinatesUpdated) {
+          this.radius = Math.sqrt(
+            Math.pow(this.object.position.x - this.target.x, 2) +
+            Math.pow(this.object.position.y - this.target.y, 2) +
+            Math.pow(this.object.position.z - this.target.z, 2)
+          );
+          this.theta = Math.acos(this.object.position.z / this.radius);
+          this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+        }
+
+        if (this.leftRotation || this.rightRotation) {
+          if (this.leftRotation) {
+            this.phi += (Math.PI) / 180;
+          }
+          if (this.rightRotation) {
+            this.phi -= (Math.PI) / 180;
+          }
+          this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta);
+          this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
+          this.object.position.y = this.radius * Math.cos(this.theta);
+          console.log(this.phi);
+          this.object.lookAt(this.target.x, this.target.y, this.target.z);
+        }
         this.object.updateProjectionMatrix();
       }
     });

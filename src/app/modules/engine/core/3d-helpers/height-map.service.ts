@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
-import { MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
+import {
+  BoxGeometry, DoubleSide, FaceNormalsHelper, Geometry, Matrix4, Mesh, MeshNormalMaterial, MeshPhongMaterial, Scene,
+  ShadowMaterial,
+  VertexColors
+} from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
 
@@ -31,7 +35,7 @@ export class HeightMapService {
             coordinates: [res]
           },
           properties: {
-            name: 'Ocean'
+            name: 'Terrain'
           }
         };
 
@@ -64,7 +68,8 @@ export class HeightMapService {
         // terrain.generate(0.01);
         let terrainObject = terrain.getTerrainWithMaterial(
           {
-            isDungeon: true
+            isDungeon: false,
+            rotationX: Math.PI / 2
           },
           terrainMaterial
         );
@@ -79,13 +84,13 @@ export class HeightMapService {
           opacity: 0.8
         });
 
-        let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
-        terrain.moveWaves(waterMesh);
+        // let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
+        // terrain.moveWaves(waterMesh);
 
-        scene.add(waterMesh);
+        // scene.add(waterMesh);
 
         // !IMPORTANT TODO: add waves to water;
-        console.log(waterMesh);
+        // console.log(waterMesh);
 
         return geoJsonObject;
       })
@@ -197,11 +202,18 @@ export class HeightMapService {
   public generateDungeonTerrain(scene: Scene) {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 16;
-    let worldWidth = 16;
-    let cubeWidth = 1;
+    let worldWidth = 32,
+        worldDepth = 32,
+        worldHalfWidth = worldWidth / 2,
+        worldHalfDepth = worldDepth / 2,
+        cubeWidth = 1;
+
+    let matrix = new Matrix4();
 
     this.mapData = Noise.generateHeight(worldWidth, worldDepth);
+
+    let geometry = new Geometry();
+    let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
 
     //Нужен для перемещения в 0
     const min = Math.min(...this.mapData) * 0.2;
@@ -222,40 +234,22 @@ export class HeightMapService {
         let hres;
         diff >= 1 ? (hres = diff) : (hres = 1);
 
-        geometries
-          .push
-          // csgApi.CSG.cube({
-          //   radius: [cubeWidth / 2, hres, cubeWidth / 2],
-          //   center: [x * cubeWidth, 0, z * cubeWidth]
-          // })
-          ();
+        for (let y = min; y <= h + 2; y++) {
+          matrix.makeTranslation(
+            x * cubeWidth - worldHalfWidth * cubeWidth,
+            y,
+            z * cubeWidth - worldHalfDepth * cubeWidth
+          );
+          geometry.merge(boxGeometry, matrix);
+        }
+
       }
     }
 
-    // geometries.push(
-    //   csgApi.CSG.cube({
-    //     radius: cubeWidth/2,
-    //     center: [0, 0, 0],
-    //   })
-    // );
-    //
-    // geometries.push(
-    //   csgApi.CSG.cube({
-    //     radius: cubeWidth/2,
-    //     center: [0, 0, 1],
-    //   })
-    // );
 
-    console.log(geometries);
-
-    let csgModel = geometries[0];
-
-    // console.log(arrayTest);
-    console.time('merge geometries');
-    for (let i = 0; i < geometries.length; i++) {
-      csgModel = csgModel.union(geometries[i]);
-    }
-    console.timeEnd('merge geometries');
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    geometry.computeFlatVertexNormals();
 
     //TODO: Вынести материалы и нижнию логику
     let shadowMaterial = new ShadowMaterial({
@@ -270,12 +264,23 @@ export class HeightMapService {
       color: '#89ff90'
     });
 
-    // let mesh = new Mesh(fromCSG(csgModel), [material, shadowMaterial]);
+    let meshNormalMaterial: MeshNormalMaterial = new MeshNormalMaterial({
+
+    });
+
+    let mesh = new Mesh( geometry, [material, meshNormalMaterial] );
+
+    // mesh.geometry.computeFaceNormals();
     // mesh.geometry.computeVertexNormals();
     // //
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
-    // mesh.updateMatrix();
-    // scene.add(mesh);
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.updateMatrix();
+    scene.add(mesh);
+
+    let helper = new FaceNormalsHelper( mesh, 2, 0x00ff00, 1 );
+    scene.add(helper);
+
   }
 }
