@@ -2,6 +2,7 @@ import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
 
 interface TerrainOptions {
   isDungeon: boolean;
+  rotationX: number;
 }
 
 export class Terrain {
@@ -120,17 +121,19 @@ export class Terrain {
           }
           terrain_geometry.vertices[y * this.size + x].z = height_val;
         }
+      }
 
       terrain_geometry.computeFaceNormals();
       terrain_geometry.computeVertexNormals();
 
       return terrain_geometry;
-    }
   }
 
   getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material) {
     let terrain_mesh = new Mesh(this.getTerrain(terrainOptions), material);
-    // terrain_mesh.rotation.x = -Math.PI / 2.0;
+    if (terrainOptions.rotationX){
+      terrain_mesh.rotation.x = terrainOptions.rotationX;
+    }
     return terrain_mesh;
   }
 

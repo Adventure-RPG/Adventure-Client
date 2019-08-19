@@ -12,7 +12,7 @@ import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-  @ViewChild('scene', { static: false }) scene;
+  @ViewChild('scene', { static: true }) scene;
 
   constructor(
     private engineService: EngineService,
@@ -24,12 +24,13 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.scene);
+
+    this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
+
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
-
-    console.log('init');
-    this.engineService.init(window.innerWidth, window.innerHeight);
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
@@ -49,9 +50,14 @@ export class EditorComponent implements OnInit {
     this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
+    this.engineService.sceneService.camera.position.set(0, 100, 100);
+    this.engineService.sceneService.camera.lookAt(0, 0, 0);
+
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
+
+
 
     this.keyboardEventService.engineService = this.engineService;
 

@@ -151,8 +151,8 @@ export class SpellWorkspaceComponent implements OnInit {
         let angle = meshVector.angleTo(targetVector);
 
         // Передвигаем меху
-        let factor = 10;
-        mesh.position.set(mesh.position.x - dir.x * value.factor, mesh.position.y - dir.y * value.factor, mesh.position.z - dir.z * value.factor);
+        let factor = 0.1;
+        mesh.position.set(mesh.position.x - dir.x * factor, mesh.position.y - dir.y * factor, mesh.position.z - dir.z * factor);
 
         mesh.lookAt(meshVector);
         mesh.rotateX(-Math.PI/2);

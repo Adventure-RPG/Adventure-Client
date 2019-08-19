@@ -103,6 +103,10 @@ export class ArenaComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
+
+    console.log(this.scene);
+
+
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
     console.log(this.scene.nativeElement.getBoundingClientRect());
 

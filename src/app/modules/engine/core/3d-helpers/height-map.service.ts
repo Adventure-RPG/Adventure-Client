@@ -31,7 +31,7 @@ export class HeightMapService {
             coordinates: [res]
           },
           properties: {
-            name: 'Ocean'
+            name: 'Terrain'
           }
         };
 
@@ -64,7 +64,8 @@ export class HeightMapService {
         // terrain.generate(0.01);
         let terrainObject = terrain.getTerrainWithMaterial(
           {
-            isDungeon: true
+            isDungeon: false,
+            rotationX: -Math.PI / 2.0
           },
           terrainMaterial
         );
@@ -79,13 +80,13 @@ export class HeightMapService {
           opacity: 0.8
         });
 
-        let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
-        terrain.moveWaves(waterMesh);
+        // let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
+        // terrain.moveWaves(waterMesh);
 
-        scene.add(waterMesh);
+        // scene.add(waterMesh);
 
         // !IMPORTANT TODO: add waves to water;
-        console.log(waterMesh);
+        // console.log(waterMesh);
 
         return geoJsonObject;
       })
