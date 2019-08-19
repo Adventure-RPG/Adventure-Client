@@ -231,6 +231,10 @@ export class SceneService {
       this.storageService.mixerCommands[mixerCommand].update(this.delta);
     }
 
+    for (let spellCommand in this.storageService.spellCommands) {
+      this.storageService.spellCommands[spellCommand].update(this.delta);
+    }
+
     this.render(this.delta);
 
     // this.renderer.setSize( window.innerWidth, window.innerHeight );
