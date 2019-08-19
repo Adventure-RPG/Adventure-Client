@@ -99,7 +99,8 @@ export class FirstPersonControls extends CameraControls {
         Math.pow(this.object.position.z, 2)
     );
     this.theta = Math.acos(this.object.position.z / this.radius);
-    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+    this.phi = 1.55;
+    //this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
 
     this.movementSpeed = 100;
     this.lookSpeed = 0.125;
@@ -388,69 +389,40 @@ export class FirstPersonControls extends CameraControls {
           this.autoSpeedFactor = 0.0;
         }
         let actualMoveSpeed = delta * this.movementSpeed;
-        let coordinatesUpdated = false;
+
         if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-          console.log(this.object.position);
           this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
           this.object.translateY(actualMoveSpeed);
-          this.target = new Vector(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x, this.target.y, this.target.z - actualMoveSpeed);
         }
         if (this.moveBackward) {
-          console.log(this.object.position);
           this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
-          this.target = new Vector(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x, this.target.y, this.target.z + actualMoveSpeed);
         }
         if (this.moveLeft) {
-          console.log(this.object.position);
           this.object.translateX(-actualMoveSpeed);
-          this.target = new Vector(this.target.x - actualMoveSpeed, this.target.y, this.target.z)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x - actualMoveSpeed, this.target.y, this.target.z);
         }
         if (this.moveRight) {
-          console.log(this.object.position);
           this.object.translateX(actualMoveSpeed);
-          this.target = new Vector(this.target.x + actualMoveSpeed, this.target.y, this.target.z)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x + actualMoveSpeed, this.target.y, this.target.z);
         }
         if (this.moveDown) {
-          console.log(this.object.position);
           this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
-          this.target = new Vector(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed);
         }
         if (this.moveUp) {
-          console.log(this.object.position);
           this.object.translateZ(-actualMoveSpeed);
           this.object.translateY(actualMoveSpeed);
-          this.target = new Vector(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed)
-          coordinatesUpdated = true;
-          console.log(this.target);
-          console.log(this.object.position);
+          this.target = new Vector3(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed);
         }
 
-        if (coordinatesUpdated) {
-          this.radius = Math.sqrt(
-            Math.pow(this.object.position.x - this.target.x, 2) +
-            Math.pow(this.object.position.y - this.target.y, 2) +
-            Math.pow(this.object.position.z - this.target.z, 2)
-          );
-          this.theta = Math.acos(this.object.position.z / this.radius);
-          this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
-        }
+        // if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
+        //   this.theta = Math.acos(this.object.position.z / this.radius);
+        //   this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+        // }
 
         if (this.leftRotation || this.rightRotation) {
           if (this.leftRotation) {
@@ -459,11 +431,13 @@ export class FirstPersonControls extends CameraControls {
           if (this.rightRotation) {
             this.phi -= (Math.PI) / 180;
           }
-          this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta);
-          this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
-          this.object.position.y = this.radius * Math.cos(this.theta);
-          console.log(this.phi);
-          this.object.lookAt(this.target.x, this.target.y, this.target.z);
+          this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
+          this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
+          this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+          this.object.lookAt(this.target);
+          console.log('phi: ' + this.phi.toString());
+          console.log(this.target)
+          console.log(this.object.position);
         }
         this.object.updateProjectionMatrix();
       }
