@@ -129,7 +129,7 @@ export class Terrain {
       return terrain_geometry;
   }
 
-  getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material) {
+  getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material): Mesh {
     let terrain_mesh = new Mesh(this.getTerrain(terrainOptions), material);
     if (terrainOptions.rotationX){
       terrain_mesh.rotation.x = terrainOptions.rotationX;

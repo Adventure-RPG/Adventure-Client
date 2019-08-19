@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
 import {
-  BoxGeometry, DoubleSide, FaceNormalsHelper, Geometry, Matrix4, Mesh, MeshNormalMaterial, MeshPhongMaterial, Scene,
-  ShadowMaterial,
+  BoxGeometry, DoubleSide, FaceNormalsHelper, Geometry, GeometryUtils, Matrix4, Mesh, MeshNormalMaterial,
+  MeshPhongMaterial,
+  ObjectSpaceNormalMap, Scene,
+  ShadowMaterial, TangentSpaceNormalMap,
   VertexColors
 } from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
+import { environment } from "../../../../../environments/environment";
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -64,17 +67,22 @@ export class HeightMapService {
           flatShading: true
         });
 
+        //TODO: пофиксить только квадратные картинки
         let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
         let terrainObject = terrain.getTerrainWithMaterial(
           {
             isDungeon: false,
-            rotationX: Math.PI / 2
+            rotationX: -Math.PI / 2
           },
           terrainMaterial
         );
         terrainObject.castShadow = true;
         terrainObject.receiveShadow = true;
+
+        // Нужно что бы не было траблов со светом
+        terrainObject.geometry.scale(environment.scale, environment.scale, environment.scale);
+
         scene.add(terrainObject);
 
         let waterMaterial = new MeshPhongMaterial({
@@ -206,7 +214,7 @@ export class HeightMapService {
         worldDepth = 32,
         worldHalfWidth = worldWidth / 2,
         worldHalfDepth = worldDepth / 2,
-        cubeWidth = 1;
+        cubeWidth = environment.scale;
 
     let matrix = new Matrix4();
 
@@ -234,22 +242,23 @@ export class HeightMapService {
         let hres;
         diff >= 1 ? (hres = diff) : (hres = 1);
 
-        for (let y = min; y <= h + 2; y++) {
+        for (let y = min; y <= h; y++) {
           matrix.makeTranslation(
-            x * cubeWidth - worldHalfWidth * cubeWidth,
-            y,
-            z * cubeWidth - worldHalfDepth * cubeWidth
+            x * cubeWidth,
+            (y - min) * cubeWidth + 0.5 * cubeWidth,
+            z * cubeWidth
           );
           geometry.merge(boxGeometry, matrix);
         }
 
       }
+
+      geometry.mergeVertices();
+      geometry.computeFaceNormals();
+      geometry.computeVertexNormals();
+
     }
 
-
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    geometry.computeFlatVertexNormals();
 
     //TODO: Вынести материалы и нижнию логику
     let shadowMaterial = new ShadowMaterial({
@@ -265,10 +274,11 @@ export class HeightMapService {
     });
 
     let meshNormalMaterial: MeshNormalMaterial = new MeshNormalMaterial({
-
+      normalMapType: TangentSpaceNormalMap,
     });
 
-    let mesh = new Mesh( geometry, [material, meshNormalMaterial] );
+
+    let mesh = new Mesh( geometry, material );
 
     // mesh.geometry.computeFaceNormals();
     // mesh.geometry.computeVertexNormals();
@@ -279,8 +289,8 @@ export class HeightMapService {
     mesh.updateMatrix();
     scene.add(mesh);
 
-    let helper = new FaceNormalsHelper( mesh, 2, 0x00ff00, 1 );
-    scene.add(helper);
+    // let helper = new FaceNormalsHelper( mesh, 2, 0x00ff00, 1 );
+    // scene.add(helper);
 
   }
 }

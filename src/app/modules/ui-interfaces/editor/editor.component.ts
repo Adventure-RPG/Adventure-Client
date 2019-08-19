@@ -4,6 +4,7 @@ import { LightService } from '../../engine/core/light.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
 import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { environment } from "../../../../environments/environment";
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -36,21 +37,21 @@ export class EditorComponent implements OnInit {
 
     // ground
     let mesh = new Mesh(
-      new PlaneGeometry(100, 100, 10, 10),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 0.8 })
+      new PlaneGeometry(environment.scale * 100, environment.scale * 100, 10, 10),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 1 })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
-    let grid = new GridHelper(100, 20, 0x000000, 0x000000);
+    let grid = new GridHelper(environment.scale * 100, 20, 0x000000, 0x000000);
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
     this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
-    this.engineService.sceneService.camera.position.set(0, 100, 100);
+    this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
     this.engineService.sceneService.camera.lookAt(0, 0, 0);
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
@@ -135,34 +136,34 @@ export class EditorComponent implements OnInit {
     let spotLightOptions = {
       color: '0xffffff',
       groundColor: '#fff',
-      intensity: 3,
-      distance: 1500,
-      exponent: 0,
-      angle: 1.52,
-      decay: 2,
-      position: {
-        x: 0,
-        y: 1000,
-        z: -800
-      }
-    };
-
-    let spotLightOptions2 = {
-      color: '0x777',
-      groundColor: '#777',
       intensity: 1,
-      distance: 1000,
-      exponent: 1,
+      distance: environment.scale * 100 * 2,
+      exponent: 0,
       angle: Math.PI / 4,
       decay: 2,
       position: {
         x: 0,
-        y: 50,
+        y: environment.scale * 100 / 2,
+        z: -environment.scale * 100 / 2
+      }
+    };
+
+    let spotLightOptions2 = {
+      color: '0xfff',
+      groundColor: '#fff',
+      intensity: 1,
+      distance: environment.scale * 100 * 2,
+      exponent: 0,
+      angle: Math.PI / 4,
+      decay: 2,
+      position: {
+        x: -environment.scale * 100 / 2,
+        y: environment.scale * 100 / 2,
         z: 0
       }
     };
 
-    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
+    // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 

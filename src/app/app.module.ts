@@ -87,7 +87,7 @@ const Guards = [AuthGuard];
       useClass: AuthInterceptor,
       multi: true
     },
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [...ModulesForRoot, ...Components],

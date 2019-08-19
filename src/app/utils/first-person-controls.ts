@@ -4,6 +4,7 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
+import { environment } from "../../environments/environment";
 
 export class FirstPersonControls extends CameraControls {
   object;
@@ -93,7 +94,7 @@ export class FirstPersonControls extends CameraControls {
     this.theta = Math.acos(this.object.position.z / radius);
     this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
 
-    this.movementSpeed = 100;
+    this.movementSpeed = 100 * environment.scale;
     this.lookSpeed = 0.125;
     this.lookVertical = true;
     this.constrainVertical = true;
