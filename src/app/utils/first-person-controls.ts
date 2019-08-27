@@ -107,12 +107,14 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
-    this.target = new Vector3(0.0, 0.0, 0.0);
+    this.target = new Vector3(100, 0, 0);
     // this.fov = object.fov;
 
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
       this.zoom = parseFloat(localStorage.getItem('cameraZoom'));
     }
+
+    this.object.lookAt(this.target);
   }
 
   initCommands() {
@@ -389,7 +391,8 @@ export class FirstPersonControls extends CameraControls {
         }
         let actualMoveSpeed = delta * this.movementSpeed;
 
-
+        console.log(this.target);
+        console.log(this.object.position);
         if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
           let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
           if (this.moveForward || (this.autoForward && !this.moveBackward)) {
@@ -416,10 +419,6 @@ export class FirstPersonControls extends CameraControls {
             this.target.y - (previousVector.y - this.object.position.y),
             this.target.z - (previousVector.z - this.object.position.z));
          }
-
-
-
-
 
         if (this.leftRotation || this.rightRotation) {
           if (this.leftRotation) {
