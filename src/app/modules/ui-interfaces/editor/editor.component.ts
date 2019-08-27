@@ -44,11 +44,11 @@ export class EditorComponent implements OnInit {
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
-    let grid = new GridHelper(environment.scale * 100, 20, 0x000000, 0x000000);
+    // let grid = new GridHelper(environment.scale * 100, 20, 0x000000, 0x000000);
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
-    this.engineService.sceneService.scene.add(grid);
+    // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
 
     this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
@@ -143,7 +143,7 @@ export class EditorComponent implements OnInit {
       decay: 2,
       position: {
         x: 0,
-        y: environment.scale * 100 / 2,
+        y:  environment.scale * 100 / 2,
         z: -environment.scale * 100 / 2
       }
     };
@@ -151,19 +151,19 @@ export class EditorComponent implements OnInit {
     let spotLightOptions2 = {
       color: '0xfff',
       groundColor: '#fff',
-      intensity: 1,
-      distance: environment.scale * 100 * 2,
+      intensity: 2,
+      distance: environment.scale * 100,
       exponent: 0,
       angle: Math.PI / 4,
       decay: 2,
       position: {
         x: -environment.scale * 100 / 2,
-        y: environment.scale * 100 / 2,
+        y:  environment.scale * 100 / 4,
         z: 0
       }
     };
 
-    // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
+    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
     // this.lightService.addLight(pointLightOptions, "PointLight");
 
@@ -171,8 +171,8 @@ export class EditorComponent implements OnInit {
 
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
-    this.lightService.addLight(spotLightOptions, 'SpotLight');
-    // this.lightService.addLight(spotLightOptions2, 'SpotLight');
+    // this.lightService.addLight(spotLightOptions, 'SpotLight');
+    this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");

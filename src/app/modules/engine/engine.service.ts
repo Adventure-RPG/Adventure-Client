@@ -138,22 +138,6 @@ export class EngineService {
   }
 
   //TODO: вынести
-  public map(img) {
-    let options: HeightMapOptions = {
-      grid: false
-    };
-
-    console.log(this.sceneService.scene);
-
-    this.heightMapService.changeMapFromImage(options, this.sceneService.scene, img);
-  }
-
-  public generateFromNoise() {
-    this.heightMapService.generateDungeonTerrain(this.sceneService.scene);
-    // this.heightMapService.getHeightMap(this.sceneService.scene);
-  }
-
-  //TODO: вынести
   public colorMap(img) {
     let options: HeightMapOptions = {
       grid: false

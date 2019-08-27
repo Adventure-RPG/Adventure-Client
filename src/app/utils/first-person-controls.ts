@@ -4,11 +4,13 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { Vector3 } from "three";
+import { PerspectiveCamera, Vector3 } from "three";
 import { environment } from "../../environments/environment";
+import { Object3D } from "three/src/core/Object3D";
+import { OrthographicCamera } from "three/src/cameras/OrthographicCamera";
 
 export class FirstPersonControls extends CameraControls {
-  object;
+  object: PerspectiveCamera;
   target;
   domElement;
   enabled;
@@ -435,6 +437,7 @@ export class FirstPersonControls extends CameraControls {
           console.log(this.target)
           console.log(this.object.position);
         }
+
         this.object.updateProjectionMatrix();
       }
     });
