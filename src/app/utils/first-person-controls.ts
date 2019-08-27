@@ -527,12 +527,19 @@ export class FirstPersonControls extends CameraControls {
     if (obj.target) {
       this.target = obj.target;
       this.object.lookAt(this.target);
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x - this.target.x, 2) +
+        Math.pow(this.object.position.y - this.target.y, 2) +
+        Math.pow(this.object.position.z - this.target.z, 2)
+      );
     }
-    this.radius = Math.sqrt(
-      Math.pow(this.object.position.x - this.target.x, 2) +
-      Math.pow(this.object.position.y - this.target.y, 2) +
-      Math.pow(this.object.position.z - this.target.z, 2)
-    );
+    else {
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x, 2) +
+        Math.pow(this.object.position.y, 2) +
+        Math.pow(this.object.position.z, 2)
+      );
+    }
     this.theta = Math.acos(this.object.position.z / this.radius);
     this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
   }
