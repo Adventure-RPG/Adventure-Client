@@ -133,7 +133,7 @@ export class EngineService {
     // this.z = this.z + z;
     // console.log(this.x);
 
-    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z));
+    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z), {});
     this.sceneService.camera = camera;
   }
 
