@@ -51,11 +51,10 @@ export class HeightMapComponent implements OnInit {
   }
 
   imageToHeightMap(img) {
-    this.engineService.heightMapService.map(img, this.model);
-    console.log(img);
+    this.engineService.heightMapService.map(img, this.model).then((data) => {
+      console.log(data);
+      this.engineService.sceneService.scene.add(data.terrain);
+    });
   }
 
-  generateFromNoise() {
-    this.engineService.heightMapService.generateFromNoise();
-  }
 }

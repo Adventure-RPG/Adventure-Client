@@ -1,4 +1,10 @@
-import { BoxGeometry, Geometry, Material, Mesh, PlaneGeometry } from 'three';
+import {
+  BoxGeometry, Geometry, Material, Matrix4, Mesh, MeshNormalMaterial, MeshPhongMaterial, PlaneGeometry, ShadowMaterial,
+  TangentSpaceNormalMap,
+  VertexColors
+} from 'three';
+import { environment } from "../../../../../environments/environment";
+import { Noise } from "@modules/engine/core/utils/noise";
 
 interface TerrainOptions {
   isDungeon: boolean;
@@ -100,11 +106,83 @@ export class Terrain {
     divide(this.max);
   }
 
-  getTerrain(terrainOptions: TerrainOptions): PlaneGeometry {
+
+  /**
+   * Experimental
+   * Нужна для создания террейна с вертикальными стенами. Пока генерируется без картинки
+   */
+  public generateDungeonTerrain(): Geometry {
+    //TODO: переделать от картинки
+    //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
+    let worldWidth = this.size,
+      worldDepth = this.size,
+      worldHalfWidth = this.size / 2,
+      worldHalfDepth = this.size / 2,
+      cubeWidth = 1;
+
+    let matrix = new Matrix4();
+
+    // this.mapData = Noise.generateHeight(worldWidth, worldDepth);
+
+    let geometry = new Geometry();
+    let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
+
+    //Нужен для перемещения в 0
+    const min = Math.min(...this.map) * 0.2;
+
+    console.log('processing');
+
+    for (let z = 0; z < worldDepth; z++) {
+      for (let x = 0; x < worldWidth; x++) {
+        //ВАЖНО! Подумать в сторону кастомных алгоритмов по объеденению
+        //http://evanw.github.io/csg.js/docs/
+
+        //Делаем всех от одного уровня
+        // let h = Noise.getY({ mapData: this.map, x, z, worldWidth, k: 0.2 });
+        let h = this.get(x, z);
+
+        // x - worldHalfWidth
+        // z - worldHalfDepth
+        let diff = h - min;
+        let hres;
+        diff >= 1 ? (hres = diff) : (hres = 1);
+
+        // console.log(h);
+        // console.log(diff);
+
+        for (let y = min; y <= h; y++) {
+          matrix.makeTranslation(
+            x * cubeWidth,
+            (y - min) * cubeWidth + 0.5 * cubeWidth,
+            z * cubeWidth
+          );
+          geometry.merge(boxGeometry, matrix);
+        }
+
+      }
+    }
+
+    console.log('processed');
+
+    geometry.mergeVertices();
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    geometry.translate(- this.size / 2, 0, - this.size / 2);
+
+    return geometry
+
+    // let helper = new FaceNormalsHelper( mesh, 2, 0x00ff00, 1 );
+    // scene.add(helper);
+
+  }
+
+  getTerrain(terrainOptions: TerrainOptions): PlaneGeometry | Geometry {
 
     if (terrainOptions.isDungeon) {
-
+      console.log('♦ Dungeon ♦');
+      return this.generateDungeonTerrain();
     } else {
+      console.log('♦ Plane ♦');
       let terrain_geometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
       let min_height = Infinity;
       let max_height = -Infinity;
@@ -127,6 +205,7 @@ export class Terrain {
         }
       }
 
+      terrain_geometry.rotateX(-Math.PI/2);
       terrain_geometry.computeFaceNormals();
       terrain_geometry.computeVertexNormals();
 
@@ -137,7 +216,8 @@ export class Terrain {
 
   getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material): Mesh {
     let terrain_mesh = new Mesh(this.getTerrain(terrainOptions), material);
-    if (terrainOptions.rotationX){
+
+    if (terrainOptions.rotationX && !terrainOptions.isDungeon){
       terrain_mesh.rotation.x = terrainOptions.rotationX;
     }
     return terrain_mesh;
