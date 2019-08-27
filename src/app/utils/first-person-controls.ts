@@ -107,7 +107,7 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
-    this.target = new Vector3(0, 0, 0);
+    this.target = new Vector3(0.0, 0.0, 0.0);
     // this.fov = object.fov;
 
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
@@ -389,37 +389,37 @@ export class FirstPersonControls extends CameraControls {
         }
         let actualMoveSpeed = delta * this.movementSpeed;
 
-        if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-          this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
-          this.object.translateY(actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y, this.target.z - actualMoveSpeed);
-        }
-        if (this.moveBackward) {
-          this.object.translateZ(actualMoveSpeed);
-          this.object.translateY(-actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y, this.target.z + actualMoveSpeed);
-        }
-        if (this.moveLeft) {
-          this.object.translateX(-actualMoveSpeed);
-          this.target = new Vector3(this.target.x - actualMoveSpeed, this.target.y, this.target.z);
-        }
-        if (this.moveRight) {
-          this.object.translateX(actualMoveSpeed);
-          this.target = new Vector3(this.target.x + actualMoveSpeed, this.target.y, this.target.z);
-        }
-        if (this.moveDown) {
-          this.object.translateY(-actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y - actualMoveSpeed, this.target.z);
-        }
-        if (this.moveUp) {
-          this.object.translateY(actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y + actualMoveSpeed, this.target.z);
-        }
 
-        // if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
-        //   this.theta = Math.acos(this.object.position.z / this.radius);
-        //   this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
-        // }
+        if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
+          let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
+          if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+            this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+            this.object.translateY(actualMoveSpeed);
+          }
+          if (this.moveBackward) {
+            this.object.translateZ(actualMoveSpeed);
+            this.object.translateY(-actualMoveSpeed);
+          }
+          if (this.moveLeft) {
+            this.object.translateX(-actualMoveSpeed);
+          }
+          if (this.moveRight) {
+            this.object.translateX(actualMoveSpeed);
+          }
+          if (this.moveDown) {
+            this.object.translateY(-actualMoveSpeed);
+          }
+          if (this.moveUp) {
+            this.object.translateY(actualMoveSpeed);
+          }
+          this.target = new Vector3(this.target.x - (previousVector.x - this.object.position.x),
+            this.target.y - (previousVector.y - this.object.position.y),
+            this.target.z - (previousVector.z - this.object.position.z));
+         }
+
+
+
+
 
         if (this.leftRotation || this.rightRotation) {
           if (this.leftRotation) {
