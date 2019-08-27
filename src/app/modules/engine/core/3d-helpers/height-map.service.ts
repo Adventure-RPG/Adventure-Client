@@ -11,6 +11,7 @@ import {
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
 import { environment } from "../../../../../environments/environment";
+import { HeightMapOptions } from "@modules/engine/engine.types";
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -22,11 +23,22 @@ export class HeightMapService {
   constructor() {}
 
   //TODO: пустить параллельно
+  public map(img, model) {
+    let options: HeightMapOptions = {
+      ...model,
+      grid: false
+    };
 
-  public changeMapFromImage(options, scene: Scene, img) {
-    // terrain
-    //TODO: сделать добавление без рекваер
-    //TODO: вынести, смерджить с настройками
+    return this.changeMapFromImage(options, img);
+  }
+
+  public generateFromNoise() {
+    return this.generateDungeonTerrain();
+    // this.heightMapService.getHeightMap(this.sceneService.scene);
+  }
+
+  // terrain
+  public changeMapFromImage(options, img) {
     //TODO: вынести все текстуры и материалы в отдельный сервис
 
     return this.parseImageToGeo(img)
@@ -72,7 +84,7 @@ export class HeightMapService {
         // terrain.generate(0.01);
         let terrainObject = terrain.getTerrainWithMaterial(
           {
-            isDungeon: false,
+            isDungeon: options,
             rotationX: -Math.PI / 2
           },
           terrainMaterial
@@ -83,7 +95,7 @@ export class HeightMapService {
         // Нужно что бы не было траблов со светом
         terrainObject.geometry.scale(environment.scale, environment.scale, environment.scale);
 
-        scene.add(terrainObject);
+        // scene.add(terrainObject);
 
         let waterMaterial = new MeshPhongMaterial({
           color: 0x3366aa,
@@ -205,9 +217,8 @@ export class HeightMapService {
   /**
    * Experimental
    * Нужна для создания террейна с вертикальными стенами. Пока генерируется без картинки
-   * @param {Scene} scene
    */
-  public generateDungeonTerrain(scene: Scene) {
+  public generateDungeonTerrain() {
     //TODO: переделать от картинки
     //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
     let worldWidth = 32,
@@ -252,13 +263,12 @@ export class HeightMapService {
         }
 
       }
-
-      geometry.mergeVertices();
-      geometry.computeFaceNormals();
-      geometry.computeVertexNormals();
-
     }
 
+
+    geometry.mergeVertices();
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
 
     //TODO: Вынести материалы и нижнию логику
     let shadowMaterial = new ShadowMaterial({
@@ -270,7 +280,7 @@ export class HeightMapService {
       flatShading: true,
       shininess: 100,
       vertexColors: VertexColors,
-      color: '#89ff90'
+      color: '#77ff4b'
     });
 
     let meshNormalMaterial: MeshNormalMaterial = new MeshNormalMaterial({
@@ -287,7 +297,8 @@ export class HeightMapService {
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     mesh.updateMatrix();
-    scene.add(mesh);
+
+    return mesh
 
     // let helper = new FaceNormalsHelper( mesh, 2, 0x00ff00, 1 );
     // scene.add(helper);

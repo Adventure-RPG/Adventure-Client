@@ -4,11 +4,13 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { Vector3 } from "three";
+import { PerspectiveCamera, Vector3 } from "three";
 import { environment } from "../../environments/environment";
+import { Object3D } from "three/src/core/Object3D";
+import { OrthographicCamera } from "three/src/cameras/OrthographicCamera";
 
 export class FirstPersonControls extends CameraControls {
-  object;
+  object: PerspectiveCamera;
   target;
   domElement;
   enabled;
@@ -426,19 +428,22 @@ export class FirstPersonControls extends CameraControls {
 
         if (this.leftRotation || this.rightRotation) {
           if (this.leftRotation) {
-            this.phi += (Math.PI) / 180;
+            this.object.rotateZ(Math.PI/360)
           }
           if (this.rightRotation) {
-            this.phi -= (Math.PI) / 180;
+            this.object.rotateZ(-Math.PI/360)
           }
-          this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
-          this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
-          this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
-          this.object.lookAt(this.target);
+
+
+          // this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.object.position.x;
+          // this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.object.position.z;
+          // this.object.position.y = this.radius * Math.cos(this.theta) + this.object.position.y;
+          // this.object.lookAt(this.target);
           console.log('phi: ' + this.phi.toString());
           console.log(this.target)
           console.log(this.object.position);
         }
+
         this.object.updateProjectionMatrix();
       }
     });

@@ -101,6 +101,10 @@ export class Terrain {
   }
 
   getTerrain(terrainOptions: TerrainOptions): PlaneGeometry {
+
+    if (terrainOptions.isDungeon) {
+
+    } else {
       let terrain_geometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
       let min_height = Infinity;
       let max_height = -Infinity;
@@ -127,6 +131,8 @@ export class Terrain {
       terrain_geometry.computeVertexNormals();
 
       return terrain_geometry;
+    }
+
   }
 
   getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material): Mesh {
