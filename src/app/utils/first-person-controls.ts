@@ -101,10 +101,9 @@ export class FirstPersonControls extends CameraControls {
         Math.pow(this.object.position.z, 2)
     );
     this.theta = Math.acos(this.object.position.z / this.radius);
-    this.phi = 1.55;
-    //this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
 
-    this.movementSpeed = 100 * environment.scale;
+    this.movementSpeed = 20 * environment.scale;
     this.lookSpeed = 0.125;
     this.lookVertical = true;
     this.constrainVertical = true;
@@ -411,14 +410,12 @@ export class FirstPersonControls extends CameraControls {
           this.target = new Vector3(this.target.x + actualMoveSpeed, this.target.y, this.target.z);
         }
         if (this.moveDown) {
-          this.object.translateZ(actualMoveSpeed);
           this.object.translateY(-actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y - actualMoveSpeed, this.target.z + actualMoveSpeed);
+          this.target = new Vector3(this.target.x, this.target.y - actualMoveSpeed, this.target.z);
         }
         if (this.moveUp) {
-          this.object.translateZ(-actualMoveSpeed);
           this.object.translateY(actualMoveSpeed);
-          this.target = new Vector3(this.target.x, this.target.y + actualMoveSpeed, this.target.z - actualMoveSpeed);
+          this.target = new Vector3(this.target.x, this.target.y + actualMoveSpeed, this.target.z);
         }
 
         // if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
