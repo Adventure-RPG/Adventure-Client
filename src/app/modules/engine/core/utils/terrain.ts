@@ -1,13 +1,22 @@
 import {
-  BoxGeometry, Geometry, Material, Matrix4, Mesh, MeshNormalMaterial, MeshPhongMaterial, PlaneGeometry, ShadowMaterial,
-  TangentSpaceNormalMap,
+  BoxGeometry, ExtrudeGeometry, Geometry, Material, Matrix4, Mesh, MeshNormalMaterial, MeshPhongMaterial, PlaneGeometry,
+  ShadowMaterial,
+  Shape, ShapeGeometry,
+  TangentSpaceNormalMap, Vector2,
   VertexColors
 } from 'three';
 import { environment } from "../../../../../environments/environment";
 import { Noise } from "@modules/engine/core/utils/noise";
+import { Path } from "three/src/extras/core/Path";
 
-interface TerrainOptions {
-  isDungeon: boolean;
+export enum WallType {
+  isSteps,
+  isDungeon,
+  isPolygon
+}
+
+export interface TerrainOptions {
+  wallType: WallType;
   rotationX: number;
 }
 
@@ -106,6 +115,20 @@ export class Terrain {
     divide(this.max);
   }
 
+  getTerrain(terrainOptions: TerrainOptions): PlaneGeometry | Geometry {
+
+    if (terrainOptions.wallType === WallType.isDungeon) {
+      console.log('♦ Dungeon ♦');
+      return this.generateDungeonTerrain();
+    } else if (terrainOptions.wallType === WallType.isSteps){
+      return this.generateStepTerrain();
+    } else {
+      //WallType.isPolygon
+      console.log('♦ Plane ♦');
+      return this.generatePlaneTerrain();
+    }
+
+  }
 
   /**
    * Experimental
@@ -127,12 +150,26 @@ export class Terrain {
     let geometry = new Geometry();
     let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
 
-    //Нужен для перемещения в 0
-    const min = Math.min(...this.map) * 0.2;
+    // standard loop
+    let max = this.map[0];
+    for (let i = 1; i < this.map; ++i) {
+      if (this.map[i] > max) {
+        max = this.map[i];
+      }
+    }
 
-    console.log('processing');
+    let min = -1;
+    for (let i = 1; i < this.map; ++i) {
+      if (this.map[i] < min) {
+        min = this.map[i];
+      }
+    }
 
+
+    // console.log('processing');
+    console.time("allLayers");
     for (let z = 0; z < worldDepth; z++) {
+      console.time("layers");
       for (let x = 0; x < worldWidth; x++) {
         //ВАЖНО! Подумать в сторону кастомных алгоритмов по объеденению
         //http://evanw.github.io/csg.js/docs/
@@ -160,9 +197,16 @@ export class Terrain {
         }
 
       }
+
+      if(z % 10 === 0){
+        console.log(`${z}/${worldDepth}`);
+        console.timeEnd("layers");
+        console.time("layers");
+      }
     }
 
-    console.log('processed');
+    console.timeEnd("allLayers");
+    // console.log('processed');
 
     geometry.mergeVertices();
     geometry.computeFaceNormals();
@@ -176,52 +220,79 @@ export class Terrain {
 
   }
 
-  getTerrain(terrainOptions: TerrainOptions): PlaneGeometry | Geometry {
+  public generateStepTerrain(): Geometry {
 
-    if (terrainOptions.isDungeon) {
-      console.log('♦ Dungeon ♦');
-      return this.generateDungeonTerrain();
-    } else {
-      console.log('♦ Plane ♦');
-      let terrain_geometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
-      let min_height = Infinity;
-      let max_height = -Infinity;
-      for (let y = 0; y < this.size; y++) {
-        for (let x = 0; x < this.size; x++) {
-          let height_val = this.get(x, y);
-          if (height_val < min_height) {
-            min_height = height_val;
-          }
-          if (height_val > max_height) {
-            max_height = height_val;
-          }
-          if (height_val < 0) {
-            height_val = 0;
-          }
-          if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) {
-            height_val = 0.0;
-          }
-          terrain_geometry.vertices[y * this.size + x].z = height_val;
+    let heartShape = new Shape();
+
+    heartShape.moveTo( -this.size/2, -this.size/2 );
+
+    heartShape.lineTo(-this.size/2, this.size/2);
+    heartShape.lineTo(this.size/2, this.size/2);
+    heartShape.lineTo(this.size/2, -this.size/2);
+    heartShape.lineTo(-this.size/2, -this.size/2);
+
+    let extrudeSettings = {
+      amount: 0,
+      depth: 1,
+      bevelEnabled: true,
+      steps: 1,
+      bevelThickness: 1,
+      bevelSize: 0,
+      bevelOffset: 0,
+      bevelSegments: 1,
+    };
+
+    heartShape.holes = [new Path([
+      new Vector2(0, 0),
+      new Vector2(5, 0),
+      new Vector2(5, 5),
+      new Vector2(0, 5),
+      new Vector2(0, 0),
+    ])];
+
+    let geometry = new ExtrudeGeometry( heartShape, extrudeSettings );
+    geometry.rotateX(-Math.PI / 2);
+
+    // geometry
+
+    return geometry;
+  }
+
+  public generatePlaneTerrain(): Geometry{
+    let terraingGeometry = new PlaneGeometry(this.size, this.size, this.size - 1, this.size - 1);
+    let min_height = Infinity;
+    let max_height = -Infinity;
+    for (let y = 0; y < this.size; y++) {
+      for (let x = 0; x < this.size; x++) {
+        let height_val = this.get(x, y);
+        if (height_val < min_height) {
+          min_height = height_val;
         }
+        if (height_val > max_height) {
+          max_height = height_val;
+        }
+        if (height_val < 0) {
+          height_val = 0;
+        }
+        if (y === 0 || y === this.size - 1 || x === 0 || x === this.size - 1) {
+          height_val = 0.0;
+        }
+        terraingGeometry.vertices[y * this.size + x].z = height_val;
       }
-
-      terrain_geometry.rotateX(-Math.PI/2);
-      terrain_geometry.computeFaceNormals();
-      terrain_geometry.computeVertexNormals();
-
-      return terrain_geometry;
     }
 
+    terraingGeometry.rotateX(-Math.PI/2);
+    terraingGeometry.computeFaceNormals();
+    terraingGeometry.computeVertexNormals();
+
+    return terraingGeometry;
   }
 
-  getTerrainWithMaterial(terrainOptions: TerrainOptions, material: Material): Mesh {
-    let terrain_mesh = new Mesh(this.getTerrain(terrainOptions), material);
 
-    if (terrainOptions.rotationX && !terrainOptions.isDungeon){
-      terrain_mesh.rotation.x = terrainOptions.rotationX;
-    }
-    return terrain_mesh;
-  }
+  /**
+   * TODO: Will refactoring Water layer
+   */
+
 
   getWater(): BoxGeometry {
     let water_geometry = new BoxGeometry(this.size, this.size, this.size);

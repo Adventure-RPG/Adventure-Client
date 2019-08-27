@@ -91,8 +91,7 @@ export class HeightMapService {
         // );
 
         let terrainGeometry = terrain.getTerrain({
-          isDungeon: options.isDungeon,
-          rotationX: -Math.PI / 2
+          ...options,
         });
 
         // terrainGeometry,

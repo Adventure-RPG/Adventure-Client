@@ -13,8 +13,13 @@
 <adventure-color-map></adventure-color-map>
 
 <div class="p-3">
-  <label nz-checkbox [(ngModel)]="model.isDungeon" (change)="model.isDungeon = !model.isDungeon">Dungeon</label>
+  <nz-radio-group [(ngModel)]="model.wallType">
+    <label nz-radio [nzValue]="0">Step</label>
+    <label nz-radio [nzValue]="1">Dungeon</label>
+    <label nz-radio [nzValue]="2">Polygon</label>
+  </nz-radio-group>
 </div>
+
 
 <div class="p-3">
 

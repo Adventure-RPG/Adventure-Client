@@ -9,7 +9,7 @@ import { EngineService } from '../../../engine/engine.service';
 export class HeightMapComponent implements OnInit {
 
   model = {
-    isDungeon: true,
+    wallType: 0,
   };
 
   constructor(public engineService: EngineService) {}
@@ -51,10 +51,12 @@ export class HeightMapComponent implements OnInit {
   }
 
   imageToHeightMap(img) {
-    this.engineService.heightMapService.map(img, this.model).then((data) => {
-      console.log(data);
-      this.engineService.sceneService.scene.add(data.terrain);
-    });
+    this.engineService.heightMapService.map(img, this.model)
+      .then((data) => {
+        console.log(data);
+        this.engineService.sceneService.scene.add(data.terrain);
+      });
   }
+
 
 }

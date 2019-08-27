@@ -393,8 +393,8 @@ export class FirstPersonControls extends CameraControls {
         }
         let actualMoveSpeed = delta * this.movementSpeed;
 
-        console.log(this.target);
-        console.log(this.object.position);
+        // console.log(this.target);
+        // console.log(this.object.position);
         if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
           let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
           if (this.moveForward || (this.autoForward && !this.moveBackward)) {
