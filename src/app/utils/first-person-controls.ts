@@ -109,13 +109,12 @@ export class FirstPersonControls extends CameraControls {
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
-    this.target = new Vector3(100, 0, 0);
+    this.target = new Vector3(0, 0, 0);
     // this.fov = object.fov;
 
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
       this.zoom = parseFloat(localStorage.getItem('cameraZoom'));
     }
-
     this.object.lookAt(this.target);
   }
 
@@ -433,9 +432,6 @@ export class FirstPersonControls extends CameraControls {
           this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
           this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
           this.object.lookAt(this.target);
-          console.log('phi: ' + this.phi.toString());
-          console.log(this.target)
-          console.log(this.object.position);
         }
 
         this.object.updateProjectionMatrix();
@@ -516,6 +512,28 @@ export class FirstPersonControls extends CameraControls {
       case 70:
         /*F*/ this.moveDown = false;
         break;
+    }
+  }
+
+  public update(obj) {
+    if (obj.target) {
+      this.target = obj.target;
+      this.object.lookAt(this.target);
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x - this.target.x, 2) +
+        Math.pow(this.object.position.y - this.target.y, 2) +
+        Math.pow(this.object.position.z - this.target.z, 2)
+      );
+      this.theta = Math.acos((this.object.position.z - this.target.z) / this.radius);
+      this.phi = Math.acos((this.object.position.x - this.target.x) / (this.radius * Math.sin(this.theta)));
+    } else {
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x, 2) +
+        Math.pow(this.object.position.y, 2) +
+        Math.pow(this.object.position.z, 2)
+      );
+      this.theta = Math.acos(this.object.position.z / this.radius);
+      this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
     }
   }
   //TODO: END
