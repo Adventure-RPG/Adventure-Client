@@ -50,6 +50,11 @@ export enum Actions {
   FreeAction
 }
 
+export enum SpellGeometries {
+  Cube,
+  Ring
+}
+
 @Component({
   selector: 'adventure-spell-workspace',
   templateUrl: './spell-workspace.component.html',
@@ -66,6 +71,7 @@ export class SpellWorkspaceComponent implements OnInit {
     savingThrow: [0, [Validators.required]],
     spellResistance: [false, [Validators.required]],
     castingTime: [0, [Validators.required]],
+    geometry: [0, [Validators.required]],
     sender: [0, [Validators.required]],
     target: [0, [Validators.required]],
 
@@ -87,13 +93,13 @@ export class SpellWorkspaceComponent implements OnInit {
     spellType: this.enumValue(SpellType),
     savingThrow: this.enumValue(SavingThrow),
     actions: this.enumValue(Actions),
+    spellGeometries: this.enumValue(SpellGeometries),
   };
 
   meshes: Mesh[] = [];
 
 
   //TODO: вынести енамы
-
   enumValue(enumValue){
     return EnumHelpers.getSelectListAsArray(enumValue, (arg: number) => {
       return enumValue[arg]
@@ -138,8 +144,6 @@ export class SpellWorkspaceComponent implements OnInit {
     this.engineService.sceneService.scene.add(mesh);
 
     value.update = function(delta){
-
-
       if(this.sender && this.target) {
 
         let meshVector = new Vector3().setFromMatrixPosition( (mesh.matrixWorld ) );
@@ -151,7 +155,7 @@ export class SpellWorkspaceComponent implements OnInit {
         let angle = meshVector.angleTo(targetVector);
 
         // Передвигаем меху
-        let factor = 0.1;
+        let factor = 1/value.duration;
         mesh.position.set(mesh.position.x - dir.x * factor, mesh.position.y - dir.y * factor, mesh.position.z - dir.z * factor);
 
         mesh.lookAt(meshVector);
@@ -166,12 +170,7 @@ export class SpellWorkspaceComponent implements OnInit {
       }
 
       this.time += delta;
-
-
-
     };
-
-
 
     this.storageService.spellCommandPush(`spell-${uuid}`, value);
   }
@@ -180,8 +179,7 @@ export class SpellWorkspaceComponent implements OnInit {
     private formBuilder: FormBuilder,
     public engineService: EngineService,
     public storageService: StorageService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.engineService.sceneService.nodes

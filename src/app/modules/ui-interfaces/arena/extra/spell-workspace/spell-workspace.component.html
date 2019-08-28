@@ -84,6 +84,16 @@
     </nz-form-control>
   </nz-form-item>
 
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Geometries</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="geometry" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.spellGeometries" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
   <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
     <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Target</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">

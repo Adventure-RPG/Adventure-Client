@@ -391,7 +391,6 @@ export class FirstPersonControls extends CameraControls {
           this.autoSpeedFactor = 0.0;
         }
         let actualMoveSpeed = delta * this.movementSpeed;
-
         // console.log(this.target);
         // console.log(this.object.position);
         if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
@@ -432,11 +431,11 @@ export class FirstPersonControls extends CameraControls {
           this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
           this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
           this.object.lookAt(this.target);
-          console.log(
-            Math.pow(this.object.position.x - this.target.x, 2) +
-            Math.pow(this.object.position.y - this.target.y, 2) +
-            Math.pow(this.object.position.z - this.target.z, 2)
-          );
+          // console.log(
+          //   Math.pow(this.object.position.x - this.target.x, 2) +
+          //   Math.pow(this.object.position.y - this.target.y, 2) +
+          //   Math.pow(this.object.position.z - this.target.z, 2)
+          // );
         }
 
         this.object.updateProjectionMatrix();
