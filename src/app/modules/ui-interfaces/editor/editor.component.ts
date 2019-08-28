@@ -3,7 +3,7 @@ import { EngineService } from '../../engine/engine.service';
 import { LightService } from '../../engine/core/light.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
 import { environment } from "../../../../environments/environment";
 
 //TODO: вынести в инциацию сцен
@@ -50,9 +50,8 @@ export class EditorComponent implements OnInit {
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
-
     this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
-    this.engineService.sceneService.camera.lookAt(0, 0, 0);
+    this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
