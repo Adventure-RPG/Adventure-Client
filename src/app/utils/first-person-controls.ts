@@ -103,7 +103,7 @@ export class FirstPersonControls extends CameraControls {
     this.theta = Math.acos(this.object.position.z / this.radius);
     this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
 
-    this.movementSpeed = 20 * environment.scale;
+    this.movementSpeed = 10 * environment.scale;
     this.lookSpeed = 0.125;
     this.lookVertical = true;
     this.constrainVertical = true;

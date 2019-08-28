@@ -21,7 +21,6 @@ export class CameraService implements OnInit {
   x;
   y;
   z;
-  target;
 
   constructor(private settingsService: SettingsService, private storageService: StorageService) {}
 
@@ -51,7 +50,7 @@ export class CameraService implements OnInit {
     this._domElement = value;
   }
 
-  public updateCamera(position, obj, x?, y?, z?) {
+  public updateCamera(position, x?, y?, z?) {
     // console.log(this.settingsService.settings.camera.type);
     // console.log(CAMERA.IsometricCamera);
 
@@ -82,7 +81,7 @@ export class CameraService implements OnInit {
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-        this.updateFirstPersonCamera(obj);
+        this.updateFirstPersonCamera();
       }
     }
 
@@ -108,11 +107,10 @@ export class CameraService implements OnInit {
     this.cameries = mergeModel;
   }
 
-  public updateFirstPersonCamera(obj) {
+  public updateFirstPersonCamera() {
     this.commandsCleanUp();
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
     let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
-    controls.update(obj);
   }
 
   public initIsometricCamera() {

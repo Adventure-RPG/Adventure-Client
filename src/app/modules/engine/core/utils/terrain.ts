@@ -121,6 +121,7 @@ export class Terrain {
       console.log('♦ Dungeon ♦');
       return this.generateDungeonTerrain();
     } else if (terrainOptions.wallType === WallType.isSteps){
+
       return this.generateStepTerrain();
     } else {
       //WallType.isPolygon
@@ -198,7 +199,7 @@ export class Terrain {
 
       }
 
-      if(z % 10 === 0){
+      if (z % 10 === 0){
         console.log(`${z}/${worldDepth}`);
         console.timeEnd("layers");
         console.time("layers");
@@ -253,7 +254,6 @@ export class Terrain {
     let geometry = new ExtrudeGeometry( heartShape, extrudeSettings );
     geometry.rotateX(-Math.PI / 2);
 
-    // geometry
 
     return geometry;
   }

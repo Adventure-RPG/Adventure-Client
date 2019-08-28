@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
+import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -372,7 +372,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     };
 
     this.engineService.sceneService.camera.position.set(100, 100, 100);
-    this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
+    this.engineService.sceneService.camera.lookAt(100, 0, 0);
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
