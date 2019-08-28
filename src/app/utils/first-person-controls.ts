@@ -115,10 +115,6 @@ export class FirstPersonControls extends CameraControls {
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
       this.zoom = parseFloat(localStorage.getItem('cameraZoom'));
     }
-    console.log(this.radius);
-    console.log(this.phi);
-    console.log(this.theta);
-    console.log(this.object.position);
     this.object.lookAt(this.target);
   }
 
@@ -435,11 +431,6 @@ export class FirstPersonControls extends CameraControls {
           this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
           this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
           this.object.lookAt(this.target);
-          console.log(this.radius);
-          console.log(this.phi);
-          console.log('phi: ' + this.phi.toString());
-          console.log(this.target)
-          console.log(this.object.position);
         }
 
         this.object.updateProjectionMatrix();
@@ -532,16 +523,17 @@ export class FirstPersonControls extends CameraControls {
         Math.pow(this.object.position.y - this.target.y, 2) +
         Math.pow(this.object.position.z - this.target.z, 2)
       );
-    }
-    else {
+      this.theta = Math.acos((this.object.position.z - this.target.z) / this.radius);
+      this.phi = Math.acos((this.object.position.x - this.target.x) / (this.radius * Math.sin(this.theta)));
+    } else {
       this.radius = Math.sqrt(
         Math.pow(this.object.position.x, 2) +
         Math.pow(this.object.position.y, 2) +
         Math.pow(this.object.position.z, 2)
       );
+      this.theta = Math.acos(this.object.position.z / this.radius);
+      this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
     }
-    this.theta = Math.acos(this.object.position.z / this.radius);
-    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
   }
   //TODO: END
 }
