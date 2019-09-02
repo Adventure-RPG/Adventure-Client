@@ -23,6 +23,7 @@ export interface TerrainOptions {
 export class Terrain {
   size: number;
   max: number;
+  mapEx = {min: 255, max: 0};
   map;
   waves;
   scaleZ = 1;
@@ -41,6 +42,21 @@ export class Terrain {
     } else {
       this.map = new Float32Array(this.size * this.size);
     }
+
+    for (let i = 1; i < this.map.length; ++i) {
+      if (this.map[i] > this.mapEx.max) {
+        this.mapEx.max = this.map[i];
+      }
+    }
+    console.log(this.map);
+
+    for (let i = 1; i < this.map.length; ++i) {
+      if (this.map[i] < this.mapEx.min) {
+        this.mapEx.min = this.map[i];
+      }
+    }
+    console.log(this.mapEx);
+
   }
 
   get(x, y) {
@@ -121,7 +137,7 @@ export class Terrain {
       console.log('♦ Dungeon ♦');
       return this.generateDungeonTerrain();
     } else if (terrainOptions.wallType === WallType.isSteps){
-
+      console.log('♦ Step ♦');
       return this.generateStepTerrain();
     } else {
       //WallType.isPolygon
@@ -151,21 +167,6 @@ export class Terrain {
     let geometry = new Geometry();
     let boxGeometry = new BoxGeometry(cubeWidth, cubeWidth, cubeWidth);
 
-    // standard loop
-    let max = this.map[0];
-    for (let i = 1; i < this.map; ++i) {
-      if (this.map[i] > max) {
-        max = this.map[i];
-      }
-    }
-
-    let min = -1;
-    for (let i = 1; i < this.map; ++i) {
-      if (this.map[i] < min) {
-        min = this.map[i];
-      }
-    }
-
 
     // console.log('processing');
     console.time("allLayers");
@@ -181,17 +182,17 @@ export class Terrain {
 
         // x - worldHalfWidth
         // z - worldHalfDepth
-        let diff = h - min;
+        let diff = h - this.mapEx.min;
         let hres;
         diff >= 1 ? (hres = diff) : (hres = 1);
 
         // console.log(h);
         // console.log(diff);
 
-        for (let y = min; y <= h; y++) {
+        for (let y = this.mapEx.min; y <= h; y++) {
           matrix.makeTranslation(
             x * cubeWidth,
-            (y - min) * cubeWidth + 0.5 * cubeWidth,
+            (y - this.mapEx.min) * cubeWidth + 0.5 * cubeWidth,
             z * cubeWidth
           );
           geometry.merge(boxGeometry, matrix);
@@ -222,38 +223,137 @@ export class Terrain {
   }
 
   public generateStepTerrain(): Geometry {
+    let geometry = new Geometry();
+    console.log(this.map);
+    let matrix = new Matrix4();
 
-    let heartShape = new Shape();
+    for (let h = this.mapEx.min; h < this.mapEx.max; h++) {
 
-    heartShape.moveTo( -this.size/2, -this.size/2 );
+      console.log(h);
 
-    heartShape.lineTo(-this.size/2, this.size/2);
-    heartShape.lineTo(this.size/2, this.size/2);
-    heartShape.lineTo(this.size/2, -this.size/2);
-    heartShape.lineTo(-this.size/2, -this.size/2);
+      let layer = new Shape();
+      layer.moveTo( 0,  0);
+      layer.lineTo(0, this.size);
+      layer.lineTo(this.size, this.size);
+      layer.lineTo(this.size, 0);
+      layer.lineTo(0, 0);
 
-    let extrudeSettings = {
-      amount: 0,
-      depth: 1,
-      bevelEnabled: true,
-      steps: 1,
-      bevelThickness: 1,
-      bevelSize: 0,
-      bevelOffset: 0,
-      bevelSegments: 1,
-    };
+      let holes = [];
+      let matrix2d: {x: number, y: number, hole: boolean, shapeX?: string, shapeY?: string}[] = [];
+      let holePoints: {x: number, y: number, hole: boolean, shapeX?: string, shapeY?: string}[] = [];
 
-    heartShape.holes = [new Path([
-      new Vector2(0, 0),
-      new Vector2(5, 0),
-      new Vector2(5, 5),
-      new Vector2(0, 5),
-      new Vector2(0, 0),
-    ])];
+      for (let i = 0; i < this.size; i++) {
+        for (let j = 0; j < this.size; j++) {
+          let point = this.map[i * this.size + j];
+          if (point > h){
+            holes.push(new Path([
+              new Vector2(i, j),
+              new Vector2(i + 1, j),
+              new Vector2(i + 1, j + 1),
+              new Vector2(i, j +1),
+              new Vector2(i, j),
+            ]));
 
-    let geometry = new ExtrudeGeometry( heartShape, extrudeSettings );
-    geometry.rotateX(-Math.PI / 2);
+            holePoints.push({
+              x: i,
+              y: j,
+              hole: true
+            });
 
+            matrix2d.push({
+              x: i,
+              y: j,
+              hole: true
+            });
+
+          } else {
+
+            matrix2d.push({
+              x: i,
+              y: j,
+              hole: false
+            });
+
+          }
+
+        }
+      }
+
+      let currentShape;
+      let currentPoint;
+      for (let i = 0; i < holePoints.length - 1; i++) {
+        currentPoint = holePoints[i];
+        if (
+          matrix2d[currentPoint.y * this.size + currentPoint.x - 1].hole ||
+          matrix2d[currentPoint.y * this.size + currentPoint.x + 1].hole ||
+          matrix2d[currentPoint.y * (this.size - 1) + currentPoint.x].hole ||
+          matrix2d[currentPoint.y * (this.size + 1) + currentPoint.x].hole
+        ){
+          //Остановился тут
+
+
+          if (!currentShape){
+            holePoints[i].shapeX = `shape-${i}`;
+            holePoints[i + 1].shapeX = `shape-${i}`;
+            currentShape = `shape-${i}`;
+          } else {
+            holePoints[i].shapeX = currentShape;
+            holePoints[i + 1].shapeX = currentShape;
+          }
+        } else if (
+          !holePoints[i].shapeX &&
+          Math.abs(holePoints[i].x - holePoints[i + 1].x) <= 1 &&
+          Math.abs(holePoints[i].y - holePoints[i + 1].y) <= 1
+        ){
+          if (!currentShape){
+            holePoints[i].shapeX = `shape-${i}`;
+            holePoints[i + 1].shapeX = `shape-${i}`;
+            currentShape = `shape-${i}`;
+          } else {
+            holePoints[i].shapeX = currentShape;
+            holePoints[i + 1].shapeX = currentShape;
+          }
+        }
+         else if (
+           !holePoints[i].shapeX
+        ){
+          currentShape = '';
+        } else {
+          currentShape = '';
+        }
+      }
+
+      holePoints.map((data) => {
+
+      });
+
+      // console.log(holes);
+      console.log(holePoints);
+
+      layer.holes = holes;
+
+      let extrudeSettings = {
+        amount: 0,
+        depth: 1,
+        bevelEnabled: true,
+        steps: 1,
+        bevelThickness: 1,
+        bevelSize: 0,
+        bevelOffset: 0,
+        bevelSegments: 1,
+      };
+
+      let extrudeGeometry = new ExtrudeGeometry( layer, extrudeSettings );
+      extrudeGeometry.rotateX(Math.PI / 2);
+      matrix.makeTranslation(-this.size / 2, h - this.mapEx.min + 1, this.size / 2 );
+      geometry.merge(extrudeGeometry, matrix);
+    }
+
+    geometry.computeMorphNormals();
+    geometry.computeFlatVertexNormals();
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
+    geometry.mergeVertices();
 
     return geometry;
   }
