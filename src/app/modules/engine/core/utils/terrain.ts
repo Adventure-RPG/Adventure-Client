@@ -20,6 +20,13 @@ export interface TerrainOptions {
   rotationX: number;
 }
 
+export interface MatrixCoordinate  {
+  x: number,
+  y: number,
+  hole: boolean,
+  shapeName?: string
+}
+
 export class Terrain {
   size: number;
   max: number;
@@ -239,40 +246,41 @@ export class Terrain {
       layer.lineTo(0, 0);
 
       let holes = [];
-      let matrix2d: {x: number, y: number, hole: boolean, shapeX?: string, shapeY?: string}[] = [];
-      let holePoints: {x: number, y: number, hole: boolean, shapeX?: string, shapeY?: string}[] = [];
+      let matrixHoles = {};
+      let matrix2d: MatrixCoordinate[] = [];
+      let holePoints: MatrixCoordinate[] = [];
 
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
           let point = this.map[i * this.size + j];
           if (point > h){
-            holes.push(new Path([
-              new Vector2(i, j),
-              new Vector2(i + 1, j),
-              new Vector2(i + 1, j + 1),
-              new Vector2(i, j +1),
-              new Vector2(i, j),
-            ]));
+            // holes.push(new Path([
+            //   new Vector2(i, j),
+            //   new Vector2(i + 1, j),
+            //   new Vector2(i + 1, j + 1),
+            //   new Vector2(i, j +1),
+            //   new Vector2(i, j),
+            // ]));
 
-            holePoints.push({
+            let obj = {
               x: i,
               y: j,
               hole: true
-            });
+            };
 
-            matrix2d.push({
-              x: i,
-              y: j,
-              hole: true
-            });
+
+            holePoints.push(obj);
+            matrix2d.push(obj);
 
           } else {
 
-            matrix2d.push({
+            let obj = {
               x: i,
               y: j,
               hole: false
-            });
+            };
+
+            matrix2d.push(obj);
 
           }
 
@@ -280,55 +288,108 @@ export class Terrain {
       }
 
       let currentShape;
-      let currentPoint;
-      for (let i = 0; i < holePoints.length - 1; i++) {
-        currentPoint = holePoints[i];
+
+      let matrixRec = (currentPoint, i) => {
+        let tempShape: MatrixCoordinate;
+        let counter = 0;
+
+        let check = (shape: MatrixCoordinate, index: number) => {
+          if (!currentShape) {
+            currentShape = `${index}`;
+          }
+
+          if (!matrixHoles[index]) {
+            matrixHoles[index] = [];
+          }
+
+          // console.log(shape);
+
+          shape.shapeName = currentShape;
+          counter++;
+          matrixHoles[index].push(shape);
+          matrixRec(shape, index);
+        };
+
+        tempShape  = matrix2d[currentPoint.y * this.size + currentPoint.x - 1];
         if (
-          matrix2d[currentPoint.y * this.size + currentPoint.x - 1].hole ||
-          matrix2d[currentPoint.y * this.size + currentPoint.x + 1].hole ||
-          matrix2d[currentPoint.y * (this.size - 1) + currentPoint.x].hole ||
-          matrix2d[currentPoint.y * (this.size + 1) + currentPoint.x].hole
-        ){
-          //Остановился тут
-
-
-          if (!currentShape){
-            holePoints[i].shapeX = `shape-${i}`;
-            holePoints[i + 1].shapeX = `shape-${i}`;
-            currentShape = `shape-${i}`;
-          } else {
-            holePoints[i].shapeX = currentShape;
-            holePoints[i + 1].shapeX = currentShape;
-          }
-        } else if (
-          !holePoints[i].shapeX &&
-          Math.abs(holePoints[i].x - holePoints[i + 1].x) <= 1 &&
-          Math.abs(holePoints[i].y - holePoints[i + 1].y) <= 1
-        ){
-          if (!currentShape){
-            holePoints[i].shapeX = `shape-${i}`;
-            holePoints[i + 1].shapeX = `shape-${i}`;
-            currentShape = `shape-${i}`;
-          } else {
-            holePoints[i].shapeX = currentShape;
-            holePoints[i + 1].shapeX = currentShape;
-          }
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          check(tempShape, i);
         }
-         else if (
-           !holePoints[i].shapeX
-        ){
-          currentShape = '';
-        } else {
-          currentShape = '';
+
+        tempShape = matrix2d[currentPoint.y * this.size + currentPoint.x + 1];
+        if (
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          check(tempShape, i);
         }
+
+        tempShape = matrix2d[currentPoint.y * (this.size - 1) + currentPoint.x];
+        if (
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          check(tempShape, i);
+        }
+
+        tempShape = matrix2d[currentPoint.y * (this.size + 1) + currentPoint.x];
+        if (
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          check(tempShape, i);
+        }
+
+        if (!counter) {
+          currentShape = undefined;
+        }
+      };
+
+      for (let i = 0; i < holePoints.length - 1; i++) {
+        let currentPoint = holePoints[i];
+        if (!currentPoint.shapeName) {
+          matrixRec(currentPoint, i);
+        }
+        //   if (!currentShape){
+        //     holePoints[i].shapeX = `shape-${i}`;
+        //     holePoints[i + 1].shapeX = `shape-${i}`;
+        //     currentShape = `shape-${i}`;
+        //   } else {
+        //     holePoints[i].shapeX = currentShape;
+        //     holePoints[i + 1].shapeX = currentShape;
+        //   }
+        // } else if (
+        //   !holePoints[i].shapeX &&
+        //   Math.abs(holePoints[i].x - holePoints[i + 1].x) <= 1 &&
+        //   Math.abs(holePoints[i].y - holePoints[i + 1].y) <= 1
+        // ){
+        //   if (!currentShape){
+        //     holePoints[i].shapeX = `shape-${i}`;
+        //     holePoints[i + 1].shapeX = `shape-${i}`;
+        //     currentShape = `shape-${i}`;
+        //   } else {
+        //     holePoints[i].shapeX = currentShape;
+        //     holePoints[i + 1].shapeX = currentShape;
+        //   }
+        // }
+        //  else if (
+        //    !holePoints[i].shapeX
+        // ){
+        //   currentShape = '';
+        // } else {
+        //   currentShape = '';
+        // }
       }
 
-      holePoints.map((data) => {
-
-      });
 
       // console.log(holes);
-      console.log(holePoints);
+      console.log(matrixHoles);
 
       layer.holes = holes;
 
