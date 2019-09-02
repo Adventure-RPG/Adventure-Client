@@ -289,22 +289,18 @@ export class Terrain {
 
       let currentShape;
 
-      let matrixRec = (currentPoint, i) => {
+      let matrixRec = (currentPoint: MatrixCoordinate, i) => {
         let tempShape: MatrixCoordinate;
         let counter = 0;
 
         let check = (shape: MatrixCoordinate, index: number) => {
-          if (!currentShape) {
-            currentShape = `${index}`;
-          }
-
           if (!matrixHoles[index]) {
             matrixHoles[index] = [];
           }
 
           // console.log(shape);
 
-          shape.shapeName = currentShape;
+          shape.shapeName =  `${index}`;
           counter++;
           matrixHoles[index].push(shape);
           matrixRec(shape, index);
@@ -344,10 +340,6 @@ export class Terrain {
           !tempShape.shapeName
         ) {
           check(tempShape, i);
-        }
-
-        if (!counter) {
-          currentShape = undefined;
         }
       };
 
