@@ -8,6 +8,7 @@ import {
 import { environment } from "../../../../../environments/environment";
 import { Noise } from "@modules/engine/core/utils/noise";
 import { Path } from "three/src/extras/core/Path";
+import * as Lodash from 'lodash';
 
 export enum WallType {
   isSteps,
@@ -37,6 +38,7 @@ export class Terrain {
 
   constructor(size, scaleZ, map: number[][]) {
     this.size = size;
+    console.log(this.size);
     this.max = this.size - 1;
     this.scaleZ = scaleZ;
     // this.map = map;
@@ -246,7 +248,7 @@ export class Terrain {
       layer.lineTo(0, 0);
 
       let holes = [];
-      let matrixHoles = {};
+      let matrixHoles: {[key: number]: MatrixCoordinate[]} = {};
       let matrix2d: MatrixCoordinate[] = [];
       let holePoints: MatrixCoordinate[] = [];
 
@@ -263,8 +265,8 @@ export class Terrain {
             // ]));
 
             let obj = {
-              x: i,
-              y: j,
+              x: j,
+              y: i,
               hole: true
             };
 
@@ -275,8 +277,8 @@ export class Terrain {
           } else {
 
             let obj = {
-              x: i,
-              y: j,
+              x: j,
+              y: i,
               hole: false
             };
 
@@ -291,7 +293,6 @@ export class Terrain {
 
       let matrixRec = (currentPoint: MatrixCoordinate, i) => {
         let tempShape: MatrixCoordinate;
-        let counter = 0;
 
         let check = (shape: MatrixCoordinate, index: number) => {
           if (!matrixHoles[index]) {
@@ -301,12 +302,13 @@ export class Terrain {
           // console.log(shape);
 
           shape.shapeName =  `${index}`;
-          counter++;
           matrixHoles[index].push(shape);
           matrixRec(shape, index);
         };
 
+        //Слева
         tempShape  = matrix2d[currentPoint.y * this.size + currentPoint.x - 1];
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * this.size + currentPoint.x - 1}`);
         if (
           tempShape &&
           tempShape.hole &&
@@ -315,7 +317,9 @@ export class Terrain {
           check(tempShape, i);
         }
 
+        //Справа
         tempShape = matrix2d[currentPoint.y * this.size + currentPoint.x + 1];
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * this.size + currentPoint.x + 1}`);
         if (
           tempShape &&
           tempShape.hole &&
@@ -324,7 +328,11 @@ export class Terrain {
           check(tempShape, i);
         }
 
+        //Сверху
         tempShape = matrix2d[currentPoint.y * (this.size - 1) + currentPoint.x];
+        // console.dir(tempShape);
+        // console.dir(currentPoint.y * (this.size - 1) + currentPoint.x);
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * (this.size - 1) + currentPoint.x}`);
         if (
           tempShape &&
           tempShape.hole &&
@@ -333,7 +341,11 @@ export class Terrain {
           check(tempShape, i);
         }
 
-        tempShape = matrix2d[currentPoint.y * (this.size + 1) + currentPoint.x];
+        //Снизу
+        tempShape = matrix2d[(currentPoint.y + 1) * this.size + currentPoint.x];
+        // console.dir(tempShape);
+        // console.dir((currentPoint.y + 1) * this.size + currentPoint.x);
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - - ${currentPoint.y * (this.size + 1) + currentPoint.x}`);
         if (
           tempShape &&
           tempShape.hole &&
@@ -383,6 +395,60 @@ export class Terrain {
       // console.log(holes);
       console.log(matrixHoles);
 
+
+      let holeVectors = [];
+
+
+      for (const matrixHolesKey in matrixHoles) {
+        let matrixHole = matrixHoles[matrixHolesKey];
+
+        for (let i = 0; i < matrixHole.length; i++) {
+          let hole = matrixHole[i];
+
+          holeVectors.push(...[
+            {xWall: hole.x, yWall: hole.y},
+            {xWall: hole.x + 1, yWall: hole.y},
+            {xWall: hole.x + 1, yWall: hole.y + 1},
+            {xWall: hole.x, yWall: hole.y + 1},
+            {xWall: hole.x, yWall: hole.y},
+          ]);
+        }
+      }
+
+      // Lodash.map(holeVectors, function(o, i) {
+      //   let eq = Lodash.find(holeVectors, function(e, ind) {
+      //     if (i > ind) {
+      //       return Lodash.isEqual(e, o);
+      //     }
+      //   })
+      //   if (eq) {
+      //     o.isDuplicate = true;
+      //     return o;
+      //   } else {
+      //     return o;
+      //   }
+      // });
+      let removeDuplicates = (array, key1, key2) => {
+        return array.reduce((accumulator, element) => {
+
+          if (!accumulator.find(el => {
+            let compare = el[key1] === element[key1] && el[key2] === element[key2];
+            if (compare) {
+              el.isDublicate = true;
+            }
+            return compare;
+          })) {
+            accumulator.push(element);
+          } else {
+            element.isDublicate = true;
+            accumulator.push(element);
+          }
+          return accumulator;
+        }, []);
+      };
+      console.log(holeVectors);
+
+      console.log(removeDuplicates(holeVectors, 'xWall', 'yWall'));
       layer.holes = holes;
 
       let extrudeSettings = {
