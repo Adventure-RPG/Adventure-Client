@@ -25,7 +25,15 @@ export interface MatrixCoordinate  {
   x: number,
   y: number,
   hole: boolean,
+  index: number,
   shapeName?: string
+}
+
+enum VectorDirection {
+  Up,
+  Right,
+  Down,
+  Left
 }
 
 export class Terrain {
@@ -248,6 +256,7 @@ export class Terrain {
       layer.lineTo(0, 0);
 
       let holes = [];
+      let path = [];
       let matrixHoles: {[key: number]: MatrixCoordinate[]} = {};
       let matrix2d: MatrixCoordinate[] = [];
       let holePoints: MatrixCoordinate[] = [];
@@ -267,7 +276,8 @@ export class Terrain {
             let obj = {
               x: j,
               y: i,
-              hole: true
+              hole: true,
+              index: i * this.size + j
             };
 
 
@@ -279,7 +289,8 @@ export class Terrain {
             let obj = {
               x: j,
               y: i,
-              hole: false
+              hole: false,
+              index: i * this.size + j
             };
 
             matrix2d.push(obj);
@@ -289,60 +300,39 @@ export class Terrain {
         }
       }
 
-      let currentShape;
-
       let matrixRec = (currentPoint: MatrixCoordinate, i) => {
         let tempShape: MatrixCoordinate;
+        let index: number;
 
-        let check = (shape: MatrixCoordinate, index: number) => {
-          if (!matrixHoles[index]) {
-            matrixHoles[index] = [];
+        let check = (data: {shape: MatrixCoordinate, i: number, index: number, direction: VectorDirection}) => {
+          if (!matrixHoles[i]) {
+            matrixHoles[i] = [];
           }
 
-          // console.log(shape);
+          // path.push();
 
-          shape.shapeName =  `${index}`;
-          matrixHoles[index].push(shape);
-          matrixRec(shape, index);
+          data.shape.shapeName =  `${i}`;
+          matrixHoles[i].push(data.shape);
+          matrixRec(data.shape, i);
         };
 
-        //Слева
-        tempShape  = matrix2d[currentPoint.y * this.size + currentPoint.x - 1];
-        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * this.size + currentPoint.x - 1}`);
-        if (
-          tempShape &&
-          tempShape.hole &&
-          !tempShape.shapeName
-        ) {
-          check(tempShape, i);
-        }
 
         //Справа
-        tempShape = matrix2d[currentPoint.y * this.size + currentPoint.x + 1];
+        index = currentPoint.y * this.size + currentPoint.x + 1;
+        tempShape = matrix2d[index];
         // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * this.size + currentPoint.x + 1}`);
         if (
           tempShape &&
           tempShape.hole &&
           !tempShape.shapeName
         ) {
-          check(tempShape, i);
-        }
 
-        //Сверху
-        tempShape = matrix2d[currentPoint.y * (this.size - 1) + currentPoint.x];
-        // console.dir(tempShape);
-        // console.dir(currentPoint.y * (this.size - 1) + currentPoint.x);
-        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * (this.size - 1) + currentPoint.x}`);
-        if (
-          tempShape &&
-          tempShape.hole &&
-          !tempShape.shapeName
-        ) {
-          check(tempShape, i);
+          check({shape: tempShape, i, index, direction: VectorDirection.Right});
         }
 
         //Снизу
-        tempShape = matrix2d[(currentPoint.y + 1) * this.size + currentPoint.x];
+        index = (currentPoint.y + 1) * this.size + currentPoint.x;
+        tempShape = matrix2d[index];
         // console.dir(tempShape);
         // console.dir((currentPoint.y + 1) * this.size + currentPoint.x);
         // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - - ${currentPoint.y * (this.size + 1) + currentPoint.x}`);
@@ -351,7 +341,72 @@ export class Terrain {
           tempShape.hole &&
           !tempShape.shapeName
         ) {
-          check(tempShape, i);
+          check({shape: tempShape, i, index, direction: VectorDirection.Down});
+        }
+
+        //Слева
+        index = currentPoint.y * this.size + currentPoint.x - 1;
+        tempShape  = matrix2d[index];
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * this.size + currentPoint.x - 1}`);
+        if (
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          check({shape: tempShape, i, index, direction: VectorDirection.Left});
+        }
+
+        //Сверху
+        index = currentPoint.y * (this.size - 1) + currentPoint.x;
+        tempShape = matrix2d[index];
+        // console.dir(tempShape);
+        // console.dir(currentPoint.y * (this.size - 1) + currentPoint.x);
+        // console.dir(`${JSON.stringify(currentPoint, null, 4)} - ${JSON.stringify(tempShape, null, 4)} - ${currentPoint.y * (this.size - 1) + currentPoint.x}`);
+        if (
+          tempShape &&
+          tempShape.hole &&
+          !tempShape.shapeName
+        ) {
+          path.push();
+          check({shape: tempShape, i, index, direction: VectorDirection.Up});
+        }
+      };
+
+      let vectorMove = (data: {direction: VectorDirection, index: number}) => {
+
+        // console.log(shape);
+        //p1 - левая точка от вектора
+        //p2 - правая точка от вектора
+        let p1, p2;
+
+        if (data.direction === VectorDirection.Right) {
+          // console.log(matrix2d[data.index]);
+          p1 = matrix2d[data.index];
+          p2 = matrix2d[data.index - this.size];
+        } else if (data.direction === VectorDirection.Down) {
+          // console.log(matrix2d[data.index]);
+          p1 = matrix2d[data.index - 1 - this.size];
+          p2 = matrix2d[data.index - this.size];
+        } else if (data.direction === VectorDirection.Left) {
+          // console.log(matrix2d[data.index]);
+          p1 = matrix2d[data.index - this.size - 1];
+          p2 = matrix2d[data.index - 1];
+        } else if (data.direction === VectorDirection.Up) {
+          // console.log(matrix2d[data.index]);
+          p1 = matrix2d[data.index - 1];
+          p2 = matrix2d[data.index];
+        }
+
+        if (p1.hole && p2.hole) {
+          console.log('поворот влево')
+        }
+
+        if (!p1.hole && p2.hole) {
+          console.log('продолжаем движение прямо')
+        }
+
+        if (!p2.hole) {
+          console.log('поворот вправо')
         }
       };
 
@@ -360,35 +415,6 @@ export class Terrain {
         if (!currentPoint.shapeName) {
           matrixRec(currentPoint, i);
         }
-        //   if (!currentShape){
-        //     holePoints[i].shapeX = `shape-${i}`;
-        //     holePoints[i + 1].shapeX = `shape-${i}`;
-        //     currentShape = `shape-${i}`;
-        //   } else {
-        //     holePoints[i].shapeX = currentShape;
-        //     holePoints[i + 1].shapeX = currentShape;
-        //   }
-        // } else if (
-        //   !holePoints[i].shapeX &&
-        //   Math.abs(holePoints[i].x - holePoints[i + 1].x) <= 1 &&
-        //   Math.abs(holePoints[i].y - holePoints[i + 1].y) <= 1
-        // ){
-        //   if (!currentShape){
-        //     holePoints[i].shapeX = `shape-${i}`;
-        //     holePoints[i + 1].shapeX = `shape-${i}`;
-        //     currentShape = `shape-${i}`;
-        //   } else {
-        //     holePoints[i].shapeX = currentShape;
-        //     holePoints[i + 1].shapeX = currentShape;
-        //   }
-        // }
-        //  else if (
-        //    !holePoints[i].shapeX
-        // ){
-        //   currentShape = '';
-        // } else {
-        //   currentShape = '';
-        // }
       }
 
 
@@ -398,57 +424,25 @@ export class Terrain {
 
       let holeVectors = [];
 
+      for (let i = 0; i < matrix2d.length; i++) {
+        let matrix2dElement = matrix2d[i];
+        if (matrix2dElement.hole){
+          vectorMove({direction: VectorDirection.Right, index: matrix2dElement.index});
+        }
+      }
 
       for (const matrixHolesKey in matrixHoles) {
         let matrixHole = matrixHoles[matrixHolesKey];
 
         for (let i = 0; i < matrixHole.length; i++) {
           let hole = matrixHole[i];
+          vectorMove({direction: VectorDirection.Right, index: hole.index});
 
-          holeVectors.push(...[
-            {xWall: hole.x, yWall: hole.y},
-            {xWall: hole.x + 1, yWall: hole.y},
-            {xWall: hole.x + 1, yWall: hole.y + 1},
-            {xWall: hole.x, yWall: hole.y + 1},
-            {xWall: hole.x, yWall: hole.y},
-          ]);
         }
       }
 
-      // Lodash.map(holeVectors, function(o, i) {
-      //   let eq = Lodash.find(holeVectors, function(e, ind) {
-      //     if (i > ind) {
-      //       return Lodash.isEqual(e, o);
-      //     }
-      //   })
-      //   if (eq) {
-      //     o.isDuplicate = true;
-      //     return o;
-      //   } else {
-      //     return o;
-      //   }
-      // });
-      let removeDuplicates = (array, key1, key2) => {
-        return array.reduce((accumulator, element) => {
-
-          if (!accumulator.find(el => {
-            let compare = el[key1] === element[key1] && el[key2] === element[key2];
-            if (compare) {
-              el.isDublicate = true;
-            }
-            return compare;
-          })) {
-            accumulator.push(element);
-          } else {
-            element.isDublicate = true;
-            accumulator.push(element);
-          }
-          return accumulator;
-        }, []);
-      };
       console.log(holeVectors);
 
-      console.log(removeDuplicates(holeVectors, 'xWall', 'yWall'));
       layer.holes = holes;
 
       let extrudeSettings = {
