@@ -30,10 +30,10 @@ export interface MatrixCoordinate  {
 }
 
 enum VectorDirection {
-  Up,
   Right,
   Down,
-  Left
+  Left,
+  Up
 }
 
 export class Terrain {
@@ -241,7 +241,7 @@ export class Terrain {
 
   public generateStepTerrain(): Geometry {
     let geometry = new Geometry();
-    console.log(this.map);
+    // console.log(this.map);
     let matrix = new Matrix4();
 
     for (let h = this.mapEx.min; h < this.mapEx.max; h++) {
@@ -256,7 +256,7 @@ export class Terrain {
       layer.lineTo(0, 0);
 
       let holes = [];
-      let path = [];
+      let path: Path = new Path();
       let matrixHoles: {[key: number]: MatrixCoordinate[]} = {};
       let matrix2d: MatrixCoordinate[] = [];
       let holePoints: MatrixCoordinate[] = [];
@@ -264,7 +264,7 @@ export class Terrain {
       for (let i = 0; i < this.size; i++) {
         for (let j = 0; j < this.size; j++) {
           let point = this.map[i * this.size + j];
-          if (point > h){
+          if (point > h) {
             // holes.push(new Path([
             //   new Vector2(i, j),
             //   new Vector2(i + 1, j),
@@ -309,8 +309,6 @@ export class Terrain {
             matrixHoles[i] = [];
           }
 
-          // path.push();
-
           data.shape.shapeName =  `${i}`;
           matrixHoles[i].push(data.shape);
           matrixRec(data.shape, i);
@@ -326,7 +324,6 @@ export class Terrain {
           tempShape.hole &&
           !tempShape.shapeName
         ) {
-
           check({shape: tempShape, i, index, direction: VectorDirection.Right});
         }
 
@@ -367,47 +364,115 @@ export class Terrain {
           tempShape.hole &&
           !tempShape.shapeName
         ) {
-          path.push();
           check({shape: tempShape, i, index, direction: VectorDirection.Up});
         }
       };
 
-      let vectorMove = (data: {direction: VectorDirection, index: number}) => {
+      let rotate = (direction, side) => {
+        if (side === 'right') {
+          if (direction === VectorDirection.Right) {
+            return VectorDirection.Down
+          } else if (direction === VectorDirection.Down) {
+            return VectorDirection.Left
+          } else if (direction === VectorDirection.Left) {
+            return VectorDirection.Up
+          } else if (direction === VectorDirection.Up) {
+            return VectorDirection.Right
+          }
+          // direction === VectorDirection.Right
+        } else if (side === 'left') {
+          // direction
+          if (direction === VectorDirection.Right) {
+            return VectorDirection.Up
+          } else if (direction === VectorDirection.Up) {
+            return VectorDirection.Left
+          } else if (direction === VectorDirection.Left) {
+            return VectorDirection.Down
+          } else if (direction === VectorDirection.Down) {
+            return VectorDirection.Right
+          }
+        }
+      };
 
-        // console.log(shape);
+      let vectorMove = (data: {direction: VectorDirection, index: number, initIndex: number}) => {
+        console.log(`x: ${data.index % this.size} y: ${Math.floor(data.index / this.size)}`);
         //p1 - левая точка от вектора
         //p2 - правая точка от вектора
         let p1, p2;
-
         if (data.direction === VectorDirection.Right) {
           // console.log(matrix2d[data.index]);
-          p1 = matrix2d[data.index];
-          p2 = matrix2d[data.index - this.size];
+          p1 = matrix2d[data.index - this.size];
+          p2 = matrix2d[data.index];
         } else if (data.direction === VectorDirection.Down) {
           // console.log(matrix2d[data.index]);
-          p1 = matrix2d[data.index - 1 - this.size];
-          p2 = matrix2d[data.index - this.size];
+          p1 = matrix2d[data.index];
+          p2 = matrix2d[data.index - 1];
         } else if (data.direction === VectorDirection.Left) {
           // console.log(matrix2d[data.index]);
-          p1 = matrix2d[data.index - this.size - 1];
-          p2 = matrix2d[data.index - 1];
+          p1 = matrix2d[data.index + this.size];
+          p2 = matrix2d[data.index];
         } else if (data.direction === VectorDirection.Up) {
           // console.log(matrix2d[data.index]);
-          p1 = matrix2d[data.index - 1];
-          p2 = matrix2d[data.index];
+          p1 = matrix2d[data.index - this.size - 1];
+          p2 = matrix2d[data.index - this.size];
         }
+
+        console.log(p1, p2);
+
+        if (!p2) {
+          p2 = {hole: false}
+        }
+
+        if (!p1) {
+          p1 = {hole: false}
+        }
+
+        let moveIndex;
+        let moveRotate;
 
         if (p1.hole && p2.hole) {
-          console.log('поворот влево')
+          console.log('поворот влево');
+          moveRotate = rotate(data.direction, 'left');
+        } else if (p1 && p1.hole) {
+          console.log('поворот влево');
+          moveRotate = rotate(data.direction, 'left');
+        } else if (!p1.hole && p2.hole) {
+          console.log('продолжаем движение прямо');
+          moveRotate = data.direction;
+        // else if (!p1.hole && !p2.hole) {
+        //   console.log('поворот влево');
+        //   moveRotate = rotate(data.direction, 'left');
+        // }
+        } else if (p2 && !p2.hole) {
+          console.log('поворот вправо');
+          moveRotate = rotate(data.direction, 'right');
+        } else if (!p1 && !p2){
+          console.log('поворот вправо');
+          moveRotate = rotate(data.direction, 'right');
         }
 
-        if (!p1.hole && p2.hole) {
-          console.log('продолжаем движение прямо')
+        if (moveRotate === VectorDirection.Right) {
+          moveIndex = data.index + 1;
+        } else if (moveRotate === VectorDirection.Down) {
+          moveIndex = data.index + this.size;
+        } else if (moveRotate === VectorDirection.Left) {
+          moveIndex = data.index - 1;
+        } else if (moveRotate === VectorDirection.Up) {
+          moveIndex = data.index - this.size;
+        }
+        // console.log({direction: moveRotate, index: moveIndex});
+
+        path.lineTo(data.index % this.size, Math.floor(data.index / this.size));
+
+        if (moveIndex === data.initIndex) {
+          let index = data.index + 1;
+          path.lineTo(index % this.size, Math.floor(index / this.size));
+          // console.log('вернулся в начальную точку');
+          return;
         }
 
-        if (!p2.hole) {
-          console.log('поворот вправо')
-        }
+        vectorMove({direction: moveRotate, index: moveIndex, initIndex: data.initIndex});
+
       };
 
       for (let i = 0; i < holePoints.length - 1; i++) {
@@ -417,33 +482,30 @@ export class Terrain {
         }
       }
 
-
       // console.log(holes);
-      console.log(matrixHoles);
+      // console.log(matrixHoles);
 
 
       let holeVectors = [];
 
-      for (let i = 0; i < matrix2d.length; i++) {
-        let matrix2dElement = matrix2d[i];
-        if (matrix2dElement.hole){
-          vectorMove({direction: VectorDirection.Right, index: matrix2dElement.index});
-        }
-      }
-
       for (const matrixHolesKey in matrixHoles) {
         let matrixHole = matrixHoles[matrixHolesKey];
 
-        for (let i = 0; i < matrixHole.length; i++) {
-          let hole = matrixHole[i];
-          vectorMove({direction: VectorDirection.Right, index: hole.index});
+        //0 потому что первая точка из семейства
+        // path.moveTo(matrixHole[0].index % this.size, Math.floor(matrixHole[0].index / this.size));
 
-        }
+        path = new Path();
+
+        vectorMove({direction: VectorDirection.Right, index: matrixHole[0].index, initIndex: matrixHole[0].index});
+
+        layer.holes = [...layer.holes, path];
+        // for (let i = 0; i < matrixHole.length; i++) {
+        //   let hole = matrixHole[i];
+        // }
       }
 
-      console.log(holeVectors);
-
-      layer.holes = holes;
+      // console.log(holeVectors);
+      // console.log(path);
 
       let extrudeSettings = {
         amount: 0,
