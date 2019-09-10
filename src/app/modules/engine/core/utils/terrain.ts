@@ -395,58 +395,87 @@ export class Terrain {
       };
 
       let vectorMove = (data: {direction: VectorDirection, index: number, initIndex: number}) => {
-        console.log(`x: ${data.index % this.size} y: ${Math.floor(data.index / this.size)}`);
+        console.log(`
+        x: ${data.index % this.size} 
+        y: ${Math.floor(data.index / this.size)} 
+        index: ${data.index}
+        direction: ${data.direction}
+        `);
         //p1 - левая точка от вектора
         //p2 - правая точка от вектора
-        let p1, p2;
+        //p3 - левая точка от вектора сзади
+        //p4 - правая точка от вектора сзади
+        if (!(data.index % this.size) && !Math.floor(data.index / this.size)){
+          return;
+        }
+
+        let p1, p2, p3, p4;
         if (data.direction === VectorDirection.Right) {
           // console.log(matrix2d[data.index]);
           p1 = matrix2d[data.index - this.size];
           p2 = matrix2d[data.index];
+          p3 = matrix2d[data.index - this.size - 1];
+          p4 = matrix2d[data.index - 1];
         } else if (data.direction === VectorDirection.Down) {
           // console.log(matrix2d[data.index]);
           p1 = matrix2d[data.index];
           p2 = matrix2d[data.index - 1];
+          p3 = matrix2d[data.index - this.size];
+          p4 = matrix2d[data.index - this.size - 1];
         } else if (data.direction === VectorDirection.Left) {
           // console.log(matrix2d[data.index]);
           p1 = matrix2d[data.index + this.size];
           p2 = matrix2d[data.index];
+          p3 = matrix2d[data.index + this.size - 1];
+          p4 = matrix2d[data.index - 1];
         } else if (data.direction === VectorDirection.Up) {
           // console.log(matrix2d[data.index]);
           p1 = matrix2d[data.index - this.size - 1];
           p2 = matrix2d[data.index - this.size];
+          p3 = matrix2d[data.index - 1];
+          p4 = matrix2d[data.index];
         }
 
-        console.log(p1, p2);
-
-        if (!p2) {
-          p2 = {hole: false}
-        }
+        console.log([
+          [p1, p2],
+          [p3, p4]]
+        );
 
         if (!p1) {
           p1 = {hole: false}
         }
 
+        if (!p2) {
+          p2 = {hole: false}
+        }
+
+        if (!p3) {
+          p3 = {hole: false}
+        }
+
+        if (!p4) {
+          p4 = {hole: false}
+        }
+
         let moveIndex;
         let moveRotate;
 
-        if (p1.hole && p2.hole) {
+        if (
+          p1.hole && p2.hole && !p3.hole && p4.hole ||
+          p1.hole && p2.hole && p3.hole && !p4.hole
+        ) {
           console.log('поворот влево');
           moveRotate = rotate(data.direction, 'left');
-        } else if (p1 && p1.hole) {
-          console.log('поворот влево');
-          moveRotate = rotate(data.direction, 'left');
-        } else if (!p1.hole && p2.hole) {
+        } else if (
+          !p1.hole && p2.hole && !p3.hole && p4.hole ||
+          p1.hole && !p2.hole && p3.hole && !p4.hole
+        ) {
           console.log('продолжаем движение прямо');
           moveRotate = data.direction;
-        // else if (!p1.hole && !p2.hole) {
-        //   console.log('поворот влево');
-        //   moveRotate = rotate(data.direction, 'left');
-        // }
-        } else if (p2 && !p2.hole) {
-          console.log('поворот вправо');
-          moveRotate = rotate(data.direction, 'right');
-        } else if (!p1 && !p2){
+        } else if (
+          !p1.hole && !p2.hole && !p3.hole && p4.hole ||
+          p1.hole && p2.hole && p3.hole && !p4.hole
+        ) {
           console.log('поворот вправо');
           moveRotate = rotate(data.direction, 'right');
         }
@@ -460,7 +489,8 @@ export class Terrain {
         } else if (moveRotate === VectorDirection.Up) {
           moveIndex = data.index - this.size;
         }
-        // console.log({direction: moveRotate, index: moveIndex});
+
+        console.log({direction: moveRotate, index: moveIndex});
 
         path.lineTo(data.index % this.size, Math.floor(data.index / this.size));
 
