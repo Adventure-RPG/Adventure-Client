@@ -265,14 +265,6 @@ export class Terrain {
         for (let j = 0; j < this.size; j++) {
           let point = this.map[i * this.size + j];
           if (point > h) {
-            // holes.push(new Path([
-            //   new Vector2(i, j),
-            //   new Vector2(i + 1, j),
-            //   new Vector2(i + 1, j + 1),
-            //   new Vector2(i, j +1),
-            //   new Vector2(i, j),
-            // ]));
-
             let obj = {
               x: j,
               y: i,
@@ -280,12 +272,10 @@ export class Terrain {
               index: i * this.size + j
             };
 
-
             holePoints.push(obj);
             matrix2d.push(obj);
 
           } else {
-
             let obj = {
               x: j,
               y: i,
@@ -294,9 +284,7 @@ export class Terrain {
             };
 
             matrix2d.push(obj);
-
           }
-
         }
       }
 
@@ -396,11 +384,13 @@ export class Terrain {
 
       let vectorMove = (data: {direction: VectorDirection, index: number, initIndex: number}) => {
         console.log(`
-        x: ${data.index % this.size} 
-        y: ${Math.floor(data.index / this.size)} 
-        index: ${data.index}
-        direction: ${data.direction}
+          x: ${data.index % this.size} 
+          y: ${Math.floor(data.index / this.size)} 
+          index: ${data.index}
+          initIndex: ${data.initIndex}
+          direction: ${VectorDirection[data.direction]}
         `);
+
         //p1 - левая точка от вектора
         //p2 - правая точка от вектора
         //p3 - левая точка от вектора сзади
@@ -424,16 +414,65 @@ export class Terrain {
           p4 = matrix2d[data.index - this.size - 1];
         } else if (data.direction === VectorDirection.Left) {
           // console.log(matrix2d[data.index]);
-          p1 = matrix2d[data.index + this.size];
-          p2 = matrix2d[data.index];
-          p3 = matrix2d[data.index + this.size - 1];
-          p4 = matrix2d[data.index - 1];
+          p3 = matrix2d[data.index];
+          p4 = matrix2d[data.index - this.size];
+          p1 = matrix2d[data.index - 1];
+          p2 = matrix2d[data.index - this.size - 1];
         } else if (data.direction === VectorDirection.Up) {
           // console.log(matrix2d[data.index]);
           p1 = matrix2d[data.index - this.size - 1];
           p2 = matrix2d[data.index - this.size];
           p3 = matrix2d[data.index - 1];
           p4 = matrix2d[data.index];
+        }
+
+        if (
+          data.index % this.size === 1
+        ) {
+          // Левая грань
+          console.log(`Левая грань`);
+          if (data.direction === VectorDirection.Right) {
+            // p1 = {hole: false};
+            // p3 = {hole: false};
+          } else if (data.direction === VectorDirection.Down) {
+            // p2 = {hole: false};
+          } else if (data.direction === VectorDirection.Left) {
+            // p2 = {hole: false};
+          } else if (data.direction === VectorDirection.Up) {
+          }
+        }
+
+        if (
+          data.index % this.size === this.size - 1
+        ) {
+          if (data.direction === VectorDirection.Right) {
+            p3 = {hole: false};
+            p4 = {hole: false};
+          } else if (data.direction === VectorDirection.Down) {
+          } else if (data.direction === VectorDirection.Left) {
+          } else if (data.direction === VectorDirection.Up) {
+          }
+          // Правая грань
+          console.log(`Правая грань`);
+        }
+
+        if (data.index <= this.size) {
+          // Верхняя грань
+          console.log(`Верхняя грань`);
+          if (data.direction === VectorDirection.Right) {
+            p1 = {hole: false};
+            p3 = {hole: false};
+          } else if (data.direction === VectorDirection.Down) {
+          } else if (data.direction === VectorDirection.Left) {
+            p1 = {hole: false};
+            p3 = {hole: false};
+          } else if (data.direction === VectorDirection.Up) {
+          }
+        }
+
+        if (data.index > this.size * (this.size - 1)) {
+          // Нижняя грань
+          console.log(`Нижняя грань`);
         }
 
         console.log([
@@ -462,7 +501,7 @@ export class Terrain {
 
         if (
           p1.hole && p2.hole && !p3.hole && p4.hole ||
-          p1.hole && p2.hole && p3.hole && !p4.hole
+          !p1.hole && !p2.hole && p3.hole && !p4.hole
         ) {
           console.log('поворот влево');
           moveRotate = rotate(data.direction, 'left');
@@ -491,6 +530,10 @@ export class Terrain {
         }
 
         console.log({direction: moveRotate, index: moveIndex});
+
+        if (data.index === data.initIndex){
+          path.moveTo(data.index % this.size, Math.floor(data.index / this.size))
+        }
 
         path.lineTo(data.index % this.size, Math.floor(data.index / this.size));
 
