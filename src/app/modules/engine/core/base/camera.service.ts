@@ -21,7 +21,6 @@ export class CameraService implements OnInit {
   x;
   y;
   z;
-  target;
 
   constructor(private settingsService: SettingsService, private storageService: StorageService) {}
 
