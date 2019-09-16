@@ -54,7 +54,7 @@ export class HeightMapService {
           }
         };
 
-        // if (this.colorScheme){
+        // if (this.colorScheme) {
         //   for (let i = 0; i < geometry.faces.length; i += 2) {
         //     let color = [
         //       new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
