@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConeGeometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Quaternion, Vector3 } from "three";
+import { ConeGeometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Quaternion, Vector3, BoxGeometry, RingGeometry } from "three";
 import { FormBuilder, Validators } from "@angular/forms";
 import { EnumHelpers } from "@enums/enum-helpers";
 import { EngineService } from "@modules/engine/engine.service";
@@ -9,6 +9,7 @@ import { debounce } from "rxjs/internal/operators";
 import { StorageService } from "@services/storage.service";
 import { Geometry } from "three/src/core/Geometry";
 import {v4} from 'uuid';
+import { SpellGeometry } from '@modules/ui-interfaces/arena/extra/spell-geometry/spell-geometry';
 
 //TODO: вынести spell
 export interface Spell {
@@ -22,6 +23,7 @@ export interface Spell {
   castingTime: Actions,
   sender: Mesh,
   target: Mesh,
+  geometry: number
 
   //LifeCycle for spells
   time: number,
@@ -51,6 +53,7 @@ export enum Actions {
 }
 
 export enum SpellGeometries {
+  Cone,
   Cube,
   Ring
 }
@@ -129,24 +132,51 @@ export class SpellWorkspaceComponent implements OnInit {
     let self = this;
     let stage = 0;
 
-    let mesh = new Mesh(
-      new ConeGeometry(1, 5, 3),
-      new MeshPhongMaterial( {
-        color: 0xffffff,
-        flatShading: true
-      }));
+    let mesh;
+    switch(value.geometry) {
+      case 0:
+        mesh = new Mesh(
+          new ConeGeometry(1, 5, 3),
+          new MeshPhongMaterial({
+            color: 0xffffff,
+            flatShading: true
+          }));
+        break;
+      case 1:
+        mesh = new Mesh(
+          new BoxGeometry(5, 5, 5),
+          new MeshPhongMaterial({
+            color: 0xff00ff,
+            flatShading: true
+          }));
+        break;
+      case 2:
+        mesh = new Mesh(
+          new RingGeometry(3, 5, 32),
+          new MeshPhongMaterial({
+            color: 0xffff00,
+            flatShading: true
+          }));
+        break;
+      default:
+    }
 
+    let spellGeometry = new SpellGeometry(mesh, this.engineService);
+
+    console.log(value.geometry);
     //init position into sender
-    mesh.position.set((<Mesh>value.sender).position.x, (<Mesh>value.sender).position.y, (<Mesh>value.sender).position.z);
-    mesh.rotateX(Math.PI / 2);
+    spellGeometry.setPosition(new Vector3((<Mesh>value.sender).position.x, (<Mesh>value.sender).position.y, (<Mesh>value.sender).position.z), 0);
+    spellGeometry.rotateX(Math.PI / 2);
+    console.log(spellGeometry.position);
+    console.log(spellGeometry.mesh)
 
 
-    this.engineService.sceneService.scene.add(mesh);
+    // this.engineService.sceneService.scene.add(spellGeometry);
 
-    value.update = function(delta){
-      if(this.sender && this.target) {
+    value.update = function(delta) {
+      if (this.sender && this.target) {
 
-        let meshVector = new Vector3().setFromMatrixPosition( (mesh.matrixWorld ) );
+        let meshVector = new Vector3().setFromMatrixPosition( (spellGeometry.matrixWorld ) );
         let targetVector = new Vector3().setFromMatrixPosition( (<Mesh>this.target).matrixWorld );
 
         let dir = new Vector3();
@@ -156,15 +186,14 @@ export class SpellWorkspaceComponent implements OnInit {
 
         // Передвигаем меху
         let factor = 1 / value.duration;
-        mesh.position.set(mesh.position.x - dir.x * factor, mesh.position.y - dir.y * factor, mesh.position.z - dir.z * factor);
-
-        mesh.lookAt(meshVector);
-        mesh.rotateX(-Math.PI/2);
+        spellGeometry.setPosition(new Vector3(spellGeometry.position.x - dir.x * factor, spellGeometry.position.y - dir.y * factor, spellGeometry.position.z - dir.z * factor), delta);
+        spellGeometry.lookAt(meshVector);
+        spellGeometry.rotateX(-Math.PI / 2);
         // mesh.setRotationFromAxisAngle(new Vector3(0,0,0), angle);
 
         if (meshVector.distanceTo(targetVector) < 1){
           this.destroy(uuid);
-          self.engineService.sceneService.scene.remove(mesh);
+          spellGeometry.destroy()
         }
 
       }
