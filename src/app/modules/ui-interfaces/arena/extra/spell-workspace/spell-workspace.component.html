@@ -84,6 +84,16 @@
     </nz-form-control>
   </nz-form-item>
 
+  <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Target</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="target" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
   <nz-form-item>
     <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Geometries</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
@@ -94,13 +104,59 @@
     </nz-form-control>
   </nz-form-item>
 
-  <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
-    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Target</nz-form-label>
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 0">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="radius">Radius</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-select style="width: 120px;"
-                 formControlName="target" nzAllowClear nzPlaceHolder="Choose">
-        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
-      </nz-select>
+      <input nz-input formControlName="param1" name="radius">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 1">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="width">Width</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param1" name="width">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 0 || spellForm.controls['geometry'].value === 1">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="height">Height</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param2" name="height">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 0">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="radialSegment">Radial Segment</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param3" name="radialSegment">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 1">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="depth">Depth</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param3" name="depth">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 2">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="innerRadius">Inner Radius</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param1" name="innerRadius">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 2">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="outerRadius">Outer Radius</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param2" name="outerRadius">
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['geometry'].value === 2">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="thetaSegment">Theta Segment</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input nz-input formControlName="param3" name="thetaSegment">
     </nz-form-control>
   </nz-form-item>
 

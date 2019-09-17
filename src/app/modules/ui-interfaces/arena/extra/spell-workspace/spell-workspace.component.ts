@@ -24,6 +24,9 @@ export interface Spell {
   sender: Mesh,
   target: Mesh,
   geometry: number
+  param1: number //for geometry properties
+  param2: number //for geometry properties
+  param3: number //for geometry properties
 
   //LifeCycle for spells
   time: number,
@@ -77,6 +80,9 @@ export class SpellWorkspaceComponent implements OnInit {
     geometry: [0, [Validators.required]],
     sender: [0, [Validators.required]],
     target: [0, [Validators.required]],
+    param1: [1, [Validators.required]],
+    param2: [5, [Validators.required]],
+    param3: [5, [Validators.required]],
 
     uuid: [v4()],
     factor: [1, [Validators.required]],
@@ -133,10 +139,13 @@ export class SpellWorkspaceComponent implements OnInit {
     let stage = 0;
 
     let mesh;
-    switch(value.geometry) {
+    console.log(value.param1);
+    console.log(value.param2);
+    console.log(value.param3);
+    switch (value.geometry) {
       case 0:
         mesh = new Mesh(
-          new ConeGeometry(1, 5, 3),
+          new ConeGeometry(value.param1, value.param2, value.param3),
           new MeshPhongMaterial({
             color: 0xffffff,
             flatShading: true
@@ -144,7 +153,7 @@ export class SpellWorkspaceComponent implements OnInit {
         break;
       case 1:
         mesh = new Mesh(
-          new BoxGeometry(5, 5, 5),
+          new BoxGeometry(value.param2, value.param1, value.param3),
           new MeshPhongMaterial({
             color: 0xff00ff,
             flatShading: true
@@ -152,7 +161,7 @@ export class SpellWorkspaceComponent implements OnInit {
         break;
       case 2:
         mesh = new Mesh(
-          new RingGeometry(3, 5, 32),
+          new RingGeometry(value.param1, value.param2, value.param3),
           new MeshPhongMaterial({
             color: 0xffff00,
             flatShading: true
