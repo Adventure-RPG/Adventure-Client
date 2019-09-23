@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConeGeometry, Matrix4, Mesh, MeshBasicMaterial, MeshPhongMaterial, Quaternion, Vector3, BoxGeometry, RingGeometry } from "three";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EnumHelpers } from "@enums/enum-helpers";
 import { EngineService } from "@modules/engine/engine.service";
 import { TreeElement } from "../../../../../../typings";
@@ -77,12 +77,13 @@ export class SpellWorkspaceComponent implements OnInit {
     savingThrow: [0, [Validators.required]],
     spellResistance: [false, [Validators.required]],
     castingTime: [0, [Validators.required]],
-    geometry: [0, [Validators.required]],
     sender: [0, [Validators.required]],
     target: [0, [Validators.required]],
-    param1: [1, [Validators.required]],
-    param2: [5, [Validators.required]],
-    param3: [5, [Validators.required]],
+
+    triggers: this.formBuilder.array([
+      this.createTrigger()
+    ]),
+
 
     uuid: [v4()],
     factor: [1, [Validators.required]],
@@ -91,6 +92,14 @@ export class SpellWorkspaceComponent implements OnInit {
     }
   });
 
+  createTrigger(): FormGroup {
+    return this.formBuilder.group({
+      geometry: [0, [Validators.required]],
+      param1: [1, [Validators.required]],
+      param2: [5, [Validators.required]],
+      param3: [5, [Validators.required]],
+    });
+  }
 
   panel = {
     active: false,
