@@ -81,7 +81,7 @@ export class SpellWorkspaceComponent implements OnInit {
     target: [0, [Validators.required]],
 
     triggers: this.formBuilder.array([
-      this.createTrigger()
+      this.createTrigger(),
     ]),
 
 
