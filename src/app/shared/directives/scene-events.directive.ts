@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostListener, Input, NgZone} from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { OnWindowEventService } from '@events/on-window-event.service';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { MouseEventService } from '@events/mouse-event.service';
@@ -125,7 +125,7 @@ export class SceneEventsDirective {
       console.log(event);
     }
     if (this.enabledEvents.mouseEvents.mouseout) {
-      console.log(event);
+      // console.log(event);
     }
   }
 

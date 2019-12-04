@@ -3,7 +3,8 @@ import { EngineService } from '../../engine/engine.service';
 import { LightService } from '../../engine/core/light.service';
 import { SettingsService } from '../../../services/settings.service';
 import { KeyboardEventService } from '../../../events/keyboard-event.service';
-import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three';
+import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
+import { environment } from "../../../../environments/environment";
 
 //TODO: вынести в инциацию сцен
 @Component({
@@ -12,7 +13,7 @@ import { Color, GridHelper, Mesh, MeshPhongMaterial, PlaneGeometry } from 'three
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
-  @ViewChild('scene', { static: false }) scene;
+  @ViewChild('scene', { static: true }) scene;
 
   constructor(
     private engineService: EngineService,
@@ -24,34 +25,39 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.scene);
+
+    this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
+
     this.settingsService.settings$.subscribe(() => {
       this.engineService.updateCamera();
     });
-
-    console.log('init');
-    this.engineService.init(window.innerWidth, window.innerHeight);
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
     // ground
     let mesh = new Mesh(
-      new PlaneGeometry(100, 100, 10, 10),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 0.8 })
+      new PlaneGeometry(environment.scale * 100, environment.scale * 100, 10, 10),
+      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 1 })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
     this.engineService.sceneService.scene.add(mesh);
 
-    let grid = new GridHelper(100, 20, 0x000000, 0x000000);
+    // let grid = new GridHelper(environment.scale * 100, 20, 0x000000, 0x000000);
 
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
-    this.engineService.sceneService.scene.add(grid);
+    // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
+    this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
+    this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
     // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
+
+
 
     this.keyboardEventService.engineService = this.engineService;
 
@@ -129,29 +135,29 @@ export class EditorComponent implements OnInit {
     let spotLightOptions = {
       color: '0xffffff',
       groundColor: '#fff',
-      intensity: 3,
-      distance: 1500,
-      exponent: 0,
-      angle: 1.52,
-      decay: 2,
-      position: {
-        x: 0,
-        y: 1000,
-        z: -800
-      }
-    };
-
-    let spotLightOptions2 = {
-      color: '0x777',
-      groundColor: '#777',
       intensity: 1,
-      distance: 1000,
-      exponent: 1,
+      distance: environment.scale * 100 * 2,
+      exponent: 0,
       angle: Math.PI / 4,
       decay: 2,
       position: {
         x: 0,
-        y: 50,
+        y:  environment.scale * 100 / 2,
+        z: -environment.scale * 100 / 2
+      }
+    };
+
+    let spotLightOptions2 = {
+      color: '0xfff',
+      groundColor: '#fff',
+      intensity: 2,
+      distance: environment.scale * 100,
+      exponent: 0,
+      angle: Math.PI / 4,
+      decay: 2,
+      position: {
+        x: -environment.scale * 100 / 2,
+        y:  environment.scale * 100 / 4,
         z: 0
       }
     };
@@ -164,8 +170,8 @@ export class EditorComponent implements OnInit {
 
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
 
-    this.lightService.addLight(spotLightOptions, 'SpotLight');
-    // this.lightService.addLight(spotLightOptions2, 'SpotLight');
+    // this.lightService.addLight(spotLightOptions, 'SpotLight');
+    this.lightService.addLight(spotLightOptions2, 'SpotLight');
 
     // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
     // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");

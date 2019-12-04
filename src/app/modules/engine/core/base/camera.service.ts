@@ -7,6 +7,7 @@ import { FirstPersonControls } from 'app/utils/first-person-controls';
 import { StorageService } from '../../../../services/storage.service';
 import { Types } from '@enums/types.enum';
 import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
+
 //import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
 
 @Injectable()
@@ -49,7 +50,7 @@ export class CameraService implements OnInit {
     this._domElement = value;
   }
 
-  public updateCamera(position, x?, y?, z?) {
+  public updateCamera(position, obj, x?, y?, z?) {
     // console.log(this.settingsService.settings.camera.type);
     // console.log(CAMERA.IsometricCamera);
 
@@ -80,7 +81,7 @@ export class CameraService implements OnInit {
       } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
         this.update2dCamera();
       } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-        this.updateFirstPersonCamera();
+        this.updateFirstPersonCamera(obj);
       }
     }
 
@@ -106,10 +107,11 @@ export class CameraService implements OnInit {
     this.cameries = mergeModel;
   }
 
-  public updateFirstPersonCamera() {
+  public updateFirstPersonCamera(obj) {
     this.commandsCleanUp();
     this.camera = this.cameries[CAMERA.FirstPersonCamera];
     let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
+    controls.update(obj);
   }
 
   public initIsometricCamera() {

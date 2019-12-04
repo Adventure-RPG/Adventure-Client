@@ -1,6 +1,6 @@
 <form nz-form (ngSubmit)="submitForm()" [formGroup]="spellForm">
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="friendlyFire">Friendly fire</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="friendlyFire">Friendly fire</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-switch
         formControlName="friendlyFire"
@@ -11,38 +11,51 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="range">Range</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="range">Range</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="range" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="range"
+                 [nzMin]="0"
+                 [nzMax]="20"
+                 [nzStep]="0.1"
+                 ></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="duration">Duration</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="duration" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="duration"
+                 [nzMin]="0"
+                 [nzMax]="3"
+                 [nzStep]="0.1"
+                 ></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Area</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Area</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-input-number formControlName="area" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>
+      <nz-slider formControlName="area"
+                 [nzMin]="1"
+                 [nzMax]="1000"
+                 [nzStep]="1"
+                 ></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Factor</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-select style="width: 120px;"
-                 formControlName="type" nzAllowClear nzPlaceHolder="Choose">
-        <nz-option *ngFor="let option of options.spellType" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
-      </nz-select>
+      <nz-slider formControlName="factor"
+                 [nzMin]="0"
+                 [nzMax]="3"
+                 [nzStep]="0.01"
+                 ></nz-slider>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Saving Throw</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="savingThrow" nzAllowClear nzPlaceHolder="Choose">
@@ -51,9 +64,115 @@
     </nz-form-control>
   </nz-form-item>
 
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Sender</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="sender" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Type</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="type" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.spellType" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item *ngIf="spellForm.controls['type'].value === 0">
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Target</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="target" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let mesh of meshes" [nzValue]="mesh" [nzLabel]="mesh.name || mesh.uuid"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div formArrayName="triggers"
+       *ngFor="let item of spellForm.get('triggers').controls; let i = index;">
+
+    <div [formGroupName]="i">
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Geometries</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select style="width: 120px;"
+                     formControlName="geometry" nzAllowClear nzPlaceHolder="Choose">
+            <nz-option *ngFor="let option of options.spellGeometries" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 0">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="radius">Radius</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param1" name="radius">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 1">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="width">Width</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param1" name="width">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 0 || spellForm.controls['triggers'].controls[i].controls['geometry'].value === 1">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="height">Height</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param2" name="height">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 0">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="radialSegment">Radial Segment</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param3" name="radialSegment">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 1">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="depth">Depth</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param3" name="depth">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 2">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="innerRadius">Inner Radius</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param1" name="innerRadius">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 2">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="outerRadius">Outer Radius</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param2" name="outerRadius">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="spellForm.controls['triggers'].controls[i].controls['geometry'].value === 2">
+        <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="thetaSegment">Theta Segment</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="param3" name="thetaSegment">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!--Chosen name: {{ spellForm.controls.triggers.controls[i].controls.name.value }}-->
+
+  </div>
+
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-switch
         formControlName="spellResistance"
@@ -65,7 +184,7 @@
 
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-select style="width: 120px;"
                  formControlName="castingTime" nzAllowClear nzPlaceHolder="Choose">

@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  Blending,
-  BlendingDstFactor,
-  BlendingEquation,
-  BlendingSrcFactor,
-  Colors,
-  DepthModes,
-  Material,
-  MaterialParameters,
+  Blending, BlendingDstFactor, BlendingEquation, BlendingSrcFactor, Colors, DepthModes, Material, MaterialParameters,
   Side
 } from 'three';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

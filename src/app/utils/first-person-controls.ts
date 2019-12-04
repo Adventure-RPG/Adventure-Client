@@ -1,14 +1,14 @@
 import * as THREE from 'three';
-import { StorageService } from '@services/storage.service';
 import { Key } from 'ts-keycode-enum';
 import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { CameraControls } from './camera-controls';
 import { Types } from '@enums/types.enum';
 import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { Camera } from 'three';
+import { PerspectiveCamera, Vector3 } from "three";
+import { environment } from "../../environments/environment";
 
 export class FirstPersonControls extends CameraControls {
-  object;
+  object: PerspectiveCamera;
   target;
   domElement;
   enabled;
@@ -38,6 +38,9 @@ export class FirstPersonControls extends CameraControls {
   viewHalfY;
   mouseWheelUp;
   mouseWheelDown;
+  leftRotation;
+  rightRotation;
+  radius;
   phi;
   theta;
 
@@ -84,28 +87,33 @@ export class FirstPersonControls extends CameraControls {
 
     this.mouseDragOn = false;
 
+    this.leftRotation = false;
+    this.rightRotation = false;
+
     this.viewHalfX = 0;
     this.viewHalfY = 0;
 
-    let radius = Math.sqrt(
+    this.radius = Math.sqrt(
       Math.pow(this.object.position.x, 2) +
         Math.pow(this.object.position.y, 2) +
         Math.pow(this.object.position.z, 2)
     );
-    this.theta = Math.acos(this.object.position.z / radius);
-    this.phi = Math.acos(this.object.position.x / (radius * Math.sin(this.theta)));
+    this.theta = Math.acos(this.object.position.z / this.radius);
+    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
 
-    this.movementSpeed = 100;
+    this.movementSpeed = 10 * environment.scale;
     this.lookSpeed = 0.125;
     this.lookVertical = true;
     this.constrainVertical = true;
     this.verticalMin = 1.1;
     this.verticalMax = 2.2;
+    this.target = new Vector3(0, 0, 0);
     // this.fov = object.fov;
 
     if (parseFloat(localStorage.getItem('cameraZoom'))) {
       this.zoom = parseFloat(localStorage.getItem('cameraZoom'));
     }
+    this.object.lookAt(this.target);
   }
 
   initCommands() {
@@ -256,9 +264,43 @@ export class FirstPersonControls extends CameraControls {
         this.moveDown = true;
       },
       pressed: false,
-      keyCode: [Key.Q],
+      keyCode: [Key.F],
       name: 'moveDown'
     });
+
+    // 19.08.2019
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraLeftRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        this.leftRotation = false;
+      },
+      onKeyDown: () => {
+        console.log('Поворачиваю камеру влево');
+
+        this.leftRotation = true;
+      },
+      pressed: false,
+      keyCode: [Key.Q],
+      name: 'leftRotation'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraRightRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        this.rightRotation = false;
+      },
+      onKeyDown: () => {
+        console.log('Поворачиваю камеру вправо');
+        this.rightRotation = true;
+      },
+      pressed: false,
+      keyCode: [Key.E],
+      name: 'rightRotation'
+    });
+
+
+    //
 
     //this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.onMouseMove, {
     //       type: Types.Camera,
@@ -347,28 +389,51 @@ export class FirstPersonControls extends CameraControls {
           this.autoSpeedFactor = 0.0;
         }
         let actualMoveSpeed = delta * this.movementSpeed;
+        // console.log(this.target);
+        // console.log(this.object.position);
+        if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.moveDown  || this.moveUp) {
+          let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
+          if (this.moveForward || (this.autoForward && !this.moveBackward)) {
+            this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
+            this.object.translateY(actualMoveSpeed);
+          }
+          if (this.moveBackward) {
+            this.object.translateZ(actualMoveSpeed);
+            this.object.translateY(-actualMoveSpeed);
+          }
+          if (this.moveLeft) {
+            this.object.translateX(-actualMoveSpeed);
+          }
+          if (this.moveRight) {
+            this.object.translateX(actualMoveSpeed);
+          }
+          if (this.moveDown) {
+            this.object.translateY(-actualMoveSpeed);
+          }
+          if (this.moveUp) {
+            this.object.translateY(actualMoveSpeed);
+          }
+          this.target = new Vector3(this.target.x - (previousVector.x - this.object.position.x),
+            this.target.y - (previousVector.y - this.object.position.y),
+            this.target.z - (previousVector.z - this.object.position.z));
+         }
 
-        if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-          this.object.translateZ(-(actualMoveSpeed + this.autoSpeedFactor));
-          this.object.translateY(actualMoveSpeed);
-        }
-        if (this.moveBackward) {
-          this.object.translateZ(actualMoveSpeed);
-          this.object.translateY(-actualMoveSpeed);
-        }
-        if (this.moveLeft) {
-          this.object.translateX(-actualMoveSpeed);
-        }
-        if (this.moveRight) {
-          this.object.translateX(actualMoveSpeed);
-        }
-        if (this.moveDown) {
-          this.object.translateZ(actualMoveSpeed);
-          this.object.translateY(-actualMoveSpeed);
-        }
-        if (this.moveUp) {
-          this.object.translateZ(-actualMoveSpeed);
-          this.object.translateY(actualMoveSpeed);
+        if (this.leftRotation || this.rightRotation) {
+          if (this.leftRotation) {
+            this.phi += (Math.PI) / 180;
+          }
+          if (this.rightRotation) {
+            this.phi -= (Math.PI) / 180;
+          }
+          this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
+          this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
+          this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+          this.object.lookAt(this.target);
+          // console.log(
+          //   Math.pow(this.object.position.x - this.target.x, 2) +
+          //   Math.pow(this.object.position.y - this.target.y, 2) +
+          //   Math.pow(this.object.position.z - this.target.z, 2)
+          // );
         }
 
         this.object.updateProjectionMatrix();
@@ -389,66 +454,25 @@ export class FirstPersonControls extends CameraControls {
   }
   //TODO: END
 
-  //TODO: вынести все функции аналогично moveForwardKeyboard для закрепления материала
-  onKeyDown(event) {
-    //event.preventDefault();
-    switch (event.keyCode) {
-      case 38: /*up*/
-      case 87:
-        /*W*/ this.moveForward = true;
-        break;
-
-      case 37: /*left*/
-      case 65:
-        /*A*/ this.moveLeft = true;
-        break;
-
-      case 40: /*down*/
-      case 83:
-        /*S*/ this.moveBackward = true;
-        break;
-
-      case 39: /*right*/
-      case 68:
-        /*D*/ this.moveRight = true;
-        break;
-
-      case 82:
-        /*R*/ this.moveUp = true;
-        break;
-      case 70:
-        /*F*/ this.moveDown = true;
-        break;
-    }
-  }
-  onKeyUp(event) {
-    switch (event.keyCode) {
-      case 38: /*up*/
-      case 87:
-        /*W*/ this.moveForward = false;
-        break;
-
-      case 37: /*left*/
-      case 65:
-        /*A*/ this.moveLeft = false;
-        break;
-
-      case 40: /*down*/
-      case 83:
-        /*S*/ this.moveBackward = false;
-        break;
-
-      case 39: /*right*/
-      case 68:
-        /*D*/ this.moveRight = false;
-        break;
-
-      case 82:
-        /*R*/ this.moveUp = false;
-        break;
-      case 70:
-        /*F*/ this.moveDown = false;
-        break;
+  public update(obj) {
+    if (obj.target) {
+      this.target = obj.target;
+      this.object.lookAt(this.target);
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x - this.target.x, 2) +
+        Math.pow(this.object.position.y - this.target.y, 2) +
+        Math.pow(this.object.position.z - this.target.z, 2)
+      );
+      this.theta = Math.acos((this.object.position.z - this.target.z) / this.radius);
+      this.phi = Math.acos((this.object.position.x - this.target.x) / (this.radius * Math.sin(this.theta)));
+    } else {
+      this.radius = Math.sqrt(
+        Math.pow(this.object.position.x, 2) +
+        Math.pow(this.object.position.y, 2) +
+        Math.pow(this.object.position.z, 2)
+      );
+      this.theta = Math.acos(this.object.position.z / this.radius);
+      this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
     }
   }
   //TODO: END

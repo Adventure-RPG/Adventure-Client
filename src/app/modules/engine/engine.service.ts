@@ -133,24 +133,8 @@ export class EngineService {
     // this.z = this.z + z;
     // console.log(this.x);
 
-    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z));
+    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z), {});
     this.sceneService.camera = camera;
-  }
-
-  //TODO: вынести
-  public map(img) {
-    let options: HeightMapOptions = {
-      grid: false
-    };
-
-    console.log(this.sceneService.scene);
-
-    this.heightMapService.changeMapFromImage(options, this.sceneService.scene, img);
-  }
-
-  public generateFromNoise() {
-    this.heightMapService.generateDungeonTerrain(this.sceneService.scene);
-    // this.heightMapService.getHeightMap(this.sceneService.scene);
   }
 
   //TODO: вынести

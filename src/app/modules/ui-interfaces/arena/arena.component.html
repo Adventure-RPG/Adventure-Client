@@ -10,12 +10,17 @@
       [nzHeader]="panel.name"
       [nzActive]="panel.active"
       [nzDisabled]="panel.disabled"
+      (nzActiveChange)="panelChanged(panel, $event)"
     >
       <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>
 
       <adventure-model-loader *ngIf="panel.name === 'ModelLoader'"></adventure-model-loader>
 
       <adventure-layers *ngIf="panel.name === 'Layers'"></adventure-layers>
+
+      <adventure-save *ngIf="panel.name === 'Save'"></adventure-save>
+
+      <adventure-load *ngIf="panel.name === 'Load'"></adventure-load>
 
       <router-outlet></router-outlet>
 
@@ -27,5 +32,6 @@
 
   <div id="arena"
        adventureSceneEvents
-       #scene></div>
+       #scene>
+
 </div>

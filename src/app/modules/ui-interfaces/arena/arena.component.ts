@@ -1,24 +1,21 @@
-import {ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BoxGeometry, Camera, Color, GridHelper, Group, Mesh, MeshPhongMaterial, PlaneGeometry} from 'three';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
 import { SettingsService } from '@services/settings.service';
 import { StorageService } from '@services/storage.service';
-import { MouseCommandsEnum } from '@enums/mouseCommands.enum';
-import { Types } from '@enums/types.enum';
-
 // import { SelectionBox } from 'three/sources/interactive/SelectionBox';
 // import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
-import {SelectionHelper} from "three/examples/jsm/interactive/SelectionHelper";
-import {SelectionBox} from "three/examples/jsm/interactive/SelectionBox";
-import {fromEvent, Subscription} from "rxjs/index";
+import { EnumHelpers } from "@enums/enum-helpers";
 
 export enum ArenaPanel {
   ModelLoader,
   Spell,
-  Layers
+  Layers,
+  Save,
+  Load,
 }
 
 @Component({
@@ -35,25 +32,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
   selectionBox;
   helper;
 
-  panels = [
-    {
-      active: false,
-      name: ArenaPanel[0],
-      disabled: false
-    },
-    {
-      active: false,
-      name: ArenaPanel[1],
-      disabled: false
-    },
-    {
-      active: true,
-      name: ArenaPanel[2],
-      disabled: false
-    }
-  ];
-
-  //
   events = {
     mouseEvents: {
       mousedown: false,
@@ -82,10 +60,53 @@ export class ArenaComponent implements OnInit, OnDestroy {
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService,
     private zone: NgZone
-  ) {
-  }
+  ) {}
+
+  panels = (() => {
+
+    let nodes: {
+      name: string,
+      value: number,
+      active?: boolean,
+      disabled?: false
+    }[] = EnumHelpers.getNamesAndValues(ArenaPanel);
+
+    let activePanelIndex = JSON.parse(localStorage.getItem('activePanelIndex')) || [];
+
+
+    nodes.forEach((item, index) => {
+      item.active = false;
+      item.disabled = false;
+      if (activePanelIndex.indexOf(index) !== -1){
+        item.active = true;
+      }
+    });
+
+    console.log(nodes);
+
+    return nodes;
+  })();
+
+  panelChanged = (panel, event: boolean) => {
+
+    panel.active = event;
+
+    let activePanelIndex = [];
+
+    this.panels.forEach((item) => {
+      if (item.active){
+        activePanelIndex.push(item.value)
+      }
+    });
+
+    localStorage.setItem('activePanelIndex', `[${activePanelIndex.toString()}]`);
+  };
 
   ngOnInit() {
+
+    console.log(this.scene);
+
+
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
     console.log(this.scene.nativeElement.getBoundingClientRect());
 
@@ -351,7 +372,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     };
 
     this.engineService.sceneService.camera.position.set(100, 100, 100);
-    this.engineService.sceneService.camera.lookAt(100, 0, 0);
+    this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 

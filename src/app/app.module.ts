@@ -1,8 +1,4 @@
-import {
-  BrowserModule,
-  HAMMER_GESTURE_CONFIG,
-  HammerGestureConfig
-} from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import 'hammerjs';
 
@@ -29,12 +25,12 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { StorageService } from './services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
-import {NgZorroAntdModule, NZ_I18N, en_US, NzCollapseModule} from 'ng-zorro-antd';
+import { en_US, NgZorroAntdModule, NZ_I18N } from 'ng-zorro-antd';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 /** config angular i18n **/
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+
 registerLocaleData(en);
 
 export class MyHammerConfig extends HammerGestureConfig {
@@ -50,7 +46,6 @@ const Modules = [
   HttpClientModule,
   UiInterfacesModule,
   UiInterfacesRoutingModule,
-  NgZorroAntdModule,
 ];
 
 const ModulesForRoot = [];
@@ -92,7 +87,7 @@ const Guards = [AuthGuard];
       useClass: AuthInterceptor,
       multi: true
     },
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [...ModulesForRoot, ...Components],

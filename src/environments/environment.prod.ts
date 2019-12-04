@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  chat_service: 'http://localhost:9999',
+  scale: 20
 };

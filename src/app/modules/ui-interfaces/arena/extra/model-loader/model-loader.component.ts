@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ModelLoaderService} from "@modules/engine/core/base/model-loader.service";
-import {BoxGeometry, Mesh, MeshPhongMaterial} from "three";
-import {FormBuilder, Validators} from "@angular/forms";
-import {Spell} from "@modules/ui-interfaces/arena/extra/spell-workspace/spell-workspace.component";
+import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
+import { FormBuilder, Validators } from "@angular/forms";
 
 export interface File{
   name: string,

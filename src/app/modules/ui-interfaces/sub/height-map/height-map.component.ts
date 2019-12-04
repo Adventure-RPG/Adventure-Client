@@ -7,7 +7,12 @@ import { EngineService } from '../../../engine/engine.service';
   styleUrls: ['./height-map.component.scss']
 })
 export class HeightMapComponent implements OnInit {
-  constructor(private engineService: EngineService) {}
+
+  model = {
+    wallType: 0,
+  };
+
+  constructor(public engineService: EngineService) {}
 
   ngOnInit() {}
 
@@ -46,11 +51,12 @@ export class HeightMapComponent implements OnInit {
   }
 
   imageToHeightMap(img) {
-    this.engineService.map(img);
-    console.log(img);
+    this.engineService.heightMapService.map(img, this.model)
+      .then((data) => {
+        console.log(data);
+        this.engineService.sceneService.scene.add(data.terrain);
+      });
   }
 
-  generateFromNoise() {
-    this.engineService.generateFromNoise();
-  }
+
 }

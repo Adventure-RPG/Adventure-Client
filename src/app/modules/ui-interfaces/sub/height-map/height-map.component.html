@@ -13,11 +13,20 @@
 <adventure-color-map></adventure-color-map>
 
 <div class="p-3">
+  <nz-radio-group [(ngModel)]="model.wallType">
+    <label nz-radio [nzValue]="0">Step</label>
+    <label nz-radio [nzValue]="1">Dungeon</label>
+    <label nz-radio [nzValue]="2">Polygon</label>
+  </nz-radio-group>
+</div>
+
+
+<div class="p-3">
 
   <adventure-main-buttons-control>
-    <button class="btn btn-primary" (click)="generateFromNoise()">
-      getHeightMap
-    </button>
+    <!--<button class="btn btn-primary" (click)="engineService.heightMapService.generateFromNoise()">-->
+      <!--getHeightMap-->
+    <!--</button>-->
 
   </adventure-main-buttons-control>
 

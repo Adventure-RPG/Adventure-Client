@@ -21,7 +21,16 @@ $url-face: './assets/fonts';
 @include font-face("komi",      $url-face + "/Komi", $file-formats: eot woff2 woff ttf svg);
 @import "assets/scss/font-awesome/font-awesome";
 @import "assets/scss/main";
-;
+
+
+/**
+  Ant Fix
+ */
+
+.ant-switch{
+  line-height: 0;
+}
+
 /**
   Drag'n'drop
  */

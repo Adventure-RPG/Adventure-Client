@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
-import { Mesh, MeshPhongMaterial, Scene, ShadowMaterial, VertexColors } from 'three';
+import {
+  BoxGeometry, DoubleSide, FaceNormalsHelper, Geometry, GeometryUtils, Matrix4, Mesh, MeshNormalMaterial,
+  MeshPhongMaterial,
+  ObjectSpaceNormalMap, Scene,
+  ShadowMaterial, TangentSpaceNormalMap,
+  VertexColors
+} from 'three';
 import { Terrain } from '../utils/terrain';
 import { Noise } from '@modules/engine/core/utils/noise';
+import { environment } from "../../../../../environments/environment";
+import { HeightMapOptions } from "@modules/engine/engine.types";
 
 // import * as SimplexNoise from 'simplex-noise';
 
@@ -15,15 +23,26 @@ export class HeightMapService {
   constructor() {}
 
   //TODO: пустить параллельно
+  public map(img, model) {
+    let options: HeightMapOptions = {
+      ...model,
+      grid: false
+    };
 
-  public changeMapFromImage(options, scene: Scene, img) {
-    // terrain
-    //TODO: сделать добавление без рекваер
-    //TODO: вынести, смерджить с настройками
+    return this.changeMapFromImage(options, img);
+  }
+
+  public generateFromNoise(){
+    // return this.generateDungeonTerrain();
+    // this.heightMapService.getHeightMap(this.sceneService.scene);
+  }
+
+  // terrain
+  public changeMapFromImage(options, img): Promise<{geoJson: IGEOJson, terrain: Mesh}> {
     //TODO: вынести все текстуры и материалы в отдельный сервис
 
     return this.parseImageToGeo(img)
-      .then((res) => {
+      .then((res: number[][]) => {
         let geoJsonObject: IGEOJson = {
           type: 'Feature',
           geometry: {
@@ -31,11 +50,11 @@ export class HeightMapService {
             coordinates: [res]
           },
           properties: {
-            name: 'Ocean'
+            name: 'Terrain'
           }
         };
 
-        // if (this.colorScheme){
+        // if (this.colorScheme) {
         //   for (let i = 0; i < geometry.faces.length; i += 2) {
         //     let color = [
         //       new Color(`rgb(${this.colorScheme[i / 2][0]}, ${this.colorScheme[i / 2][1]}, ${this.colorScheme[i / 2][2]})`),
@@ -60,17 +79,36 @@ export class HeightMapService {
           flatShading: true
         });
 
+        //TODO: пофиксить только квадратные картинки
         let terrain = new Terrain(img.width, 0.1, res);
         // terrain.generate(0.01);
-        let terrainObject = terrain.getTerrainWithMaterial(
-          {
-            isDungeon: true
-          },
-          terrainMaterial
-        );
-        terrainObject.castShadow = true;
-        terrainObject.receiveShadow = true;
-        scene.add(terrainObject);
+        // let terrainObject = terrain.getTerrainWithMaterial(
+        //   {
+        //     isDungeon: options.isDungeon,
+        //     rotationX: -Math.PI / 2
+        //   },
+        //   terrainMaterial
+        // );
+
+        let terrainGeometry = terrain.getTerrain({
+          ...options,
+        });
+
+        // terrainGeometry,
+        let terrainMesh = new Mesh(terrainGeometry, new MeshPhongMaterial({
+          color: 0x3366aa,
+          transparent: true,
+          flatShading: true,
+          opacity: 1
+        }));
+
+        terrainMesh.castShadow = true;
+        terrainMesh.receiveShadow = true;
+
+        // Нужно что бы не было траблов со светом
+        terrainMesh.geometry.scale(environment.scale, environment.scale, environment.scale);
+
+        // scene.add(terrainObject);
 
         let waterMaterial = new MeshPhongMaterial({
           color: 0x3366aa,
@@ -79,18 +117,24 @@ export class HeightMapService {
           opacity: 0.8
         });
 
-        let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
-        terrain.moveWaves(waterMesh);
+        // let waterMesh = terrain.getWaterWithMaterial(waterMaterial);
+        // terrain.moveWaves(waterMesh);
 
-        scene.add(waterMesh);
+        // scene.add(waterMesh);
 
         // !IMPORTANT TODO: add waves to water;
-        console.log(waterMesh);
+        // console.log(waterMesh);
 
-        return geoJsonObject;
+        return {geoJson: geoJsonObject, terrain: terrainMesh};
       })
-      .then((geoObj) => {
-        let options = { body: geoObj };
+  }
+
+  public sentMapToServer(promise){
+    promise
+      .then((obj) => {
+        let options = { body: obj.geoJsonObject };
+
+        return options.body
         // return new Api().points(options);
       })
       .then((response) => {
@@ -100,6 +144,7 @@ export class HeightMapService {
         console.log(err);
       });
   }
+
 
   public changeColorMapFromImage(options, scene, img) {
     this.parseImageToColorGeo(img).then((res) => {
@@ -187,95 +232,5 @@ export class HeightMapService {
     }
 
     return colorScheme;
-  }
-
-  /**
-   * Experimental
-   * Нужна для создания террейна с вертикальными стенами. Пока генерируется без картинки
-   * @param {Scene} scene
-   */
-  public generateDungeonTerrain(scene: Scene) {
-    //TODO: переделать от картинки
-    //ВАЖНО: Должно быть кратно 4ём, не кратное 4ём не проверял
-    let worldDepth = 16;
-    let worldWidth = 16;
-    let cubeWidth = 1;
-
-    this.mapData = Noise.generateHeight(worldWidth, worldDepth);
-
-    //Нужен для перемещения в 0
-    const min = Math.min(...this.mapData) * 0.2;
-
-    let geometries = [];
-
-    for (let z = 0; z < worldDepth; z++) {
-      for (let x = 0; x < worldWidth; x++) {
-        //ВАЖНО! Подумать в сторону кастомных алгоритмов по объеденению
-        //http://evanw.github.io/csg.js/docs/
-
-        //Делаем всех от одного уровня
-        let h = Noise.getY({ mapData: this.mapData, x, z, worldWidth, k: 0.2 });
-
-        // x - worldHalfWidth
-        // z - worldHalfDepth
-        let diff = h - min;
-        let hres;
-        diff >= 1 ? (hres = diff) : (hres = 1);
-
-        geometries
-          .push
-          // csgApi.CSG.cube({
-          //   radius: [cubeWidth / 2, hres, cubeWidth / 2],
-          //   center: [x * cubeWidth, 0, z * cubeWidth]
-          // })
-          ();
-      }
-    }
-
-    // geometries.push(
-    //   csgApi.CSG.cube({
-    //     radius: cubeWidth/2,
-    //     center: [0, 0, 0],
-    //   })
-    // );
-    //
-    // geometries.push(
-    //   csgApi.CSG.cube({
-    //     radius: cubeWidth/2,
-    //     center: [0, 0, 1],
-    //   })
-    // );
-
-    console.log(geometries);
-
-    let csgModel = geometries[0];
-
-    // console.log(arrayTest);
-    console.time('merge geometries');
-    for (let i = 0; i < geometries.length; i++) {
-      csgModel = csgModel.union(geometries[i]);
-    }
-    console.timeEnd('merge geometries');
-
-    //TODO: Вынести материалы и нижнию логику
-    let shadowMaterial = new ShadowMaterial({
-      opacity: 0.9
-    });
-    // console.log(geometry)
-
-    let material = new MeshPhongMaterial({
-      flatShading: true,
-      shininess: 100,
-      vertexColors: VertexColors,
-      color: '#89ff90'
-    });
-
-    // let mesh = new Mesh(fromCSG(csgModel), [material, shadowMaterial]);
-    // mesh.geometry.computeVertexNormals();
-    // //
-    // mesh.castShadow = true;
-    // mesh.receiveShadow = true;
-    // mesh.updateMatrix();
-    // scene.add(mesh);
   }
 }
