@@ -9,6 +9,7 @@ import { StorageService } from '@services/storage.service';
 // import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
 import { EnumHelpers } from "@enums/enum-helpers";
+import { CAMERA } from "@enums/settings.enum";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -101,6 +102,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     localStorage.setItem('activePanelIndex', `[${activePanelIndex.toString()}]`);
   };
+
+  chooseCamera(camera){
+    this.engineService.cameraService.camera = this.engineService.cameraService.cameries[camera];
+    this.settingsService.changeSetting('camera', { type: camera });
+    console.log(this.engineService.cameraService.cameries);
+    console.log(this.engineService.cameraService.cameries[camera]);
+  }
 
   ngOnInit() {
 

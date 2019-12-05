@@ -26,12 +26,44 @@
 
     </nz-collapse-panel>
   </nz-collapse>
-
-
   <!--<div class="selectBox"></div>-->
 
   <div id="arena"
        adventureSceneEvents
        #scene>
+
+  </div>
+
+  <!--<div class="setting">-->
+    <!--<i nz-icon nzType="setting" nzTheme="outline"></i>-->
+  <!--</div>-->
+
+  <div class="ms-nav-container">
+    <ul class="ms-nav">
+      <input type="checkbox" id="ms-menu" class="ms-menu-toggle" name="ms-menu-toggle" />
+      <li (click)="chooseCamera(0)"  class="ms-li ms-li3 ms-li-last">
+        <div>
+          <span class="icon-pin"></span>
+        </div>
+      </li>
+      <li (click)="chooseCamera(1)" class="ms-li ms-li2">
+        <div>
+          <span class="icon-3d"></span>
+        </div>
+      </li>
+      <li (click)="chooseCamera(4)" class="ms-li ms-li1 ms-li-first">
+        <div>
+          <span class="icon-user"></span>
+        </div>
+      </li>
+      <li class="ms-main">
+        <div>
+          <label class="ms-menu-toggle-lbl" for="ms-menu">
+            <span class="icon-dimension"></span>
+          </label>
+        </div>
+      </li>
+    </ul>
+  </div>
 
 </div>

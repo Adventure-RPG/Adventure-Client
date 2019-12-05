@@ -161,7 +161,7 @@ export class CameraService implements OnInit {
   public init2dCamera() {
     let d = this.settingsService.settings.camera.d;
     this.camera = this.cameries[CAMERA.MapCamera];
-    this.camera = new CubeCamera(1, d * 40, 128);
+    this.camera = new OrthographicCamera(window.innerWidth / - 16, window.innerWidth / 16,window.innerHeight / 16, window.innerHeight / - 16, -200, 500);
     this.camera.position.set(0, d * 4, 0); // all components equal
 
     let obj = {};

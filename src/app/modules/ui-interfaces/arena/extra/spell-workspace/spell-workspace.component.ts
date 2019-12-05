@@ -83,6 +83,7 @@ export class SpellWorkspaceComponent implements OnInit {
     triggers: this.formBuilder.array([
       this.createTrigger(),
     ]),
+    geometry: [0, [Validators.required]],
 
 
     uuid: [v4()],
@@ -146,6 +147,8 @@ export class SpellWorkspaceComponent implements OnInit {
 
     let self = this;
     let stage = 0;
+
+    console.log(value);
 
     let mesh;
     switch (value.geometry) {
