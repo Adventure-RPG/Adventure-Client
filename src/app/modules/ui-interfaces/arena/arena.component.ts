@@ -381,7 +381,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
     };
 
     this.engineService.sceneService.camera.position.set(100, 100, 100);
-    this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
+    this.engineService.cameraService.updateCamera();
+    // this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 

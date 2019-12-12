@@ -50,8 +50,9 @@ export class EditorComponent implements OnInit {
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
-    this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
-    this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
+    // TODO: proverit'
+    // this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
+    // this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;

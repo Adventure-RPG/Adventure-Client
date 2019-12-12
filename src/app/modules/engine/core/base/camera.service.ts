@@ -57,26 +57,7 @@ export class CameraService implements OnInit {
     this._domElement = value;
   }
 
-  public updateCamera(position, obj, x?, y?, z?) {
-    // console.log(this.settingsService.settings.camera.type);
-    // console.log(CAMERA.IsometricCamera);
-
-    if (!x) {
-      x = 0;
-    }
-    if (!y) {
-      y = 0;
-    }
-    if (!z) {
-      z = 0;
-    }
-
-    // TODO: дописать апдейт к камере.
-
-    // console.log(x, y);
-
-    console.log(this.camera);
-
+  public updateCamera() {
     if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
       // console.log(this.settingsService.settings.camera.type);
       console.log('updateIsometricCamera')
@@ -85,12 +66,57 @@ export class CameraService implements OnInit {
       this.update2dCamera();
       console.log('update2dCamera')
     } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-      this.updateFirstPersonCamera(obj);
+      this.updateFirstPersonCamera();
       console.log('updateFirstPersonCamera')
-
     }
+  }
 
-    return this.cameries[this.settingsService.settings.camera.type];
+  public initIsometricCamera() {
+    let d = this.settingsService.settings.camera.d,
+        size = 3;
+
+
+    this.cameries[CAMERA.IsometricCamera] = new OrthographicCamera(
+      -d * this.settingsService.settings.browser.aspectRatio * size,
+      d * this.settingsService.settings.browser.aspectRatio * size,
+      d * size,
+      -d * size,
+      1,
+      1000
+    );
+
+    this.cameries[CAMERA.IsometricCamera].position.set( d * 10, d * 10, d * 10 ); // all components equal
+    // this.cameries[CAMERA.IsometricCamera].lookAt( 0, 0, 0 ); // or the origin
+    this.cameries[CAMERA.IsometricCamera].rotation.order = 'YXZ';
+    this.cameries[CAMERA.IsometricCamera].rotation.y = Math.PI / 4;
+    this.cameries[CAMERA.IsometricCamera].rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
+  }
+
+  public init2dCamera() {
+    let viewSize = this.settingsService.settings.camera.d * 10;
+    let aspectRatio = this.settingsService.settings.browser.aspectRatio;
+
+    let _viewport = {
+      viewSize: viewSize,
+      aspectRatio: aspectRatio,
+      left: (-aspectRatio * viewSize) / 2,
+      right: (aspectRatio * viewSize) / 2,
+      top: viewSize / 2,
+      bottom: -viewSize / 2,
+      near: -100,
+      far: 100
+    };
+
+    this.cameries[CAMERA.MapCamera] = new OrthographicCamera (
+      _viewport.left,
+      _viewport.right,
+      _viewport.top,
+      _viewport.bottom,
+      _viewport.near,
+      _viewport.far
+    );
+
+    this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
   }
 
   public initFirstPersonCamera() {
@@ -102,133 +128,17 @@ export class CameraService implements OnInit {
     let controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
     // console.log(this.camera, this.domElement, this.storageService);
 
-    let obj = {};
-    // controls.update();
-    obj[CAMERA.FirstPersonCamera] = this.cameries[CAMERA.FirstPersonCamera];
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
-  }
-
-  public updateFirstPersonCamera(obj) {
-    this.commandsCleanUp();
-    let controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
-  }
-
-  public initIsometricCamera() {
-    let d = this.settingsService.settings.camera.d;
-
-    this.cameries[CAMERA.IsometricCamera] = new OrthographicCamera(
-      -d * this.settingsService.settings.browser.aspectRatio,
-      d * this.settingsService.settings.browser.aspectRatio,
-      d,
-      -d,
-      1,
-      1000
-    );
-    this.cameries[CAMERA.IsometricCamera].position.set( d, d, d ); // all components equal
-    this.cameries[CAMERA.IsometricCamera].lookAt( 0, 0, 0 ); // or the origin
-
-    // this.cameries[CAMERA.IsometricCamera].position.set(0, 0, 100);
-    // let controls = new OrthographicCameraControls(
-    //   this.cameries[CAMERA.IsometricCamera],
-    //   this.domElement,
-    //   this.storageService
-    // );
-    //
-    // controls.movementSpeed = 1000;
-    // controls.lookSpeed = 0.125;
-    // controls.lookVertical = true;
-    // controls.constrainVertical = true;
-    // controls.verticalMin = 1.1;
-    // controls.verticalMax = 2.2;
   }
 
   public updateIsometricCamera() {
-    let d = this.settingsService.settings.camera.d;
-
-    this.cameries[CAMERA.IsometricCamera] = new OrthographicCamera(
-      -d * this.settingsService.settings.browser.aspectRatio,
-      d * this.settingsService.settings.browser.aspectRatio,
-      d,
-      -d,
-      1,
-      1000
-    );
-    this.cameries[CAMERA.IsometricCamera].position.set( d * 10, d * 10, d * 10 ); // all components equal
-    this.cameries[CAMERA.IsometricCamera].lookAt( 0, 0, 0 ); // or the origin
-    // this.commandsCleanUp();
-    // let controls = new OrthographicCameraControls(
-    //   this.cameries[CAMERA.IsometricCamera],
-    //   this.domElement,
-    //   this.storageService
-    // );
-  }
-
-  public init2dCamera() {
-    let d = this.settingsService.settings.camera.d;
-
-    let viewSize = d * 10;
-    let aspectRatio = this.settingsService.settings.browser.aspectRatio;
-
-    let _viewport = {
-      viewSize: viewSize,
-      aspectRatio: aspectRatio,
-      left: (-aspectRatio * viewSize) / 2,
-      right: (aspectRatio * viewSize) / 2,
-      top: viewSize / 2,
-      bottom: -viewSize / 2,
-      near: -100,
-      far: 100
-    };
-
-    this.cameries[CAMERA.MapCamera] = new OrthographicCamera (
-      _viewport.left,
-      _viewport.right,
-      _viewport.top,
-      _viewport.bottom,
-      _viewport.near,
-      _viewport.far
-    );
-
-    this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
-    // this.cameries[CAMERA.MapCamera].position.set(0, d * 4, 0); // all components equal
-
-
-
   }
 
   public update2dCamera() {
+  }
 
-    let d = this.settingsService.settings.camera.d;
-
-    let viewSize = d * 10;
-    let aspectRatio = this.settingsService.settings.browser.aspectRatio;
-
-    let _viewport = {
-      viewSize: viewSize,
-      aspectRatio: aspectRatio,
-      left: (-aspectRatio * viewSize) / 2,
-      right: (aspectRatio * viewSize) / 2,
-      top: viewSize / 2,
-      bottom: -viewSize / 2,
-      near: -100,
-      far: 100
-    };
-
-    this.cameries[CAMERA.MapCamera] = new OrthographicCamera (
-      _viewport.left,
-      _viewport.right,
-      _viewport.top,
-      _viewport.bottom,
-      _viewport.near,
-      _viewport.far
-    );
-
-    this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
-
-
-    // this.camera.position.set(0, d * 4, 0); // all components equal
-    // this.camera.rotateX(-Math.PI / 2)
+  public updateFirstPersonCamera() {
+    // this.commandsCleanUp();
+    // let controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
   }
 
   public commandsCleanUp() {
