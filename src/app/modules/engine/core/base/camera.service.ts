@@ -92,6 +92,9 @@ export class CameraService implements OnInit {
     this.cameries[CAMERA.IsometricCamera].rotation.order = 'YXZ';
     this.cameries[CAMERA.IsometricCamera].rotation.y = Math.PI / 4;
     this.cameries[CAMERA.IsometricCamera].rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
+
+    //Добавляем хоткеи
+    this.cameries[CAMERA.IsometricCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.IsometricCamera], this.domElement, this.storageService);
   }
 
   public init2dCamera() {
@@ -122,6 +125,9 @@ export class CameraService implements OnInit {
 
     //Устнавливаем положение камеры
     this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
+
+    //Добавляем хоткеи
+    this.cameries[CAMERA.MapCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.MapCamera], this.domElement, this.storageService);
   }
 
   public initFirstPersonCamera() {
@@ -141,10 +147,12 @@ export class CameraService implements OnInit {
 
   public updateIsometricCamera() {
     this.commandsCleanUp();
+    (<OrthographicCameraControls>this.cameries[CAMERA.IsometricCamera].userData.controls).initCommands();
   }
 
   public update2dCamera() {
     this.commandsCleanUp();
+    (<OrthographicCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
   }
 
   public updateFirstPersonCamera() {

@@ -91,23 +91,7 @@ export class EngineService {
 
   //TODO: вынести
   public updateCamera() {
-    // console.log(this.x);
-
-    // if (x) {
-    //   this.x = this.x + x;
-    // }
-    // if (y) {
-    //   this.y = this.y + y;
-    // }
-    // if (z) {
-    //   this.z = this.z + z;
-    // }
-    // this.y = this.y + y;
-    // this.z = this.z + z;
-    // console.log(this.x);
-
     this.cameraService.updateCamera();
-
     this.sceneService.camera = this.cameraService.cameries[this.settingsService.settings.camera.type];
   }
 

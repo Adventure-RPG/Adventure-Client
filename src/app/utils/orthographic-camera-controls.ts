@@ -5,21 +5,14 @@ import { KeyboardCommandsEnum } from 'app/enums/keyboardCommands.enum';
 import { Types } from '@enums/types.enum';
 import { Quaternion, Vector2, Vector3 } from "three";
 import { MouseCommandsEnum } from "@enums/mouseCommands.enum";
+import { OrthographicCamera } from "three";
 
 export class OrthographicCameraControls {
-  object;
+  object: OrthographicCamera;
   target;
   domElement;
   enabled;
   movementSpeed;
-  lookSpeed;
-  lookVertical;
-  autoForward;
-  activeLook;
-  heightSpeed;
-  heightCoef;
-  heightMin;
-  heightMax;
 
   screen;
   radius;
@@ -33,27 +26,10 @@ export class OrthographicCameraControls {
   dynamicDampingFactor;
   keys;
 
-  constrainVertical;
-  verticalMin;
-  verticalMax;
-  autoSpeedFactor;
-  mouseX;
-  mouseY;
   lat;
   lon;
-  phi;
-  theta;
   moveForward;
   moveBackward;
-  moveLeft;
-  moveRight;
-  moveUp;
-  moveDown;
-  mouseDragOn;
-  viewHalfX;
-  viewHalfY;
-  mouseWheelUp;
-  mouseWheelDown;
 
   handleResize;
   rotateCamera;
@@ -62,7 +38,7 @@ export class OrthographicCameraControls {
   update;
   reset;
 
-  constructor(object, domElement, private storageService: StorageService) {
+  constructor(object: OrthographicCamera, domElement, private storageService: StorageService) {
 
 
     let _this = this;
@@ -84,6 +60,7 @@ export class OrthographicCameraControls {
     this.noPan = false;
     this.noRoll = false;
     this.staticMoving = false;
+    this.movementSpeed = 3;
     this.dynamicDampingFactor = 0.2;
     this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
 
@@ -523,22 +500,79 @@ export class OrthographicCameraControls {
 
   }
 
-  initCommands(){
+  //TODO: add velocity for buttons
 
-    this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
+  initCommands(){
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveUpKeyboard, {
       type: Types.Camera,
-      onMouseDown: () => {
-        console.log('onMouseDown');
+      onKeyUp: () => {
+        console.log(this.object);
+        console.log('onKeyUp');
+        // console.log('onMouseDown');
         // this.moveForward = false;
         // console.log(this.moveForward);
       },
-      onMouseUp: () => {
-        console.log('onMouseUp');
+      onKeyDown: () => {
+        console.log('onKeyDown');
+        this.object.translateY(this.movementSpeed);
         // this.moveForward = true;
         // console.log(this.moveForward);
       },
       pressed: false,
-      keyCode: ['MouseDown'],
+      keyCode: [Key.W],
+      name: 'moveForward'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveDownKeyboard, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        console.log(this.object);
+        console.log('onMouseDown');
+        // this.moveForward = false;
+        // console.log(this.moveForward);
+      },
+      onKeyDown: () => {
+        this.object.translateY(-this.movementSpeed);
+        // this.moveForward = true;
+        // console.log(this.moveForward);
+      },
+      pressed: false,
+      keyCode: [Key.S],
+      name: 'moveBackward'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        console.log(this.object);
+        // this.moveForward = false;
+        // console.log(this.moveForward);
+      },
+      onKeyDown: () => {
+        this.object.translateX(this.movementSpeed);
+        // this.moveForward = true;
+        // console.log(this.moveForward);
+      },
+      pressed: false,
+      keyCode: [Key.D],
+      name: 'moveForward'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        console.log(this.object);
+        console.log('onMouseDown');
+        // this.moveForward = false;
+        // console.log(this.moveForward);
+      },
+      onKeyDown: () => {
+        this.object.translateX(-this.movementSpeed);
+        // this.moveForward = true;
+        // console.log(this.moveForward);
+      },
+      pressed: false,
+      keyCode: [Key.A],
       name: 'moveForward'
     });
   }
