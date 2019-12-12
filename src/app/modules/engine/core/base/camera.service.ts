@@ -57,6 +57,7 @@ export class CameraService implements OnInit {
     this._domElement = value;
   }
 
+  //TODO: постараться выпилить
   public updateCamera() {
     if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
       // console.log(this.settingsService.settings.camera.type);
