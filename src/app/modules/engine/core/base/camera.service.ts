@@ -72,10 +72,11 @@ export class CameraService implements OnInit {
   }
 
   public initIsometricCamera() {
+    //Локальные сеттинги
     let d = this.settingsService.settings.camera.d,
         size = 3;
 
-
+    //Инцилизируем камеру
     this.cameries[CAMERA.IsometricCamera] = new OrthographicCamera(
       -d * this.settingsService.settings.browser.aspectRatio * size,
       d * this.settingsService.settings.browser.aspectRatio * size,
@@ -85,14 +86,15 @@ export class CameraService implements OnInit {
       1000
     );
 
-    this.cameries[CAMERA.IsometricCamera].position.set( d * 10, d * 10, d * 10 ); // all components equal
-    // this.cameries[CAMERA.IsometricCamera].lookAt( 0, 0, 0 ); // or the origin
+    //Устнавливаем положение камеры
+    this.cameries[CAMERA.IsometricCamera].position.set( d * 10, d * 10, d * 10 );
     this.cameries[CAMERA.IsometricCamera].rotation.order = 'YXZ';
     this.cameries[CAMERA.IsometricCamera].rotation.y = Math.PI / 4;
     this.cameries[CAMERA.IsometricCamera].rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
   }
 
   public init2dCamera() {
+    //Локальные сеттинги
     let viewSize = this.settingsService.settings.camera.d * 10;
     let aspectRatio = this.settingsService.settings.browser.aspectRatio;
 
@@ -107,6 +109,7 @@ export class CameraService implements OnInit {
       far: 100
     };
 
+    //Инцилизируем камеру
     this.cameries[CAMERA.MapCamera] = new OrthographicCamera (
       _viewport.left,
       _viewport.right,
@@ -116,18 +119,23 @@ export class CameraService implements OnInit {
       _viewport.far
     );
 
+    //Устнавливаем положение камеры
     this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
   }
 
   public initFirstPersonCamera() {
+    //Локальные сеттинги
     let d = this.settingsService.settings.camera.d;
+
+    //Инцилизируем камеру
     this.cameries[CAMERA.FirstPersonCamera] = new PerspectiveCamera(50, this.settingsService.settings.browser.aspectRatio, 1, 20000);
+
+    //Устнавливаем положение камеры
     this.cameries[CAMERA.FirstPersonCamera].position.set(d * 8, d * 8, d * 8);
     this.cameries[CAMERA.FirstPersonCamera].rotation.y = (-135 * Math.PI) / 180;
 
-    let controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
-    // console.log(this.camera, this.domElement, this.storageService);
-
+    //Добавляем хоткеи
+    new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
   }
 
   public updateIsometricCamera() {
