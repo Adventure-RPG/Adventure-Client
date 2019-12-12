@@ -136,18 +136,20 @@ export class CameraService implements OnInit {
     this.cameries[CAMERA.FirstPersonCamera].rotation.y = (-135 * Math.PI) / 180;
 
     //Добавляем хоткеи
-    new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
+    this.cameries[CAMERA.FirstPersonCamera].userData.controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
   }
 
   public updateIsometricCamera() {
+    this.commandsCleanUp();
   }
 
   public update2dCamera() {
+    this.commandsCleanUp();
   }
 
   public updateFirstPersonCamera() {
-    // this.commandsCleanUp();
-    // let controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
+    this.commandsCleanUp();
+    (<FirstPersonControls>this.cameries[CAMERA.FirstPersonCamera].userData.controls).initCommands();
   }
 
   public commandsCleanUp() {
