@@ -271,6 +271,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     this.keyboardEventService.engineService = this.engineService;
 
+    //TODO: протестировать, возможны сбои
     Lightning.addLightning(
       this.engineService.sceneService.scene,
       this.engineService.sceneService.renderer,
