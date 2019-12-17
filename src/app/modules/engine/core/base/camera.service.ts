@@ -23,10 +23,20 @@ export class CameraService implements OnInit {
   z;
 
   constructor(private settingsService: SettingsService, private storageService: StorageService) {
+    this.initCameras();
+    console.log(this.cameries)
+  }
+
+  initCameras() {
+    this.commandsCleanUp();
 
     this.initIsometricCamera();
     this.init2dCamera();
     this.initFirstPersonCamera();
+
+
+    this.camera = this.cameries[this.settingsService.settings.camera.type];
+    console.log(this.camera);
     console.log(this.cameries)
   }
 
@@ -83,8 +93,8 @@ export class CameraService implements OnInit {
       d * this.settingsService.settings.browser.aspectRatio * size,
       d * size,
       -d * size,
-      1,
-      1000
+      -1000,
+      2000
     );
 
     //Устнавливаем положение камеры
@@ -92,9 +102,10 @@ export class CameraService implements OnInit {
     this.cameries[CAMERA.IsometricCamera].rotation.order = 'YXZ';
     this.cameries[CAMERA.IsometricCamera].rotation.y = Math.PI / 4;
     this.cameries[CAMERA.IsometricCamera].rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
-
+    this.cameries[CAMERA.IsometricCamera].name = 'IsometricCamera';
     //Добавляем хоткеи
     this.cameries[CAMERA.IsometricCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.IsometricCamera], this.domElement, this.storageService);
+    (<OrthographicCameraControls>this.cameries[CAMERA.IsometricCamera].userData.controls).initCommands();
   }
 
   public init2dCamera() {
@@ -125,9 +136,11 @@ export class CameraService implements OnInit {
 
     //Устнавливаем положение камеры
     this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
+    this.cameries[CAMERA.MapCamera].name = '2dCamera';
 
     //Добавляем хоткеи
     this.cameries[CAMERA.MapCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.MapCamera], this.domElement, this.storageService);
+    (<OrthographicCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
   }
 
   public initFirstPersonCamera() {
@@ -136,6 +149,7 @@ export class CameraService implements OnInit {
 
     //Инцилизируем камеру
     this.cameries[CAMERA.FirstPersonCamera] = new PerspectiveCamera(50, this.settingsService.settings.browser.aspectRatio, 1, 20000);
+    this.cameries[CAMERA.FirstPersonCamera].name = 'FirstPersonCamera';
 
     //Устнавливаем положение камеры
     this.cameries[CAMERA.FirstPersonCamera].position.set(d * 8, d * 8, d * 8);
@@ -143,6 +157,8 @@ export class CameraService implements OnInit {
 
     //Добавляем хоткеи
     this.cameries[CAMERA.FirstPersonCamera].userData.controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
+    (<FirstPersonControls>this.cameries[CAMERA.FirstPersonCamera].userData.controls).initCommands();
+
   }
 
   public updateIsometricCamera() {

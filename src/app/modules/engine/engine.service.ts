@@ -95,6 +95,7 @@ export class EngineService {
     this.sceneService.camera = this.cameraService.cameries[this.settingsService.settings.camera.type];
   }
 
+
   //TODO: вынести
   public colorMap(img) {
     let options: HeightMapOptions = {

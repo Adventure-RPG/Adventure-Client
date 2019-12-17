@@ -6,6 +6,7 @@ import { Types } from '@enums/types.enum';
 import { Quaternion, Vector2, Vector3 } from "three";
 import { MouseCommandsEnum } from "@enums/mouseCommands.enum";
 import { OrthographicCamera } from "three";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 
 export class OrthographicCameraControls {
   object: OrthographicCamera;
@@ -515,6 +516,7 @@ export class OrthographicCameraControls {
       onKeyDown: () => {
         console.log('onKeyDown');
         this.object.translateY(this.movementSpeed);
+        this.object.updateProjectionMatrix();
         // this.moveForward = true;
         // console.log(this.moveForward);
       },
@@ -527,12 +529,14 @@ export class OrthographicCameraControls {
       type: Types.Camera,
       onKeyUp: () => {
         console.log(this.object);
-        console.log('onMouseDown');
+        // TransformControls
         // this.moveForward = false;
         // console.log(this.moveForward);
+        console.log('onMouseDown');
       },
       onKeyDown: () => {
         this.object.translateY(-this.movementSpeed);
+        this.object.updateProjectionMatrix();
         // this.moveForward = true;
         // console.log(this.moveForward);
       },
@@ -550,6 +554,7 @@ export class OrthographicCameraControls {
       },
       onKeyDown: () => {
         this.object.translateX(this.movementSpeed);
+        this.object.updateProjectionMatrix();
         // this.moveForward = true;
         // console.log(this.moveForward);
       },
@@ -568,6 +573,7 @@ export class OrthographicCameraControls {
       },
       onKeyDown: () => {
         this.object.translateX(-this.movementSpeed);
+        this.object.updateProjectionMatrix();
         // this.moveForward = true;
         // console.log(this.moveForward);
       },

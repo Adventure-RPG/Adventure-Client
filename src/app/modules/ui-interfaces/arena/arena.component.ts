@@ -1,5 +1,5 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
+import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { BoxGeometry, Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -10,6 +10,8 @@ import { StorageService } from '@services/storage.service';
 import { Lightning } from '@modules/engine/core/utils/lightning';
 import { EnumHelpers } from "@enums/enum-helpers";
 import { CAMERA } from "@enums/settings.enum";
+import { fromEvent, Observable } from "rxjs/index";
+import { debounceTime, tap } from "rxjs/internal/operators";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -32,6 +34,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
   renderer;
   selectionBox;
   helper;
+  resizeSubscription$;
 
   events = {
     mouseEvents: {
@@ -51,7 +54,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
       keydown: false,
       keyup: true
     },
-    resize: true
+    resize: false
   };
 
   constructor(
@@ -104,19 +107,25 @@ export class ArenaComponent implements OnInit, OnDestroy {
   };
 
   chooseCamera(camera){
-    this.engineService.cameraService.camera = this.engineService.cameraService.cameries[camera];
     this.settingsService.changeSetting('camera', { type: camera });
-    console.log(this.engineService.cameraService.cameries);
-    console.log(this.engineService.cameraService.cameries[camera]);
+    // console.log(this.engineService.cameraService.cameries);
+    // console.log(this.engineService.cameraService.cameries[camera]);
   }
 
   ngOnInit() {
-
-    console.log(this.scene);
-
-
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
-    console.log(this.scene.nativeElement.getBoundingClientRect());
+
+    this.resizeSubscription$ = fromEvent(window, 'resize')
+      .pipe(
+        debounceTime(250)
+      )
+      .subscribe( evt => {
+        setTimeout(() => {
+          this.settingsService.changeSetting('camera', { type: 1 });
+        }, 0);
+      });
+
+
 
     //TODO: подумать над тем как решить трабл
     // this.selectionBox = new SelectionBox(
@@ -134,17 +143,17 @@ export class ArenaComponent implements OnInit, OnDestroy {
     });
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
-    let width = 200;
+    let width = 180;
 
     // ground
     let mesh = new Mesh(
-      new PlaneGeometry(width, width),
+      new BoxGeometry(20, width, 4),
       new MeshPhongMaterial({ color: 0xf58426, depthWrite: true, opacity: 1 })
     );
 
     mesh.rotation.x = -Math.PI / 2;
-    mesh.translateX(width / 2);
-    mesh.translateY(-width / 2);
+    mesh.translateX(-width / 2);
+    // mesh.translateY(-width / 2);
     // mesh.translateZ(width / 2);
 
     mesh.receiveShadow = true;
@@ -159,20 +168,34 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
+        let indexDiv = (i * cell + j) % 2;
+        let color;
+
+        if (indexDiv === 1) {
+          color = 0xffffff
+        } else if (indexDiv === 0){
+          color = 0x111111
+        }
+
+
+        if (i === divisions/2 && j === divisions/2){
+          color = 0x555
+        }
+
         // ground
         let mesh = new Mesh(
           new PlaneGeometry(cell, cell),
           new MeshPhongMaterial({
-            color: (i * cell + j) % 2 ? 0xffffff : 0x000000,
+            color,
             depthWrite: true,
             opacity: 1
           })
         );
 
         mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX((deviation + cell * i));
-        mesh.translateY(-(deviation + cell * j));
-        mesh.translateZ(1);
+        mesh.translateX( (deviation + cell * i - size/2));
+        mesh.translateY(-(deviation + cell * j - size/2));
+        mesh.translateZ(0);
 
         group.add(mesh);
 
@@ -262,7 +285,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
-    this.engineService.sceneService.scene.background = new Color(0x000);
+    this.engineService.sceneService.scene.background = new Color(0x444);
 
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
@@ -411,5 +434,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
+    this.resizeSubscription$.unsubscribe();
   }
 }

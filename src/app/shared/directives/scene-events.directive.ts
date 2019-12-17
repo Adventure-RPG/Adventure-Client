@@ -2,12 +2,14 @@ import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/cor
 import { OnWindowEventService } from '@events/on-window-event.service';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { MouseEventService } from '@events/mouse-event.service';
+import { BehaviorSubject, Subject } from "rxjs/index";
+import { debounceTime } from "rxjs/internal/operators";
 
 const debugEvents = {
   mouseEvents: {
     mousedown: false,
     mouseup: false,
-    mousemove: true,
+    mousemove: false,
     click: false,
     dbclick: false,
     mouseover: false,
@@ -28,6 +30,7 @@ const debugEvents = {
   selector: '[adventureSceneEvents]',
 })
 export class SceneEventsDirective {
+  resize$ = new BehaviorSubject<{event?: Event, nativeElement?: HTMLCanvasElement}>({});
 
   @Input('enabledEvents') enabledEvents = {
     mouseEvents: {
@@ -56,7 +59,8 @@ export class SceneEventsDirective {
     private mouseEventService: MouseEventService,
     private onWindowEventService: OnWindowEventService,
     private zone: NgZone
-  ) {}
+  ) {
+  }
 
   private currentElement;
 
@@ -205,9 +209,24 @@ export class SceneEventsDirective {
   //Вынести в глобальные ивенты
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (debugEvents.keyboardEvents) {
+
+    if (debugEvents.resize) {
+      // console.log(this.element.nativeElement.querySelectorAll('canvas')[0].clientWidth);
       console.log(event);
+      // console.log(document.querySelectorAll('#arena')[0].clientWidth);
     }
-    this.onWindowEventService.onResize(event);
+
+    if (this.enabledEvents.resize) {
+      this.resize$
+        .pipe(
+          debounceTime(250)
+        ).subscribe(
+        (value: {event: Event, nativeElement: HTMLCanvasElement}) => {
+          this.onWindowEventService.onResize(value.event, value.nativeElement);
+        }
+      );
+
+      this.resize$.next({event, nativeElement: this.element.nativeElement});
+    }
   }
 }
