@@ -12,6 +12,7 @@ import { EnumHelpers } from "@enums/enum-helpers";
 import { CAMERA } from "@enums/settings.enum";
 import { fromEvent, Observable } from "rxjs/index";
 import { debounceTime, tap } from "rxjs/internal/operators";
+import { ObjectCreater } from "../../../utils/object-creater";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -121,7 +122,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
       )
       .subscribe( evt => {
         setTimeout(() => {
-          this.settingsService.changeSetting('camera', { type: 1 });
+          this.settingsService.changeSetting('camera', { type: this.settingsService.settings.camera.type });
         }, 0);
       });
 
@@ -143,66 +144,19 @@ export class ArenaComponent implements OnInit, OnDestroy {
     });
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
-    let width = 180;
-
-    // ground
-    let mesh = new Mesh(
-      new BoxGeometry(20, width, 4),
-      new MeshPhongMaterial({ color: 0xf58426, depthWrite: true, opacity: 1 })
-    );
-
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.translateX(-width / 2);
-    // mesh.translateY(-width / 2);
-    // mesh.translateZ(width / 2);
-
-    mesh.receiveShadow = true;
-    this.engineService.sceneService.scene.add(mesh);
 
     //TODO: вынести функцию в утилиты
-    let size = 180,
-      divisions = 36,
-      deviation = 10,
-      cell = size / divisions,
-      group = new Group();
+    let size = 360,
+      divisions = 72,
+      group,
+      borderWidth = 20,
+      borderHeight = 4;
 
-    for (let i = 0; i < divisions; i++) {
-      for (let j = 0; j < divisions; j++) {
-        let indexDiv = (i * cell + j) % 2;
-        let color;
+    group = ObjectCreater.createBorder({borderWidth, size, borderHeight});
+    this.engineService.sceneService.scene.add(group);
+    // mesh.translateZ(width / 2);
 
-        if (indexDiv === 1) {
-          color = 0xffffff
-        } else if (indexDiv === 0){
-          color = 0x111111
-        }
-
-
-        if (i === divisions/2 && j === divisions/2){
-          color = 0x555
-        }
-
-        // ground
-        let mesh = new Mesh(
-          new PlaneGeometry(cell, cell),
-          new MeshPhongMaterial({
-            color,
-            depthWrite: true,
-            opacity: 1
-          })
-        );
-
-        mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX( (deviation + cell * i - size/2));
-        mesh.translateY(-(deviation + cell * j - size/2));
-        mesh.translateZ(0);
-
-        group.add(mesh);
-
-        // mesh.translateX(size/divisions);
-      }
-    }
-
+    group = ObjectCreater.createGrid({divisions, size});
     this.engineService.sceneService.scene.add(group);
 
     /**
