@@ -96,6 +96,7 @@ export class ObjectCreater {
 
     return group;
   };
+
   static createGrid({divisions, size}){
     let group = new Group();
     let cell = size / divisions;
@@ -106,15 +107,16 @@ export class ObjectCreater {
         let color;
 
         if ((i + divisions + j) % 2){
-          color = 0x000
+          color = '#a7a651'
         } else {
-          color = 0x333
+          color = '#666532'
         }
 
         // ground
         let mesh = new Mesh(
           new PlaneGeometry(cell, cell),
           new MeshPhongMaterial({
+            emissive: 0x1f0202,
             color,
             depthWrite: true,
             opacity: 1

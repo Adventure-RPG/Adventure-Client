@@ -241,14 +241,9 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0x444);
 
-
-    // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
-    // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
-    // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
-
     this.keyboardEventService.engineService = this.engineService;
 
-    //TODO: протестировать, возможны сбои
+    //TODO: Отрефакторить.
     Lightning.addLightning(
       this.engineService.sceneService.scene,
       this.engineService.sceneService.renderer,
@@ -258,8 +253,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     let hemisphereLightOptions = {
       color: '#ffffff',
-      groundColor: '#444444',
-      intensity: 0.4,
+      groundColor: '#331608',
+      intensity: 0.25,
       distance: 200,
       exponent: 0,
       angle: 0.52,
@@ -272,16 +267,16 @@ export class ArenaComponent implements OnInit, OnDestroy {
     };
 
     let pointLightOptions = {
-      color: '#89ff90',
+      color: '#24ff5b',
       groundColor: '#444444',
-      intensity: 0.001,
-      distance: 1,
+      intensity: 1,
+      distance: 300,
       exponent: 0,
       angle: 0.52,
       decay: 1,
       position: {
         x: 0,
-        y: 40,
+        y: 20,
         z: 0
       }
     };
@@ -363,7 +358,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
-    // this.lightService.addLight(pointLightOptions, "PointLight");
+    this.lightService.addLight(pointLightOptions, "PointLight");
 
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
