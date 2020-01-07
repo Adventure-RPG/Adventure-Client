@@ -1,4 +1,5 @@
 import { BoxGeometry, Group, Mesh, MeshPhongMaterial, PlaneGeometry } from "three";
+import { ModelLoaderClass } from "@modules/engine/core/utils/model-loader.class";
 
 export class ObjectCreater {
   static createBorder({borderWidth, size, borderHeight}){
@@ -128,6 +129,8 @@ export class ObjectCreater {
         mesh.translateY(-(cell * j - size / 2 + cell / 2));
         mesh.translateZ(0);
         mesh.name = `cell i:${i} j:${j}`;
+        mesh.receiveShadow = true;
+        mesh.castShadow = true;
 
         group.add(mesh);
 
@@ -139,4 +142,30 @@ export class ObjectCreater {
     return group;
 
   }
+
+  static createHeroes({count, storageService, callback}){
+
+    for (let i = 0; i < count; i++) {
+      ModelLoaderClass.loadModel({
+        modelForm: {
+          model: {
+            name: 'Walking.fbx',
+            path: '/assets/models/basic-locomotion-pack/xbot.fbx',
+            texturePath: '',
+          },
+          animates: [
+            '/assets/models/basic-locomotion-pack/idle.fbx',
+            '/assets/models/basic-locomotion-pack/jump.fbx',
+            '/assets/models/basic-locomotion-pack/walking.fbx'
+          ],
+          size: 1,
+          vector: {x: 20 * i - 40, y: 0, z: 0}
+        },
+        storageService: storageService,
+        callback: callback
+      });
+    }
+
+  }
+
 }

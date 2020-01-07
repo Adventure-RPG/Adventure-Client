@@ -24,7 +24,7 @@ export class CameraService implements OnInit {
 
   constructor(private settingsService: SettingsService, private storageService: StorageService) {
     this.initCameras();
-    console.log(this.cameries)
+    // console.log(this.cameries)
   }
 
   initCameras() {
@@ -36,8 +36,8 @@ export class CameraService implements OnInit {
 
 
     this.camera = this.cameries[this.settingsService.settings.camera.type];
-    console.log(this.camera);
-    console.log(this.cameries)
+    // console.log(this.camera);
+    // console.log(this.cameries)
   }
 
   //TODO: протестировать, возможны сбои
@@ -71,14 +71,14 @@ export class CameraService implements OnInit {
   public updateCamera() {
     if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
       // console.log(this.settingsService.settings.camera.type);
-      console.log('updateIsometricCamera')
+      // console.log('updateIsometricCamera')
       this.updateIsometricCamera();
     } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
       this.update2dCamera();
-      console.log('update2dCamera')
+      // console.log('update2dCamera')
     } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
       this.updateFirstPersonCamera();
-      console.log('updateFirstPersonCamera')
+      // console.log('updateFirstPersonCamera')
     }
   }
 

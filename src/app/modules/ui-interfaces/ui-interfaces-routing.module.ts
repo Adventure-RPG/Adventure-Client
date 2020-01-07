@@ -22,6 +22,11 @@ const routes: Routes = [
         // canActivate: [AuthGuard]
       },
       {
+        path: 'map-viewer',
+        loadChildren: 'app/modules/ui-interfaces/map-viewer/map-viewer.module#MapViewerModule'
+        // canActivate: [AuthGuard]
+      },
+      {
         path: 'editor',
         loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
         // canActivate: [AuthGuard]

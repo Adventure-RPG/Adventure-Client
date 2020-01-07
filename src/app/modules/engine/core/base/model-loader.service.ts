@@ -119,9 +119,9 @@ export class ModelLoaderService {
 
           group.scale.setScalar(modelForm.size || 1);
 
-          group.translateX(modelForm.vector.x);
-          group.translateY(modelForm.vector.y);
-          group.translateZ(modelForm.vector.z);
+          group.translateX(modelForm.vector.x || 0);
+          group.translateY(modelForm.vector.y || 0);
+          group.translateZ(modelForm.vector.z || 0);
 
           group.traverse((child: Mesh) => {
               if (child instanceof Mesh) {

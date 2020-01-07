@@ -1,5 +1,7 @@
 import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BoxGeometry, Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
+import {
+  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3
+} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -13,6 +15,7 @@ import { CAMERA } from "@enums/settings.enum";
 import { fromEvent, Observable } from "rxjs/index";
 import { debounceTime, tap } from "rxjs/internal/operators";
 import { ObjectCreater } from "../../../utils/object-creater";
+import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -64,6 +67,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService,
+    private modelLoaderService: ModelLoaderService,
     private zone: NgZone
   ) {}
 
@@ -158,6 +162,20 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     group = ObjectCreater.createGrid({divisions, size});
     this.engineService.sceneService.scene.add(group);
+
+    group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
+        console.log(heroes)
+        //
+        //
+        // helper.update();
+        // let object = new Mesh( heroes, new MeshBasicMaterial( {color: 0xff0000 }) );
+        // let box = new BoxHelper( object, 0xff0000 );
+        this.engineService.sceneService.scene.add( heroes );
+        // this.engineService.sceneService.scene.add( box );
+
+        // this.engineService.sceneService.scene.add(heroes);
+      }
+    });
 
     /**
      * Start working on MouseEvents for SelectBox
