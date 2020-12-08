@@ -15,6 +15,7 @@ import { CAMERA } from "@enums/settings.enum";
 import { fromEvent, Observable } from "rxjs/index";
 import { debounceTime, tap } from "rxjs/internal/operators";
 import { ObjectCreater } from "../../../utils/object-creater";
+import { Board } from "../../../utils/board";
 import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
 
 export enum ArenaPanel {
@@ -156,26 +157,29 @@ export class ArenaComponent implements OnInit, OnDestroy {
       borderWidth = 20,
       borderHeight = 4;
 
-    group = ObjectCreater.createBorder({borderWidth, size, borderHeight});
-    this.engineService.sceneService.scene.add(group);
+    // group = ObjectCreater.createBorder({borderWidth, size, borderHeight});
+    // this.engineService.sceneService.scene.add(group);
     // mesh.translateZ(width / 2);
+
+    let board = new Board(10,10);
+    this.engineService.sceneService.scene.add(board);
 
     group = ObjectCreater.createGrid({divisions, size});
     this.engineService.sceneService.scene.add(group);
 
-    group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
-        console.log(heroes)
-        //
-        //
-        // helper.update();
-        // let object = new Mesh( heroes, new MeshBasicMaterial( {color: 0xff0000 }) );
-        // let box = new BoxHelper( object, 0xff0000 );
-        this.engineService.sceneService.scene.add( heroes );
-        // this.engineService.sceneService.scene.add( box );
-
-        // this.engineService.sceneService.scene.add(heroes);
-      }
-    });
+    // group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
+    //     console.log(heroes)
+    //     //
+    //     //
+    //     // helper.update();
+    //     // let object = new Mesh( heroes, new MeshBasicMaterial( {color: 0xff0000 }) );
+    //     // let box = new BoxHelper( object, 0xff0000 );
+    //     this.engineService.sceneService.scene.add( heroes );
+    //     // this.engineService.sceneService.scene.add( box );
+    //
+    //     // this.engineService.sceneService.scene.add(heroes);
+    //   }
+    // });
 
     /**
      * Start working on MouseEvents for SelectBox
