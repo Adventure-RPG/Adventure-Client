@@ -178,7 +178,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
       //feature.properties.height
       for (let j = 0; j < feature.geometry.coordinates[0].length; j++) {
         let bone = feature.geometry.coordinates[0][j];
-        points.push( new Vector3( 0 , (bone[1] - 30.5 ) * 5000 , ( bone[0] + 68.2 ) * 5000 ) );
+        points.push( new Vector3( (bone[1] - 30.5 ) * 5000 , 0 , ( bone[0] + 68.2 ) * 5000 ) );
       }
 
       const geometry = new BufferGeometry().setFromPoints( points );
