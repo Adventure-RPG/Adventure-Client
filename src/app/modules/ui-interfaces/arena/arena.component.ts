@@ -1,6 +1,6 @@
 import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3
+  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line
 } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
@@ -17,6 +17,7 @@ import { debounceTime, tap } from "rxjs/internal/operators";
 import { ObjectCreater } from "../../../utils/object-creater";
 import { Board } from "../../../utils/board";
 import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
+import { GeoJSON } from "../../../../typings";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -40,6 +41,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
   selectionBox;
   helper;
   resizeSubscription$;
+
+  data: GeoJSON = require('../../../../../src/tests/world.json');
 
   events = {
     mouseEvents: {
@@ -161,11 +164,44 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // this.engineService.sceneService.scene.add(group);
     // mesh.translateZ(width / 2);
 
-    let board = new Board(10,10);
-    this.engineService.sceneService.scene.add(board);
+    // let board = new Board(10,10);
+    // this.engineService.sceneService.scene.add(board);
 
-    group = ObjectCreater.createGrid({divisions, size});
-    this.engineService.sceneService.scene.add(group);
+    // group = ObjectCreater.createGrid({divisions, size});
+    // this.engineService.sceneService.scene.add(group);
+
+    const material = new LineBasicMaterial( { color: 0xffffff } );
+    for (let i = 0; i < this.data.features.length; i++) {
+      let feature = this.data.features[i];
+      const points = [];
+
+      //feature.properties.height
+      for (let j = 0; j < feature.geometry.coordinates[0].length; j++) {
+        let bone = feature.geometry.coordinates[0][j];
+        points.push( new Vector3( 0 , (bone[1] - 30.5 ) * 5000 , ( bone[0] + 68.2 ) * 5000 ) );
+      }
+
+      const geometry = new BufferGeometry().setFromPoints( points );
+
+      const line = new Line( geometry, material );
+      console.log(points);
+      this.engineService.sceneService.scene.add( line );
+    }
+    const material2 = new LineBasicMaterial({
+      color: 0x0000ff
+    });
+
+    const points = [];
+    // points.push( new Vector3( -21.83, 48.8, 0 ) );
+    points.push( new Vector3( 0, 10, 0 ) );
+    points.push( new Vector3( 10, 0, 0 ) );
+    points.push( new Vector3( 14, 2, 0 ) );
+    points.push( new Vector3( 16, 0, 0 ) );
+
+    const geometry = new BufferGeometry().setFromPoints( points );
+
+    const line = new Line( geometry, material2 );
+    this.engineService.sceneService.scene.add( line )
 
     // group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
     //     console.log(heroes)

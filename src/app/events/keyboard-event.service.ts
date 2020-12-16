@@ -52,23 +52,23 @@ export class KeyboardEventService {
     switch (event.key) {
       case '1':
         this.settingsService.changeSetting('camera', { type: CAMERA.IsometricCamera });
-        console.log(event);
+        // console.log(event);
         break;
       case '2':
         this.settingsService.changeSetting('camera', { type: CAMERA.MapCamera });
         // this.settingsService.changeSetting("camera", {type: CAMERA.PerspectiveCamera});
-        console.log(event);
+        // console.log(event);
         break;
       case '3':
         this.settingsService.changeSetting('camera', { type: CAMERA.OrthographicCamera });
-        console.log(event);
+        // console.log(event);
         break;
       case '4':
         this.settingsService.changeSetting('camera', { type: CAMERA.FirstPersonCamera });
-        console.log(event);
+        // console.log(event);
         break;
       default:
-        console.log(event);
+        // console.log(event);
         break;
     }
   }

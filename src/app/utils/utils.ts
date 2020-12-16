@@ -6,6 +6,13 @@ export class Utils {
     return Object.keys(enumObject).map((key) => ({ id: enumObject[key], name: key }));
   }
 
+  static randomInt(min, max) {
+    return min + Math.floor((max - min) * Math.random());
+  }
+
+  static randomFloat(min, max) {
+    return min + (max - min) * Math.random();
+  }
   /* Draw GeoJSON
 Iterates through the latitude and longitude values, converts the values to XYZ coordinates,
 and draws the geoJSON geometries.

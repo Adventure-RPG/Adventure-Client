@@ -1,15 +1,21 @@
-import { CylinderGeometry, Mesh, MeshLambertMaterial, Object3D } from "@node_modules/three";
+import { CylinderGeometry, Mesh, MeshPhongMaterial, Object3D, WireframeGeometry, LineSegments, MeshBasicMaterial } from "@node_modules/three";
 
 export class Tile extends Object3D {
-  constructor(radius = 1, anim = false) {
-    super();
 
-    let height = .25;
-    let geometry = new CylinderGeometry(radius * .8, radius * .8, height, 6);
+  v; u; h;
+
+  constructor(radius = 1, u, v, h = .25) {
+    super();
+    this.u = u;
+    this.v = v;
+    this.h = h;
+
+    let geometry = new CylinderGeometry(radius * .8, radius * .8, radius * h, 6, 1, false, 0);
     let tileColor = this.randomColor();
-    let material = new MeshLambertMaterial({
+    let material = new MeshPhongMaterial({
       color: tileColor
     });
+
     material.flatShading = true;
     let mesh = new Mesh(geometry, material);
     this.add(mesh);
