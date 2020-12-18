@@ -8,8 +8,10 @@ export class Tile extends Object3D {
     super();
     this.h = h;
 
-    if (h < 0.25) {
+    if (cell.properties.biome !== 0 && h < 0.25) {
       h = 0.25;
+    } else if (cell.properties.biome === 0) {
+      h = 0.1;
     }
 
     let geometry = new CylinderGeometry(radius, radius, radius * h, 6, 1, false, 0);

@@ -25,10 +25,14 @@ export class Board extends Object3D {
       let hex = new Tile(radius * 5000, cell.properties.height/1000, cell);
       let box = new Box3().setFromObject(hex);
       let hexW = box.max.x - box.min.x;
-      let hexH = box.max.z - box.min.z;
+      let hexY = box.max.y - box.min.y;
       let hexX = (cellCoordinate[0] + 68.2) * 5000;
       let hexZ = (cellCoordinate[1] - 30.5) * 5000;
-      hex.position.set(hexX, 0, hexZ);
+      if (cell.properties.biome !== 0) {
+        hex.position.set(hexX, hexY / 2, hexZ);
+      } else {
+        hex.position.set(hexX, 0, hexZ);
+      }
       // this.board[cell.properties.id] = hex;
       this.add(hex);
 

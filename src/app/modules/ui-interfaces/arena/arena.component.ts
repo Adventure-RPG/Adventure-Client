@@ -323,13 +323,13 @@ export class ArenaComponent implements OnInit, OnDestroy {
       color: '#ffffff',
       groundColor: '#331608',
       intensity: 0.25,
-      distance: 200,
+      distance: 1000,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position: {
         x: 50,
-        y: 300,
+        y: 800,
         z: 50
       }
     };
@@ -338,14 +338,14 @@ export class ArenaComponent implements OnInit, OnDestroy {
       color: '#24ff5b',
       groundColor: '#444444',
       intensity: 1,
-      distance: 300,
+      distance: 2000,
       exponent: 0,
       angle: 0.52,
       decay: 1,
       position: {
-        x: 0,
-        y: 20,
-        z: 0
+        x: 300,
+        y: 1000,
+        z: 300
       }
     };
 
