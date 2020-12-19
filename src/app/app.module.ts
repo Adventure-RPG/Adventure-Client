@@ -28,7 +28,7 @@ import { ModelLoaderService } from '@modules/engine/core/base/model-loader.servi
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /** config angular i18n **/
 import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import { en_US, NZ_I18N } from "@node_modules/ng-zorro-antd/i18n";
 
 registerLocaleData(en);
 

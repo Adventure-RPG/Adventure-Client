@@ -1,4 +1,4 @@
-import { CylinderGeometry, Mesh, MeshPhongMaterial, Object3D, WireframeGeometry, LineSegments, MeshBasicMaterial, Group, ConeGeometry } from "@node_modules/three";
+import { CylinderGeometry, Mesh, MeshPhongMaterial, Object3D, WireframeGeometry, LineSegments, MeshBasicMaterial, Group, ConeGeometry, InstancedMesh } from "@node_modules/three";
 
 export class Tile extends Object3D {
 
@@ -29,7 +29,7 @@ export class Tile extends Object3D {
     });
 
     material.flatShading = true;
-    let mesh = new Mesh(geometry, material);
+    let mesh = new InstancedMesh(geometry, material, 1);
     this.add(mesh);
     this.hexagon = mesh;
   }

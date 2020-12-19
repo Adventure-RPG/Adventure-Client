@@ -173,7 +173,7 @@ export class LightService {
 
         (<SpotLight>light).target.position.set(0, 0, 0);
 
-        light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
+        // light.shadow = new LightShadow(new PerspectiveCamera(50, 1, 700, 2000));
         light.shadow.bias = 0.00001;
         light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
         light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;

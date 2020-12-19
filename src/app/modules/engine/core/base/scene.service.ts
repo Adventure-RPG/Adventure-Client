@@ -249,8 +249,6 @@ export class SceneService {
 
   public render(delta) {
     // console.log(this.scene.userData.timeRate, delta);
-    this.renderer.gammaInput = true;
-    this.renderer.gammaOutput = true;
 
     this.currentTime += this.lightningTimeRate * delta;
     if (this.currentTime < 0) {
