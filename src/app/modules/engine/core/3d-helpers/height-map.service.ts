@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IGEOJson } from '../../engine.types';
 import {
-  BoxGeometry, DoubleSide, FaceNormalsHelper, Geometry, GeometryUtils, Matrix4, Mesh, MeshNormalMaterial,
+  BoxGeometry, DoubleSide, Geometry, GeometryUtils, Matrix4, Mesh, MeshNormalMaterial,
   MeshPhongMaterial,
   ObjectSpaceNormalMap, Scene,
   ShadowMaterial, TangentSpaceNormalMap,
@@ -73,7 +73,6 @@ export class HeightMapService {
         // }
 
         let terrainMaterial = new MeshPhongMaterial({
-          vertexColors: VertexColors,
           shininess: 0,
           color: 0x55aa55,
           flatShading: true

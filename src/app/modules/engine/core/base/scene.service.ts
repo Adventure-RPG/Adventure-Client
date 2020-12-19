@@ -36,8 +36,6 @@ export class SceneService {
     this.renderer.setClearColor(0x000);
 
     this.renderer.shadowMap.autoUpdate = true;
-    this.renderer.gammaInput = true;
-    this.renderer.gammaOutput = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = BasicShadowMap; // default THREE.PCFShadowMap
   }
