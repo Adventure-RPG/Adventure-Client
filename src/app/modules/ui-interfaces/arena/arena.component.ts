@@ -166,15 +166,17 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
 
     // @ts-ignore
-    const [x1, y1] = this.data.features[0].geometry.coordinates[0][0];
+    // const [x1, y1] = this.data.features[5].geometry.coordinates;
     // @ts-ignore
-    const [x2, y2] = this.data.features[0].geometry.coordinates[0][1];
+    // const [x2, y2] = this.data.features[6].geometry.coordinates;
 
-    const R = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
+
+    const R = 0.5;
 
     // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
     let board = new Board(this.data.features, R);
-    console.log(board);
+    // console.log(board);
     this.engineService.sceneService.scene.add(board);
 
     // group = ObjectCreater.createGrid({divisions, size});

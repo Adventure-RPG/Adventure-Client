@@ -21,7 +21,7 @@ export interface Feature {
 }
 
 export interface Geometry {
-  coordinates: number[][];
+  coordinates: number[];
   type: string;
 }
 

@@ -10,31 +10,34 @@ export class Board extends Object3D {
     super();
 
     this.grid = grid;
+    const k = 10;
 
+    console.log(radius);
+    // console.log(grid);
 
     for (let i = 0; i < this.grid.length; i++) {
       let cell = this.grid[i];
       const points = [];
 
       //feature.properties.height
-      let cellCoordinate = cell.geometry.coordinates[0][0];
+      let cellCoordinate = cell.geometry.coordinates;
 
       // console.log();
 
       // let h = 0;
-      let hex = new Tile(radius * 5000, cell.properties.height/1000, cell);
-      let box = new Box3().setFromObject(hex);
+      let tile = new Tile(radius * k, cell.properties.height/1000, cell);
+      let box = new Box3().setFromObject(tile.hexagon);
       let hexW = box.max.x - box.min.x;
       let hexY = box.max.y - box.min.y;
-      let hexX = (cellCoordinate[0] + 68.2) * 5000;
-      let hexZ = (cellCoordinate[1] - 30.5) * 5000;
+      let hexX = (cellCoordinate[0] + 68.2) * k;
+      let hexZ = (cellCoordinate[1] + 33.5) * k;
       if (cell.properties.biome !== 0) {
-        hex.position.set(hexX, hexY / 2, hexZ);
+        tile.hexagon.position.set(hexX, hexY / 2, hexZ);
       } else {
-        hex.position.set(hexX, 0, hexZ);
+        tile.hexagon.position.set(hexX,0, hexZ);
       }
       // this.board[cell.properties.id] = hex;
-      this.add(hex);
+      this.add(tile);
 
     }
 
