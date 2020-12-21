@@ -1,5 +1,7 @@
+$leftColumnWidth: 0px;
+
 #arena{
-  width: calc(100% - 400px);
+  width: calc(100% - 0px);
   height:100vh;
   display: flex;
   overflow: hidden;
@@ -9,7 +11,7 @@
 .toolbar{
 
   display: flex;
-  width: 400px;
+  width: $leftColumnWidth;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -25,7 +27,7 @@
 }
 
 nz-collapse > :host .ant-collapse {
-  width: 400px;
+  width: $leftColumnWidth;
 }
 
 .setting  {

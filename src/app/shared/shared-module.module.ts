@@ -9,7 +9,6 @@ import { SceneEventsDirective } from './directives/scene-events.directive';
 import { CheckboxComponent } from './form-components/checkbox/checkbox.component';
 import { RangeComponent } from './form-components/range/range.component';
 import { SanitizeHtmlDirective } from '@shared/directives/sanitize-html.directive';
-import { NgZorroAntdModule } from "ng-zorro-antd";
 
 const Modules = [
   CommonModule,
@@ -17,8 +16,7 @@ const Modules = [
   RouterModule,
   ReactiveFormsModule,
   ColorPickerModule,
-  SnotifyModule,
-  NgZorroAntdModule
+  SnotifyModule
 ];
 
 const Services = [];

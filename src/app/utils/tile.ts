@@ -29,7 +29,7 @@ export class Tile extends Object3D {
     });
 
     material.flatShading = true;
-    let mesh = new InstancedMesh(geometry, material, 1);
+    let mesh = new Mesh(geometry, material);
     this.add(mesh);
     this.hexagon = mesh;
   }

@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EngineService } from "@modules/engine/engine.service";
-import { NzFormatEmitEvent } from "ng-zorro-antd";
-import { NzTreeNode } from "ng-zorro-antd/core/tree/nz-tree-base-node";
+import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 
 export interface Child {
   title: string;

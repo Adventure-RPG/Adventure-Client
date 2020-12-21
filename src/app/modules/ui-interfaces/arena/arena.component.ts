@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line
 } from 'three';
@@ -32,8 +32,8 @@ export enum ArenaPanel {
   templateUrl: './arena.component.html',
   styleUrls: ['./arena.component.scss'],
 })
-export class ArenaComponent implements OnInit, OnDestroy {
-  @ViewChild('scene', {static: true}) scene;
+export class ArenaComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('scene') scene;
 
   sceneService;
   camera;
@@ -121,7 +121,8 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // console.log(this.engineService.cameraService.cameries[camera]);
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    // console.log(this.scene);
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
 
     this.resizeSubscription$ = fromEvent(window, 'resize')
@@ -172,7 +173,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
 
-    const R = 0.5;
+    const R = 0.48;
 
     // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
     let board = new Board(this.data.features, R);

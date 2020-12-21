@@ -13,7 +13,7 @@ import { LoadComponent } from './extra/load/load.component';
 
 @NgModule({
   declarations: [ArenaComponent, SpellWorkspaceComponent, ModelLoaderComponent, LayersComponent, SaveComponent, LoadComponent],
-  imports: [EngineModule, ArenaRoutingModule, SharedModule, CommonModule, NgZorroAntdModule],
+  imports: [EngineModule, ArenaRoutingModule, SharedModule, CommonModule],
   providers: [],
   exports: []
 })

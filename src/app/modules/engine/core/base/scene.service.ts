@@ -104,7 +104,7 @@ export class SceneService {
       ( gltf ) => {
         console.log(gltf);
 
-        this.scene = gltf.scene;
+        // this.scene = gltf.scene;
         this.layersList();
 
       },

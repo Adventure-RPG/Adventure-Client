@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EngineService } from "../../../../engine/engine.service";
 import { FormBuilder, Validators } from "@angular/forms";
-import { NzMessageService, UploadFile } from "ng-zorro-antd";
+import { NzMessageService } from "@node_modules/ng-zorro-antd/message";
+import { NzUploadFile } from "@node_modules/ng-zorro-antd/upload";
 
 @Component({
   selector: 'adventure-load',
@@ -33,7 +34,7 @@ export class LoadComponent implements OnInit {
   avatar;
 
 
-  handleChange({ file, fileList}: {file: UploadFile, fileList: {[key: string]: any}}): void {
+  handleChange({ file, fileList}: {file: NzUploadFile, fileList: {[key: string]: any}}): void {
     const status = file.status;
     if (status !== 'uploading') {
       console.log(file, fileList);
