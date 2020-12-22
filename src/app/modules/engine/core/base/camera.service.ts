@@ -15,17 +15,34 @@ export class CameraService implements OnInit {
   private _camera: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
   private _cameries: {
     [key: string]: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera;
-  };
+  } = {};
   private _domElement;
 
   x;
   y;
   z;
 
-  constructor(private settingsService: SettingsService, private storageService: StorageService) {}
+  constructor(private settingsService: SettingsService, private storageService: StorageService) {
+    this.initCameras();
+    // console.log(this.cameries)
+  }
 
+  initCameras() {
+    this.commandsCleanUp();
+
+    this.initIsometricCamera();
+    this.init2dCamera();
+    this.initFirstPersonCamera();
+
+
+    this.camera = this.cameries[this.settingsService.settings.camera.type];
+    // console.log(this.camera);
+    // console.log(this.cameries)
+  }
+
+  //TODO: протестировать, возможны сбои
   get camera(): Camera | OrthographicCamera | CubeCamera | PerspectiveCamera {
-    return this._camera;
+    return this.cameries[this.settingsService.settings.camera.type];
   }
 
   set camera(value: Camera | OrthographicCamera | CubeCamera | PerspectiveCamera) {
@@ -50,129 +67,113 @@ export class CameraService implements OnInit {
     this._domElement = value;
   }
 
-  public updateCamera(position, obj, x?, y?, z?) {
-    // console.log(this.settingsService.settings.camera.type);
-    // console.log(CAMERA.IsometricCamera);
-
-    if (!x) {
-      x = 0;
+  //TODO: постараться выпилить
+  public updateCamera() {
+    if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
+      // console.log(this.settingsService.settings.camera.type);
+      // console.log('updateIsometricCamera')
+      this.updateIsometricCamera();
+    } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
+      this.update2dCamera();
+      // console.log('update2dCamera')
+    } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
+      this.updateFirstPersonCamera();
+      // console.log('updateFirstPersonCamera')
     }
-    if (!y) {
-      y = 0;
-    }
-    if (!z) {
-      z = 0;
-    }
-
-    // TODO: дописать апдейт к камере.
-
-    // console.log(x, y);
-
-    // console.log(this.camera);
-
-    if (!this.camera) {
-      this.initIsometricCamera();
-      this.init2dCamera();
-      this.initFirstPersonCamera();
-    } else {
-      if (this.settingsService.settings.camera.type === CAMERA.IsometricCamera) {
-        // console.log(this.settingsService.settings.camera.type);
-        this.updateIsometricCamera();
-      } else if (this.settingsService.settings.camera.type === CAMERA.MapCamera) {
-        this.update2dCamera();
-      } else if (this.settingsService.settings.camera.type === CAMERA.FirstPersonCamera) {
-        this.updateFirstPersonCamera(obj);
-      }
-    }
-
-    return this.camera;
-  }
-
-  public initFirstPersonCamera() {
-    let d = this.settingsService.settings.camera.d;
-    this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 20000);
-    this.camera.position.set(d * 8, d * 8, d * 8);
-    this.camera.rotation.y = (-135 * Math.PI) / 180;
-    // require('three-first-person-controls')(THREE);
-    //
-    // console.log(FPC);
-
-    let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
-    // console.log(this.camera, this.domElement, this.storageService);
-
-    let obj = {};
-    // controls.update();
-    obj[CAMERA.FirstPersonCamera] = this.camera;
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
-  }
-
-  public updateFirstPersonCamera(obj) {
-    this.commandsCleanUp();
-    this.camera = this.cameries[CAMERA.FirstPersonCamera];
-    let controls = new FirstPersonControls(this.camera, this.domElement, this.storageService);
-    controls.update(obj);
   }
 
   public initIsometricCamera() {
-    let d = this.settingsService.settings.camera.d;
+    //Локальные сеттинги
+    let d = this.settingsService.settings.camera.d,
+        size = 3;
 
-    //Остановился на добавление второго типа камеры и переключателя для камер.
-    // console.log(d);
-
-    this.camera = new OrthographicCamera(
-      -d * this.settingsService.settings.browser.aspectRatio,
-      d * this.settingsService.settings.browser.aspectRatio,
-      d,
-      -d,
-      1,
-      d * 40
-    );
-    this.camera.position.set(0, 0, 100);
-    let controls = new OrthographicCameraControls(
-      this.camera,
-      this.domElement,
-      this.storageService
+    //Инцилизируем камеру
+    this.cameries[CAMERA.IsometricCamera] = new OrthographicCamera(
+      -d * this.settingsService.settings.browser.aspectRatio * size,
+      d * this.settingsService.settings.browser.aspectRatio * size,
+      d * size,
+      -d * size,
+      -1000,
+      2000
     );
 
-    controls.movementSpeed = 1000;
-    controls.lookSpeed = 0.125;
-    controls.lookVertical = true;
-    controls.constrainVertical = true;
-    controls.verticalMin = 1.1;
-    controls.verticalMax = 2.2;
-
-    let obj = {};
-    obj[CAMERA.IsometricCamera] = this.camera;
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
-  }
-
-  public updateIsometricCamera(x?, y?, z?) {
-    this.commandsCleanUp();
-    this.camera = this.cameries[CAMERA.IsometricCamera];
-    let controls = new OrthographicCameraControls(
-      this.camera,
-      this.domElement,
-      this.storageService
-    );
+    //Устнавливаем положение камеры
+    this.cameries[CAMERA.IsometricCamera].position.set( d * 10, d * 10, d * 10 );
+    this.cameries[CAMERA.IsometricCamera].rotation.order = 'YXZ';
+    this.cameries[CAMERA.IsometricCamera].rotation.y = Math.PI / 4;
+    this.cameries[CAMERA.IsometricCamera].rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
+    this.cameries[CAMERA.IsometricCamera].name = 'IsometricCamera';
+    //Добавляем хоткеи
+    this.cameries[CAMERA.IsometricCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.IsometricCamera], this.domElement, this.storageService);
+    (<OrthographicCameraControls>this.cameries[CAMERA.IsometricCamera].userData.controls).initCommands();
   }
 
   public init2dCamera() {
-    let d = this.settingsService.settings.camera.d;
-    this.camera = this.cameries[CAMERA.MapCamera];
-    this.camera = new CubeCamera(1, d * 40, 128);
-    this.camera.position.set(0, d * 4, 0); // all components equal
+    //Локальные сеттинги
+    let viewSize = this.settingsService.settings.camera.d * 10;
+    let aspectRatio = this.settingsService.settings.browser.aspectRatio;
 
-    let obj = {};
-    obj[CAMERA.MapCamera] = this.camera;
-    let mergeModel = Lodash.merge(this.cameries, obj);
-    this.cameries = mergeModel;
+    let _viewport = {
+      viewSize: viewSize,
+      aspectRatio: aspectRatio,
+      left: (-aspectRatio * viewSize) / 2,
+      right: (aspectRatio * viewSize) / 2,
+      top: viewSize / 2,
+      bottom: -viewSize / 2,
+      near: -100,
+      far: 100
+    };
+
+    //Инцилизируем камеру
+    this.cameries[CAMERA.MapCamera] = new OrthographicCamera (
+      _viewport.left,
+      _viewport.right,
+      _viewport.top,
+      _viewport.bottom,
+      _viewport.near,
+      _viewport.far
+    );
+
+    //Устнавливаем положение камеры
+    this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
+    this.cameries[CAMERA.MapCamera].name = '2dCamera';
+
+    //Добавляем хоткеи
+    this.cameries[CAMERA.MapCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.MapCamera], this.domElement, this.storageService);
+    (<OrthographicCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
+  }
+
+  public initFirstPersonCamera() {
+    //Локальные сеттинги
+    let d = this.settingsService.settings.camera.d;
+
+    //Инцилизируем камеру
+    this.cameries[CAMERA.FirstPersonCamera] = new PerspectiveCamera(50, this.settingsService.settings.browser.aspectRatio, 1, 20000);
+    this.cameries[CAMERA.FirstPersonCamera].name = 'FirstPersonCamera';
+
+    //Устнавливаем положение камеры
+    this.cameries[CAMERA.FirstPersonCamera].position.set(d * 8, d * 8, d * 8);
+    this.cameries[CAMERA.FirstPersonCamera].rotation.y = (-135 * Math.PI) / 180;
+
+    //Добавляем хоткеи
+    this.cameries[CAMERA.FirstPersonCamera].userData.controls = new FirstPersonControls(this.cameries[CAMERA.FirstPersonCamera], this.domElement, this.storageService);
+    (<FirstPersonControls>this.cameries[CAMERA.FirstPersonCamera].userData.controls).initCommands();
+
+  }
+
+  public updateIsometricCamera() {
+    this.commandsCleanUp();
+    (<OrthographicCameraControls>this.cameries[CAMERA.IsometricCamera].userData.controls).initCommands();
   }
 
   public update2dCamera() {
-    let d = this.settingsService.settings.camera.d;
-    this.camera.position.set(0, d * 4, 0); // all components equal
+    this.commandsCleanUp();
+    (<OrthographicCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
+  }
+
+  public updateFirstPersonCamera() {
+    this.commandsCleanUp();
+    (<FirstPersonControls>this.cameries[CAMERA.FirstPersonCamera].userData.controls).initCommands();
   }
 
   public commandsCleanUp() {

@@ -94,6 +94,29 @@
     </nz-form-control>
   </nz-form-item>
 
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-switch
+        formControlName="spellResistance"
+        [nzCheckedChildren]="checkedTemplate"
+        [nzUnCheckedChildren]="unCheckedTemplate"
+      ></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 120px;"
+                 formControlName="castingTime" nzAllowClear nzPlaceHolder="Choose">
+        <nz-option *ngFor="let option of options.actions" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
   <div formArrayName="triggers"
        *ngFor="let item of spellForm.get('triggers').controls; let i = index;">
 
@@ -169,29 +192,6 @@
     <!--Chosen name: {{ spellForm.controls.triggers.controls[i].controls.name.value }}-->
 
   </div>
-
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Spell Resistance</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-switch
-        formControlName="spellResistance"
-        [nzCheckedChildren]="checkedTemplate"
-        [nzUnCheckedChildren]="unCheckedTemplate"
-      ></nz-switch>
-    </nz-form-control>
-  </nz-form-item>
-
-
-  <nz-form-item>
-    <nz-form-label [nzSm]="10" [nzXs]="24" nzFor="area">Casting Time</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-select style="width: 120px;"
-                 formControlName="castingTime" nzAllowClear nzPlaceHolder="Choose">
-        <nz-option *ngFor="let option of options.actions" [nzValue]="option.value" [nzLabel]="option.presentation"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
 
   <nz-form-item>
     <nz-form-control>

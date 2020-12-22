@@ -126,7 +126,6 @@ export class MaterialFormAnnotation extends Material {
 
   id: number;
 
-  isMaterial: boolean;
   lights: boolean;
   name: string;
   needsUpdate: boolean;
@@ -156,8 +155,6 @@ export class MaterialFormAnnotation extends Material {
   type: string;
 
   uuid: string;
-
-  vertexColors: Colors;
 
   visible: boolean;
 

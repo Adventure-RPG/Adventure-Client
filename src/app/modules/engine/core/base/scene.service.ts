@@ -16,7 +16,7 @@ export class SceneService {
   private _camera: Camera | OrthographicCamera | CubeCamera;
   private clock = new Clock();
   private currentTime = 0;
-  private sceneDimension = {width: 100, height: 100};
+  private sceneDimension: {width: number, height: number} = null;
   public delta;
 
 
@@ -36,8 +36,6 @@ export class SceneService {
     this.renderer.setClearColor(0x000);
 
     this.renderer.shadowMap.autoUpdate = true;
-    this.renderer.gammaInput = true;
-    this.renderer.gammaOutput = true;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = BasicShadowMap; // default THREE.PCFShadowMap
   }
@@ -51,13 +49,20 @@ export class SceneService {
     this.animation();
   }
 
-  public resizeEvent(event: Event) {
-    if (this.camera && this.camera.type === 'PerspectiveCamera') {
-      (<PerspectiveCamera>this.camera).aspect = this.sceneDimension.width / this.sceneDimension.height;
-      (<PerspectiveCamera>this.camera).updateProjectionMatrix();
+  public resizeEvent(event: Event, sceneDimension: {width: number, height: number}) {
+    // console.log(this.sceneDimension);
+    // console.log(sceneDimension);
+    if (sceneDimension){
+      this.sceneDimension = sceneDimension;
     }
+    // console.log(this.camera)
+    // console.log(this.sceneDimension)
+    // if (this.camera) {
+    //   (<PerspectiveCamera>this.camera).aspect = sceneDimension.width / sceneDimension.height;
+    //   (<PerspectiveCamera>this.camera).updateProjectionMatrix();
+    // }
 
-    this.renderer.setSize(this.sceneDimension.width, this.sceneDimension.height);
+    this.renderer.setSize(sceneDimension.width, sceneDimension.height);
   }
 
 
@@ -99,7 +104,7 @@ export class SceneService {
       ( gltf ) => {
         console.log(gltf);
 
-        this.scene = gltf.scene;
+        // this.scene = gltf.scene;
         this.layersList();
 
       },
@@ -244,8 +249,6 @@ export class SceneService {
 
   public render(delta) {
     // console.log(this.scene.userData.timeRate, delta);
-    this.renderer.gammaInput = true;
-    this.renderer.gammaOutput = true;
 
     this.currentTime += this.lightningTimeRate * delta;
     if (this.currentTime < 0) {

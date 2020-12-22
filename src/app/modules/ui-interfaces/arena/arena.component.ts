@@ -1,5 +1,7 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Color, Group, Mesh, MeshPhongMaterial, PlaneGeometry, Vector3 } from 'three';
+import { AfterViewInit, Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line
+} from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
 import { EngineService } from '@modules/engine/engine.service';
@@ -9,6 +11,13 @@ import { StorageService } from '@services/storage.service';
 // import { SelectionHelper } from 'three/sources/interactive/SelectionHelper';
 import { Lightning } from '@modules/engine/core/utils/lightning';
 import { EnumHelpers } from "@enums/enum-helpers";
+import { CAMERA } from "@enums/settings.enum";
+import { fromEvent, Observable } from "rxjs/index";
+import { debounceTime, tap } from "rxjs/internal/operators";
+import { ObjectCreater } from "../../../utils/object-creater";
+import { Board } from "../../../utils/board";
+import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
+import { GeoJSON } from "../../../../typings";
 
 export enum ArenaPanel {
   ModelLoader,
@@ -23,14 +32,17 @@ export enum ArenaPanel {
   templateUrl: './arena.component.html',
   styleUrls: ['./arena.component.scss'],
 })
-export class ArenaComponent implements OnInit, OnDestroy {
-  @ViewChild('scene', {static: true}) scene;
+export class ArenaComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('scene') scene;
 
   sceneService;
   camera;
   renderer;
   selectionBox;
   helper;
+  resizeSubscription$;
+
+  data: GeoJSON = require('../../../../../src/tests/world.json');
 
   events = {
     mouseEvents: {
@@ -50,7 +62,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
       keydown: false,
       keyup: true
     },
-    resize: true
+    resize: false
   };
 
   constructor(
@@ -59,6 +71,7 @@ export class ArenaComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     public keyboardEventService: KeyboardEventService,
     private storageService: StorageService,
+    private modelLoaderService: ModelLoaderService,
     private zone: NgZone
   ) {}
 
@@ -102,13 +115,27 @@ export class ArenaComponent implements OnInit, OnDestroy {
     localStorage.setItem('activePanelIndex', `[${activePanelIndex.toString()}]`);
   };
 
-  ngOnInit() {
+  chooseCamera(camera){
+    this.settingsService.changeSetting('camera', { type: camera });
+    // console.log(this.engineService.cameraService.cameries);
+    // console.log(this.engineService.cameraService.cameries[camera]);
+  }
 
-    console.log(this.scene);
-
-
+  ngAfterViewInit() {
+    // console.log(this.scene);
     this.engineService.init(this.scene.nativeElement.getBoundingClientRect().width, this.scene.nativeElement.getBoundingClientRect().height);
-    console.log(this.scene.nativeElement.getBoundingClientRect());
+
+    this.resizeSubscription$ = fromEvent(window, 'resize')
+      .pipe(
+        debounceTime(250)
+      )
+      .subscribe( evt => {
+        setTimeout(() => {
+          this.settingsService.changeSetting('camera', { type: this.settingsService.settings.camera.type });
+        }, 0);
+      });
+
+
 
     //TODO: подумать над тем как решить трабл
     // this.selectionBox = new SelectionBox(
@@ -126,53 +153,82 @@ export class ArenaComponent implements OnInit, OnDestroy {
     });
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
-    let width = 200;
-
-    // ground
-    let mesh = new Mesh(
-      new PlaneGeometry(width, width),
-      new MeshPhongMaterial({ color: 0xf58426, depthWrite: true, opacity: 1 })
-    );
-
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.translateX(width / 2);
-    mesh.translateY(-width / 2);
-    // mesh.translateZ(width / 2);
-
-    mesh.receiveShadow = true;
-    this.engineService.sceneService.scene.add(mesh);
 
     //TODO: вынести функцию в утилиты
-    let size = 180,
-      divisions = 36,
-      deviation = 10,
-      cell = size / divisions,
-      group = new Group();
+    let size = 360,
+      divisions = 72,
+      group,
+      borderWidth = 20,
+      borderHeight = 4;
 
-    for (let i = 0; i < divisions; i++) {
-      for (let j = 0; j < divisions; j++) {
-        // ground
-        let mesh = new Mesh(
-          new PlaneGeometry(cell, cell),
-          new MeshPhongMaterial({
-            color: (i * cell + j) % 2 ? 0xffffff : 0x000000,
-            depthWrite: true,
-            opacity: 1
-          })
-        );
+    // group = ObjectCreater.createBorder({borderWidth, size, borderHeight});
+    // this.engineService.sceneService.scene.add(group);
+    // mesh.translateZ(width / 2);
 
-        mesh.rotation.x = -Math.PI / 2;
-        mesh.translateX((deviation + cell * i));
-        mesh.translateY(-(deviation + cell * j));
-        mesh.translateZ(1);
 
-        group.add(mesh);
+    // @ts-ignore
+    // const [x1, y1] = this.data.features[5].geometry.coordinates;
+    // @ts-ignore
+    // const [x2, y2] = this.data.features[6].geometry.coordinates;
 
-        // mesh.translateX(size/divisions);
-      }
-    }
+    // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
 
-    this.engineService.sceneService.scene.add(group);
+    const R = 0.48;
+
+    // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+    let board = new Board(this.data.features, R);
+    // console.log(board);
+    this.engineService.sceneService.scene.add(board);
+
+    // group = ObjectCreater.createGrid({divisions, size});
+    // this.engineService.sceneService.scene.add(group);
+
+    // const material = new LineBasicMaterial( { color: 0xffffff } );
+    // for (let i = 0; i < this.data.features.length; i++) {
+    //   let feature = this.data.features[i];
+    //   const points = [];
+    //
+    //   //feature.properties.height
+    //   for (let j = 0; j < feature.geometry.coordinates[0].length; j++) {
+    //     let bone = feature.geometry.coordinates[0][j];
+    //     points.push( new Vector3( (bone[1] - 30.5 ) * 5000 , 0 , ( bone[0] + 68.2 ) * 5000 ) );
+    //   }
+    //
+    //   const geometry = new BufferGeometry().setFromPoints( points );
+    //
+    //   const line = new Line( geometry, material );
+    //   // console.log(points);
+    //   this.engineService.sceneService.scene.add( line );
+    // }
+    // const material2 = new LineBasicMaterial({
+    //   color: 0x0000ff
+    // });
+    //
+    // const points = [];
+    // // points.push( new Vector3( -21.83, 48.8, 0 ) );
+    // points.push( new Vector3( 0, 10, 0 ) );
+    // points.push( new Vector3( 10, 0, 0 ) );
+    // points.push( new Vector3( 14, 2, 0 ) );
+    // points.push( new Vector3( 16, 0, 0 ) );
+    //
+    // const geometry = new BufferGeometry().setFromPoints( points );
+    //
+    // const line = new Line( geometry, material2 );
+    // this.engineService.sceneService.scene.add( line )
+
+    // group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
+    //     console.log(heroes)
+    //     //
+    //     //
+    //     // helper.update();
+    //     // let object = new Mesh( heroes, new MeshBasicMaterial( {color: 0xff0000 }) );
+    //     // let box = new BoxHelper( object, 0xff0000 );
+    //     this.engineService.sceneService.scene.add( heroes );
+    //     // this.engineService.sceneService.scene.add( box );
+    //
+    //     // this.engineService.sceneService.scene.add(heroes);
+    //   }
+    // });
 
     /**
      * Start working on MouseEvents for SelectBox
@@ -254,15 +310,11 @@ export class ArenaComponent implements OnInit, OnDestroy {
     // grid.material.opacity = 0.2;
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
-    this.engineService.sceneService.scene.background = new Color(0x000);
-
-
-    // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
-    // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
-    // new FirstPersonControls(camera, this.engineService.sceneService.renderer.domElement)
+    this.engineService.sceneService.scene.background = new Color(0x444);
 
     this.keyboardEventService.engineService = this.engineService;
 
+    //TODO: Отрефакторить.
     Lightning.addLightning(
       this.engineService.sceneService.scene,
       this.engineService.sceneService.renderer,
@@ -272,31 +324,31 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
     let hemisphereLightOptions = {
       color: '#ffffff',
-      groundColor: '#444444',
-      intensity: 0.4,
-      distance: 200,
+      groundColor: '#331608',
+      intensity: 0.25,
+      distance: 1000,
       exponent: 0,
       angle: 0.52,
       decay: 2,
       position: {
         x: 50,
-        y: 300,
+        y: 800,
         z: 50
       }
     };
 
     let pointLightOptions = {
-      color: '#89ff90',
+      color: '#24ff5b',
       groundColor: '#444444',
-      intensity: 0.001,
-      distance: 1,
+      intensity: 1,
+      distance: 2000,
       exponent: 0,
       angle: 0.52,
       decay: 1,
       position: {
-        x: 0,
-        y: 40,
-        z: 0
+        x: 300,
+        y: 1000,
+        z: 300
       }
     };
 
@@ -372,11 +424,12 @@ export class ArenaComponent implements OnInit, OnDestroy {
     };
 
     this.engineService.sceneService.camera.position.set(100, 100, 100);
-    this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
+    this.engineService.cameraService.updateCamera();
+    // this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
 
-    // this.lightService.addLight(pointLightOptions, "PointLight");
+    this.lightService.addLight(pointLightOptions, "PointLight");
 
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
@@ -401,5 +454,6 @@ export class ArenaComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
+    this.resizeSubscription$.unsubscribe();
   }
 }

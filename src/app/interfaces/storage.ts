@@ -14,7 +14,7 @@ export interface Command {
   onMouse?(event);
   type: Types;
   pressed?: boolean;
-  keyCode?: number | number[];
+  keyCode?: number | (number | string)[];
   name: string;
 }
 

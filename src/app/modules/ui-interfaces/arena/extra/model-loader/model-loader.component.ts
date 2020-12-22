@@ -345,7 +345,7 @@ export class ModelLoaderComponent implements OnInit {
     "/assets/models/polygon-knights/Models/SM_Prop_WaterWheel_Support_01.fbx",
     "/assets/models/polygon-knights/Models/SM_Prop_WaterWheel_Support_01_Snow.fbx",
     "/assets/models/polygon-knights/Models/SM_Prop_Weathervane_01.fbx"
-  ]
+  ];
 
   texturesRaw: string[] = [
     "/assets/models/polygon-knights/Textures/Characters_Texture_Black.png",

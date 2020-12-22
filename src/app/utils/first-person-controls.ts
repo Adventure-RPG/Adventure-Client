@@ -382,7 +382,7 @@ export class FirstPersonControls extends CameraControls {
           return;
         }
         if (this.heightSpeed) {
-          let y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
+          let y = THREE.MathUtils.clamp(this.object.position.y, this.heightMin, this.heightMax);
           let heightDelta = y - this.heightMin;
           this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
         } else {

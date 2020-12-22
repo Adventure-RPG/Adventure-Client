@@ -13,33 +13,6 @@ import { SettingsService } from '@services/settings.service';
 
 @Injectable()
 export class EngineService {
-  private _x = 0;
-  private _y = 0;
-  private _z = 0;
-
-  get x() {
-    return this._x;
-  }
-
-  set x(value) {
-    this._x = value;
-  }
-
-  get y() {
-    return this._y;
-  }
-
-  set y(value) {
-    this._y = value;
-  }
-
-  get z() {
-    return this._z;
-  }
-
-  set z(value) {
-    this._z = value;
-  }
 
   get settingsService(): SettingsService {
     return this._settingsService;
@@ -117,25 +90,11 @@ export class EngineService {
   }
 
   //TODO: вынести
-  public updateCamera(x?, y?, z?) {
-    // console.log(this.x);
-
-    if (x) {
-      this.x = this.x + x;
-    }
-    if (y) {
-      this.y = this.y + y;
-    }
-    if (z) {
-      this.z = this.z + z;
-    }
-    // this.y = this.y + y;
-    // this.z = this.z + z;
-    // console.log(this.x);
-
-    let camera = this.cameraService.updateCamera(new Vector3(this.x, this.y, this.z), {});
-    this.sceneService.camera = camera;
+  public updateCamera() {
+    this.cameraService.updateCamera();
+    this.sceneService.camera = this.cameraService.cameries[this.settingsService.settings.camera.type];
   }
+
 
   //TODO: вынести
   public colorMap(img) {

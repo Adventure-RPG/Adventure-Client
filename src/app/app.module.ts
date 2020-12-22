@@ -4,34 +4,30 @@ import 'hammerjs';
 
 import { AppComponent } from './app.component';
 /* Modules */
-import { SharedModule } from './shared/shared-module.module';
-import { UiInterfacesRoutingModule } from './modules/ui-interfaces/ui-interfaces-routing.module';
+import { SharedModule } from '@shared/shared-module.module';
+import { UiInterfacesRoutingModule } from '@modules/ui-interfaces/ui-interfaces-routing.module';
 
-import { UiInterfacesModule } from './modules/ui-interfaces/ui-interfaces.module';
-import { ModalComponent } from './shared/modal/modal.component';
-import { SidebarModalComponent } from './shared/sidebar-modal/sidebar-modal.component';
-import { EngineService } from './modules/engine/engine.service';
-import { LightService } from './modules/engine/core/light.service';
-import { SettingsService } from './services/settings.service';
-import { KeyboardEventService } from './events/keyboard-event.service';
-import { MouseEventService } from './events/mouse-event.service';
-import { OnWindowEventService } from './events/on-window-event.service';
+import { UiInterfacesModule } from '@modules/ui-interfaces/ui-interfaces.module';
+import { ModalComponent } from '@shared/modal/modal.component';
+import { SidebarModalComponent } from '@shared/sidebar-modal/sidebar-modal.component';
+import { EngineService } from '@modules/engine/engine.service';
+import { LightService } from '@modules/engine/core/light.service';
+import { SettingsService } from '@services/settings.service';
+import { KeyboardEventService } from '@events/keyboard-event.service';
+import { MouseEventService } from '@events/mouse-event.service';
+import { OnWindowEventService } from '@events/on-window-event.service';
 import { AppService } from './app.service';
-import { ApiService } from './services/api.service';
-import { HandleErrorService } from './services/handle-error.service';
-import { AuthGuard } from './guards/auth.guard';
-import { LoginService } from './modules/ui-interfaces/login/login.service';
+import { ApiService } from '@services/api.service';
+import { HandleErrorService } from '@services/handle-error.service';
+import { AuthGuard } from '@guards/auth.guard';
+import { LoginService } from '@modules/ui-interfaces/login/login.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { AuthInterceptor } from './guards/auth.interceptor';
-import { StorageService } from './services/storage.service';
+import { AuthInterceptor } from '@guards/auth.interceptor';
+import { StorageService } from '@services/storage.service';
 import { ModelLoaderService } from '@modules/engine/core/base/model-loader.service';
-import { en_US, NgZorroAntdModule, NZ_I18N } from 'ng-zorro-antd';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /** config angular i18n **/
-import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-
-registerLocaleData(en);
+import { en_US, NZ_I18N } from "@node_modules/ng-zorro-antd/i18n";
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{

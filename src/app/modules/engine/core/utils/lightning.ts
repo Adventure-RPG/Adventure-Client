@@ -22,8 +22,8 @@ export class Lightning {
 
     // scene.userData.lightningMaterial = new MeshBasicMaterial( { color: scene.userData.lightningColor } );
 
-    let posLight = new PointLight(0xffffff, 1, 500, 2);
-    scene.add(posLight);
+    // let posLight = new PointLight(0xffffff, 1, 500, 2);
+    // scene.add(posLight);
 
     scene.userData.outlineColorRGB = [
       scene.userData.outlineColor.r * 255,
@@ -31,8 +31,8 @@ export class Lightning {
       scene.userData.outlineColor.b * 255
     ];
 
-    posLight.position.set(0, (conesDistance + coneHeight) * 0.1, 0);
-    posLight.color = scene.userData.outlineColor;
+    // posLight.position.set(0, (conesDistance + coneHeight) * 0.1, 0);
+    // posLight.color = scene.userData.outlineColor;
 
     // scene.userData.camera.position.set( 5 * coneHeight, 4 * coneHeight, 18 * coneHeight );
 

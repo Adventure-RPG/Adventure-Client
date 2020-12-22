@@ -38,7 +38,7 @@ export class EditorComponent implements OnInit {
     // ground
     let mesh = new Mesh(
       new PlaneGeometry(environment.scale * 100, environment.scale * 100, 10, 10),
-      new MeshPhongMaterial({ color: 0x999999, depthWrite: true, opacity: 1 })
+      new MeshPhongMaterial({ color: 0x3fb242, depthWrite: true, opacity: 1 })
     );
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
@@ -50,8 +50,9 @@ export class EditorComponent implements OnInit {
     // grid.material.transparent = true;
     // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0xa0a0a0);
-    this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
-    this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
+    // TODO: proverit'
+    // this.engineService.sceneService.camera.position.set(0, 100 * environment.scale, 100 * environment.scale);
+    // this.engineService.cameraService.updateCamera(new Vector3(0, 100 * environment.scale, 100 * environment.scale), {target : new Vector3(0, 0, 0)});
 
     // let camera = new PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 20000 );
     // camera.position.y = getY( worldHalfWidth, worldHalfDepth ) * 100 + 100;
@@ -63,7 +64,7 @@ export class EditorComponent implements OnInit {
 
     let hemisphereLightOptions = {
       color: '#ffffff',
-      groundColor: '#444444',
+      groundColor: '#000',
       intensity: 0.4,
       distance: 200,
       exponent: 0,
@@ -163,13 +164,9 @@ export class EditorComponent implements OnInit {
     };
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
-
     // this.lightService.addLight(pointLightOptions, "PointLight");
-
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
-
     // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
-
     // this.lightService.addLight(spotLightOptions, 'SpotLight');
     this.lightService.addLight(spotLightOptions2, 'SpotLight');
 

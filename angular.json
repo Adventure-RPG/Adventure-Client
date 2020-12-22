@@ -23,11 +23,11 @@
             "styles": [
               "src/ant-variables.less",
               "node_modules/ng-snotify/styles/material.scss",
-              "src/styles.scss",
+              "src/styles.scss"
             ],
             "scripts": [
               "src/app/libs/inflate.min.js"
-            ],
+            ]
           },
           "configurations": {
             "production": {
@@ -78,7 +78,7 @@
             ],
             "styles": [
               "node_modules/ng-snotify/styles/material.scss",
-              "src/styles.scss",
+              "src/styles.scss"
             ],
             "assets": [
               "src/assets",
@@ -131,5 +131,8 @@
     "@schematics/angular:directive": {
       "prefix": "adventure"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

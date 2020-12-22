@@ -1,37 +1,68 @@
 <div class="container-flex">
 
-  <nz-collapse class="toolbar main-scroll"
-               adventureSceneEvents
-               [enabledEvents]="events"
-  >
-    <nz-collapse-panel
-      class="wide"
-      *ngFor="let panel of panels"
-      [nzHeader]="panel.name"
-      [nzActive]="panel.active"
-      [nzDisabled]="panel.disabled"
-      (nzActiveChange)="panelChanged(panel, $event)"
-    >
-      <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>
+<!--  <nz-collapse class="toolbar main-scroll"-->
+<!--               adventureSceneEvents-->
+<!--               [enabledEvents]="events"-->
+<!--  >-->
+<!--    <nz-collapse-panel-->
+<!--      class="wide"-->
+<!--      *ngFor="let panel of panels"-->
+<!--      [nzHeader]="panel.name"-->
+<!--      [nzActive]="panel.active"-->
+<!--      [nzDisabled]="panel.disabled"-->
+<!--      (nzActiveChange)="panelChanged(panel, $event)"-->
+<!--    >-->
+<!--      <adventure-spell-workspace *ngIf="panel.name === 'Spell'"></adventure-spell-workspace>-->
 
-      <adventure-model-loader *ngIf="panel.name === 'ModelLoader'"></adventure-model-loader>
+<!--      <adventure-model-loader *ngIf="panel.name === 'ModelLoader'"></adventure-model-loader>-->
 
-      <adventure-layers *ngIf="panel.name === 'Layers'"></adventure-layers>
+<!--      <adventure-layers *ngIf="panel.name === 'Layers'"></adventure-layers>-->
 
-      <adventure-save *ngIf="panel.name === 'Save'"></adventure-save>
+<!--      <adventure-save *ngIf="panel.name === 'Save'"></adventure-save>-->
 
-      <adventure-load *ngIf="panel.name === 'Load'"></adventure-load>
+<!--      <adventure-load *ngIf="panel.name === 'Load'"></adventure-load>-->
 
-      <router-outlet></router-outlet>
+<!--      <router-outlet></router-outlet>-->
 
-    </nz-collapse-panel>
-  </nz-collapse>
-
-
+<!--    </nz-collapse-panel>-->
+<!--  </nz-collapse>-->
   <!--<div class="selectBox"></div>-->
 
   <div id="arena"
        adventureSceneEvents
        #scene>
+  </div>
+
+  <!--<div class="setting">-->
+    <!--<i nz-icon nzType="setting" nzTheme="outline"></i>-->
+  <!--</div>-->
+
+  <div class="ms-nav-container">
+    <ul class="ms-nav">
+      <input type="checkbox" id="ms-menu" class="ms-menu-toggle" name="ms-menu-toggle" />
+      <li (click)="chooseCamera(1)"  class="ms-li ms-li3 ms-li-last">
+        <div>
+          <span class="icon-pin"></span>
+        </div>
+      </li>
+      <li (click)="chooseCamera(0)" class="ms-li ms-li2">
+        <div>
+          <span class="icon-3d"></span>
+        </div>
+      </li>
+      <li (click)="chooseCamera(4)" class="ms-li ms-li1 ms-li-first">
+        <div>
+          <span class="icon-user"></span>
+        </div>
+      </li>
+      <li class="ms-main">
+        <div>
+          <label class="ms-menu-toggle-lbl" for="ms-menu">
+            <span class="icon-dimension"></span>
+          </label>
+        </div>
+      </li>
+    </ul>
+  </div>
 
 </div>

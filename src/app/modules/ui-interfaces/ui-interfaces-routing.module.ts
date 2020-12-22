@@ -9,35 +9,40 @@ const routes: Routes = [
     children: [
       {
         path: 'main',
-        loadChildren: 'app/modules/ui-interfaces/main/main.module#MainModule'
+        loadChildren: () => import('./main/main.module').then(m => m.MainModule)
         // canActivate: [AuthGuard]
       },
       {
         path: 'login',
-        loadChildren: 'app/modules/ui-interfaces/login/login.module#LoginModule'
+        loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
       },
       {
         path: 'arena',
-        loadChildren: 'app/modules/ui-interfaces/arena/arena.module#ArenaModule'
+        loadChildren: () => import('./arena/arena.module').then(m => m.ArenaModule)
+        // canActivate: [AuthGuard]
+      },
+      {
+        path: 'map-viewer',
+        loadChildren: () => import('./map-viewer/map-viewer.module').then(m => m.MapViewerModule)
         // canActivate: [AuthGuard]
       },
       {
         path: 'editor',
-        loadChildren: 'app/modules/ui-interfaces/editor/editor.module#EditorModule'
+        loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule)
         // canActivate: [AuthGuard]
       },
       {
         path: 'tavern',
-        loadChildren: 'app/modules/ui-interfaces/tavern/tavern.module#TavernModule'
+        loadChildren: () => import('./tavern/tavern.module').then(m => m.TavernModule)
         // canActivate: [AuthGuard]
       },
       {
         path: '',
-        loadChildren: 'app/modules/ui-interfaces/landing/landing.module#LandingModule'
+        loadChildren: () => import('./landing/landing.module').then(m => m.LandingModule)
       },
       {
         path: 'scene-test',
-        loadChildren: 'app/modules/ui-interfaces/scene-test/scene-test.module#SceneTestModule'
+        loadChildren: () => import('./scene-test/scene-test.module').then(m => m.SceneTestModule)
         // canActivate: [AuthGuard]
       }
     ]

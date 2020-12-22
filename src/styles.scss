@@ -14,12 +14,11 @@
 /**
   FONTS
  */
-$url-face: './assets/fonts';
+$url-face: '/assets/fonts';
 
-@include font-face("igra-sans", $url-face + "/IgraSans", $file-formats: eot woff2 woff ttf svg);
-@include font-face("inglobal",  $url-face + "/inglobal", $file-formats: eot woff2 woff ttf svg);
-@include font-face("komi",      $url-face + "/Komi", $file-formats: eot woff2 woff ttf svg);
-@import "assets/scss/font-awesome/font-awesome";
+@include font-face("igra-sans", $url-face + "/IgraSans", $file-formats: woff);
+@include font-face("inglobal",  $url-face + "/inglobal", $file-formats: woff);
+@include font-face("komi",      $url-face + "/Komi", $file-formats: woff);
 @import "assets/scss/main";
 
 

@@ -83,6 +83,7 @@ export class SpellWorkspaceComponent implements OnInit {
     triggers: this.formBuilder.array([
       this.createTrigger(),
     ]),
+    geometry: [0, [Validators.required]],
 
 
     uuid: [v4()],
@@ -147,10 +148,9 @@ export class SpellWorkspaceComponent implements OnInit {
     let self = this;
     let stage = 0;
 
+    console.log(value);
+
     let mesh;
-    console.log(value.param1);
-    console.log(value.param2);
-    console.log(value.param3);
     switch (value.geometry) {
       case 0:
         mesh = new Mesh(
@@ -181,12 +181,11 @@ export class SpellWorkspaceComponent implements OnInit {
 
     let spellGeometry = new SpellGeometry(mesh, this.engineService);
 
-    console.log(value.geometry);
     //init position into sender
+
+    spellGeometry.setTarget(new Vector3().setFromMatrixPosition( (spellGeometry.matrixWorld ) ));
     spellGeometry.setPosition(new Vector3((<Mesh>value.sender).position.x, (<Mesh>value.sender).position.y, (<Mesh>value.sender).position.z), 0);
     spellGeometry.rotateX(Math.PI / 2);
-    console.log(spellGeometry.position);
-    console.log(spellGeometry.mesh)
 
 
     // this.engineService.sceneService.scene.add(spellGeometry);
@@ -204,8 +203,8 @@ export class SpellWorkspaceComponent implements OnInit {
 
         // Передвигаем меху
         let factor = 1 / value.duration;
+        spellGeometry.setTarget(meshVector);
         spellGeometry.setPosition(new Vector3(spellGeometry.position.x - dir.x * factor, spellGeometry.position.y - dir.y * factor, spellGeometry.position.z - dir.z * factor), delta);
-        spellGeometry.lookAt(meshVector);
         spellGeometry.rotateX(-Math.PI / 2);
         // mesh.setRotationFromAxisAngle(new Vector3(0,0,0), angle);
 
