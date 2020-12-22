@@ -135,8 +135,6 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
         }, 0);
       });
 
-
-
     //TODO: подумать над тем как решить трабл
     // this.selectionBox = new SelectionBox(
     //   <Camera>this.engineService.sceneService.camera,
@@ -154,162 +152,17 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
 
     this.scene.nativeElement.appendChild(this.engineService.sceneService.renderer.domElement);
 
-    //TODO: вынести функцию в утилиты
-    let size = 360,
-      divisions = 72,
-      group,
-      borderWidth = 20,
-      borderHeight = 4;
-
-    // group = ObjectCreater.createBorder({borderWidth, size, borderHeight});
-    // this.engineService.sceneService.scene.add(group);
-    // mesh.translateZ(width / 2);
-
-
-    // @ts-ignore
-    // const [x1, y1] = this.data.features[5].geometry.coordinates;
-    // @ts-ignore
-    // const [x2, y2] = this.data.features[6].geometry.coordinates;
-
-    // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
-
-    const R = 0.48;
-
-    // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-    let board = new Board(this.data.features, R);
-    // console.log(board);
-    this.engineService.sceneService.scene.add(board);
-
-    // group = ObjectCreater.createGrid({divisions, size});
-    // this.engineService.sceneService.scene.add(group);
-
-    // const material = new LineBasicMaterial( { color: 0xffffff } );
-    // for (let i = 0; i < this.data.features.length; i++) {
-    //   let feature = this.data.features[i];
-    //   const points = [];
-    //
-    //   //feature.properties.height
-    //   for (let j = 0; j < feature.geometry.coordinates[0].length; j++) {
-    //     let bone = feature.geometry.coordinates[0][j];
-    //     points.push( new Vector3( (bone[1] - 30.5 ) * 5000 , 0 , ( bone[0] + 68.2 ) * 5000 ) );
-    //   }
-    //
-    //   const geometry = new BufferGeometry().setFromPoints( points );
-    //
-    //   const line = new Line( geometry, material );
-    //   // console.log(points);
-    //   this.engineService.sceneService.scene.add( line );
-    // }
-    // const material2 = new LineBasicMaterial({
-    //   color: 0x0000ff
-    // });
-    //
-    // const points = [];
-    // // points.push( new Vector3( -21.83, 48.8, 0 ) );
-    // points.push( new Vector3( 0, 10, 0 ) );
-    // points.push( new Vector3( 10, 0, 0 ) );
-    // points.push( new Vector3( 14, 2, 0 ) );
-    // points.push( new Vector3( 16, 0, 0 ) );
-    //
-    // const geometry = new BufferGeometry().setFromPoints( points );
-    //
-    // const line = new Line( geometry, material2 );
-    // this.engineService.sceneService.scene.add( line )
-
     // group = ObjectCreater.createHeroes({count: 6, storageService: this.storageService ,callback: (heroes) =>{
     //     console.log(heroes)
-    //     //
-    //     //
     //     // helper.update();
     //     // let object = new Mesh( heroes, new MeshBasicMaterial( {color: 0xff0000 }) );
     //     // let box = new BoxHelper( object, 0xff0000 );
     //     this.engineService.sceneService.scene.add( heroes );
     //     // this.engineService.sceneService.scene.add( box );
-    //
     //     // this.engineService.sceneService.scene.add(heroes);
     //   }
     // });
 
-    /**
-     * Start working on MouseEvents for SelectBox
-     * TODO: вынести в директиву SelectionBox. Передавать сдвиг по необходимости
-     */
-    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseDown, {
-    //   type: Types.Camera,
-    //   onMouseDown: (event: MouseEvent) => {
-    //     console.log('mousedown');
-    //     this.selectionBox.startPoint.set(
-    //       ((event.clientX - 400)/ this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
-    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
-    //       0.5
-    //     );
-    //   },
-    //   pressed: true,
-    //   name: 'mousedown',
-    //   keyCode: [0]
-    // });
-    //
-    // this.storageService.hotkeySceneCommandPush(MouseCommandsEnum.mouseUp, {
-    //   type: Types.Camera,
-    //   onMouseUp: (event: MouseEvent) => {
-    //     console.log('mouseup');
-    //     this.selectionBox.endPoint.set(
-    //       ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
-    //       -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
-    //       0.5
-    //     );
-    //     let allSelected = this.selectionBox.select();
-    //     for (let i = 0; i < allSelected.length; i++) {
-    //       allSelected[i].material.emissive = new Color(0x0000ff);
-    //     }
-    //   },
-    //   pressed: false,
-    //   name: 'mouseup',
-    //   keyCode: [0]
-    // });
-
-    // this.zone.runOutsideAngular(() => {
-    //
-    //   let throttled = (delay, fn) => {
-    //     let lastCall = 0;
-    //     return function (...args) {
-    //       const now = (new Date).getTime();
-    //       if (now - lastCall < delay) {
-    //         return;
-    //       }
-    //       lastCall = now;
-    //       return fn(...args);
-    //     }
-    //   };
-    //
-    //   let mouseMoveHandler = (event) => {
-    //     console.log(event);
-    //     if (this.helper.isDown) {
-    //       for (let i = 0; i < this.selectionBox.collection.length; i++) {
-    //         this.selectionBox.collection[i].material.emissive = new Color(0x000000);
-    //       }
-    //       this.selectionBox.endPoint.set(
-    //         ((event.clientX - 400) / this.scene.nativeElement.getBoundingClientRect().width) * 2 - 1,
-    //         -(event.clientY / this.scene.nativeElement.getBoundingClientRect().height) * 2 + 1,
-    //         0.5
-    //       );
-    //       let allSelected = this.selectionBox.select();
-    //       for (let i = 0; i < allSelected.length; i++) {
-    //         allSelected[i].material.emissive = new Color(0x0000ff);
-    //       }
-    //     }
-    //   };
-    //
-    //   const tHandler = throttled(200, mouseMoveHandler);
-    //   window.addEventListener("mousemove", tHandler);
-    //
-    //
-    // });
-
-
-    // grid.material.opacity = 0.2;
-    // grid.material.transparent = true;
-    // this.engineService.sceneService.scene.add(grid);
     this.engineService.sceneService.scene.background = new Color(0x444);
 
     this.keyboardEventService.engineService = this.engineService;
@@ -324,16 +177,23 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
 
     let hemisphereLightOptions = {
       color: '#ffffff',
-      groundColor: '#331608',
-      intensity: 0.25,
-      distance: 1000,
-      exponent: 0,
-      angle: 0.52,
-      decay: 2,
+      groundColor: '#000000',
+      intensity: 1,
       position: {
-        x: 50,
+        x: 300,
         y: 800,
-        z: 50
+        z: 300
+      }
+    };
+
+    let hemisphereLightOptions2 = {
+      color: '#ffffff',
+      groundColor: '#880000',
+      intensity: 0.5,
+      position: {
+        x: 300,
+        y: -800,
+        z: 300
       }
     };
 
@@ -428,6 +288,7 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     // this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
 
     this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
+    // this.lightService.addLight(hemisphereLightOptions2, 'HemisphereLight');
 
     this.lightService.addLight(pointLightOptions, "PointLight");
 
@@ -450,6 +311,22 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     //
     // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
     // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
+
+
+    // @ts-ignore
+    // const [x1, y1] = this.data.features[5].geometry.coordinates;
+    // @ts-ignore
+    // const [x2, y2] = this.data.features[6].geometry.coordinates;
+
+    // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
+
+    const R = 4.95;
+
+    // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+    let board = new Board(this.data.features, R);
+    // console.log(board);
+    this.engineService.sceneService.scene.add(board);
+
   }
 
 

@@ -23,14 +23,14 @@ export interface Position {
 }
 
 export interface LightEntity {
-  color: string;
-  groundColor: string;
-  intensity: number;
-  distance: number;
-  exponent: number;
-  angle: number;
-  decay: number;
-  position: Position;
+  color?: string;
+  groundColor?: string;
+  intensity?: number;
+  distance?: number;
+  exponent?: number;
+  angle?: number;
+  decay?: number;
+  position?: Position;
   shadow?: Shadow;
 }
 
