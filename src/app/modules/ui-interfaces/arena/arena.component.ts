@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line
+  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line, AmbientLight, DirectionalLight, HemisphereLight
 } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
@@ -177,12 +177,12 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
 
     let hemisphereLightOptions = {
       color: '#ffffff',
-      groundColor: '#000000',
-      intensity: 1,
+      groundColor: '',
+      intensity: 0.7,
       position: {
-        x: 300,
-        y: 800,
-        z: 300
+        x: 0,
+        y: 50,
+        z: 0
       }
     };
 
@@ -198,17 +198,17 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     };
 
     let pointLightOptions = {
-      color: '#24ff5b',
-      groundColor: '#444444',
-      intensity: 1,
-      distance: 2000,
+      color: '#abde7e',
+      groundColor: '#4ec37d',
+      intensity: 0.5,
+      distance: 5000,
       exponent: 0,
       angle: 0.52,
       decay: 1,
       position: {
-        x: 300,
-        y: 1000,
-        z: 300
+        x: 0,
+        y: 100,
+        z: 0
       }
     };
 
@@ -239,17 +239,6 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
         x: 0,
         y: 200,
         z: 100
-      },
-      shadow: {
-        castShadow: true,
-        camera: {
-          left: -4000,
-          right: 4000,
-          top: 4000,
-          bottom: -4000,
-          near: 0.5,
-          far: 1000
-        }
       }
     };
 
@@ -287,14 +276,29 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     this.engineService.cameraService.updateCamera();
     // this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
 
-    this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
+    // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
     // this.lightService.addLight(hemisphereLightOptions2, 'HemisphereLight');
 
-    this.lightService.addLight(pointLightOptions, "PointLight");
+    // this.lightService.addLight(pointLightOptions, "PointLight");
 
     // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
-    // this.lightService.addLight(directionalLightOptions, 'DirectionalLight');
+
+
+    const hemiLight = new HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+    hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
+    hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
+    hemiLight.position.set( 0, 500, 0 );    // // hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    // // hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+    // hemiLight.position.set( 0, 50, 0 );
+    // this.engineService.sceneService.scene.add( hemiLight );
+
+
+    const dirLight = new DirectionalLight( '#ffffff', 1 );
+    dirLight.position.set( -1, 0.75, 1 );
+    dirLight.position.multiplyScalar( 50 );
+    this.engineService.sceneService.scene.add( dirLight );
+
 
     // this.lightService.addLight(spotLightOptions, 'SpotLight');
     // this.lightService.addLight(spotLightOptions2, 'SpotLight');
@@ -326,7 +330,8 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     let board = new Board(this.data.features, R);
     // console.log(board);
     this.engineService.sceneService.scene.add(board);
-
+    // const light = new AmbientLight( 0x404040 ); // soft white light
+    // this.engineService.sceneService.scene.add(light);
   }
 
 
