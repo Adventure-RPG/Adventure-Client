@@ -285,19 +285,24 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
 
 
 
-    const hemiLight = new HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-    hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
-    hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
-    hemiLight.position.set( 0, 500, 0 );    // // hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    // const hemiLight = new HemisphereLight( '#6142d4', 0xffffff, 1 );
+    // hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
+    // hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
+    // hemiLight.position.set( 0, 500, 0 );    // // hemiLight.color.setHSL( 0.6, 1, 0.6 );
     // // hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
     // hemiLight.position.set( 0, 50, 0 );
     // this.engineService.sceneService.scene.add( hemiLight );
 
 
-    const dirLight = new DirectionalLight( '#ffffff', 1 );
-    dirLight.position.set( -1, 0.75, 1 );
-    dirLight.position.multiplyScalar( 50 );
-    this.engineService.sceneService.scene.add( dirLight );
+    // const dirLight = new DirectionalLight( '#ffffff', 0.5 );
+    // dirLight.position.set( -1, 1, 1 );
+    // dirLight.position.multiplyScalar( 50 );
+    // this.engineService.sceneService.scene.add( dirLight );
+
+    const dirLight2 = new DirectionalLight( '#ffffff', 0.7 );
+    dirLight2.position.set( 1, 0.5, 0.75 );
+    dirLight2.position.multiplyScalar( 50 );
+    this.engineService.sceneService.scene.add( dirLight2 );
 
 
     // this.lightService.addLight(spotLightOptions, 'SpotLight');

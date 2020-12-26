@@ -15,8 +15,8 @@ export class Board extends Object3D {
   createHexagons({radius, count}){
     const geometry = new CylinderGeometry(radius, radius, radius, 6, 1, false, 0);
     const material = new MeshPhongMaterial({
-      color: this.biomeColor(0),
-      flatShading: true
+      color: '#fff',
+      flatShading: true,
     });
     this.tiles = new InstancedMesh(geometry, material, count);
     this.add(this.tiles);
