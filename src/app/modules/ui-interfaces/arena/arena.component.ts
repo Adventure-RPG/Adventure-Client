@@ -299,8 +299,9 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     // dirLight.position.multiplyScalar( 50 );
     // this.engineService.sceneService.scene.add( dirLight );
 
-    const dirLight2 = new DirectionalLight( '#ffffff', 0.7 );
-    dirLight2.position.set( 1, 0.5, 0.75 );
+    const dirLight2 = new DirectionalLight( '#fdfbd3', 1);
+    dirLight2.castShadow = true;
+    dirLight2.position.set( 1, 0.5, 1);
     dirLight2.position.multiplyScalar( 50 );
     this.engineService.sceneService.scene.add( dirLight2 );
 

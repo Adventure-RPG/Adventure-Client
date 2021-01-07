@@ -258,8 +258,8 @@ export class FirstPersonControls extends CameraControls {
         this.moveDown = false;
       },
       onKeyDown: () => {
-        // console.log('Двигаюсь Вниз');
-        // console.log(this.object);
+        console.log("HERE");
+        console.log(this.object.isPerspectiveCamera);
 
         this.moveDown = true;
       },
@@ -408,10 +408,15 @@ export class FirstPersonControls extends CameraControls {
             this.object.translateX(actualMoveSpeed);
           }
           if (this.moveDown) {
-            this.object.translateY(-actualMoveSpeed);
+            if (this.object.position.y > 20) {
+              this.object.translateY(-actualMoveSpeed);
+            }
           }
           if (this.moveUp) {
             this.object.translateY(actualMoveSpeed);
+          }
+          if (this.object.position.y < 20) {
+            this.object.position.y = 20;
           }
           this.target = new Vector3(this.target.x - (previousVector.x - this.object.position.x),
             this.target.y - (previousVector.y - this.object.position.y),
