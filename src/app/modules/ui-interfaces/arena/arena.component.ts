@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
-  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line, AmbientLight, DirectionalLight, HemisphereLight
+  BoxGeometry, BoxHelper, Color, Group, Mesh, MeshBasicMaterial, MeshPhongMaterial, PlaneGeometry, Vector3, LineBasicMaterial, BufferGeometry, Line, AmbientLight, DirectionalLight, HemisphereLight, Object3D
 } from 'three';
 import { KeyboardEventService } from '@events/keyboard-event.service';
 import { LightService } from '@modules/engine/core/light.service';
@@ -18,6 +18,8 @@ import { ObjectCreater } from "../../../utils/object-creater";
 import { Board } from "../../../utils/board";
 import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
 import { GeoJSON } from "../../../../typings";
+import { CylinderGeometry } from "@node_modules/three";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export enum ArenaPanel {
   ModelLoader,
@@ -168,159 +170,36 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     this.keyboardEventService.engineService = this.engineService;
 
     //TODO: Отрефакторить.
-    Lightning.addLightning(
-      this.engineService.sceneService.scene,
-      this.engineService.sceneService.renderer,
-      this.engineService.cameraService.camera,
-      this.storageService
-    );
-
-    let hemisphereLightOptions = {
-      color: '#ffffff',
-      groundColor: '',
-      intensity: 0.7,
-      position: {
-        x: 0,
-        y: 50,
-        z: 0
-      }
-    };
-
-    let hemisphereLightOptions2 = {
-      color: '#ffffff',
-      groundColor: '#880000',
-      intensity: 0.5,
-      position: {
-        x: 300,
-        y: -800,
-        z: 300
-      }
-    };
-
-    let pointLightOptions = {
-      color: '#abde7e',
-      groundColor: '#4ec37d',
-      intensity: 0.5,
-      distance: 5000,
-      exponent: 0,
-      angle: 0.52,
-      decay: 1,
-      position: {
-        x: 0,
-        y: 100,
-        z: 0
-      }
-    };
-
-    let ambientLightOptions = {
-      color: '#dc8874',
-      groundColor: '#444444',
-      intensity: 0.5,
-      distance: 200,
-      exponent: 0,
-      angle: 0.52,
-      decay: 2,
-      position: {
-        x: 200,
-        y: 200,
-        z: 200
-      }
-    };
-
-    let directionalLightOptions = {
-      color: '0xffffff',
-      groundColor: '#fff',
-      intensity: 1,
-      distance: 200,
-      exponent: 0,
-      angle: 1.52,
-      decay: 2,
-      position: {
-        x: 0,
-        y: 200,
-        z: 100
-      }
-    };
-
-    let spotLightOptions = {
-      color: '0xffffff',
-      groundColor: '#fff',
-      intensity: 3,
-      distance: 1500,
-      exponent: 0,
-      angle: 1.52,
-      decay: 2,
-      position: {
-        x: 0,
-        y: 1000,
-        z: -800
-      }
-    };
-
-    let spotLightOptions2 = {
-      color: '0x777',
-      groundColor: '#777',
-      intensity: 1,
-      distance: 1000,
-      exponent: 1,
-      angle: Math.PI / 4,
-      decay: 2,
-      position: {
-        x: 0,
-        y: 50,
-        z: 0
-      }
-    };
+    // Lightning.addLightning(
+    //   this.engineService.sceneService.scene,
+    //   this.engineService.sceneService.renderer,
+    //   this.engineService.cameraService.camera,
+    //   this.storageService
+    // );
 
     this.engineService.sceneService.camera.position.set(100, 100, 100);
     this.engineService.cameraService.updateCamera();
-    // this.engineService.cameraService.updateCamera(new Vector3(100, 100, 100), {target: new Vector3(100, 0, 0)});
-
-    // this.lightService.addLight(hemisphereLightOptions, 'HemisphereLight');
-    // this.lightService.addLight(hemisphereLightOptions2, 'HemisphereLight');
-
-    // this.lightService.addLight(pointLightOptions, "PointLight");
-
-    // this.lightService.addLight(ambientLightOptions, 'AmbientLight');
 
 
 
-    // const hemiLight = new HemisphereLight( '#6142d4', 0xffffff, 1 );
+    const hemiLight = new HemisphereLight( '#fdfbd3', '', 0.5 );
     // hemiLight.color.setHSL( 0.6, 0.75, 0.5 );
     // hemiLight.groundColor.setHSL( 0.095, 0.5, 0.5 );
-    // hemiLight.position.set( 0, 500, 0 );    // // hemiLight.color.setHSL( 0.6, 1, 0.6 );
+    hemiLight.position.set( 1, 1, -0.5 );    // // hemiLight.color.setHSL( 0.6, 1, 0.6 );
     // // hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
     // hemiLight.position.set( 0, 50, 0 );
-    // this.engineService.sceneService.scene.add( hemiLight );
+    this.engineService.sceneService.scene.add( hemiLight );
 
 
-    // const dirLight = new DirectionalLight( '#ffffff', 0.5 );
-    // dirLight.position.set( -1, 1, 1 );
-    // dirLight.position.multiplyScalar( 50 );
-    // this.engineService.sceneService.scene.add( dirLight );
+    const dirLight = new DirectionalLight( '#ffffff', 0.5 );
+    dirLight.position.set( -1, 1, 1 );
+    dirLight.position.multiplyScalar( 50 );
+    this.engineService.sceneService.scene.add( dirLight );
 
-    const dirLight2 = new DirectionalLight( '#ffffff', 0.7 );
-    dirLight2.position.set( 1, 0.5, 0.75 );
-    dirLight2.position.multiplyScalar( 50 );
-    this.engineService.sceneService.scene.add( dirLight2 );
-
-
-    // this.lightService.addLight(spotLightOptions, 'SpotLight');
-    // this.lightService.addLight(spotLightOptions2, 'SpotLight');
-
-    // let composer = new EffectComposer(this.engineService.sceneService.renderer);
-    // console.log(composer);
-
-    // let ochenEbaniiTest: HTMLImageElement = document.createElement("img");
-    // ochenEbaniiTest.src = require("tests/assets/colormap/ColorMap-2.png");
-    //
-    // let ochenEbaniiTest2: HTMLImageElement = document.createElement("img");
-    // ochenEbaniiTest.src = require("tests/assets/colormap/heightArena.png");
-    //
-    //
-    // this.heightMapService.changeColorMapFromImage({}, this.engineService.scene, ochenEbaniiTest);
-    // this.heightMapService.changeMapFromImage({}, this.engineService.scene, ochenEbaniiTest2); mn 3
-
+    // const dirLight2 = new DirectionalLight( '#ffffff', 0.7 );
+    // dirLight2.position.set( 1, 0.5, 0.75 );
+    // dirLight2.position.multiplyScalar( 50 );
+    // this.engineService.sceneService.scene.add( dirLight2 );
 
     // @ts-ignore
     // const [x1, y1] = this.data.features[5].geometry.coordinates;
@@ -328,13 +207,44 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     // const [x2, y2] = this.data.features[6].geometry.coordinates;
 
     // const R = Math.sqrt((Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 3);
+    const loader = new GLTFLoader();
 
-    const R = 4.95;
+    //TODO: check dracoloader
+    // const dracoLoader = new DRACOLoader();
+    // dracoLoader.setDecoderPath( 'three/examples/js/libs/draco/' );
+    // loader.setDRACOLoader( dracoLoader );
+    // Load a glTF resource
+    loader.load(
+      // resource URL
+      '/assets/models/tree/Trees_Flowers_and_Rocks.glb',
+      // called when the resource is loaded
+      ( gltf ) => {
 
-    // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
-    let board = new Board(this.data.features, R);
-    // console.log(board);
-    this.engineService.sceneService.scene.add(board);
+        const models: Object3D[] = gltf.scene.children.filter(mesh => mesh.name.includes('Tree'));
+        console.log(gltf)
+
+
+        const R = 4.90;
+        // console.log(Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
+        let board = new Board(this.data.features, R, models);
+        // console.log(board);
+        this.engineService.sceneService.scene.add( board );
+
+      },
+      // called while loading is progressing
+      ( xhr ) => {
+
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+      },
+      // called when loading has errors
+      ( error ) => {
+
+        console.log(error);
+        console.log( 'An error happened' );
+
+      }
+    );
     // const light = new AmbientLight( 0x404040 ); // soft white light
     // this.engineService.sceneService.scene.add(light);
   }

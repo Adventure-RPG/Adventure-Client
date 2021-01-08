@@ -4,6 +4,8 @@ import { SceneService } from '@modules/engine/core/base/scene.service';
 import { StorageService } from '@services/storage.service';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import UuidStatic = require('uuid');
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 @Injectable()
 export class ModelLoaderService {
@@ -145,5 +147,50 @@ export class ModelLoaderService {
     // console.log(texture);
 
     // console.log(model)
+  }
+
+  //TODO: вынести аплойд файлов
+  /**
+   * Метод загрузки FBX модели
+   * @param url
+   */
+  public loadGLTF(url) {
+
+    const loader = new GLTFLoader();
+
+    //TODO: check dracoloader
+    // const dracoLoader = new DRACOLoader();
+    // dracoLoader.setDecoderPath( 'three/examples/js/libs/draco/' );
+    // loader.setDRACOLoader( dracoLoader );
+      // Load a glTF resource
+    loader.load(
+      // resource URL
+      url,
+      // called when the resource is loaded
+      ( gltf ) => {
+
+        this.sceneService.scene.add( gltf.scene );
+
+        gltf.animations; // Array<THREE.AnimationClip>
+        gltf.scene; // THREE.Group
+        gltf.scenes; // Array<THREE.Group>
+        gltf.cameras; // Array<THREE.Camera>
+        gltf.asset; // Object
+
+      },
+      // called while loading is progressing
+      function ( xhr ) {
+
+        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+      },
+      // called when loading has errors
+      function ( error ) {
+
+        console.log(error);
+        console.log( 'An error happened' );
+
+      }
+    );
   }
 }
