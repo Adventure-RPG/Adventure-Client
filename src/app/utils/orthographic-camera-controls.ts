@@ -7,6 +7,7 @@ import { Quaternion, Vector2, Vector3 } from "three";
 import { MouseCommandsEnum } from "@enums/mouseCommands.enum";
 import { OrthographicCamera } from "three";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import { environment } from '../../environments/environment';
 
 export class OrthographicCameraControls {
   object: OrthographicCamera;
@@ -31,6 +32,8 @@ export class OrthographicCameraControls {
   lon;
   moveForward;
   moveBackward;
+  moveLeft;
+  moveRight;
 
   handleResize;
   rotateCamera;
@@ -61,7 +64,7 @@ export class OrthographicCameraControls {
     this.noPan = false;
     this.noRoll = false;
     this.staticMoving = false;
-    this.movementSpeed = 3;
+    this.movementSpeed = 10 * environment.scale;
     this.dynamicDampingFactor = 0.2;
     this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
 
@@ -503,21 +506,21 @@ export class OrthographicCameraControls {
 
   //TODO: add velocity for buttons
 
-  initCommands(){
+  initCommands() {
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveUpKeyboard, {
       type: Types.Camera,
       onKeyUp: () => {
         console.log(this.object);
         console.log('onKeyUp');
         // console.log('onMouseDown');
-        // this.moveForward = false;
+        this.moveForward = false;
         // console.log(this.moveForward);
       },
       onKeyDown: () => {
         console.log('onKeyDown');
-        this.object.translateY(this.movementSpeed);
+        // this.object.translateY(this.movementSpeed);
         this.object.updateProjectionMatrix();
-        // this.moveForward = true;
+        this.moveForward = true;
         // console.log(this.moveForward);
       },
       pressed: false,
@@ -530,14 +533,13 @@ export class OrthographicCameraControls {
       onKeyUp: () => {
         console.log(this.object);
         // TransformControls
-        // this.moveForward = false;
+        this.moveBackward = false;
         // console.log(this.moveForward);
         console.log('onMouseDown');
       },
       onKeyDown: () => {
-        this.object.translateY(-this.movementSpeed);
-        this.object.updateProjectionMatrix();
-        // this.moveForward = true;
+        // this.object.translateY(-this.movementSpeed);
+        this.moveBackward = true;
         // console.log(this.moveForward);
       },
       pressed: false,
@@ -549,13 +551,13 @@ export class OrthographicCameraControls {
       type: Types.Camera,
       onKeyUp: () => {
         console.log(this.object);
-        // this.moveForward = false;
+        this.moveRight = false;
         // console.log(this.moveForward);
       },
       onKeyDown: () => {
-        this.object.translateX(this.movementSpeed);
-        this.object.updateProjectionMatrix();
-        // this.moveForward = true;
+        // this.object.translateX(this.movementSpeed);
+        // this.object.updateProjectionMatrix();
+        this.moveRight = true;
         // console.log(this.moveForward);
       },
       pressed: false,
@@ -568,18 +570,41 @@ export class OrthographicCameraControls {
       onKeyUp: () => {
         console.log(this.object);
         console.log('onMouseDown');
-        // this.moveForward = false;
+        this.moveLeft = false;
         // console.log(this.moveForward);
       },
       onKeyDown: () => {
-        this.object.translateX(-this.movementSpeed);
-        this.object.updateProjectionMatrix();
-        // this.moveForward = true;
+        // this.object.translateX(-this.movementSpeed);
+        // this.object.updateProjectionMatrix();
+        this.moveLeft = true;
         // console.log(this.moveForward);
       },
       pressed: false,
       keyCode: [Key.A],
       name: 'moveForward'
     });
+
+    this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
+      type: Types.Camera,
+      update: (delta) => {
+
+        let actualMoveSpeed = delta * this.movementSpeed;
+        if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight) {
+          let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
+          if (this.moveForward) {
+            this.object.translateY(actualMoveSpeed);
+          }
+          if (this.moveBackward) {
+            this.object.translateY(-actualMoveSpeed);
+          }
+          if (this.moveLeft) {
+            this.object.translateX(-actualMoveSpeed);
+          }
+          if (this.moveRight) {
+            this.object.translateX(actualMoveSpeed);
+          }
+        this.object.updateProjectionMatrix();
+      }
+    }});
   }
 }

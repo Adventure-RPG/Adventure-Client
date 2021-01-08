@@ -18,7 +18,6 @@ import { ObjectCreater } from "../../../utils/object-creater";
 import { Board } from "../../../utils/board";
 import { ModelLoaderService } from "@modules/engine/core/base/model-loader.service";
 import { GeoJSON } from "../../../../typings";
-import { CylinderGeometry } from "@node_modules/three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export enum ArenaPanel {
@@ -191,10 +190,11 @@ export class ArenaComponent implements OnDestroy, AfterViewInit {
     this.engineService.sceneService.scene.add( hemiLight );
 
 
-    const dirLight = new DirectionalLight( '#ffffff', 0.5 );
-    dirLight.position.set( -1, 1, 1 );
-    dirLight.position.multiplyScalar( 50 );
-    this.engineService.sceneService.scene.add( dirLight );
+    const dirLight2 = new DirectionalLight( '#fdfbd3', 1);
+    dirLight2.castShadow = true;
+    dirLight2.position.set( 1, 0.5, 1);
+    dirLight2.position.multiplyScalar( 50 );
+    this.engineService.sceneService.scene.add( dirLight2 );
 
     // const dirLight2 = new DirectionalLight( '#ffffff', 0.7 );
     // dirLight2.position.set( 1, 0.5, 0.75 );
