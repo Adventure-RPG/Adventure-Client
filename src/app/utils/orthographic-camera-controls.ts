@@ -17,7 +17,6 @@ export class OrthographicCameraControls {
   movementSpeed;
 
   screen;
-  radius;
   rotateSpeed;
   zoomSpeed;
   noRotate;
@@ -34,6 +33,13 @@ export class OrthographicCameraControls {
   moveBackward;
   moveLeft;
   moveRight;
+  rightRotation;
+  leftRotation;
+
+  phi;
+  theta;
+  radius;
+
 
   handleResize;
   rotateCamera;
@@ -56,7 +62,6 @@ export class OrthographicCameraControls {
     this.enabled = true;
 
     this.screen = { left: 0, top: 0, width: 0, height: 0 };
-    this.radius = 0;
     this.rotateSpeed = 1.0;
     this.zoomSpeed = 1.2;
     this.noRotate = false;
@@ -70,7 +75,22 @@ export class OrthographicCameraControls {
 
 
     // internals
-    this.target = new Vector3();
+    this.target = new Vector3(0, 0, 0);
+
+    //camera initial setup
+    this.radius = Math.sqrt(
+      Math.pow(this.object.position.x, 2) +
+      Math.pow(this.object.position.y, 2) +
+      Math.pow(this.object.position.z, 2)
+    );
+    this.theta = Math.acos(this.object.position.z / this.radius);
+    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+    this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
+    this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
+    this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+    this.object.lookAt(this.target);
+    console.log(this.theta, this.phi, this.object.position, this.target);
+
 
     let EPS = 0.000001;
 
@@ -550,26 +570,24 @@ export class OrthographicCameraControls {
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
       type: Types.Camera,
       onKeyUp: () => {
-        console.log(this.object);
+        console.log("right-here-end");
         this.moveRight = false;
-        // console.log(this.moveForward);
       },
       onKeyDown: () => {
         // this.object.translateX(this.movementSpeed);
         // this.object.updateProjectionMatrix();
         this.moveRight = true;
-        // console.log(this.moveForward);
+        console.log("right-here");
       },
       pressed: false,
       keyCode: [Key.D],
-      name: 'moveForward'
+      name: 'moveRight'
     });
 
     this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
       type: Types.Camera,
       onKeyUp: () => {
-        console.log(this.object);
-        console.log('onMouseDown');
+        console.log('moveLeftEnd');
         this.moveLeft = false;
         // console.log(this.moveForward);
       },
@@ -577,19 +595,59 @@ export class OrthographicCameraControls {
         // this.object.translateX(-this.movementSpeed);
         // this.object.updateProjectionMatrix();
         this.moveLeft = true;
-        // console.log(this.moveForward);
+        console.log("here");
       },
       pressed: false,
       keyCode: [Key.A],
-      name: 'moveForward'
+      name: 'moveLeft'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraLeftRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        console.log(this.object);
+        console.log('onMouseDown');
+        this.leftRotation = false;
+        // console.log(this.moveForward);
+      },
+      onKeyDown: () => {
+        // this.object.translateX(-this.movementSpeed);
+        // this.object.updateProjectionMatrix();
+        this.leftRotation = true;
+        // console.log(this.moveForward);
+      },
+      pressed: false,
+      keyCode: [Key.Q],
+      name: 'leftRotation'
+    });
+
+    this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.cameraRightRotation, {
+      type: Types.Camera,
+      onKeyUp: () => {
+        console.log(this.object);
+        console.log('onMouseDown');
+        this.rightRotation = false;
+        // console.log(this.moveForward);
+      },
+      onKeyDown: () => {
+        // this.object.translateX(-this.movementSpeed);
+        // this.object.updateProjectionMatrix();
+        this.rightRotation = true;
+        // console.log(this.moveForward);
+      },
+      pressed: false,
+      keyCode: [Key.E],
+      name: 'rightRotation'
     });
 
     this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
       type: Types.Camera,
       update: (delta) => {
 
+        // console.log(this.theta, this.phi, this.object.position, this.target);
         let actualMoveSpeed = delta * this.movementSpeed;
-        if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight) {
+        if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.leftRotation || this.rightRotation) {
+          console.log("moving");
           let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
           if (this.moveForward) {
             this.object.translateY(actualMoveSpeed);
@@ -602,6 +660,27 @@ export class OrthographicCameraControls {
           }
           if (this.moveRight) {
             this.object.translateX(actualMoveSpeed);
+          }
+          this.target = new Vector3(this.target.x - (previousVector.x - this.object.position.x),
+            this.target.y - (previousVector.y - this.object.position.y),
+            this.target.z - (previousVector.z - this.object.position.z));
+
+          if (this.leftRotation || this.rightRotation) {
+            if (this.leftRotation) {
+              this.phi += (Math.PI) / 180;
+            }
+            if (this.rightRotation) {
+              this.phi -= (Math.PI) / 180;
+            }
+            this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
+            this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
+            this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+            this.object.lookAt(this.target);
+            console.log(
+              Math.pow(this.object.position.x - this.target.x, 2) +
+              Math.pow(this.object.position.y - this.target.y, 2) +
+              Math.pow(this.object.position.z - this.target.z, 2)
+            );
           }
         this.object.updateProjectionMatrix();
       }
