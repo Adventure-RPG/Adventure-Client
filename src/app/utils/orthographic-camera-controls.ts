@@ -75,8 +75,9 @@ export class OrthographicCameraControls {
 
 
     // internals
-    this.target = new Vector3();
+    this.target = new Vector3(0, 0, 0);
 
+    //camera initial setup
     this.radius = Math.sqrt(
       Math.pow(this.object.position.x, 2) +
       Math.pow(this.object.position.y, 2) +
@@ -84,6 +85,12 @@ export class OrthographicCameraControls {
     );
     this.theta = Math.acos(this.object.position.z / this.radius);
     this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+    this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
+    this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
+    this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+    this.object.lookAt(this.target);
+    console.log(this.theta, this.phi, this.object.position, this.target);
+
 
     let EPS = 0.000001;
 
@@ -629,7 +636,7 @@ export class OrthographicCameraControls {
         // console.log(this.moveForward);
       },
       pressed: false,
-      keyCode: [Key.R],
+      keyCode: [Key.E],
       name: 'rightRotation'
     });
 
@@ -637,6 +644,7 @@ export class OrthographicCameraControls {
       type: Types.Camera,
       update: (delta) => {
 
+        // console.log(this.theta, this.phi, this.object.position, this.target);
         let actualMoveSpeed = delta * this.movementSpeed;
         if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.leftRotation || this.rightRotation) {
           console.log("moving");
