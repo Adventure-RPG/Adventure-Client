@@ -84,7 +84,7 @@ export class OrthographicCameraControls {
       Math.pow(this.object.position.z, 2)
     );
     this.theta = Math.acos(this.object.position.z / this.radius);
-    this.phi = Math.acos(this.object.position.x / (this.radius * Math.sin(this.theta)));
+    this.phi = Math.atan2(this.object.position.x / (this.radius * Math.sin(this.theta)));
     this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
     this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
     this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
