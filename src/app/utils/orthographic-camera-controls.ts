@@ -11,10 +11,11 @@ import { environment } from '../../environments/environment';
 
 export class OrthographicCameraControls {
   object: OrthographicCamera;
-  target;
+  target: Vector3;
   domElement;
   enabled;
   movementSpeed;
+
 
   screen;
   rotateSpeed;
@@ -78,18 +79,15 @@ export class OrthographicCameraControls {
     this.target = new Vector3(0, 0, 0);
 
     //camera initial setup
-    this.radius = Math.sqrt(
-      Math.pow(this.object.position.x, 2) +
-      Math.pow(this.object.position.y, 2) +
-      Math.pow(this.object.position.z, 2)
-    );
-    this.theta = Math.acos(this.object.position.z / this.radius);
-    this.phi = Math.atan2(this.object.position.x / (this.radius * Math.sin(this.theta)));
-    this.object.position.x = this.radius * Math.cos(this.phi) * Math.sin(this.theta) + this.target.x;
-    this.object.position.z = this.radius * Math.sin(this.phi) * Math.sin(this.theta) + this.target.z;
-    this.object.position.y = this.radius * Math.cos(this.theta) + this.target.y;
+    this.radius = this.object.position.length();
+    this.theta = - Math.PI / 4;
+    this.phi = Math.atan( - 1 / Math.sqrt( 2 ) );
+    // this.object.rotation.order = 'YXZ';
+    // this.object.rotation.y = - Math.PI / 4;
+    // this.object.rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
+    this.object.position.setFromSphericalCoords(this.radius, this.phi, this.theta);
     this.object.lookAt(this.target);
-    console.log(this.theta, this.phi, this.object.position, this.target);
+    console.log(this.object, this.target);
 
 
     let EPS = 0.000001;
@@ -365,160 +363,7 @@ export class OrthographicCameraControls {
 
       _this.object.lookAt( _this.target );
 
-      // if ( _changed ) {
-      //
-      //   _this.dispatchEvent( changeEvent );
-      //
-      //   _changed = false;
-      //
-      // }
-
     };
-
-    // this.reset = function () {
-    //
-    //   _state = STATE.NONE;
-    //   _prevState = STATE.NONE;
-    //
-    //   _this.target.copy( _this.target0 );
-    //   _this.object.position.copy( <any>_this.position0 );
-    //   _this.object.up.copy( _this.up0 );
-    //
-    //   _eye.subVectors( _this.object.position, _this.target );
-    //
-    //   _this.object.left = _this.left0;
-    //   _this.object.right = _this.right0;
-    //   _this.object.top = _this.top0;
-    //   _this.object.bottom = _this.bottom0;
-    //
-    //   _this.object.lookAt( _this.target );
-    //
-    //   _changed = false;
-    //
-    // };
-
-    // this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveForwardKeyboard, {
-    //   type: Types.Camera,
-    //   onKeyUp: () => {
-    //     this.moveForward = false;
-    //     console.log(this.moveForward);
-    //   },
-    //   onKeyDown: () => {
-    //     console.log('Двигаюсь вперед');
-    //     this.moveForward = true;
-    //     console.log(this.moveForward);
-    //   },
-    //   pressed: false,
-    //   keyCode: [Key.W, Key.UpArrow],
-    //   name: 'moveForward'
-    // });
-
-    //TODO:START
-    // this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveBackwardKeyboard, {
-    //   type: Types.Camera,
-    //   onKeyUp: () => {
-    //     this.moveBackward = false;
-    //   },
-    //   onKeyDown: () => {
-    //     console.log('Двигаюсь назад');
-    //     console.log(this.object);
-    //
-    //     this.moveBackward = true;
-    //   },
-    //   pressed: false,
-    //   keyCode: [Key.S, Key.DownArrow],
-    //   name: 'moveBackward'
-    // });
-
-    // this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveLeftKeyboard, {
-    //   type: Types.Camera,
-    //   onKeyUp: () => {
-    //     this.moveLeft = false;
-    //   },
-    //   onKeyDown: () => {
-    //     console.log('Двигаюсь налево');
-    //     console.log(this.object);
-    //
-    //     this.moveLeft = true;
-    //   },
-    //   pressed: false,
-    //   keyCode: [Key.A, Key.LeftArrow],
-    //   name: 'moveLeft'
-    // });
-
-    // this.storageService.hotkeySceneCommandPush(KeyboardCommandsEnum.moveRightKeyboard, {
-    //   type: Types.Camera,
-    //   onKeyUp: () => {
-    //     this.moveRight = false;
-    //   },
-    //   onKeyDown: () => {
-    //     console.log('Двигаюсь направо');
-    //     console.log(this.object);
-    //
-    //     this.moveRight = true;
-    //   },
-    //   pressed: false,
-    //   keyCode: [Key.D, Key.RightArrow],
-    //   name: 'moveRight'
-    // });
-
-    // this.storageService.rendererStorageCommandPush('orthographicCameraUpdater', {
-    //   type: Types.Camera,
-    //   update: (delta) => {
-    //     if (this.enabled === false) {
-    //       return;
-    //     }
-    //     if (this.heightSpeed) {
-    //       let y = THREE.Math.clamp(this.object.position.y, this.heightMin, this.heightMax);
-    //       let heightDelta = y - this.heightMin;
-    //       this.autoSpeedFactor = delta * (heightDelta * this.heightCoef);
-    //     } else {
-    //       this.autoSpeedFactor = 0.0;
-    //     }
-    //     let actualMoveSpeed = delta * this.movementSpeed;
-    //
-    //     if (this.moveForward || (this.autoForward && !this.moveBackward)) {
-    //       this.object.translateY(-actualMoveSpeed);
-    //       console.log(this.object.position);
-    //     }
-    //     if (this.moveBackward) {
-    //       this.object.translateY(actualMoveSpeed);
-    //       console.log(this.object.position);
-    //     }
-    //     if (this.moveLeft) {
-    //       this.object.translateX(actualMoveSpeed);
-    //       console.log(this.object.position);
-    //     }
-    //     if (this.moveRight) {
-    //       this.object.translateX(-actualMoveSpeed);
-    //       console.log(this.object.position);
-    //     }
-    //
-    //     let actualLookSpeed = delta * this.lookSpeed;
-    //
-    //     if (!this.activeLook) {
-    //       actualLookSpeed = 0;
-    //     }
-    //     let verticalLookRatio = 1;
-    //     if (this.constrainVertical) {
-    //       verticalLookRatio = Math.PI / (this.verticalMax - this.verticalMin);
-    //     }
-    //     this.lon += this.mouseX * actualLookSpeed;
-    //     if (this.lookVertical) {
-    //       this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
-    //     }
-    //
-    //     this.lat = Math.max(-85, Math.min(85, this.lat));
-    //     this.phi = THREE.Math.degToRad(90 - this.lat);
-    //     this.theta = THREE.Math.degToRad(this.lon);
-    //
-    //     if (this.constrainVertical) {
-    //       this.phi = THREE.Math.mapLinear(this.phi, 0, Math.PI, this.verticalMin, this.verticalMax);
-    //     }
-    //     let targetPosition = this.target,
-    //       position = this.object.position;
-    //   }
-    // });
 
     this.initCommands();
 
@@ -640,7 +485,7 @@ export class OrthographicCameraControls {
       name: 'rightRotation'
     });
 
-    this.storageService.rendererStorageCommandPush('firstPersonCameraUpdater', {
+    this.storageService.rendererStorageCommandPush('orthographicCameraControlsUpdater', {
       type: Types.Camera,
       update: (delta) => {
 
@@ -648,7 +493,7 @@ export class OrthographicCameraControls {
         let actualMoveSpeed = delta * this.movementSpeed;
         if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight || this.leftRotation || this.rightRotation) {
           console.log("moving");
-          let previousVector = new Vector3(this.object.position.x, this.object.position.y, this.object.position.z);
+          let previousVector = this.object.position.clone();
           if (this.moveForward) {
             this.object.translateY(actualMoveSpeed);
           }
@@ -661,9 +506,11 @@ export class OrthographicCameraControls {
           if (this.moveRight) {
             this.object.translateX(actualMoveSpeed);
           }
-          this.target = new Vector3(this.target.x - (previousVector.x - this.object.position.x),
+          this.target = new Vector3(
+            this.target.x - (previousVector.x - this.object.position.x),
             this.target.y - (previousVector.y - this.object.position.y),
-            this.target.z - (previousVector.z - this.object.position.z));
+            this.target.z - (previousVector.z - this.object.position.z)
+          );
 
           if (this.leftRotation || this.rightRotation) {
             if (this.leftRotation) {
@@ -682,8 +529,8 @@ export class OrthographicCameraControls {
               Math.pow(this.object.position.z - this.target.z, 2)
             );
           }
-        this.object.updateProjectionMatrix();
-      }
+          this.object.updateProjectionMatrix();
+        }
     }});
   }
 }

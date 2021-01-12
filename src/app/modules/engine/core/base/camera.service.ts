@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera } from 'three';
+import { Camera, CubeCamera, OrthographicCamera, PerspectiveCamera, Vector3 } from 'three';
 import { SettingsService } from '../../../../services/settings.service';
 import * as Lodash from 'lodash';
 import { CAMERA } from '../../../../enums/settings.enum';
@@ -7,8 +7,8 @@ import { FirstPersonControls } from 'app/utils/first-person-controls';
 import { StorageService } from '../../../../services/storage.service';
 import { Types } from '@enums/types.enum';
 import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
+import { MapCameraControls } from '../../../../utils/map-camera-controls';
 
-//import { OrthographicCameraControls } from '../../../../utils/orthographic-camera-controls';
 
 @Injectable()
 export class CameraService implements OnInit {
@@ -133,14 +133,14 @@ export class CameraService implements OnInit {
       _viewport.near,
       _viewport.far
     );
-
     //Устнавливаем положение камеры
-    this.cameries[CAMERA.MapCamera].rotation.x = -Math.PI / 2;
     this.cameries[CAMERA.MapCamera].name = '2dCamera';
-
+    this.cameries[CAMERA.MapCamera].position.x = 200;
+    this.cameries[CAMERA.MapCamera].position.y = 200;
+    this.cameries[CAMERA.MapCamera].position.z = 200;
     //Добавляем хоткеи
-    this.cameries[CAMERA.MapCamera].userData.controls = new OrthographicCameraControls(<OrthographicCamera>this.cameries[CAMERA.MapCamera], this.domElement, this.storageService);
-    (<OrthographicCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
+    this.cameries[CAMERA.MapCamera].userData.controls = new MapCameraControls(<OrthographicCamera>this.cameries[CAMERA.MapCamera], this.domElement, this.storageService);
+    (<MapCameraControls>this.cameries[CAMERA.MapCamera].userData.controls).initCommands();
   }
 
   public initFirstPersonCamera() {
